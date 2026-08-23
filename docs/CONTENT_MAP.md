@@ -7,7 +7,9 @@
 - Видеоработы: ХОТЛИНК на https://seversvet.github.io/assets/film/<id>[-loop].mp4 + <id>.webp
   (репо seversvet, обе площадки наши; каталог работ — seversvet site/assets/portfolio.js).
 - Скрины приложения MONOLITH: хотлинк https://monolithapp.github.io/assets/desktop-*.jpg, mobile-*.jpg.
-- Резерв (не использован пока): FTX13.mp4 (гонки 76с), «Поля инста.mp4» (119с) — лежат в Pictures.
+- Свои фильмы витрины: FTX13 → assets/video/ftx.mp4 (мотофристайл), «Поля инста» →
+  polya.mp4 (fashion) + лупы и постеры; конвейер `python tools/prepare_media.py films`.
+- Hero: hero-loop-hd.mp4 (1440p, десктоп ≥1024px, подменяет JS) + hero-loop.mp4 (1080p, мобилы).
 
 ## Темы фотоматериала
 Тройники: завод-BTS ×8, гонки ×2, свадьбы ×2, город ×2, клипы (балет, микрофон, силуэт, тёмный портрет),
