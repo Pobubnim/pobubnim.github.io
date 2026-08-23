@@ -275,6 +275,12 @@ section:last-of-type { padding-bottom: var(--gap-sec); }
 .films-vert { grid-template-columns: repeat(4, 1fr); margin-top: 16px; }
 .films-vert .film { aspect-ratio: 9 / 16; }
 
+.film-more { display: flex; align-items: flex-end; background: transparent; outline: 1px dashed rgba(255,253,245,0.16); }
+.film-more:hover { outline-color: rgba(255,253,245,0.34); background: var(--char); }
+.film-more-in { padding: 20px; display: flex; flex-direction: column; gap: 4px; }
+.film-more-in b { font-size: 17px; font-weight: 500; }
+.film-more-in span { font-size: 13px; color: var(--smoke); }
+
 /* ---------- цвет ---------- */
 
 .color-grid {

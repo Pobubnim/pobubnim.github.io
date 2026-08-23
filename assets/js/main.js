@@ -9,10 +9,12 @@ const FILMS = [
   { id: "balabanovo", t: "Балабаново",          s: "Фильм о производстве",        len: "2:54" },
   { id: "principled", t: "«Принципиальный»",    s: "Короткий метр",               len: "10:47" },
   { id: "wedding-de", t: "Дмитрий и Евгения",   s: "Свадебное кино · 2.67:1",     len: "2:37" },
+  { id: "polya",      t: "«Поля»",              s: "Fashion-муд · натура",        len: "1:59", local: true },
   { id: "staya",      t: "«Стая»",              s: "Музыкальный клип",            len: "2:03" },
   { id: "banshee",    t: "Vo Devil × Stokes",   s: "Музыкальный клип",            len: "4:11" },
   { id: "evergo",     t: "EverGO",              s: "Реклама батончиков",          len: "0:19" },
   { id: "box",        t: "Бокс",                s: "Спортивный ролик",            len: "0:54" },
+  { id: "ftx",        t: "FTX",                 s: "Мотофристайл · фестиваль",    len: "1:16", local: true },
 ];
 
 const FILMS_VERT = [
@@ -44,22 +46,30 @@ const STRIP = [
 /* ---------- рендер карточек ---------- */
 
 function filmCard(f, vert) {
+  const poster = f.local ? `assets/img/${f.id}-poster.webp` : `${LIB}${f.id}.webp`;
+  const base = f.local ? "assets/video/" : LIB;
   const el = document.createElement("article");
   el.className = "film";
   el.innerHTML =
-    `<img loading="lazy" src="${LIB}${f.id}.webp" alt="${f.t} — ${f.s}">` +
-    `<video muted loop playsinline preload="none" src="${LIB}${f.id}-loop.mp4"></video>` +
+    `<img loading="lazy" src="${poster}" alt="${f.t} — ${f.s}">` +
+    `<video muted loop playsinline preload="none" src="${base}${f.id}-loop.mp4"></video>` +
     `<span class="film-len">${f.len}</span>` +
     `<div class="film-cap"><b>${f.t}</b><span>${f.s}</span></div>`;
   const v = el.querySelector("video");
   el.addEventListener("mouseenter", () => { v.play().catch(() => {}); el.classList.add("playing"); });
   el.addEventListener("mouseleave", () => { v.pause(); el.classList.remove("playing"); });
-  el.addEventListener("click", () => openPlayer(LIB + f.id + ".mp4", vert));
+  el.addEventListener("click", () => openPlayer((f.local ? "assets/video/" : LIB) + f.id + ".mp4", vert));
   return el;
 }
 
 const grid = document.getElementById("films-grid");
 FILMS.forEach(f => grid.appendChild(filmCard(f, false)));
+const more = document.createElement("a");
+more.className = "film film-more";
+more.href = "https://t.me/pobubnimzavideo";
+more.target = "_blank"; more.rel = "noopener";
+more.innerHTML = `<div class="film-more-in"><b>Больше — в канале</b><span>разборы, бекстейджи, свежие работы →</span></div>`;
+grid.appendChild(more);
 const gridV = document.getElementById("films-vert");
 FILMS_VERT.forEach(f => gridV.appendChild(filmCard(f, true)));
 
@@ -85,6 +95,13 @@ function closePlayer() { pVideo.pause(); pVideo.removeAttribute("src"); pVideo.l
 player.querySelector(".close").addEventListener("click", closePlayer);
 player.addEventListener("click", e => { if (e.target === player) closePlayer(); });
 player.addEventListener("close", () => { pVideo.pause(); });
+
+/* ---------- hero: HD-версия для больших экранов ---------- */
+
+const heroVideo = document.querySelector(".hero video");
+if (heroVideo && innerWidth >= 1024 && !(navigator.connection && navigator.connection.saveData)) {
+  heroVideo.src = "assets/video/hero-loop-hd.mp4";
+}
 
 /* ---------- навигация: фон после первого экрана ---------- */
 

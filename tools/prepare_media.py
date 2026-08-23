@@ -93,5 +93,48 @@ def hero():
     im.save(poster, "WEBP", quality=80, method=6); os.remove(tmp)
     print(f"hero-poster.webp  {os.path.getsize(poster)//1024} KB")
 
+
+
+# --- собственные фильмы витрины + HQ-версия hero (запуск: python tools/prepare_media.py films) ---
+FILMS_SRC = {
+    # слаг: (файл, постер_сек, луп_старт_сек, луп_длит_сек)
+    "ftx":   ("FTX13.mp4", 30, 29, 4),
+    "polya": ("Поля инста.mp4", 63, 62, 4),
+}
+
+def films():
+    for slug, (rel, poster_t, loop_ss, loop_t) in FILMS_SRC.items():
+        src = os.path.join(SRC, rel)
+        full = os.path.join(VID, slug + ".mp4")
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", src,
+            "-vf", "scale=1920:1080", "-c:v", "libx264", "-preset", "slow", "-crf", "24",
+            "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", full], check=True)
+        loop = os.path.join(VID, slug + "-loop.mp4")
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", str(loop_ss), "-t", str(loop_t), "-i", src,
+            "-vf", "scale=960:540", "-c:v", "libx264", "-preset", "slow", "-crf", "30",
+            "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart", loop], check=True)
+        tmp = os.path.join(VID, "_p.png")
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", str(poster_t), "-i", src, "-frames:v", "1", tmp], check=True)
+        im = Image.open(tmp).convert("RGB").resize((1280, 720), Image.LANCZOS)
+        im.save(os.path.join(IMG, slug + "-poster.webp"), "WEBP", quality=80, method=6); os.remove(tmp)
+        print(slug, os.path.getsize(full)//1024//1024, "MB / loop", os.path.getsize(loop)//1024, "KB")
+
+def hero_hd():
+    src = os.path.join(SRC, "Цвет ДО-ПОСЛЕ для главного экрана LOOP видео.mp4")
+    out = os.path.join(VID, "hero-loop-hd.mp4")
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", src,
+        "-vf", "scale=2560:1440", "-c:v", "libx264", "-preset", "slow", "-crf", "24",
+        "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart", out], check=True)
+    print("hero-loop-hd.mp4", os.path.getsize(out)//1024//1024, "MB")
+    # мобильная версия качеством получше прежнего
+    out2 = os.path.join(VID, "hero-loop.mp4")
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", src,
+        "-vf", "scale=1920:1080", "-c:v", "libx264", "-preset", "slow", "-crf", "26",
+        "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart", out2], check=True)
+    print("hero-loop.mp4", os.path.getsize(out2)//1024//1024, "MB")
+
 if __name__ == "__main__":
-    photos(); hero()
+    if len(sys.argv) > 1 and sys.argv[1] == "films":
+        films(); hero_hd()
+    else:
+        photos(); hero()
