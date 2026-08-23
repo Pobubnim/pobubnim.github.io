@@ -459,6 +459,7 @@ dialog.player {
   background: transparent;
   max-width: min(1100px, 92vw);
   width: 100%;
+  margin: auto;
 }
 dialog.player[data-vert] { max-width: min(420px, 92vw); }
 dialog.player::backdrop { background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(6px); }
@@ -472,6 +473,65 @@ dialog.player .close {
   border: 0;
   cursor: pointer;
 }
+
+/* ---------- лид-форма ---------- */
+
+dialog.lead {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  width: min(440px, 92vw);
+  margin: auto;            /* глобальный ресет убивает родное центрирование dialog */
+}
+dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6px); }
+
+.lead-in {
+  position: relative;
+  background: var(--char);
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.lead-in h3 { font-size: 21px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
+.lead-in label { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+.lead-in input, .lead-in select, .lead-in textarea {
+  font: 400 15px/1.4 var(--font-ui);
+  color: var(--ink);
+  background: #0c0c0a;             /* поле темнее поверхности — «сюда вводят» */
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 11px 14px;
+  outline: none;
+  resize: vertical;
+}
+.lead-in input:focus, .lead-in select:focus, .lead-in textarea:focus { border-color: rgba(255,253,245,0.28); }
+.lead-in select { appearance: none; }
+.lead-in .btn { justify-content: center; margin-top: 4px; }
+.lead-alt { font-size: 13px; color: var(--mute); font-weight: 300; text-wrap: pretty; }
+.lead-alt a { text-decoration: underline; color: var(--smoke); }
+.lead-close {
+  position: absolute;
+  top: 12px; right: 16px;
+  font: 300 26px/1 var(--font-ui);
+  color: var(--mute);
+  background: none; border: 0; cursor: pointer;
+}
+
+/* ---------- футер: решения ---------- */
+
+.footer-solutions { margin-top: clamp(48px, 7vw, 80px); display: flex; flex-direction: column; gap: 14px; }
+.footer-solutions div { display: flex; flex-wrap: wrap; gap: 10px; }
+.footer-solutions a {
+  font-size: 13.5px;
+  color: var(--smoke);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-pill);
+  padding: 8px 16px;
+}
+.footer-solutions a:hover { color: var(--ink); border-color: var(--line); }
 
 /* ---------- появление ---------- */
 

@@ -96,6 +96,25 @@ player.querySelector(".close").addEventListener("click", closePlayer);
 player.addEventListener("click", e => { if (e.target === player) closePlayer(); });
 player.addEventListener("close", () => { pVideo.pause(); });
 
+/* ---------- лид-форма: сборка заявки в телеграм ---------- */
+
+const lead = document.getElementById("lead");
+document.querySelectorAll("[data-lead]").forEach(b => b.addEventListener("click", () => lead.showModal()));
+if (location.hash === "#zayavka") lead.showModal();
+addEventListener("hashchange", () => { if (location.hash === "#zayavka") lead.showModal(); });
+document.getElementById("lf-send").addEventListener("click", () => {
+  const name = document.getElementById("lf-name").value.trim();
+  const what = document.getElementById("lf-what").value;
+  const desc = document.getElementById("lf-desc").value.trim();
+  const text = `Привет! Заявка с сайта ПОБУБНИМ.
+
+Имя: ${name || "—"}
+Нужно: ${what}
+Задача: ${desc || "—"}`;
+  open(`https://t.me/sbphotoshoter?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+  lead.close();
+});
+
 /* ---------- hero: HD-версия для больших экранов ---------- */
 
 const heroVideo = document.querySelector(".hero video");

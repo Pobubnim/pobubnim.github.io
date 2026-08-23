@@ -47,6 +47,16 @@ t.me/pobubnimzavideo). Язык — русский. Домен докупает�
 Чистые HTML/CSS/JS, без сборщиков. GitHub Pages из main. Медиа тяжелее ~2 МБ
 в git не класть — видео только embed'ами, кадры жать в webp.
 
+## SEO и лиды (добавлено 23.08)
+- 8 страниц-решений services/*.html под ключевые запросы — генератор tools/build_services.py
+  (правишь данные в SERVICES -> перегенерируешь -> коммитишь). Каждая: текст, состав, цена,
+  примеры работ, FAQ + JSON-LD (Service, FAQPage).
+- Главная: canonical, JSON-LD Person + ProfessionalService/OfferCatalog, og.jpg 1200x630.
+- education: Course-разметка. Кейсы: canonical. sitemap.xml — все 12 страниц.
+- Лид-форма: dialog #lead на главной, открывается кнопками [data-lead] и хешем #zayavka
+  (страницы решений ссылаются на index.html#zayavka). Отправка = префилл-текст в личку
+  t.me/sbphotoshoter — без бэкенда и без токенов в клиенте.
+
 ## Целевое действие
 Главная кнопка — личка Телеграм с préfill-текстом «Привет! Пишу с сайта…».
 Канал — вторичная подписка.
