@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кейс: MONOLITH — приложение для видеографов · ПОБУБНИМ</title>
+<meta name="description" content="Как я собрал MONOLITH — приложение для видеографов с клиентами, финансами и ИИ-ассистентом. Android и Windows.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23000'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-style='italic' font-size='38' fill='%23f5efe2' text-anchor='middle'%3EБ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  .case-hero { padding-top: 140px; }
+  .case-hero .label { margin-bottom: 14px; display: block; }
+  .case-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; max-width: 640px; margin-top: 20px; text-wrap: pretty; }
+  .case-block { margin-top: clamp(56px, 8vw, 88px); display: grid; grid-template-columns: 240px 1fr; gap: clamp(20px, 4vw, 56px); }
+  .case-block h3 { font-size: 14px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+  .case-block .body { display: flex; flex-direction: column; gap: 14px; max-width: 680px; }
+  .case-block .body p { color: var(--smoke); font-weight: 300; font-size: 16.5px; text-wrap: pretty; }
+  .case-block .body p b { color: var(--ink); font-weight: 500; }
+  .case-shots { margin-top: clamp(56px, 8vw, 88px); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .case-shots img { border-radius: var(--r-card); outline: 1px solid rgba(255,255,255,0.07); outline-offset: -1px; width: 100%; }
+  .case-shots figure.wide { grid-column: 1 / -1; }
+  .case-shots figcaption { margin-top: 10px; font-size: 12.5px; color: var(--mute); }
+  .case-back { padding-top: 110px; }
+  @media (max-width: 800px) { .case-block { grid-template-columns: 1fr; } .case-shots { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../index.html#films">Работы</a>
+      <a href="../index.html#digital">Продукты</a>
+      <a href="../index.html#services">Цены</a>
+    </nav>
+    <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Обсудить проект</a>
+  </div>
+</header>
+
+<section class="case-hero">
+  <div class="wrap">
+    <span class="label">Кейс · Приложение</span>
+    <h1 class="display">MONOLITH</h1>
+    <p class="lead">Приложение для видеографов: клиенты, деньги, проекты и ИИ-ассистент — в одном месте, без чужих CRM. Android и Windows.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="case-block">
+    <h3>Задача</h3>
+    <div class="body">
+      <p>Видеограф живёт между съёмками, монтажом и перепиской. Учёт клиентов — в заметках, деньги — в голове, дедлайны — в страхе. Чужие CRM сделаны для отделов продаж: тяжёлые, дорогие и не про съёмку.</p>
+      <p>Нужен был инструмент, который ведёт <b>клиентов, проекты и кассу</b> так, как думает видеограф, — и помещается в телефон.</p>
+    </div>
+  </div>
+
+  <div class="case-block">
+    <h3>Решение</h3>
+    <div class="body">
+      <p>Собрал приложение на Flutter: одна кодовая база — <b>Android и Windows</b>. Внутри — база клиентов и заказов, финансы с отчётами, командная работа и <b>ИИ-ассистент</b>, который отвечает на вопросы о делах и помогает с рутиной.</p>
+      <p>Данные живут локально и не утекают на чужие серверы. Обновления прилетают через телеграм-бота, сайт приложения — на GitHub Pages.</p>
+    </div>
+  </div>
+
+  <div class="case-block">
+    <h3>Результат</h3>
+    <div class="body">
+      <p>Живой продукт в ежедневной работе: расписание, касса и клиенты — в одном окне на телефоне и ПК. Публичная страница — <a href="https://monolithapp.github.io" target="_blank" rel="noopener" style="text-decoration:underline">monolithapp.github.io</a>.</p>
+      <p>Такое же приложение под вашу задачу — <b>от 150 000 ₽</b> за MVP.</p>
+    </div>
+  </div>
+
+  <div class="case-shots">
+    <figure class="wide"><img loading="lazy" src="https://monolithapp.github.io/assets/desktop-assistant.jpg" alt="MONOLITH на Windows — ИИ-ассистент"><figcaption>Windows: ИИ-ассистент отвечает по делам студии</figcaption></figure>
+    <figure><img loading="lazy" src="https://monolithapp.github.io/assets/desktop-money.jpg" alt="Экран финансов"><figcaption>Деньги: касса, долги, отчёты</figcaption></figure>
+    <figure><img loading="lazy" src="https://monolithapp.github.io/assets/desktop-clients.jpg" alt="Экран клиентов"><figcaption>Клиенты и проекты</figcaption></figure>
+  </div>
+
+  <div class="footer-cta case-back rv on">
+    <h2 class="display">Нужно своё <em>приложение</em>?</h2>
+    <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav><a href="../index.html">На главную</a></nav>
+  </div>
+</footer>
+
+</body>
+</html>

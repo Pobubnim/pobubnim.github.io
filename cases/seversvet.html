@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кейс: СЕВЕРСВЕТ — сайт кинорентала · ПОБУБНИМ</title>
+<meta name="description" content="Как я собрал сайт кинорентала СЕВЕРСВЕТ: каталог техники, фильмотека с живыми превью, заявки — быстрая статика без движка.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23000'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-style='italic' font-size='38' fill='%23f5efe2' text-anchor='middle'%3EБ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  .case-hero { padding-top: 140px; }
+  .case-hero .label { margin-bottom: 14px; display: block; }
+  .case-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; max-width: 640px; margin-top: 20px; text-wrap: pretty; }
+  .case-block { margin-top: clamp(56px, 8vw, 88px); display: grid; grid-template-columns: 240px 1fr; gap: clamp(20px, 4vw, 56px); }
+  .case-block h3 { font-size: 14px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+  .case-block .body { display: flex; flex-direction: column; gap: 14px; max-width: 680px; }
+  .case-block .body p { color: var(--smoke); font-weight: 300; font-size: 16.5px; text-wrap: pretty; }
+  .case-block .body p b { color: var(--ink); font-weight: 500; }
+  .case-shots { margin-top: clamp(56px, 8vw, 88px); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .case-shots img { border-radius: var(--r-card); outline: 1px solid rgba(255,255,255,0.07); outline-offset: -1px; width: 100%; }
+  .case-shots figure.wide { grid-column: 1 / -1; }
+  .case-shots figcaption { margin-top: 10px; font-size: 12.5px; color: var(--mute); }
+  .case-back { padding-top: 110px; }
+  @media (max-width: 800px) { .case-block { grid-template-columns: 1fr; } .case-shots { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../index.html#films">Работы</a>
+      <a href="../index.html#digital">Продукты</a>
+      <a href="../index.html#services">Цены</a>
+    </nav>
+    <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Обсудить проект</a>
+  </div>
+</header>
+
+<section class="case-hero">
+  <div class="wrap">
+    <span class="label">Кейс · Сайт</span>
+    <h1 class="display">СЕВЕРСВЕТ</h1>
+    <p class="lead">Сайт кинорентала и продакшена: каталог техники, портфолио с живыми видео-превью и приём заявок — быстрая статика без движков и конструкторов.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="case-block">
+    <h3>Задача</h3>
+    <div class="body">
+      <p>Ренталу кинотехники нужен сайт, который продаёт двумя вещами: <b>железом и картинкой</b>. Каталог оборудования с ценами, портфолио съёмок, контакты — и всё это должно летать на телефоне у продюсера, который ищет камеру на завтра.</p>
+    </div>
+  </div>
+
+  <div class="case-block">
+    <h3>Решение</h3>
+    <div class="body">
+      <p>Никаких конструкторов и CMS: <b>чистая статика</b> на GitHub Pages — хостинг бесплатный, скорость максимальная, ломаться нечему. Каталог и портфолио живут в данных, страницы собирает лёгкий скрипт.</p>
+      <p>Фильмотека — 35+ роликов с ленивыми луп-превью: карточка оживает при наведении, полное видео открывается плеером. Все работы сняты и покрашены мной.</p>
+    </div>
+  </div>
+
+  <div class="case-block">
+    <h3>Результат</h3>
+    <div class="body">
+      <p>Живой сайт — <a href="https://seversvet.github.io" target="_blank" rel="noopener" style="text-decoration:underline">seversvet.github.io</a>: каталог, портфолио, команда, заявки. Обновляется правкой одного файла данных.</p>
+      <p>Такой сайт под вашу задачу — <b>от 50 000 ₽</b> за лендинг, от 90 000 ₽ за многостраничник.</p>
+    </div>
+  </div>
+
+  <div class="case-shots">
+    <figure class="wide"><img loading="lazy" src="../assets/img/case-seversvet.webp" alt="Главная сайта СЕВЕРСВЕТ"><figcaption>Обложка: тёмная витрина техники и портфолио</figcaption></figure>
+    <figure><img loading="lazy" src="https://seversvet.github.io/assets/og-works.jpg" alt="Портфолио СЕВЕРСВЕТ"><figcaption>Портфолио: фильмотека с живыми превью</figcaption></figure>
+    <figure><img loading="lazy" src="https://seversvet.github.io/assets/og-tech.jpg" alt="Каталог техники"><figcaption>Каталог: камеры, оптика, свет</figcaption></figure>
+  </div>
+
+  <div class="footer-cta case-back rv on">
+    <h2 class="display">Нужен такой <em>сайт</em>?</h2>
+    <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav><a href="../index.html">На главную</a></nav>
+  </div>
+</footer>
+
+</body>
+</html>
