@@ -1,0 +1,78 @@
+/* ПОБУБНИМ — единая навигация: бургер-меню (мобила) + дропдаун «Решения» (десктоп).
+   Подключается на всех страницах; сам строит меню и понимает вложенность пути. */
+
+(function () {
+  var deep = /\/(services|cases)\//.test(location.pathname);
+  var root = deep ? "../" : "";
+  var onHome = !deep && /(^\/$|index\.html$)/.test(location.pathname || "/");
+
+  var SOLUTIONS = [
+    ["reklamnyj-rolik", "Рекламный ролик"],
+    ["imidzhevyj-film", "Имиджевый фильм"],
+    ["svadebnoe-kino", "Свадебное кино"],
+    ["muzykalnyj-klip", "Музыкальный клип"],
+    ["cvetokorrekciya", "Цветокоррекция"],
+    ["semka-meropriyatij", "Съёмка мероприятий"],
+    ["sozdanie-sajtov", "Создание сайтов"],
+    ["boty-avtomatizaciya", "Боты и автоматизация"],
+  ];
+
+  var navIn = document.querySelector(".nav-in");
+  if (!navIn) return;
+
+  /* --- дропдаун «Решения» в строке ссылок (десктоп) --- */
+  var links = navIn.querySelector(".nav-links");
+  if (links) {
+    var drop = document.createElement("div");
+    drop.className = "nav-drop";
+    drop.innerHTML =
+      '<button type="button">Решения<span class="caret">▾</span></button>' +
+      '<div class="drop-panel">' +
+      SOLUTIONS.map(function (s) {
+        return '<a href="' + root + "services/" + s[0] + '.html">' + s[1] + "</a>";
+      }).join("") +
+      "</div>";
+    links.insertBefore(drop, links.querySelector('a[href$="education.html"]'));
+  }
+
+  /* --- бургер + полноэкранное меню (мобила) --- */
+  var burger = document.createElement("button");
+  burger.className = "burger";
+  burger.setAttribute("aria-label", "Меню");
+  burger.innerHTML = "<i></i><i></i><i></i>";
+  navIn.appendChild(burger);
+
+  function home(hash) { return onHome ? hash : root + "index.html" + hash; }
+
+  var menu = document.createElement("nav");
+  menu.className = "menu";
+  menu.innerHTML =
+    '<div class="menu-in">' +
+    '<div class="menu-col"><span class="label">Разделы</span>' +
+    '<a href="' + home("#films") + '">Работы</a>' +
+    '<a href="' + home("#color") + '">Цвет</a>' +
+    '<a href="' + home("#frames") + '">Кадры</a>' +
+    '<a href="' + home("#digital") + '">Продукты</a>' +
+    '<a href="' + home("#services") + '">Цены</a>' +
+    '<a href="' + home("#about") + '">Обо мне</a>' +
+    '<a href="' + root + 'education.html">Обучение</a>' +
+    "</div>" +
+    '<div class="menu-col"><span class="label">Решения</span>' +
+    SOLUTIONS.map(function (s) {
+      return '<a href="' + root + "services/" + s[0] + '.html">' + s[1] + "</a>";
+    }).join("") +
+    "</div>" +
+    '<div class="menu-cta">' +
+    '<a class="btn btn-lamp" href="' + home("#zayavka") + '">Оставить заявку</a>' +
+    '<a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал ПОБУБНИМ</a>' +
+    "</div></div>";
+  document.body.appendChild(menu);
+
+  function toggle(open) {
+    menu.classList.toggle("on", open);
+    burger.classList.toggle("x", open);
+    document.documentElement.style.overflow = open ? "hidden" : "";
+  }
+  burger.addEventListener("click", function () { toggle(!menu.classList.contains("on")); });
+  menu.addEventListener("click", function (e) { if (e.target.tagName === "A") toggle(false); });
+})();

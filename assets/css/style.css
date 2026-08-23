@@ -111,7 +111,7 @@ h2 {
 .nav {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 50;
+  z-index: 70;
   transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
   border-bottom: 1px solid transparent;
 }
@@ -145,7 +145,86 @@ h2 {
 
 .nav .btn { height: 38px; padding: 0 20px; font-size: 14px; }
 
-.burger { display: none; }
+/* --- бургер --- */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  padding: 10px;
+  background: none; border: 0; cursor: pointer;
+}
+.burger i { display: block; height: 1.5px; background: var(--ink); transition: transform 0.25s var(--ease), opacity 0.2s; }
+.burger.x i:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.burger.x i:nth-child(2) { opacity: 0; }
+.burger.x i:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* --- дропдаун «Решения» --- */
+.nav-drop { position: relative; }
+.nav-drop > button {
+  font: 500 14px var(--font-ui);
+  color: var(--smoke);
+  background: none; border: 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 10px 0;
+}
+.nav-drop > button .caret { font-size: 9px; transition: transform 0.2s; }
+.nav-drop:hover > button, .nav-drop:focus-within > button { color: var(--ink); }
+.nav-drop:hover .caret, .nav-drop:focus-within .caret { transform: rotate(180deg); }
+.drop-panel {
+  position: absolute;
+  top: 100%; left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  min-width: 220px;
+  background: #0d0d0b;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 8px;
+  display: flex; flex-direction: column;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.18s var(--ease), transform 0.18s var(--ease), visibility 0.18s;
+}
+.nav-drop:hover .drop-panel, .nav-drop:focus-within .drop-panel {
+  opacity: 1; visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.drop-panel a {
+  font-size: 14px; font-weight: 400;
+  color: var(--smoke);
+  padding: 9px 14px;
+  border-radius: 7px;
+}
+.drop-panel a:hover { color: var(--ink); background: var(--char2); }
+
+/* --- полноэкранное меню --- */
+.menu {
+  position: fixed; inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.96);
+  backdrop-filter: blur(14px);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.25s var(--ease), visibility 0.25s;
+  overflow-y: auto;
+}
+.menu.on { opacity: 1; visibility: visible; }
+.menu-in {
+  padding: 96px clamp(24px, 7vw, 48px) 48px;
+  display: flex; flex-direction: column; gap: 34px;
+  max-width: 480px;
+}
+.menu-col { display: flex; flex-direction: column; gap: 4px; }
+.menu-col .label { margin-bottom: 10px; }
+.menu-col a {
+  font-size: 21px; font-weight: 300;
+  color: var(--ink);
+  padding: 7px 0;
+  letter-spacing: -0.01em;
+}
+.menu-col a:active { color: var(--lamp); }
+.menu-cta { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.menu-cta .btn { justify-content: center; }
+.menu .burger-space { height: 64px; }
 
 /* ---------- hero ---------- */
 
@@ -557,6 +636,8 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 
 @media (max-width: 700px) {
   .nav-links { display: none; }
+  .burger { display: flex; }
+  .nav .btn { display: none; }   /* CTA уезжает в меню — в шапке логотип и бургер */
   .films { grid-template-columns: 1fr; }
   .films-vert { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: 1fr; }

@@ -360,6 +360,7 @@ def page(s):
   </div>
 </footer>
 
+<script src="../assets/js/nav.js" defer></script>
 </body>
 </html>
 '''
