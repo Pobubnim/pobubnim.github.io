@@ -6,11 +6,11 @@ const LIB = "https://seversvet.github.io/assets/film/";
 const FILMS = [
   { id: "fabrik",     t: "FABRIK",              s: "Имиджевый ролик · ГК OSTOV",  len: "1:08" },
   { id: "ostov",      t: "ГК ОСТОВ",            s: "Имиджевый ролик",             len: "1:22" },
-  { id: "balabanovo", t: "Балабаново",          s: "Фильм о производстве",        len: "2:54" },
+  { id: "abilympics", t: "Абилимпикс 2025",     s: "Отчётный ролик чемпионата",   len: "2:59" },
   { id: "principled", t: "«Принципиальный»",    s: "Короткий метр",               len: "10:47" },
   { id: "wedding-de", t: "Дмитрий и Евгения",   s: "Свадебное кино · 2.67:1",     len: "2:37" },
   { id: "polya",      t: "«Поля»",              s: "Fashion-муд · натура",        len: "1:59", local: true },
-  { id: "staya",      t: "«Стая»",              s: "Музыкальный клип",            len: "2:03" },
+  { id: "teaser-soon",t: "«Скоро»",             s: "Тизер проекта · ночь и огонь",len: "0:31" },
   { id: "banshee",    t: "Vo Devil × Stokes",   s: "Музыкальный клип",            len: "4:11" },
   { id: "evergo",     t: "EverGO",              s: "Реклама батончиков",          len: "0:19" },
   { id: "box",        t: "Бокс",                s: "Спортивный ролик",            len: "0:54" },
