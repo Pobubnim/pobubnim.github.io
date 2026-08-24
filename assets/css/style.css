@@ -291,6 +291,24 @@ h2 {
 section { padding-top: var(--gap-sec); }
 section:last-of-type { padding-bottom: var(--gap-sec); }
 
+/* ---------- снимал для ---------- */
+
+.clients {
+  margin-top: clamp(40px, 6vw, 64px);
+  display: flex;
+  align-items: baseline;
+  gap: clamp(18px, 3vw, 36px);
+  flex-wrap: wrap;
+}
+.clients-row { display: flex; flex-wrap: wrap; gap: 10px clamp(18px, 2.6vw, 34px); }
+.clients-row span {
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--smoke);
+  white-space: nowrap;
+}
+
 /* ---------- работы ---------- */
 
 .films {

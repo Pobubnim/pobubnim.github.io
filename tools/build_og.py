@@ -24,6 +24,8 @@ PAGES = {
     "boty-avtomatizaciya":(os.path.join(SCRATCH, "monolith-shot.jpg"), "Боты и автоматизация"),
     "education":         (os.path.join(IMG, "about-camera.webp"), "Обучение съёмке и цвету"),
     "raboty":            (os.path.join(IMG, "tri-cine-portraits.webp"), "Работы: реклама, клипы, свадьбы"),
+    "skolko-stoit-reklamnyj-rolik": (os.path.join(IMG, "hz-watch-1.webp"), "Сколько стоит рекламный ролик"),
+    "kak-vybrat-svadebnogo-videografa": (os.path.join(IMG, "hz-wedding.webp"), "Как выбрать свадебного видеографа"),
     "case-monolith":     (os.path.join(SCRATCH, "monolith-shot.jpg"), "Кейс: приложение MONOLITH"),
     "case-seversvet":    (os.path.join(IMG, "case-seversvet.webp"), "Кейс: сайт СЕВЕРСВЕТ"),
 }
