@@ -261,6 +261,7 @@ def page(s):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
 <title>{s["title"]}</title>
 <meta name="description" content="{s["desc"]}">
 <link rel="canonical" href="{SITE}/services/{s["slug"]}.html">

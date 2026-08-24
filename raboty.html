@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
 <title>Портфолио видеографа: реклама, имиджевые фильмы, клипы, свадьбы | ПОБУБНИМ</title>
 <meta name="description" content="Работы видеографа и колориста Савелия Бубнова по темам: рекламные ролики, имиджевые фильмы, съёмка мероприятий, музыкальные клипы, свадебное кино, вертикали 9:16 и ИИ-видео. Смотреть онлайн.">
 <link rel="canonical" href="https://pobubnim.github.io/raboty.html">
@@ -224,9 +225,14 @@ function filmCard(f, vert) {
     `<span class="film-len">${f.len}</span>` +
     `<div class="film-cap"><b>${f.t}</b><span>${f.s}</span></div>`;
   const v = el.querySelector("video");
+  el.tabIndex = 0;
+  el.setAttribute("role", "button");
+  el.setAttribute("aria-label", `${f.t} — ${f.s}, смотреть видео`);
   el.addEventListener("mouseenter", () => { v.play().catch(() => {}); el.classList.add("playing"); });
   el.addEventListener("mouseleave", () => { v.pause(); el.classList.remove("playing"); });
-  el.addEventListener("click", () => openPlayer(base + f.id + ".mp4", vert));
+  const open = () => openPlayer(base + f.id + ".mp4", vert);
+  el.addEventListener("click", open);
+  el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
   return el;
 }
 
@@ -251,9 +257,14 @@ THEMES.forEach(th => {
 /* шоурил-карточка сверху */
 const reel = document.querySelector(".reel .film");
 const reelV = reel.querySelector("video");
+reel.tabIndex = 0;
+reel.setAttribute("role", "button");
+reel.setAttribute("aria-label", "Шоурил, смотреть видео");
 reel.addEventListener("mouseenter", () => { reelV.play().catch(() => {}); reel.classList.add("playing"); });
 reel.addEventListener("mouseleave", () => { reelV.pause(); reel.classList.remove("playing"); });
-reel.addEventListener("click", () => openPlayer(reel.dataset.src, false));
+const openReel = () => openPlayer(reel.dataset.src, false);
+reel.addEventListener("click", openReel);
+reel.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openReel(); } });
 
 /* модальный плеер — как на главной */
 const player = document.getElementById("player");

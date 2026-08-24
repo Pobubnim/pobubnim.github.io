@@ -310,6 +310,11 @@ section:last-of-type { padding-bottom: var(--gap-sec); }
   outline-offset: -1px;
 }
 
+.film:focus-visible {
+  outline: 2px solid var(--lamp);
+  outline-offset: 2px;
+}
+
 .film img, .film video {
   position: absolute;
   inset: 0;

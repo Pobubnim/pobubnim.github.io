@@ -56,9 +56,14 @@ function filmCard(f, vert) {
     `<span class="film-len">${f.len}</span>` +
     `<div class="film-cap"><b>${f.t}</b><span>${f.s}</span></div>`;
   const v = el.querySelector("video");
+  el.tabIndex = 0;
+  el.setAttribute("role", "button");
+  el.setAttribute("aria-label", `${f.t} — ${f.s}, смотреть видео`);
   el.addEventListener("mouseenter", () => { v.play().catch(() => {}); el.classList.add("playing"); });
   el.addEventListener("mouseleave", () => { v.pause(); el.classList.remove("playing"); });
-  el.addEventListener("click", () => openPlayer((f.local ? "assets/video/" : LIB) + f.id + ".mp4", vert));
+  const open = () => openPlayer((f.local ? "assets/video/" : LIB) + f.id + ".mp4", vert);
+  el.addEventListener("click", open);
+  el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
   return el;
 }
 
