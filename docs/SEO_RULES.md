@@ -50,5 +50,6 @@
 
 Гео внесено: index (title/description/H1-label/schema/H2 цен), raboty,
 services: imidzhevyj-film, muzykalnyj-klip, reklamnyj-rolik, semka-meropriyatij,
-svadebnoe-kino. Без гео осознанно: education (формат обучения не определён),
-sozdanie-sajtov, boty-avtomatizaciya, cvetokorrekciya (удалённые услуги).
+svadebnoe-kino, education («в Москве и онлайн» — владелец подтвердил 25.08: обучение
+очное и дистанционное). Без гео осознанно: sozdanie-sajtov, boty-avtomatizaciya,
+cvetokorrekciya (удалённые услуги).

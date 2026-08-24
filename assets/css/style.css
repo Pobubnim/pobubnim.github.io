@@ -266,7 +266,8 @@ h2 {
 
 .hero-copy { display: flex; flex-direction: column; gap: 22px; max-width: 780px; }
 .hero-copy .label { color: var(--smoke); }
-.hero-copy h1 .label { display: block; margin-bottom: 22px; }
+h1 .label { display: block; margin-bottom: 14px; }
+.hero-copy h1 .label { margin-bottom: 22px; }
 .hero-copy p { color: var(--smoke); font-size: clamp(16px, 1.6vw, 19px); font-weight: 300; max-width: 560px; }
 
 .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 6px; }
