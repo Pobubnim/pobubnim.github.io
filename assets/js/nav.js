@@ -64,6 +64,7 @@
     "</div>" +
     '<div class="menu-cta">' +
     '<a class="btn btn-lamp" href="' + home("#zayavka") + '">Оставить заявку</a>' +
+    '<a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>' +
     '<a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал ПОБУБНИМ</a>' +
     "</div></div>";
   document.body.appendChild(menu);
