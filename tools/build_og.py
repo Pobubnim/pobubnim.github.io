@@ -23,6 +23,7 @@ PAGES = {
     "sozdanie-sajtov":   (os.path.join(IMG, "case-seversvet.webp"), "Создание сайтов"),
     "boty-avtomatizaciya":(os.path.join(SCRATCH, "monolith-shot.jpg"), "Боты и автоматизация"),
     "education":         (os.path.join(IMG, "about-camera.webp"), "Обучение съёмке и цвету"),
+    "raboty":            (os.path.join(IMG, "tri-cine-portraits.webp"), "Работы: реклама, клипы, свадьбы"),
     "case-monolith":     (os.path.join(SCRATCH, "monolith-shot.jpg"), "Кейс: приложение MONOLITH"),
     "case-seversvet":    (os.path.join(IMG, "case-seversvet.webp"), "Кейс: сайт СЕВЕРСВЕТ"),
 }
@@ -41,6 +42,10 @@ def build():
     f_brand = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 34)
     f_title = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 56)
     for slug, (src, title) in PAGES.items():
+        if not os.path.exists(src):
+            # кадр из чужого скретчпада мог пропасть — готовый og при этом уже лежит в assets/og
+            print(slug + ".jpg: источник пропал, пропускаю (" + src + ")")
+            continue
         im = cover(Image.open(src).convert("RGB"))
         # скрим снизу
         overlay = Image.new("L", im.size, 0)

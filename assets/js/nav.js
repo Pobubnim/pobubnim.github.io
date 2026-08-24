@@ -49,7 +49,7 @@
   menu.innerHTML =
     '<div class="menu-in">' +
     '<div class="menu-col"><span class="label">Разделы</span>' +
-    '<a href="' + home("#films") + '">Работы</a>' +
+    '<a href="' + root + 'raboty.html">Работы</a>' +
     '<a href="' + home("#color") + '">Цвет</a>' +
     '<a href="' + home("#frames") + '">Кадры</a>' +
     '<a href="' + home("#digital") + '">Продукты</a>' +
