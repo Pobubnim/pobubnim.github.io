@@ -4,6 +4,10 @@
    Что включено: визиты, источники переходов, время на сайте, вебвизор
    (запись сессий), карта скроллинга, аналитика форм. */
 
+var YM_ID = 111935483;
+
+/* адрес тега ОБЯЗАН содержать ?id=<счётчик> — без него tag.js грузится,
+   но не разбирает очередь вызовов, и счётчик молча не стартует */
 (function (m, e, t, r, i, k, a) {
   m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
   m[i].l = 1 * new Date();
@@ -12,9 +16,7 @@
   }
   k = e.createElement(t); a = e.getElementsByTagName(t)[0];
   k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
-})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-var YM_ID = 111935483;
+})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=" + YM_ID, "ym");
 
 ym(YM_ID, "init", {
   ssr: true,
