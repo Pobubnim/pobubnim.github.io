@@ -74,13 +74,17 @@
   .svc-faq[open] summary::after { content: "–"; }
   .svc-faq p { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
 
+  .tools-3 { grid-template-columns: repeat(3, 1fr); }
+  a.tool { transition: background 0.2s var(--ease); }
+  a.tool:hover { background: var(--char2); }
   @media (max-width: 960px) {
     .edu-hero, .progs { grid-template-columns: 1fr; }
     .progs { grid-template-columns: repeat(2, 1fr); }
     .fmt { grid-template-columns: repeat(2, 1fr); }
-    .tools { grid-template-columns: repeat(2, 1fr); }
+    .tools, .tools-3 { grid-template-columns: repeat(2, 1fr); }
     .who { grid-template-columns: repeat(2, 1fr); }
   }
+  @media (max-width: 700px) { .tools-3 { grid-template-columns: 1fr; } }
   @media (max-width: 700px) { .who, .fmt { grid-template-columns: 1fr; } }
   @media (max-width: 700px) {
     .progs { grid-template-columns: 1fr; }
@@ -260,10 +264,25 @@
   </div>
 </section>
 
+<section id="guides">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">05 · Гайды</span>
+      <h2>Начните <em>бесплатно</em></h2>
+      <p class="sub">Три разбора с той базой, которую я даю на первых занятиях. Прочитайте до записи — сэкономите и время, и деньги.</p>
+    </div>
+    <div class="tools tools-3">
+      <a class="tool" href="articles/obuchenie-videosemke-s-nulya.html"><b>Обучение с нуля: с чего начать</b><span>Маршрут: что учить, в каком порядке и на чём люди теряют год</span></a>
+      <a class="tool" href="articles/kak-snimat-video-na-telefon.html"><b>Как снимать на телефон</b><span>Настройки, свет из окна, стабильность и звук — база первого занятия</span></a>
+      <a class="tool" href="articles/cvetokorrekciya-video-kak-sdelat.html"><b>Цветокоррекция самому</b><span>Бесплатный DaVinci Resolve и четыре шага до киношной картинки</span></a>
+    </div>
+  </div>
+</section>
+
 <section id="faq">
   <div class="wrap">
     <div class="sec-head">
-      <span class="label">05 · Частые вопросы</span>
+      <span class="label">06 · Частые вопросы</span>
       <h2>Что спрашивают <em>до записи</em></h2>
     </div>
     <details class="svc-faq"><summary>Можно ли научиться видеосъёмке с нуля?</summary><p>Да, база съёмки даётся с нуля: экспозиция, композиция, оптика, движение камеры. Скорость зависит от практики между занятиями — при регулярных домашних съёмках первые осмысленные ролики появляются после 4–6 занятий.</p></details>
