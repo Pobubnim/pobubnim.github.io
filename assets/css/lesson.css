@@ -1,0 +1,131 @@
+/* ПОБУБНИМ — виз-блоки уроков и статей. Наследует токены style.css.
+   Библиотека перенесена из ролика №1 (videos/log-i-grade) и адаптирована под веб:
+   окна-мониторы, панель «как в DaVinci», скоуп, вайп до/после, стат-карточки.
+   Канон: docs/EDU_BASE.md §7. Кадры-фото ТОЛЬКО внутри .monitor. */
+
+:root {
+  --dv-panel: #131110;            /* корпус панели DaVinci */
+  --dv-disc-in: #201d1a;          /* сердцевина колеса */
+  --dv-rec: #e0492f;              /* точка REC */
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+.viz { margin: clamp(28px, 4vw, 44px) 0; }
+.viz-cap { margin-top: 12px; font-size: 13px; color: var(--mute); letter-spacing: 0.05em; }
+.mono { font-family: var(--font-mono); }
+
+/* ---------- появление при скролле ---------- */
+.lv { opacity: 0; transform: translateY(26px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.lv.on { opacity: 1; transform: none; }
+.lv-d1 { transition-delay: 0.08s; } .lv-d2 { transition-delay: 0.16s; } .lv-d3 { transition-delay: 0.24s; }
+@media (prefers-reduced-motion: reduce) { .lv { opacity: 1; transform: none; transition: none; } }
+
+/* ---------- окно-монитор: кадры живут только здесь ---------- */
+.monitor { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--char);
+           box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+.monitor .frame { width: 100%; aspect-ratio: 16/9; overflow: hidden; position: relative; }
+.monitor .frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.monitor .bar { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+                padding: 10px 14px; border-top: 1px solid var(--line-soft);
+                font-size: 12px; color: var(--mute); font-family: var(--font-mono); }
+.monitor .tag { position: absolute; top: 12px; left: 12px; background: var(--lamp); color: #000;
+                font-weight: 600; font-size: 11px; letter-spacing: 0.12em; padding: 4px 10px;
+                border-radius: 5px; font-family: var(--font-mono); }
+.recdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--dv-rec);
+          margin-right: 7px; animation: rec-blink 1.2s steps(2) infinite; }
+@media (prefers-reduced-motion: reduce) { .recdot { animation: none; } }
+@keyframes rec-blink { 50% { opacity: 0.15; } }
+
+/* имитация log-вида: выверено в ролике №1 (упрощение, принцип показывает честно) */
+.loglook { filter: saturate(0.3) contrast(0.63) brightness(1.14); }
+.fried { filter: saturate(1.7) contrast(1.25); }
+
+/* ---------- панель «как в DaVinci»: колёса LIFT/GAMMA/GAIN + ползунки ---------- */
+.davinci { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px;
+           padding: clamp(18px, 3vw, 28px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+.wheels { display: flex; justify-content: space-between; gap: clamp(10px, 2vw, 20px); }
+.wheel { text-align: center; flex: 1; min-width: 0; }
+.wheel .disc { width: clamp(72px, 18vw, 140px); height: clamp(72px, 18vw, 140px); margin: 0 auto;
+               border-radius: 50%; position: relative;
+               background: conic-gradient(from 90deg, #e0492f, #e8b23a, #7fb069, #3aa6a6, #4a6fe0, #b05fb0, #e0492f); }
+.wheel .disc::after { content: ""; position: absolute; inset: 9px; border-radius: 50%;
+                      background: radial-gradient(circle, var(--dv-disc-in) 0%, #16130f 62%, rgba(22,19,15,0.25) 100%); }
+.wheel .dot { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px;
+              border-radius: 50%; background: var(--lamp); box-shadow: 0 0 10px rgba(245,239,226,0.7); z-index: 2;
+              transition: transform 0.9s var(--ease); }
+.wheel .nm { margin-top: 10px; font-size: 11px; letter-spacing: 0.16em; color: var(--smoke); font-family: var(--font-mono); }
+.wheel .val { margin-top: 3px; font-size: 10.5px; color: var(--mute); font-family: var(--font-mono); }
+.wheel .role { margin-top: 6px; font-size: 12.5px; color: var(--smoke); font-weight: 300; }
+.sliders { margin-top: clamp(14px, 2.5vw, 22px); display: flex; flex-direction: column; gap: 10px; }
+.srow { display: flex; align-items: center; gap: 14px; font-size: 11px; color: var(--smoke);
+        font-family: var(--font-mono); letter-spacing: 0.1em; }
+.srow .snm { width: 108px; flex: none; }
+.srow .rail { flex: 1; height: 5px; border-radius: 3px; background: var(--line); position: relative; overflow: hidden; }
+.srow .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: 3px;
+              background: linear-gradient(90deg, rgba(245,239,226,0.7), rgba(245,239,226,0.35));
+              transform-origin: left center; transform: scaleX(0.5); transition: transform 0.9s var(--ease); }
+.srow .sv { width: 46px; flex: none; text-align: right; color: var(--mute); }
+
+/* ---------- скоуп-гистограмма ---------- */
+.scope { display: flex; align-items: flex-end; gap: 4px; height: 72px; padding: 12px 14px 10px;
+         border-top: 1px solid var(--line-soft); }
+.scope i { flex: 1; display: block; background: linear-gradient(180deg, rgba(245,239,226,0.75), rgba(245,239,226,0.2));
+           border-radius: 2px 2px 0 0; transform-origin: bottom center; transition: transform 0.8s var(--ease); }
+.lv:not(.on) .scope i { transform: scaleY(0); }
+
+/* ---------- вайп до/после (интерактивный) ---------- */
+.wipe .frame { touch-action: pan-y; }
+.wipe-graded { position: absolute; inset: 0; clip-path: inset(0 50% 0 0); }
+.wipe-graded img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wipe-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--lamp);
+             box-shadow: 0 0 12px rgba(0,0,0,0.8); pointer-events: none; }
+.wipe-line::after { content: "⟷"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                    width: 34px; height: 34px; border-radius: 50%; background: var(--lamp); color: #000;
+                    display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.wipe-range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+
+/* ---------- лаборатория: настоящий ползунок ---------- */
+.lab { display: flex; flex-direction: column; gap: 10px; }
+.lab-row { display: flex; align-items: center; gap: 14px; font-size: 11px; color: var(--smoke);
+           font-family: var(--font-mono); letter-spacing: 0.1em; }
+.lab-row .snm { width: 108px; flex: none; }
+.lab-row .sv { width: 46px; flex: none; text-align: right; color: var(--ink); }
+input[type="range"].lab-range { flex: 1; appearance: none; -webkit-appearance: none; height: 5px;
+  border-radius: 3px; background: var(--line); outline: none; cursor: pointer; }
+input[type="range"].lab-range::-webkit-slider-thumb { appearance: none; -webkit-appearance: none;
+  width: 18px; height: 18px; border-radius: 50%; background: var(--lamp); border: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6); }
+input[type="range"].lab-range::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%;
+  background: var(--lamp); border: none; }
+
+/* ---------- стат-карточки и чек-листы для статей ---------- */
+.viz-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.viz-card { padding: 18px; background: var(--char); border-radius: var(--r-card);
+            display: flex; flex-direction: column; gap: 4px; }
+.viz-card b { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.viz-card span { font-size: 12.5px; color: var(--smoke); font-weight: 300; }
+.viz-card i { font-style: normal; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+
+.viz-check { display: flex; flex-direction: column; gap: 8px; }
+.viz-check li { list-style: none; display: flex; gap: 12px; align-items: baseline; padding: 12px 16px;
+                background: var(--char); border-radius: var(--r-card); font-size: 14.5px;
+                color: var(--smoke); font-weight: 300; }
+.viz-check li::before { content: "✓"; color: var(--lamp); font-weight: 600; flex: none; }
+.viz-check li.no::before { content: "✕"; color: var(--dv-rec); }
+.viz-check li b { color: var(--ink); font-weight: 500; }
+
+/* сравнение двух колонок (например: айфон против камеры) */
+.viz-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.viz-duo .cap { margin-top: 10px; font-size: 13.5px; color: var(--smoke); font-weight: 300; }
+.viz-duo .cap b { color: var(--ink); font-weight: 500; }
+@media (max-width: 640px) { .viz-duo { grid-template-columns: 1fr; } }
+
+/* нодовая цепочка */
+.nodes { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.node { flex: 1; min-width: 96px; text-align: center; padding: 14px 8px; background: var(--char);
+        border: 1px solid var(--line); border-radius: var(--r-card); }
+.node b { display: block; font-size: 11px; letter-spacing: 0.1em; font-family: var(--font-mono);
+          font-weight: 500; color: var(--ink); }
+.node span { display: block; margin-top: 4px; font-size: 11.5px; color: var(--mute); font-weight: 300; }
+.node-arrow { color: var(--mute); font-size: 15px; flex: none; }
+@media (max-width: 640px) { .node { min-width: 40%; } }

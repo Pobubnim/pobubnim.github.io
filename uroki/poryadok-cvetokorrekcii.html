@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Порядок цветокоррекции в DaVinci Resolve — четыре шага | ПОБУБНИМ</title>
+<meta name="description" content="Порядок цветокоррекции в DaVinci Resolve: баланс белого, экспозиция по скоупу, насыщенность, look. Интерактивный урок колориста — двигайте ползунки и смотрите, как меняется кадр.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/uroki/poryadok-cvetokorrekcii.html">
+<meta property="og:title" content="Порядок цветокоррекции: четыре шага — интерактивный урок | ПОБУБНИМ">
+<meta property="og:description" content="Баланс белого, экспозиция, насыщенность, look — в правильном порядке. Урок с панелью «как в DaVinci»: двигайте ползунки и смотрите на кадр.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.github.io/uroki/poryadok-cvetokorrekcii.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Порядок цветокоррекции: четыре шага", "description": "Порядок цветокоррекции в DaVinci Resolve: баланс белого, экспозиция по скоупу, насыщенность, look. Интерактивный урок колориста.", "datePublished": "2026-08-25", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/poryadok-cvetokorrekcii.html", "image": "https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Статьи и уроки", "item": "https://pobubnim.github.io/articles/"}, {"@type": "ListItem", "position": 3, "name": "Порядок цветокоррекции", "item": "https://pobubnim.github.io/uroki/poryadok-cvetokorrekcii.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 780px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 780px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 780px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+  /* доты панели съезжают в «рабочее» положение при появлении */
+  .lv.on .dot-lift { transform: translate(-9px, 7px); }
+  .lv.on .dot-gamma { transform: translate(7px, -8px); }
+  .lv.on .dot-gain { transform: translate(4px, -11px); }
+  .lv.on .fill-con { transform: scaleX(0.72); }
+  .lv.on .fill-sat { transform: scaleX(0.61); }
+  .wb-warm { filter: sepia(0.42) saturate(1.15) brightness(1.02); }
+</style>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 01 · Цвет · Интерактив</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Порядок цветокоррекции в DaVinci Resolve</span>Четыре шага, строго <em>по порядку</em></h1>
+    <p class="lead">Интерактивный урок: вместо стены текста — панель «как в DaVinci», ползунки, которые можно крутить, и кадры до/после. Порядок шагов — тот же, каким я крашу коммерческие ролики каждую неделю.</p>
+    <time datetime="2026-08-25">Обновлено 25.08.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="monitor">
+        <div class="frame">
+          <img class="loglook" src="../assets/img/lesson-f66.webp" alt="Кадр в log-профиле до цветокоррекции — плоский и малоконтрастный">
+          <span class="tag">LOG · ИСХОДНИК</span>
+        </div>
+        <div class="scope" aria-hidden="true">
+          <i style="height:24%"></i><i style="height:38%"></i><i style="height:55%"></i><i style="height:72%"></i><i style="height:88%"></i>
+          <i style="height:76%"></i><i style="height:94%"></i><i style="height:64%"></i><i style="height:79%"></i><i style="height:52%"></i>
+          <i style="height:66%"></i><i style="height:41%"></i><i style="height:57%"></i><i style="height:33%"></i><i style="height:46%"></i>
+          <i style="height:22%"></i><i style="height:36%"></i><i style="height:17%"></i><i style="height:27%"></i><i style="height:12%"></i>
+        </div>
+        <div class="bar"><span><span class="recdot"></span>A001_C012 · BRAW · 10 bit</span><span>ISO 800 · 5600K</span></div>
+      </div>
+      <div class="viz-cap">Точка старта: плоский log-файл. Весь диапазон света внутри — его надо «проявить».</div>
+    </div>
+
+    <p>Цветокоррекция разваливается не от нехватки таланта, а от неправильного порядка. Каждый следующий шаг стоит на предыдущем: если начать с «красоты», всё, что под ней, останется кривым. Порядок такой: <b>баланс белого → экспозиция → насыщенность → look</b>. В Resolve каждый шаг живёт в отдельной ноде — почему это важно, увидите в шаге 4.</p>
+
+    <div class="step-head" id="shag-1"><i>ШАГ 1 / 4</i><h2>Баланс <em>белого</em></h2></div>
+    <p><b>Что.</b> Убрать паразитный оттенок, чтобы белое в кадре стало белым, а серое — серым.</p>
+    <p><b>Как.</b> Найдите в кадре предмет, который в жизни был белым или серым, и уберите оттенок пипеткой или ползунками Temp (тепло-холод) и Tint (зелень-пурпур). В Resolve перекос виден на скоупе Parade: на белом объекте каналы R, G и B обязаны сойтись.</p>
+    <div class="viz lv">
+      <div class="monitor wipe">
+        <div class="frame">
+          <img class="wb-warm" src="../assets/img/lesson-f26.webp" alt="Кадр со сбитым тёплым балансом белого">
+          <div class="wipe-graded"><img src="../assets/img/lesson-f26.webp" alt="Тот же кадр с выправленным балансом белого"></div>
+          <div class="wipe-line"></div>
+          <input class="wipe-range" type="range" min="0" max="100" value="50" aria-label="Сравнение: сбитый и выправленный баланс белого">
+        </div>
+        <div class="bar"><span>СБИТЫЙ ББ · ТЁПЛЫЙ ПЕРЕКОС</span><span>ВЫПРАВЛЕНО</span></div>
+      </div>
+      <div class="viz-cap">Потяните линию. Слева — имитация сбитого баланса (тёплый налёт), справа — кадр без перекоса.</div>
+    </div>
+    <div class="why"><span class="label">Зачем это первым</span><p>Пока белое не белое, все следующие решения — контраст, насыщенность, look — принимаются на кривом фундаменте и поплывут, как только перекос уберут.</p></div>
+
+    <div class="step-head" id="shag-2"><i>ШАГ 2 / 4</i><h2>Экспозиция и <em>контраст</em></h2></div>
+    <p><b>Что.</b> Расставить яркости: тени вниз до глубоких, света вверх до ярких — и ничего не обрезать.</p>
+    <p><b>Как.</b> Три колеса: <b>Lift</b> двигает тени, <b>Gamma</b> — середину, <b>Gain</b> — света. Судить не на глаз, а по скоупу Waveform: глаз адаптируется и врёт, осциллограмма — нет. «Полка», прижатая к низу или верху шкалы, — это обрез: информация в этих местах потеряна безвозвратно.</p>
+    <div class="viz lv">
+      <div class="davinci">
+        <div class="wheels">
+          <div class="wheel"><div class="disc"><div class="dot dot-lift"></div></div><div class="nm">LIFT</div><div class="val">-0.02 · 0.00 · 0.01</div><div class="role">тени</div></div>
+          <div class="wheel"><div class="disc"><div class="dot dot-gamma"></div></div><div class="nm">GAMMA</div><div class="val">0.01 · 0.02 · 0.00</div><div class="role">середина</div></div>
+          <div class="wheel"><div class="disc"><div class="dot dot-gain"></div></div><div class="nm">GAIN</div><div class="val">0.04 · 0.03 · 0.02</div><div class="role">света</div></div>
+        </div>
+        <div class="sliders">
+          <div class="srow"><span class="snm">CONTRAST</span><span class="rail"><span class="fill fill-con"></span></span><span class="sv">1.24</span></div>
+          <div class="srow"><span class="snm">SATURATION</span><span class="rail"><span class="fill fill-sat"></span></span><span class="sv">61</span></div>
+        </div>
+      </div>
+      <div class="viz-cap">Панель Color Wheels → Primaries на странице Color. Двойной клик по колесу в Resolve — сброс.</div>
+    </div>
+    <p>А теперь сами — покрутите контраст на готовом кадре и посмотрите, как уходит и возвращается «воздух»:</p>
+    <div class="viz lv">
+      <div class="monitor">
+        <div class="frame"><img id="lab-con" src="../assets/img/lesson-f26.webp" alt="Кадр для интерактивной регулировки контраста"></div>
+        <div class="bar"><span>LAB · CONTRAST</span><span>двигайте ползунок</span></div>
+      </div>
+      <div class="lab" style="margin-top:12px">
+        <div class="lab-row"><span class="snm">CONTRAST</span><input class="lab-range" type="range" min="55" max="160" value="100" data-lab-target="#lab-con" data-lab-filter="contrast" aria-label="Контраст"><span class="sv">100%</span></div>
+      </div>
+      <div class="viz-cap">Упрощение: ползунок крутит CSS-фильтр, не настоящий грейд — но принцип показывает честно.</div>
+    </div>
+    <div class="why"><span class="label">Зачем скоуп, а не глаз</span><p>Через десять минут работы глаз привыкает к любой картинке и перестаёт видеть перекос. Waveform не привыкает: обрез и недотянутый контраст на нём видны всегда.</p></div>
+
+    <div class="step-head" id="shag-3"><i>ШАГ 3 / 4</i><h2>Насыщенность</h2></div>
+    <p><b>Что.</b> Оживить цвет — и не пережарить.</p>
+    <p><b>Как.</b> Поднимайте Saturation до момента «стало живым» — и отступите примерно на треть назад. Перенасыщенность — самый частый маркер любительского грейда. Попробуйте сами найти эту грань:</p>
+    <div class="viz lv">
+      <div class="monitor">
+        <div class="frame"><img id="lab-sat" src="../assets/img/lesson-f42.webp" alt="Кадр для интерактивной регулировки насыщенности"></div>
+        <div class="bar"><span>LAB · SATURATION</span><span>найдите «живой» уровень</span></div>
+      </div>
+      <div class="lab" style="margin-top:12px">
+        <div class="lab-row"><span class="snm">SATURATION</span><input class="lab-range" type="range" min="0" max="200" value="100" data-lab-target="#lab-sat" data-lab-filter="saturate" aria-label="Насыщенность"><span class="sv">100%</span></div>
+      </div>
+      <div class="viz-cap">0% — чёрно-белое, 200% — «кислота». Рабочая зона почти всегда ближе к середине, чем кажется.</div>
+    </div>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>Кожа обязана остаться кожей.</b> Небо можно сделать любым, но лица в оранжевом или зелёном зритель чувствует как фальшь — даже не понимая причину.</li>
+      <li>На вектороскопе у кожи есть свой ориентир — линия скин-тона: здоровая кожа любого оттенка ложится вдоль неё.</li>
+    </ul>
+
+    <div class="step-head" id="shag-4"><i>ШАГ 4 / 4</i><h2>Вид: <em>look</em></h2></div>
+    <p><b>Что.</b> Только теперь — творчество: тёплые света, холодные тени, плёночность, что угодно.</p>
+    <p><b>Как.</b> Look кладётся <b>отдельным слоем поверх честной базы</b>, а не вместо неё. В Resolve это отдельная нода в цепочке — и в этом весь смысл нодовой логики:</p>
+    <div class="viz lv">
+      <div class="nodes" role="img" aria-label="Цепочка нод: конверсия, баланс белого, экспозиция, насыщенность, look">
+        <div class="node"><b>CST</b><span>конверсия log</span></div><span class="node-arrow">→</span>
+        <div class="node"><b>WB</b><span>баланс белого</span></div><span class="node-arrow">→</span>
+        <div class="node"><b>EXP</b><span>экспозиция</span></div><span class="node-arrow">→</span>
+        <div class="node"><b>SAT</b><span>насыщенность</span></div><span class="node-arrow">→</span>
+        <div class="node"><b>LOOK</b><span>вид</span></div>
+      </div>
+      <div class="viz-cap">Каждая нода — одно решение. Заказчик просит «чуть теплее» — вы правите одну ноду, а не разбираете весь грейд.</div>
+    </div>
+    <p>Отдельное предупреждение про «красивые LUT из интернета»: творческий LUT рассчитан на нормальный контраст на входе. Наложенный на сырой log, он даёт ту самую «кислоту». Сначала техническая конверсия — CST или официальный LUT камеры, — потом творчество.</p>
+
+    <div class="step-head" id="itog"><i>ИТОГ</i><h2>Весь путь — <em>до и после</em></h2></div>
+    <div class="viz lv">
+      <div class="monitor wipe">
+        <div class="frame">
+          <img class="loglook" src="../assets/img/lesson-f42.webp" alt="Кадр в log до цветокоррекции">
+          <div class="wipe-graded"><img src="../assets/img/lesson-f42.webp" alt="Кадр после цветокоррекции"></div>
+          <div class="wipe-line"></div>
+          <input class="wipe-range" type="range" min="0" max="100" value="50" aria-label="Сравнение: log-исходник и грейд">
+        </div>
+        <div class="bar"><span>SOURCE · LOG</span><span>GRADE · REC.709</span></div>
+      </div>
+      <div class="viz-cap">Слева — как отдаёт камера. Справа — те же пиксели после четырёх шагов.</div>
+    </div>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>1. Баланс белого</b> — белое стало белым, каналы на Parade сошлись</li>
+      <li><b>2. Экспозиция</b> — тени глубокие, света яркие, на Waveform ничего не обрезано</li>
+      <li><b>3. Насыщенность</b> — до «живого» и на треть назад, кожа осталась кожей</li>
+      <li><b>4. Look</b> — отдельной нодой поверх честной базы</li>
+    </ul>
+    <p>Где практиковаться: бесплатный DaVinci Resolve — не демка, а тот же инструмент, которым красят кино и рекламу; для обучения его хватит целиком. Как установить и с чего начать — в гайде <a href="../articles/cvetokorrekciya-video-kak-sdelat.html">«Цветокоррекция видео: как сделать самому»</a>. Сколько стоит, если делать чужими руками, — в разборе <a href="../articles/skolko-stoit-cvetokorrekciya.html">«Сколько стоит цветокоррекция»</a>.</p>
+  </div>
+
+  <a class="art-svc" href="../education.html"><b>Хотите так же, но с разбором вашего материала? Обучение цвету — от 3 000 ₽</b><span>Смотреть программы →</span></a>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Обсудим <em>задачу</em>?</h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../education.html">Обучение</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+</body>
+</html>
