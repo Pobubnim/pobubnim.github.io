@@ -38,6 +38,10 @@
     table.doc-meta/table.req/table.items/.line/.bmark-row); там же общие
     PobubnimDocx.rubWords/moneyFull — сумма прописью для всех инструментов
 - Навигация: assets/js/nav.js (deep-регулярка: services|cases|articles|uroki|instrumenty).
+- АНАЛИТИКА: Яндекс.Метрика 111935483 + 10 целей, код в assets/js/analytics.js
+  на всех страницах; политика конфиденциальности privacy.html (152-ФЗ).
+  Полностью — docs/ANALYTICS.md (там же грабля с `tag.js?id=` и что смотреть
+  владельцу). Данные копятся с 25.08.2026 — первые выводы через 1–2 недели.
 
 ## Юр-канон конструктора договоров (сверено 25.08, обратка Руслана)
 
