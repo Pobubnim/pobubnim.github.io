@@ -26,15 +26,22 @@
 
   /* лаборатория: ползунок крутит CSS-фильтр на кадре.
      data-lab-target = селектор img; data-lab-filter = имя фильтра (saturate|contrast|brightness);
-     значение = value/100. Подпись .sv показывает проценты. */
+     значение = value/100. Подпись .sv показывает проценты.
+     Несколько ползунков на один кадр складываются в общий filter. */
+  var labs = {};
   document.querySelectorAll("input.lab-range[data-lab-target]").forEach(function (r) {
-    var img = document.querySelector(r.getAttribute("data-lab-target"));
+    var sel = r.getAttribute("data-lab-target");
+    var img = document.querySelector(sel);
     var sv = r.closest(".lab-row") && r.closest(".lab-row").querySelector(".sv");
     if (!img) return;
-    var base = img.getAttribute("data-lab-base") || "";
-    var fn = r.getAttribute("data-lab-filter") || "saturate";
+    if (!labs[sel]) labs[sel] = { img: img, ranges: [] };
+    labs[sel].ranges.push(r);
     function apply() {
-      img.style.filter = base + " " + fn + "(" + (+r.value / 100) + ")";
+      var lab = labs[sel];
+      lab.img.style.filter = (lab.img.getAttribute("data-lab-base") || "") +
+        lab.ranges.map(function (x) {
+          return " " + (x.getAttribute("data-lab-filter") || "saturate") + "(" + (+x.value / 100) + ")";
+        }).join("");
       if (sv) sv.textContent = r.value + "%";
     }
     r.addEventListener("input", apply);

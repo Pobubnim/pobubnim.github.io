@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Почему видео из камеры блёклое: log-профиль и проявка | ПОБУБНИМ</title>
+<meta name="description" content="Почему видео из камеры серое и блёклое: камера пишет log-профиль. Интерактивный урок — сожмите диапазон сами, проявите кадр ползунками и увидьте, почему LUT поверх log даёт «кислоту».">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/uroki/log-i-grade.html">
+<meta property="og:title" content="Почему видео из камеры блёклое — интерактивный урок про log | ПОБУБНИМ">
+<meta property="og:description" content="Камера нарочно отдаёт серую картинку: это log-профиль. Урок с интерактивной проявкой: крутите ползунки и превращайте «негатив» в кино.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.github.io/uroki/log-i-grade.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Почему видео из камеры блёклое: log-профиль и проявка", "description": "Почему видео из камеры серое и блёклое: камера пишет log-профиль, сжимая широкий диапазон яркостей сцены. Интерактивный урок с проявкой кадра.", "datePublished": "2026-08-25", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/log-i-grade.html", "image": "https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Статьи и уроки", "item": "https://pobubnim.github.io/articles/"}, {"@type": "ListItem", "position": 3, "name": "Почему видео из камеры блёклое", "item": "https://pobubnim.github.io/uroki/log-i-grade.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 780px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 780px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 780px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+  /* шкалы динамического диапазона: сцена шире, чем умеет файл */
+  .range-viz { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(18px, 3vw, 28px); display: flex; flex-direction: column; gap: 18px; }
+  .range-row .nm { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--smoke); display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .range-row .nm i { font-style: normal; color: var(--mute); }
+  .range-band { height: 22px; border-radius: 5px; background: linear-gradient(90deg, #000 0%, #3a3630 30%, #7a7468 60%, #c9c2b2 85%, #f5efe2 100%); transform-origin: left center; transition: transform 1.1s var(--ease); }
+  .range-band.squeeze { background: linear-gradient(90deg, #23211d 0%, #4a463f 40%, #8a8478 70%, #b8b1a2 100%); }
+  .lv.on .range-band.squeeze { transform: scaleX(0.58); }
+  .range-arrows { display: flex; justify-content: space-around; color: var(--mute); font-size: 14px; }
+  .lut-acid { filter: saturate(0.3) contrast(0.63) brightness(1.14) saturate(1.9) contrast(1.35) hue-rotate(-6deg); }
+</style>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 02 · Цвет · Интерактив</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Почему видео из камеры блёклое: log-профиль</span>Серая картинка — это <em>негатив</em></h1>
+    <p class="lead">Вы сняли на «настоящую камеру», открыли файл — а там серая, плоская, безжизненная картинка. Это не брак. Это log-профиль, и он так выглядит нарочно. В этом уроке — почему, и как «проявить» его своими руками, прямо здесь.</p>
+    <time datetime="2026-08-25">Обновлено 25.08.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="monitor wipe">
+        <div class="frame">
+          <img src="../assets/img/lesson-f08.webp" alt="Кадр после проявки в Rec.709">
+          <div class="wipe-graded"><img class="loglook" src="../assets/img/lesson-f08.webp" alt="Тот же кадр в log-профиле — плоский и блёклый, как отдаёт камера"></div>
+          <div class="wipe-line"></div>
+          <input class="wipe-range" type="range" min="0" max="100" value="38" aria-label="Сравнение: log-исходник и проявленный кадр">
+        </div>
+        <div class="bar"><span><span class="recdot"></span>LOG · КАК ОТДАЁТ КАМЕРА</span><span>REC.709 · ПОСЛЕ ПРОЯВКИ</span></div>
+      </div>
+      <div class="viz-cap">Потяните линию. Слева — то, что пугает новичка в мониторе. Справа — то, что в этом файле лежало всё это время.</div>
+    </div>
+
+    <p>Короткий ответ: камера в log-профиле <b>нарочно</b> записывает плоскую малоконтрастную картинку, чтобы уместить в файл весь диапазон яркостей сцены — от глубоких теней до яркого неба. Это цифровой аналог негатива плёнки: негатив тоже выглядит странно, пока его не проявили. Проявка здесь — цветокоррекция.</p>
+
+    <div class="step-head" id="zachem"><i>ЧАСТЬ 1 / 3</i><h2>Зачем камера <em>портит</em> картинку</h2></div>
+    <p>Сцена перед камерой почти всегда контрастнее, чем то, что умеет честно хранить видеофайл. Солнце в окне и лицо в тени — это огромный разброс яркостей. Если писать «как есть», что-то придётся отрезать: либо тени провалятся в чёрное, либо небо выгорит в белое.</p>
+    <div class="viz lv">
+      <div class="range-viz">
+        <div class="range-row">
+          <div class="nm"><span>ДИАПАЗОН СЦЕНЫ</span><i>тени ← → света</i></div>
+          <div class="range-band"></div>
+        </div>
+        <div class="range-arrows" aria-hidden="true"><span>↘</span><span>↓</span><span>↙</span></div>
+        <div class="range-row">
+          <div class="nm"><span>LOG-ФАЙЛ</span><i>всё сжато, ничего не отрезано</i></div>
+          <div class="range-band squeeze"></div>
+        </div>
+      </div>
+      <div class="viz-cap">Log-гамма сжимает широкий диапазон сцены в файл целиком — за счёт контраста. Схема без чисел: важен принцип, не уровни.</div>
+    </div>
+    <div class="why"><span class="label">Почему это выгодно вам</span><p>Сжатый, но полный диапазон — это свобода на посте: тени можно поднять, света притушить, и информация для этого в файле есть. В контрастной «красивой» записи её бы уже не было.</p></div>
+
+    <div class="step-head" id="proyavka"><i>ЧАСТЬ 2 / 3</i><h2>Проявите кадр <em>сами</em></h2></div>
+    <p>Проявка log — это в первую очередь возврат контраста и насыщенности. Ниже — кадр в log-виде и два ползунка. Задача: сделать картинку живой. Подсказка: обеим ручкам почти наверняка захочется вправо от середины.</p>
+    <div class="viz lv">
+      <div class="monitor">
+        <div class="frame"><img id="lab-dev" src="../assets/img/lesson-f66.webp" data-lab-base="saturate(0.3) contrast(0.63) brightness(1.14)" alt="Кадр в log-виде для интерактивной проявки"></div>
+        <div class="bar"><span>LAB · ПРОЯВКА LOG</span><span>верните кадру жизнь</span></div>
+      </div>
+      <div class="lab" style="margin-top:12px">
+        <div class="lab-row"><span class="snm">CONTRAST</span><input class="lab-range" type="range" min="70" max="190" value="100" data-lab-target="#lab-dev" data-lab-filter="contrast" aria-label="Контраст проявки"><span class="sv">100%</span></div>
+        <div class="lab-row"><span class="snm">SATURATION</span><input class="lab-range" type="range" min="60" max="260" value="100" data-lab-target="#lab-dev" data-lab-filter="saturate" aria-label="Насыщенность проявки"><span class="sv">100%</span></div>
+      </div>
+      <div class="viz-cap">Имитация для наглядности: log-вид и проявка сделаны CSS-фильтрами, не настоящим грейдом — но принцип показывают честно.</div>
+    </div>
+    <p>В настоящем Resolve эту работу делает не пара ползунков, а <b>конверсия цветового пространства</b>: нода CST (Color Space Transform) или официальный технический LUT производителя камеры. Она математически точно переводит log в дисплейное пространство Rec.709 — и только после неё начинается творчество:</p>
+    <div class="viz lv">
+      <div class="nodes" role="img" aria-label="Цепочка нод: log-исходник, конверсия CST, базовая коррекция, look">
+        <div class="node"><b>LOG</b><span>исходник</span></div><span class="node-arrow">→</span>
+        <div class="node"><b>CST</b><span>конверсия</span></div><span class="node-arrow">→</span>
+        <div class="node"><b>БАЗА</b><span>ББ · экспозиция</span></div><span class="node-arrow">→</span>
+        <div class="node"><b>LOOK</b><span>творчество</span></div>
+      </div>
+      <div class="viz-cap">Порядок «проявки» в Resolve. Четыре шага базовой коррекции — в <a href="poryadok-cvetokorrekcii.html" style="color:var(--smoke)">уроке 01</a>.</div>
+    </div>
+
+    <div class="step-head" id="lut"><i>ЧАСТЬ 3 / 3</i><h2>Главная ошибка: LUT <em>поверх</em> log</h2></div>
+    <p>Скачали «киношный LUT», накинули на серый исходник — и всё стало кислотным: цвета ядовитые, кожа оранжевая, тени грязные. Причина простая: <b>творческие LUT рассчитаны на нормальный контраст на входе</b>, а вы подали им сырой log. Сначала конверсия — потом чужие пресеты.</p>
+    <div class="viz lv">
+      <div class="monitor wipe">
+        <div class="frame">
+          <img src="../assets/img/lesson-f42.webp" alt="Кадр при правильном порядке: сначала конверсия, потом look">
+          <div class="wipe-graded"><img class="lut-acid" src="../assets/img/lesson-f42.webp" alt="Кислотная картинка: творческий LUT наложен на сырой log без конверсии"></div>
+          <div class="wipe-line"></div>
+          <input class="wipe-range" type="range" min="0" max="100" value="50" aria-label="Сравнение: LUT поверх log и правильный порядок">
+        </div>
+        <div class="bar"><span>LUT ПОВЕРХ LOG · «КИСЛОТА»</span><span>CST → LOOK · ПОРЯДОК</span></div>
+      </div>
+      <div class="viz-cap">Слева — имитация той самой «кислоты» (CSS-фильтры для наглядности). Справа — тот же кадр при правильном порядке.</div>
+    </div>
+
+    <p>И про телефон, раз уж он всегда с собой. Обычный режим смартфона отдаёт <b>уже обработанную</b> картинку — телефонный «грейд» запечён в файл. Крутить её можно, но запас маленький: где log прощает две ступени экспозиции, телефонный файл сыпется в шумы и полосы. Поэтому клиентские ролики снимают в log и проявляют руками — а телефону оставляют то, что телефону: как выжать из него максимум, есть в гайде <a href="../articles/kak-snimat-video-na-telefon.html">«Как снимать видео на телефон»</a>.</p>
+
+    <div class="step-head" id="itog"><i>ИТОГ</i><h2>Что <em>запомнить</em></h2></div>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>Блёклое видео из камеры — норма.</b> Log-профиль нарочно жертвует контрастом, чтобы сохранить весь диапазон сцены</li>
+      <li><b>Log — негатив, грейд — проявка.</b> Файл обязан пройти конверсию в Rec.709: нода CST или технический LUT камеры</li>
+      <li><b>Творческий LUT — только после конверсии.</b> Поверх сырого log он даёт «кислоту»</li>
+      <li><b>Телефон пишет уже готовое.</b> Запас на кручение меньше — тянуть телефонный файл, как log, нельзя</li>
+    </ul>
+    <p>Дальше по серии: базовая коррекция по шагам — в уроке <a href="poryadok-cvetokorrekcii.html">«Порядок цветокоррекции: четыре шага»</a>. Хотите пройти путь целиком с бесплатным Resolve — гайд <a href="../articles/cvetokorrekciya-video-kak-sdelat.html">«Цветокоррекция видео: как сделать самому»</a>. Если проявлять некогда и нужен результат — <a href="../articles/skolko-stoit-cvetokorrekciya.html">сколько стоит цветокоррекция у колориста</a>.</p>
+  </div>
+
+  <a class="art-svc" href="../education.html"><b>Хотите научиться проявлять свой материал? Обучение цвету — от 3 000 ₽</b><span>Смотреть программы →</span></a>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Обсудим <em>задачу</em>?</h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../education.html">Обучение</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+</body>
+</html>
