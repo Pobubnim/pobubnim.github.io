@@ -67,6 +67,15 @@ docs/EDU_BASE.md), хаб articles/index.html (canonical …/articles/), пун�
 favicon.ico/svg + apple-touch-icon (data:-URI выдача не видит). Хронометраж
 свадебного фильма выровнен по всем страницам: 2–4 минуты (канон — лендинг услуги).
 
+Чистка + база знаний (25.08, ночь-6): «Ориентир сметы» по прайсу владельца
+СНЯТ (kalkulyator-stoimosti-semki → noindex+redirect на смету, вне sitemap
+и хаба) — раздел инструментов только для всей сферы. Разведка рынка
+инструментов → docs/TOOLS_ROADMAP.md (очередь: шот-лист, вызывной лист,
+ГРИП, чек-лист). База знаний: EDU_BASE §8а (первоисточники: Blackmagic
+training-книги, Hollywood Camera Work, разборы колористов), §8б (числа
+цвета: IRE-якоря, scene/display-referred, RAW≠log), §8в (карта интерактивных
+досок). Скилл сборки инструментов: C:\src\.claude\skills\pobubnim-tools.
+
 Смета и счёт (25.08, ночь-5): пятый инструмент instrumenty/smeta-i-schet.html —
 запросы «смета на видеосъёмку», «счёт на оплату самозанятый», «калькулятор
 смен»; WebApplication + FAQPage (4 вопроса). Калькулятор для исполнителей
