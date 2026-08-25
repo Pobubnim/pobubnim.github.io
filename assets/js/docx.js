@@ -109,6 +109,29 @@
     return pars.join("") || par(run(""), {});
   }
 
+  /* таблица позиций (смета/счёт): N строк × M колонок, первая колонка широкая,
+     видимые границы; th — жирная шапка */
+  function itemsTableXml(tbl) {
+    var trs = tbl.querySelectorAll("tr");
+    var cols = trs[0] ? trs[0].children.length : 0;
+    if (!cols) return "";
+    var wide = 4200, rest = Math.floor((9638 - wide) / (cols - 1 || 1));
+    var widths = [];
+    for (var i = 0; i < cols; i++) widths.push(i === 0 ? wide : rest);
+    var border = '<w:tblBorders><w:top w:val="single" w:sz="4" w:color="999999"/><w:left w:val="single" w:sz="4" w:color="999999"/><w:bottom w:val="single" w:sz="4" w:color="999999"/><w:right w:val="single" w:sz="4" w:color="999999"/><w:insideH w:val="single" w:sz="4" w:color="999999"/><w:insideV w:val="single" w:sz="4" w:color="999999"/></w:tblBorders>';
+    var rows = [].map.call(trs, function (tr) {
+      var cells = [].map.call(tr.children, function (td, i) {
+        var bold = td.tagName === "TH";
+        return '<w:tc><w:tcPr><w:tcW w:w="' + widths[i] + '" w:type="dxa"/></w:tcPr>' +
+          par(inlineRuns(td, bold ? { bold: true } : {}), { spaceAfter: 40, jc: i === 0 ? "left" : "right" }) + "</w:tc>";
+      }).join("");
+      return "<w:tr>" + cells + "</w:tr>";
+    }).join("");
+    return '<w:tbl><w:tblPr><w:tblW w:w="9638" w:type="dxa"/>' + border + "</w:tblPr>" +
+      "<w:tblGrid>" + widths.map(function (w) { return '<w:gridCol w:w="' + w + '"/>'; }).join("") + "</w:tblGrid>" +
+      rows + "</w:tbl>" + par(run(""), { spaceAfter: 60 });
+  }
+
   function tableXml(tbl) {
     var tds = tbl.querySelectorAll("td");
     var cells = [].map.call(tds, function (td) {
@@ -133,6 +156,8 @@
       } else if (el.tagName === "TABLE" && cls.contains("doc-meta")) {
         var tds = el.querySelectorAll("td");
         out.push(par(inlineRuns(tds[0]) + TAB + inlineRuns(tds[1]), { tabRight: true, spaceAfter: 240 }));
+      } else if (el.tagName === "TABLE" && cls.contains("items")) {
+        out.push(itemsTableXml(el));
       } else if (el.tagName === "TABLE" && cls.contains("req")) {
         out.push(tableXml(el));
       } else if (cls.contains("line")) {
@@ -191,8 +216,53 @@
     ]);
   }
 
+  /* сумма прописью: целые рубли до 999 999 999 (общая для договора и сметы) */
+  function rubWords(n) {
+    n = Math.floor(+n);
+    if (!n || n < 0 || n > 999999999) return null;
+    var ones = ["", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
+      "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
+      "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"];
+    var onesF = ["", "одна", "две"];
+    var tens = ["", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"];
+    var hunds = ["", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"];
+    function triple(t, fem) {
+      var w = [];
+      if (t >= 100) { w.push(hunds[Math.floor(t / 100)]); t %= 100; }
+      if (t >= 20) { w.push(tens[Math.floor(t / 10)]); t %= 10; }
+      if (t > 0) w.push(fem && t < 3 ? onesF[t] : ones[t]);
+      return w.join(" ");
+    }
+    function plural(t, forms) {
+      var u = t % 100;
+      if (u > 10 && u < 20) return forms[2];
+      u = u % 10;
+      return u === 1 ? forms[0] : (u > 1 && u < 5 ? forms[1] : forms[2]);
+    }
+    var out = [];
+    var mln = Math.floor(n / 1000000), th = Math.floor(n / 1000) % 1000, r = n % 1000;
+    if (mln) out.push(triple(mln), plural(mln, ["миллион", "миллиона", "миллионов"]));
+    if (th) out.push(triple(th, true), plural(th, ["тысяча", "тысячи", "тысяч"]));
+    if (r) out.push(triple(r));
+    return out.join(" ").replace(/\s+/g, " ").trim();
+  }
+  function rubPlural(n) {
+    var u = Math.floor(+n) % 100;
+    if (u > 10 && u < 20) return "рублей";
+    u = u % 10;
+    return u === 1 ? "рубль" : (u > 1 && u < 5 ? "рубля" : "рублей");
+  }
+  /* «48 000 (сорок восемь тысяч) рублей» либо null */
+  function moneyFull(n) {
+    if (!n || isNaN(+n)) return null;
+    var w = rubWords(n);
+    return (+n).toLocaleString("ru-RU") + (w ? " (" + w + ")" : "") + " " + rubPlural(n);
+  }
+
   window.PobubnimDocx = {
     build: build,
+    rubWords: rubWords,
+    moneyFull: moneyFull,
     download: function (paper, filename) {
       var a = document.createElement("a");
       a.href = URL.createObjectURL(build(paper));

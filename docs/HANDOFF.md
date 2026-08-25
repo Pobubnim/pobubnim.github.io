@@ -24,10 +24,15 @@
     (const PRICES менять СИНХРОННО с прайсом сайта)
   - `instrumenty/modelnyj-reliz.html` + reliz.js (ст. 152.1 ГК)
   - `instrumenty/tajming-svadby.html` + tajming.js
-  - общий стиль листа/опций: assets/css/paper.css
+  - `instrumenty/smeta-i-schet.html` + smeta.js — калькулятор смен для
+    ИСПОЛНИТЕЛЕЙ: динамические позиции (чипы-пресеты, свои ставки), скидка,
+    смета и счёт на оплату из одного массива, подсказка «на руки после НПД
+    4%/6%» (в документы не идёт), итог прописью
+  - общий стиль листа/опций: assets/css/paper.css (+table.items с границами)
   - Word-выгрузка: assets/js/docx.js — НАСТОЯЩИЙ .docx без библиотек
     (ZIP stored + OOXML, конвертирует DOM листа .paper; ветки: h3/h4/p/
-    table.doc-meta/table.req/.line/.bmark-row)
+    table.doc-meta/table.req/table.items/.line/.bmark-row); там же общие
+    PobubnimDocx.rubWords/moneyFull — сумма прописью для всех инструментов
 - Навигация: assets/js/nav.js (deep-регулярка: services|cases|articles|uroki|instrumenty).
 
 ## Юр-канон конструктора договоров (сверено 25.08, обратка Руслана)

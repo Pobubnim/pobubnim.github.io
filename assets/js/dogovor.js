@@ -27,47 +27,8 @@
     return (+n).toLocaleString("ru-RU");
   }
 
-  /* сумма прописью: целые рубли до 999 999 999 */
-  function rubWords(n) {
-    n = Math.floor(+n);
-    if (!n || n < 0 || n > 999999999) return null;
-    var ones = ["", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
-      "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
-      "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"];
-    var onesF = ["", "одна", "две"];
-    var tens = ["", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"];
-    var hunds = ["", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"];
-    function triple(t, fem) {
-      var w = [];
-      if (t >= 100) { w.push(hunds[Math.floor(t / 100)]); t %= 100; }
-      if (t >= 20) { w.push(tens[Math.floor(t / 10)]); t %= 10; }
-      if (t > 0) w.push(fem && t < 3 ? onesF[t] : ones[t]);
-      return w.join(" ");
-    }
-    function plural(t, forms) {
-      var u = t % 100;
-      if (u > 10 && u < 20) return forms[2];
-      u = u % 10;
-      return u === 1 ? forms[0] : (u > 1 && u < 5 ? forms[1] : forms[2]);
-    }
-    var out = [];
-    var mln = Math.floor(n / 1000000), th = Math.floor(n / 1000) % 1000, r = n % 1000;
-    if (mln) out.push(triple(mln), plural(mln, ["миллион", "миллиона", "миллионов"]));
-    if (th) out.push(triple(th, true), plural(th, ["тысяча", "тысячи", "тысяч"]));
-    if (r) out.push(triple(r));
-    return out.join(" ").replace(/\s+/g, " ").trim();
-  }
-  /* «48 000 (сорок восемь тысяч) рублей» либо прочерк */
-  function moneyFull(n) {
-    var m = money(n), w = rubWords(n);
-    return m ? m + (w ? " (" + w + ")" : "") + " " + rubPlural(n) : null;
-  }
-  function rubPlural(n) {
-    var u = Math.floor(+n) % 100;
-    if (u > 10 && u < 20) return "рублей";
-    u = u % 10;
-    return u === 1 ? "рубль" : (u > 1 && u < 5 ? "рубля" : "рублей");
-  }
+  /* сумма прописью живёт в общем модуле docx.js */
+  function moneyFull(n) { return PobubnimDocx.moneyFull(n); }
   function val(id) { return (document.getElementById(id) || {}).value || ""; }
   function checked(id) { return !!(document.getElementById(id) || {}).checked; }
   function radio(name) {
