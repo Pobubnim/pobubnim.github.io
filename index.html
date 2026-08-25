@@ -330,6 +330,8 @@
     <span class="label">Заявка</span>
     <h3>Опишите задачу — отвечу в тот же день</h3>
     <label>Как вас зовут<input type="text" id="lf-name" autocomplete="name" placeholder="Имя"></label>
+    <label>Телефон или телеграм<input type="text" id="lf-contact" autocomplete="tel" placeholder="+7… или @ник" required></label>
+    <input type="text" id="lf-website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
     <label>Что нужно
       <select id="lf-what">
         <option>Рекламный ролик</option>
@@ -346,8 +348,8 @@
       </select>
     </label>
     <label>Пара слов о задаче<textarea id="lf-desc" rows="3" placeholder="Что снимаем или строим, сроки, ориентир бюджета"></textarea></label>
-    <button type="button" class="btn btn-lamp" id="lf-send">Отправить в Telegram</button>
-    <p class="lead-alt">Кнопка откроет чат со мной — заявка уже будет в поле ввода, останется нажать «отправить». Или просто напишите: <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">@sbphotoshoter</a>, а если телеграм недоступен — <a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a></p>
+    <button type="button" class="btn btn-lamp" id="lf-send">Отправить заявку</button>
+    <p class="lead-alt" id="lf-status">Заявка придёт мне мгновенно — отвечаю в тот же день. Привычнее мессенджер? Пишите напрямую: <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">@sbphotoshoter</a> или <a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a></p>
   </form>
 </dialog>
 

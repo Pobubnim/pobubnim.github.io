@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Заявки — админка ПОБУБНИМ</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23000'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-style='italic' font-size='38' fill='%23f5efe2' text-anchor='middle'%3EБ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  body { padding-top: 110px; }
+  .adm-wrap { max-width: 860px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px) 120px; }
+  .adm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  .adm-head h1 { font-size: clamp(30px, 4vw, 42px); }
+  .adm-exit { background: none; border: none; color: var(--mute); font: inherit; font-size: 13px; cursor: pointer; }
+  .adm-exit:hover { color: var(--smoke); }
+
+  /* вход */
+  .adm-login { max-width: 420px; margin-top: 8px; display: flex; flex-direction: column; gap: 14px; }
+  .adm-login p { color: var(--smoke); font-weight: 300; font-size: 15.5px; }
+  .adm-login input { background: #0d0d0c; border: 1px solid var(--line); border-radius: var(--r-card); color: var(--ink); font: inherit; font-size: 15px; padding: 12px 14px; width: 100%; }
+  .adm-login input:focus { outline: none; border-color: rgba(255, 253, 245, 0.3); }
+  .adm-err { color: #d98f7e; font-size: 14px; display: none; }
+
+  /* фильтры */
+  .adm-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+  .adm-tab { background: none; border: 1px solid var(--line); border-radius: var(--r-pill); color: var(--smoke); font: inherit; font-size: 13.5px; padding: 7px 14px; cursor: pointer; transition: border-color 0.2s var(--ease), color 0.2s var(--ease); }
+  .adm-tab:hover { border-color: rgba(255, 253, 245, 0.3); }
+  .adm-tab.on { background: var(--lamp); border-color: var(--lamp); color: #111; font-weight: 500; }
+  .adm-tab i { font-style: normal; color: inherit; opacity: 0.55; margin-left: 5px; }
+
+  /* карточка заявки */
+  .adm-list { display: flex; flex-direction: column; gap: 14px; }
+  .adm-card { background: var(--char); border: 1px solid var(--line-soft); border-radius: var(--r-card); padding: 18px 20px; }
+  .adm-card.is-new { border-color: rgba(245, 239, 226, 0.28); }
+  .adm-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .adm-top b { font-size: 16.5px; font-weight: 500; }
+  .adm-top .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lamp); align-self: center; flex: none; }
+  .adm-top time { font-size: 12.5px; color: var(--mute); margin-left: auto; white-space: nowrap; }
+  .adm-contact { display: inline-block; margin-top: 6px; font-size: 15px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; word-break: break-all; }
+  .adm-meta { margin-top: 4px; font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mute); }
+  .adm-msg { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15px; white-space: pre-wrap; text-wrap: pretty; }
+  .adm-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line-soft); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .adm-st { background: none; border: 1px solid var(--line); border-radius: var(--r-pill); color: var(--smoke); font: inherit; font-size: 12.5px; padding: 5px 12px; cursor: pointer; }
+  .adm-st:hover { border-color: rgba(255, 253, 245, 0.3); }
+  .adm-st.on { background: var(--lamp); border-color: var(--lamp); color: #111; font-weight: 500; }
+  .adm-note { margin-left: auto; background: none; border: none; color: var(--mute); font: inherit; font-size: 12.5px; cursor: pointer; }
+  .adm-note:hover { color: var(--smoke); }
+  .adm-note-box { width: 100%; margin-top: 10px; display: none; gap: 8px; }
+  .adm-note-box.open { display: flex; }
+  .adm-note-box textarea { flex: 1; background: #0d0d0c; border: 1px solid var(--line); border-radius: var(--r-card); color: var(--ink); font: inherit; font-size: 14px; padding: 9px 12px; resize: vertical; min-height: 40px; }
+  .adm-note-view { margin-top: 8px; font-size: 13.5px; color: var(--mute); font-style: italic; }
+  .adm-empty { color: var(--mute); font-weight: 300; padding: 40px 0; }
+  .adm-load { color: var(--mute); font-size: 14px; }
+  .btn-sm { padding: 9px 18px; font-size: 13.5px; }
+</style>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links"></nav>
+    <button class="adm-exit" id="adm-exit" style="display:none">Выйти</button>
+  </div>
+</header>
+
+<div class="adm-wrap">
+  <div class="adm-head">
+    <h1 class="display">Заявки <em>с сайта</em></h1>
+  </div>
+
+  <div class="adm-login" id="login">
+    <p>Панель владельца. Введите ключ доступа — он сохранится в этом браузере.</p>
+    <input type="password" id="key-in" placeholder="Ключ доступа" autocomplete="current-password">
+    <p class="adm-err" id="login-err">Ключ не подошёл. Проверьте и попробуйте ещё раз.</p>
+    <button class="btn btn-lamp btn-sm" id="key-go" style="align-self:flex-start">Войти</button>
+  </div>
+
+  <div id="panel" style="display:none">
+    <div class="adm-tabs" id="tabs"></div>
+    <div class="adm-list" id="list"><p class="adm-load">Загружаю…</p></div>
+  </div>
+</div>
+
+<script>
+const RPC = "https://jkdrnaagjplpyhlsmxii.supabase.co/rest/v1/rpc/";
+const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprZHJuYWFnanBscHlobHNteGlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMDM1NzksImV4cCI6MjA5ODU3OTU3OX0.LP0aO74dEjIYr5oGFXCRz4js-GxZTx2jrCZxVqrTWAo";
+const ST_LABEL = { new: "Новая", work: "В работе", done: "Закрыта", spam: "Спам" };
+const TABS = [["all", "Все"], ["new", "Новые"], ["work", "В работе"], ["done", "Закрытые"], ["spam", "Спам"]];
+
+let leads = [];
+let tab = "all";
+// localStorage недоступен в приватных режимах и песочницах — не роняем панель
+const store = {
+  get() { try { return localStorage.getItem("adm-key") || ""; } catch (_) { return ""; } },
+  set(v) { try { localStorage.setItem("adm-key", v); } catch (_) {} },
+  drop() { try { localStorage.removeItem("adm-key"); } catch (_) {} },
+};
+let key = store.get();
+
+const $ = id => document.getElementById(id);
+
+async function rpc(fn, payload) {
+  const r = await fetch(RPC + fn, {
+    method: "POST",
+    headers: { apikey: ANON, Authorization: "Bearer " + ANON, "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!r.ok) throw new Error("http " + r.status);
+  return r.json();
+}
+
+function esc(s) {
+  return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function contactHref(c) {
+  const t = c.trim();
+  if (/^@[\w]{3,}$/.test(t)) return "https://t.me/" + t.slice(1);
+  if (/^(\+?[\d\s()-]{7,})$/.test(t)) return "tel:" + t.replace(/[^\d+]/g, "");
+  if (/^https?:\/\//.test(t)) return t;
+  return null;
+}
+
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+
+function render() {
+  const tabsEl = $("tabs");
+  tabsEl.innerHTML = TABS.map(([id, label]) => {
+    const n = id === "all" ? leads.length : leads.filter(l => l.status === id).length;
+    return `<button class="adm-tab${tab === id ? " on" : ""}" data-tab="${id}">${label}<i>${n}</i></button>`;
+  }).join("");
+  tabsEl.querySelectorAll("[data-tab]").forEach(b =>
+    b.addEventListener("click", () => { tab = b.dataset.tab; render(); }));
+
+  const rows = tab === "all" ? leads : leads.filter(l => l.status === tab);
+  const listEl = $("list");
+  if (!rows.length) {
+    listEl.innerHTML = `<p class="adm-empty">${leads.length ? "В этом фильтре пусто." : "Заявок пока нет. Появятся — придёт сообщение в телеграм."}</p>`;
+    return;
+  }
+  listEl.innerHTML = rows.map(l => {
+    const href = contactHref(l.contact);
+    const contact = href
+      ? `<a class="adm-contact" href="${esc(href)}" target="_blank" rel="noopener">${esc(l.contact)}</a>`
+      : `<span class="adm-contact" style="text-decoration:none">${esc(l.contact)}</span>`;
+    return `<article class="adm-card${l.status === "new" ? " is-new" : ""}" data-id="${l.id}">
+      <div class="adm-top">
+        ${l.status === "new" ? '<span class="dot"></span>' : ""}
+        <b>${esc(l.name) || "Без имени"}</b>
+        <time>${fmtDate(l.created_at)}</time>
+      </div>
+      ${contact}
+      <div class="adm-meta">${esc(l.service) || "не указано"}${l.page ? " · " + esc(l.page) : ""}</div>
+      ${l.message ? `<p class="adm-msg">${esc(l.message)}</p>` : ""}
+      ${l.note ? `<p class="adm-note-view">Заметка: ${esc(l.note)}</p>` : ""}
+      <div class="adm-foot">
+        ${Object.entries(ST_LABEL).map(([st, label]) =>
+          `<button class="adm-st${l.status === st ? " on" : ""}" data-st="${st}">${label}</button>`).join("")}
+        <button class="adm-note">заметка</button>
+        <div class="adm-note-box">
+          <textarea placeholder="Заметка для себя">${esc(l.note)}</textarea>
+          <button class="btn btn-ghost btn-sm">Сохранить</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+
+  listEl.querySelectorAll(".adm-card").forEach(card => {
+    const id = Number(card.dataset.id);
+    card.querySelectorAll("[data-st]").forEach(b => b.addEventListener("click", async () => {
+      const res = await rpc("site_lead_update", { p_key: key, p_id: id, p_status: b.dataset.st });
+      if (res.ok) { leads.find(l => l.id === id).status = b.dataset.st; render(); }
+    }));
+    const box = card.querySelector(".adm-note-box");
+    card.querySelector(".adm-note").addEventListener("click", () => box.classList.toggle("open"));
+    box.querySelector("button").addEventListener("click", async () => {
+      const note = box.querySelector("textarea").value.trim();
+      const res = await rpc("site_lead_update", { p_key: key, p_id: id, p_note: note });
+      if (res.ok) { leads.find(l => l.id === id).note = note; render(); }
+    });
+  });
+}
+
+async function enter() {
+  const res = await rpc("site_lead_list", { p_key: key });
+  if (!res.ok) throw new Error(res.error || "bad key");
+  leads = res.leads;
+  $("login").style.display = "none";
+  $("panel").style.display = "";
+  $("adm-exit").style.display = "";
+  render();
+}
+
+$("key-go").addEventListener("click", async () => {
+  key = $("key-in").value.trim();
+  try {
+    await enter();
+    store.set(key);
+  } catch (_) {
+    $("login-err").style.display = "block";
+  }
+});
+$("key-in").addEventListener("keydown", e => { if (e.key === "Enter") $("key-go").click(); });
+$("adm-exit").addEventListener("click", () => {
+  store.drop();
+  location.reload();
+});
+
+if (key) enter().catch(() => {
+  store.drop();
+  key = "";
+});
+</script>
+</body>
+</html>
