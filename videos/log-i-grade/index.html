@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      body { font-family: "Inter Tight", sans-serif; color: #f5efe2; }
+      em { font-family: "Playfair Display", serif; font-style: italic; font-weight: 500; }
+      .mono { font-family: "JetBrains Mono", monospace; }
+      .scene { position: absolute; inset: 0; }
+      .pad { padding: 96px 72px; }
+      .label { font-size: 25px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(245,239,226,0.55); font-weight: 500; }
+      .big { font-size: 96px; line-height: 1.05; font-weight: 300;
+             text-shadow: 0 2px 0 rgba(58,52,40,0.9), 0 14px 40px rgba(0,0,0,0.85); }
+      .deep { font-family: "Playfair Display", serif; font-style: italic; font-weight: 700;
+              text-shadow: 0 1px 0 #46402f, 0 3px 0 #37321f, 0 6px 0 #262214, 0 22px 60px rgba(0,0,0,0.9); }
+      .mid { font-size: 50px; line-height: 1.2; font-weight: 300; }
+      .small { font-size: 32px; line-height: 1.35; font-weight: 300; color: rgba(245,239,226,0.8); }
+      .loglook { filter: saturate(0.3) contrast(0.63) brightness(1.14); }
+      .fried { filter: saturate(1.7) contrast(1.25); }
+      .pill { display: inline-block; border: 1px solid rgba(245,239,226,0.4); border-radius: 999px; padding: 18px 36px; font-size: 30px; }
+
+      /* Окно-монитор для кадров: НИКОГДА не на весь экран */
+      .monitor { border: 1px solid rgba(245,239,226,0.22); border-radius: 18px; overflow: hidden; background: #0a0908;
+                 box-shadow: 0 30px 80px rgba(0,0,0,0.8); }
+      .monitor .frame { width: 100%; aspect-ratio: 16/9; overflow: hidden; position: relative; }
+      .monitor .frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .monitor .bar { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px;
+                      border-top: 1px solid rgba(245,239,226,0.12); font-size: 21px; color: rgba(245,239,226,0.6); }
+      .tag { display: inline-block; background: #f5efe2; color: #000; font-weight: 600; font-size: 20px;
+             letter-spacing: 0.12em; padding: 6px 14px; border-radius: 6px; }
+      .recdot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #e0492f; margin-right: 10px; }
+
+      /* Самодельная панель «как в DaVinci» */
+      .davinci { background: #131110; border: 1px solid rgba(245,239,226,0.14); border-radius: 18px; padding: 34px 30px;
+                 box-shadow: 0 30px 80px rgba(0,0,0,0.8); }
+      .wheels { display: flex; justify-content: space-between; gap: 18px; }
+      .wheel { text-align: center; flex: 1; }
+      .wheel .disc { width: 210px; height: 210px; margin: 0 auto; border-radius: 50%; position: relative;
+                     background: conic-gradient(from 90deg, #e0492f, #e8b23a, #7fb069, #3aa6a6, #4a6fe0, #b05fb0, #e0492f); }
+      .wheel .disc::after { content: ""; position: absolute; inset: 14px; border-radius: 50%;
+                            background: radial-gradient(circle, #201d1a 0%, #16130f 62%, rgba(22,19,15,0.25) 100%); }
+      .wheel .dot { position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px;
+                    border-radius: 50%; background: #f5efe2; box-shadow: 0 0 14px rgba(245,239,226,0.7); z-index: 2; }
+      .wheel .nm { margin-top: 18px; font-size: 22px; letter-spacing: 0.18em; color: rgba(245,239,226,0.65); }
+      .wheel .val { margin-top: 6px; font-size: 19px; color: rgba(245,239,226,0.42); }
+      .sliders { margin-top: 30px; display: flex; flex-direction: column; gap: 16px; }
+      .srow { display: flex; align-items: center; gap: 18px; font-size: 20px; color: rgba(245,239,226,0.55); }
+      .srow .rail { flex: 1; height: 6px; border-radius: 3px; background: rgba(245,239,226,0.14); position: relative; overflow: hidden; }
+      .srow .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: 3px;
+                    background: linear-gradient(90deg, rgba(245,239,226,0.7), rgba(245,239,226,0.35)); transform-origin: left center; }
+
+      /* Гистограмма-скоуп */
+      .scope { display: flex; align-items: flex-end; gap: 6px; height: 110px; padding: 18px 22px 14px;
+               border-top: 1px solid rgba(245,239,226,0.12); }
+      .scope i { flex: 1; display: block; background: linear-gradient(180deg, rgba(245,239,226,0.75), rgba(245,239,226,0.2));
+                 border-radius: 2px 2px 0 0; transform-origin: bottom center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="38.5" data-width="1080" data-height="1920">
+
+      <audio id="vo-01" data-start="0"     data-duration="6.79" src="audio/vo_01.wav"></audio>
+      <audio id="vo-02" data-start="7.15"  data-duration="8.41" src="audio/vo_02.wav"></audio>
+      <audio id="vo-03" data-start="15.9"  data-duration="5.25" src="audio/vo_03.wav"></audio>
+      <audio id="vo-04" data-start="21.5"  data-duration="7.9"  src="audio/vo_04.wav"></audio>
+      <audio id="vo-05" data-start="29.75" data-duration="7.62" src="audio/vo_05.wav"></audio>
+
+      <!-- S1 · ХУК: типографика + маленький монитор снизу -->
+      <div id="s1" class="clip scene" data-start="0" data-duration="7.1" data-track-index="1">
+        <div class="pad" style="position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div class="label" id="s1-label">Побубним за видео · №1</div>
+            <div class="big" id="s1-t1" style="margin-top:54px;">Почему видео</div>
+            <div class="big" id="s1-t2">с дорогой камеры —</div>
+            <div class="big deep" id="s1-t3" style="font-size:150px; margin-top:10px;">хуже,</div>
+            <div class="big" id="s1-t4" style="margin-top:10px;">чем с айфона?</div>
+          </div>
+          <div id="s1-mon" class="monitor" style="width:880px;">
+            <div class="frame"><img class="loglook" src="assets/f66.webp" alt="" /></div>
+            <div class="bar mono"><span><span class="recdot" id="s1-rec"></span>A001_C012 · LOG</span><span>00:00:04:16</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2 · LOG: клип-карточка с метаданными + скоуп -->
+      <div id="s2" class="clip scene" data-start="7.1" data-duration="8.75" data-track-index="1">
+        <div class="pad" style="position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; gap:56px;">
+          <div id="s2-mon" class="monitor">
+            <div class="frame">
+              <img id="s2-shot" class="loglook" src="assets/f66.webp" alt="" />
+              <span class="tag mono" style="position:absolute; top:20px; left:20px;" id="s2-badge">LOG · СЫРОЙ ФАЙЛ</span>
+            </div>
+            <div class="scope" id="s2-scope">
+              <i style="height:24%"></i><i style="height:38%"></i><i style="height:55%"></i><i style="height:72%"></i>
+              <i style="height:88%"></i><i style="height:76%"></i><i style="height:94%"></i><i style="height:64%"></i>
+              <i style="height:79%"></i><i style="height:52%"></i><i style="height:66%"></i><i style="height:41%"></i>
+              <i style="height:57%"></i><i style="height:33%"></i><i style="height:46%"></i><i style="height:22%"></i>
+              <i style="height:36%"></i><i style="height:17%"></i><i style="height:27%"></i><i style="height:12%"></i>
+            </div>
+            <div class="bar mono"><span>BRAW · 10 bit · 4:2:2</span><span>ISO 800 · 5600K</span></div>
+          </div>
+          <div>
+            <div class="mid" id="s2-t1">Весь диапазон света — <em>внутри</em>.</div>
+            <div class="mid" id="s2-t2" style="margin-top:18px;">Это негатив цифровой плёнки.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3 · СПЛИТ: две карточки -->
+      <div id="s3" class="clip scene" data-start="15.85" data-duration="5.65" data-track-index="1">
+        <div class="pad" style="position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; gap:44px;">
+          <div id="s3-top">
+            <div class="monitor"><div class="frame"><img class="fried" src="assets/f08.webp" alt="" /></div></div>
+            <div class="mid" style="margin-top:22px;">Айфон красит <em>за вас</em> — жёстко и навсегда</div>
+          </div>
+          <div id="s3-bot">
+            <div class="monitor"><div class="frame"><img class="loglook" src="assets/f08.webp" alt="" /></div></div>
+            <div class="mid" style="margin-top:22px;">Камера отдаёт выбор <em>вам</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4 · ПРОЯВКА: монитор с вайпом + панель «DaVinci» -->
+      <div id="s4" class="clip scene" data-start="21.5" data-duration="8.2" data-track-index="1">
+        <div class="pad" style="position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; gap:46px;">
+          <div class="big deep" id="s4-t1" style="font-size:130px;">Проявка</div>
+          <div id="s4-mon" class="monitor">
+            <div class="frame">
+              <img class="loglook" src="assets/f42-2.webp" alt="" />
+              <div id="s4-graded" style="position:absolute; inset:0; clip-path: inset(0 100% 0 0);">
+                <img style="width:100%; height:100%; object-fit:cover; display:block;" src="assets/f42-2.webp" alt="" />
+              </div>
+              <div id="s4-line" style="position:absolute; top:0; bottom:0; left:0; width:3px; background:#f5efe2; opacity:0; will-change:transform;"></div>
+            </div>
+            <div class="bar mono"><span id="s4-st1">SOURCE · LOG</span><span id="s4-st2">GRADE · REC.709</span></div>
+          </div>
+          <div id="s4-panel" class="davinci">
+            <div class="wheels">
+              <div class="wheel"><div class="disc"><div class="dot" id="s4-d1"></div></div><div class="nm mono">LIFT</div><div class="val mono" id="s4-v1">0.00 · 0.00 · 0.00</div></div>
+              <div class="wheel"><div class="disc"><div class="dot" id="s4-d2"></div></div><div class="nm mono">GAMMA</div><div class="val mono" id="s4-v2">0.00 · 0.00 · 0.00</div></div>
+              <div class="wheel"><div class="disc"><div class="dot" id="s4-d3"></div></div><div class="nm mono">GAIN</div><div class="val mono" id="s4-v3">0.00 · 0.00 · 0.00</div></div>
+            </div>
+            <div class="sliders">
+              <div class="srow mono"><span style="width:170px;">CONTRAST</span><span class="rail"><span class="fill" id="s4-f1"></span></span></div>
+              <div class="srow mono"><span style="width:170px;">SATURATION</span><span class="rail"><span class="fill" id="s4-f2"></span></span></div>
+            </div>
+          </div>
+          <div class="small" id="s4-t2">контраст · цвет кожи · настроение кадра — половина киношности живёт здесь</div>
+        </div>
+      </div>
+
+      <!-- S5 · CTA -->
+      <div id="s5" class="clip scene" data-start="29.7" data-duration="8.8" data-track-index="1">
+        <div class="pad" style="position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:flex-start;">
+          <div class="label" id="s5-l">Обучение · индивидуально · онлайн и очно</div>
+          <div class="big" id="s5-t1" style="margin-top:48px; font-size:128px;">ПОБУБНИМ<span style="color:rgba(245,239,226,0.4)">?</span></div>
+          <div class="mid" id="s5-t2" style="margin-top:38px; font-size:58px;">Научу снимать и <em class="deep" style="font-size:64px;">красить</em></div>
+          <div id="s5-pill" class="pill mono" style="margin-top:60px;">pobubnim.github.io</div>
+          <div class="small" id="s5-t3" style="margin-top:30px;">занятие — от 3 000 ₽</div>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* S1 — каскад строк с глубиной, монитор подъезжает */
+      tl.from("#s1-label", { opacity: 0, y: 24, duration: 0.5 }, 0.1);
+      tl.from("#s1-t1", { opacity: 0, y: 60, rotation: -2, duration: 0.6 }, 0.3);
+      tl.from("#s1-t2", { opacity: 0, y: 60, rotation: -2, duration: 0.6 }, 0.55);
+      tl.from("#s1-t3", { opacity: 0, y: 80, scale: 0.8, duration: 0.8, ease: "back.out(1.4)" }, 0.9);
+      tl.from("#s1-t4", { opacity: 0, y: 60, duration: 0.6 }, 1.4);
+      tl.from("#s1-mon", { opacity: 0, y: 120, duration: 0.9, ease: "power3.out" }, 2.1);
+      tl.fromTo("#s1-rec", { opacity: 1 }, { opacity: 0.15, duration: 0.5, repeat: 7, yoyo: true, ease: "none" }, 2.6);
+      tl.to("#s1", { opacity: 0, duration: 0.45 }, 6.6);
+      tl.set("#s1", { opacity: 0 }, 7.1);
+
+      /* S2 — карточка клипа, скоуп дышит, кен-бёрнс внутри окна */
+      tl.from("#s2", { opacity: 0, duration: 0.45 }, 7.1);
+      tl.from("#s2-mon", { opacity: 0, y: 90, duration: 0.8, ease: "power3.out" }, 7.25);
+      tl.from("#s2-badge", { opacity: 0, x: -24, duration: 0.5 }, 8.0);
+      tl.from("#s2-scope i", { scaleY: 0, duration: 0.7, stagger: 0.035, ease: "power2.out" }, 8.2);
+      tl.fromTo("#s2-shot", { scale: 1 }, { scale: 1.08, duration: 8.2, ease: "none" }, 7.2);
+      tl.from("#s2-t1", { opacity: 0, y: 34, duration: 0.6 }, 9.2);
+      tl.from("#s2-t2", { opacity: 0, y: 34, duration: 0.6 }, 12.4);
+      tl.to("#s2", { opacity: 0, duration: 0.4 }, 15.4);
+      tl.set("#s2", { opacity: 0 }, 15.85);
+
+      /* S3 — карточки въезжают с противоположных сторон */
+      tl.from("#s3-top", { opacity: 0, x: -90, duration: 0.65, ease: "power3.out" }, 15.9);
+      tl.from("#s3-bot", { opacity: 0, x: 90, duration: 0.65, ease: "power3.out" }, 17.9);
+      tl.to("#s3", { opacity: 0, duration: 0.4 }, 21.05);
+      tl.set("#s3", { opacity: 0 }, 21.5);
+
+      /* S4 — панель оживает: вайп, колёса, ползунки, подписи */
+      tl.from("#s4", { opacity: 0, duration: 0.4 }, 21.5);
+      tl.from("#s4-t1", { opacity: 0, y: 40, scale: 0.9, duration: 0.7, ease: "back.out(1.3)" }, 21.7);
+      tl.from("#s4-mon", { opacity: 0, y: 70, duration: 0.7, ease: "power3.out" }, 22.0);
+      tl.from("#s4-panel", { opacity: 0, y: 90, duration: 0.8, ease: "power3.out" }, 22.4);
+      tl.to("#s4-line", { opacity: 1, duration: 0.2 }, 23.3);
+      tl.to("#s4-graded", { clipPath: "inset(0 0% 0 0)", duration: 3.0, ease: "power2.inOut" }, 23.5);
+      tl.to("#s4-line", { x: 1080, duration: 3.0, ease: "power2.inOut" }, 23.5);
+      tl.to("#s4-line", { opacity: 0, duration: 0.3 }, 26.5);
+      tl.to("#s4-d1", { x: -26, y: 18, duration: 2.6, ease: "power1.inOut" }, 23.6);
+      tl.to("#s4-d2", { x: 20, y: -24, duration: 2.6, ease: "power1.inOut" }, 23.8);
+      tl.to("#s4-d3", { x: 12, y: -30, duration: 2.6, ease: "power1.inOut" }, 24.0);
+      tl.fromTo("#s4-f1", { scaleX: 0.2 }, { scaleX: 0.72, duration: 2.4, ease: "power1.inOut" }, 23.7);
+      tl.fromTo("#s4-f2", { scaleX: 0.15 }, { scaleX: 0.61, duration: 2.4, ease: "power1.inOut" }, 23.9);
+      tl.from("#s4-t2", { opacity: 0, y: 26, duration: 0.6 }, 26.9);
+      tl.to("#s4", { opacity: 0, duration: 0.45 }, 29.2);
+      tl.set("#s4", { opacity: 0 }, 29.7);
+
+      /* S5 — CTA */
+      tl.from("#s5-l", { opacity: 0, y: 20, duration: 0.5 }, 29.8);
+      tl.from("#s5-t1", { opacity: 0, y: 50, duration: 0.7, ease: "power3.out" }, 30.1);
+      tl.from("#s5-t2", { opacity: 0, y: 34, duration: 0.6 }, 31.4);
+      tl.from("#s5-pill", { opacity: 0, y: 26, scale: 0.92, duration: 0.6, ease: "back.out(1.5)" }, 33.4);
+      tl.from("#s5-t3", { opacity: 0, duration: 0.5 }, 34.2);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
