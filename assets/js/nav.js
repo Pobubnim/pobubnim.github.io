@@ -2,7 +2,7 @@
    Подключается на всех страницах; сам строит меню и понимает вложенность пути. */
 
 (function () {
-  var deep = /\/(services|cases|articles|uroki)\//.test(location.pathname);
+  var deep = /\/(services|cases|articles|uroki|instrumenty)\//.test(location.pathname);
   var root = deep ? "../" : "";
   var onHome = !deep && /(^\/$|index\.html$)/.test(location.pathname || "/");
 
@@ -56,6 +56,7 @@
     '<a href="' + home("#services") + '">Цены</a>' +
     '<a href="' + home("#about") + '">Обо мне</a>' +
     '<a href="' + root + 'articles/">Статьи и уроки</a>' +
+    '<a href="' + root + 'instrumenty/">Инструменты</a>' +
     '<a href="' + root + 'education.html">Обучение</a>' +
     "</div>" +
     '<div class="menu-col"><span class="label">Решения</span>' +

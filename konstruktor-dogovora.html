@@ -22,6 +22,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/lesson.css">
+<link rel="stylesheet" href="assets/css/paper.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Конструктор договоров на фото- и видеосъёмку", "url": "https://pobubnim.github.io/konstruktor-dogovora.html", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/"}, "description": "Бесплатный онлайн-конструктор договоров и актов для фотографов, видеографов, монтажёров и колористов. Документ собирается из выбранных вариантов и заполненных полей прямо в браузере."}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Конструктор договоров действительно бесплатный?", "acceptedAnswer": {"@type": "Answer", "text": "Да, полностью: без оплаты, регистрации и подписок. Если конструктор помог — просто напишите спасибо автору в личные сообщения, этого достаточно."}},
@@ -29,92 +30,14 @@
 {"@type": "Question", "name": "Имеет ли собранный договор юридическую силу?", "acceptedAnswer": {"@type": "Answer", "text": "Да: договор возмездного оказания услуг заключается в простой письменной форме (глава 39 ГК РФ), достаточно подписей обеих сторон. Конструктор даёт типовой шаблон — это не юридическая консультация, в нестандартной ситуации покажите документ юристу."}},
 {"@type": "Question", "name": "Это ИИ-ассистент для договоров?", "acceptedAnswer": {"@type": "Answer", "text": "Логику и формулировки собирал ИИ-ассистент под контролем практикующего видеографа, шаблон сверен с ГК РФ. Сам конструктор работает без нейросети: документ собирается мгновенно прямо в браузере, и ваши данные никуда не отправляются."}},
 {"@type": "Question", "name": "Нужен ли акт выполненных работ к договору на съёмку?", "acceptedAnswer": {"@type": "Answer", "text": "Если заказчик — компания или ИП, акт нужен для бухгалтерии почти всегда. С заказчиком-физлицом акт не обязателен, но полезен: он фиксирует, что услуги приняты и претензий нет. Конструктор собирает акт автоматически из тех же данных."}},
-{"@type": "Question", "name": "Кому принадлежат права на фото и видео по договору?", "acceptedAnswer": {"@type": "Answer", "text": "По умолчанию исключительное право на снятые материалы остаётся у автора — фотографа или видеографа, а заказчик получает право использовать их в оговорённых целях. В конструкторе выбирается один из трёх режимов: личное использование, коммерческая лицензия или полная передача прав."}}
+{"@type": "Question", "name": "Кому принадлежат права на фото и видео по договору?", "acceptedAnswer": {"@type": "Answer", "text": "По умолчанию исключительное право на снятые материалы остаётся у автора — фотографа или видеографа, а заказчик получает право использовать их в оговорённых целях. В конструкторе выбирается один из трёх режимов: личное использование, коммерческая лицензия или полная передача прав."}},
+{"@type": "Question", "name": "Задаток или аванс — что выбрать для брони даты съёмки?", "acceptedAnswer": {"@type": "Answer", "text": "Аванс — обычная предоплата: при отказе заказчика возвращается за вычетом фактически понесённых, документально подтверждённых расходов (ст. 782 ГК РФ). Задаток (ст. 380–381 ГК РФ) жёстче и симметричнее: отказался заказчик — задаток остаётся у исполнителя, отказался исполнитель — возвращает в двойном размере. С заказчиком-физлицом суды иногда переквалифицируют задаток в аванс, поэтому с потребителями надёжнее аванс. Конструктор собирает оба варианта."}}
 ]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Конструктор договоров", "item": "https://pobubnim.github.io/konstruktor-dogovora.html"}]}</script>
 <style>
-  [hidden] { display: none !important; }
   .art-hero { padding-top: 150px; max-width: 860px; }
   .art-hero .label { margin-bottom: 14px; display: block; }
   .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; max-width: 720px; }
-  .free-note { margin-top: 22px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; background: var(--char); border: 1px solid var(--line); border-radius: var(--r-pill); font-size: 14px; color: var(--smoke); }
-  .free-note b { color: var(--ink); font-weight: 500; }
-
-  /* ---------- сплит: опции слева, лист справа ---------- */
-  .builder { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(20px, 3vw, 36px); margin-top: clamp(40px, 6vw, 64px); align-items: start; }
-  .cfg { display: flex; flex-direction: column; gap: clamp(28px, 4vw, 40px); }
-  .cfg-sec > .label { display: block; margin-bottom: 14px; }
-  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 8px; }
-  .opt { position: relative; }
-  .opt input { position: absolute; opacity: 0; pointer-events: none; }
-  .opt span { display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; background: var(--char); border: 1px solid transparent; border-radius: var(--r-card); font-size: 14px; font-weight: 400; cursor: pointer; transition: background 0.2s var(--ease), border-color 0.2s var(--ease); min-height: 44px; justify-content: center; }
-  .opt span i { font-style: normal; font-size: 11.5px; color: var(--mute); font-weight: 300; }
-  .opt span:hover { background: var(--char2); }
-  .opt input:checked + span { border-color: var(--lamp); background: var(--char2); }
-  .opt input:focus-visible + span { outline: 2px solid var(--lamp); outline-offset: 2px; }
-  .flds { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; margin-top: 10px; }
-  .fld { display: flex; flex-direction: column; gap: 6px; }
-  .fld.wide { grid-column: 1 / -1; }
-  .fld label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); font-weight: 500; }
-  .cfg, .cfg-sec, .fld, .opt { min-width: 0; }
-  .fld input, .fld select { background: #0c0c0b; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: 400 15px var(--font-ui); padding: 11px 12px; outline: none; min-height: 44px; width: 100%; min-width: 0; }
-  .fld input:focus, .fld select:focus { border-color: var(--lamp); }
-  .fld input::placeholder { color: var(--mute); font-weight: 300; }
-  .hint { margin-top: 10px; font-size: 13px; color: var(--mute); border-left: 2px solid var(--line); padding: 2px 0 2px 12px; text-wrap: pretty; }
-  .hint.warn { color: var(--smoke); border-color: var(--dv-rec); }
-
-  /* ---------- лист документа ---------- */
-  .paper-col { position: sticky; top: 84px; }
-  .paper-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
-  .ptab { padding: 9px 18px; min-height: 44px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 14px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
-  .ptab:hover { background: var(--char); }
-  .ptab.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
-  .paper-shell { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--char); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
-  .paper { background: #f7f4ec; color: #22201c; max-height: 72vh; overflow-y: auto; padding: clamp(22px, 3vw, 40px); font-family: Georgia, "Times New Roman", serif; font-size: 13.5px; line-height: 1.55; }
-  .paper h3 { text-align: center; font-size: 15px; letter-spacing: 0.02em; margin-bottom: 4px; font-weight: 700; }
-  .paper .doc-meta { display: flex; justify-content: space-between; font-size: 12.5px; margin: 14px 0 18px; }
-  .paper h4 { font-size: 13.5px; margin: 16px 0 6px; font-weight: 700; }
-  .paper p { margin-bottom: 8px; text-align: justify; }
-  .paper .req { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; font-size: 12.5px; }
-  .paper .req b { display: block; margin-bottom: 6px; }
-  .paper .sig { margin-top: 22px; }
-  .paper .blank { border-bottom: 1px solid #8a8478; padding: 0 30px; white-space: nowrap; }
-  .paper .doc-note { margin-top: 20px; font-size: 11px; color: #6b675e; font-style: italic; text-align: left; }
-  .paper .bmark { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 6px; background: #000; color: #f5efe2; font: italic 500 15px Georgia, "Times New Roman", serif; }
-  .paper .bmark-row.tl { text-align: left; margin-bottom: 8px; }
-  .paper .bmark-row.br { text-align: right; margin-top: 14px; }
-  .paper-bar { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line-soft); flex-wrap: wrap; }
-  .pbtn { flex: 1; min-width: 120px; min-height: 44px; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--line); background: none; color: var(--ink); font: 400 13.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
-  .pbtn:hover { background: var(--char2); }
-  .pbtn.main { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
-  .pbtn:active { transform: scale(0.97); }
-  .copy-done { pointer-events: none; }
-
-  /* ---------- SEO-блоки под конструктором ---------- */
-  .seo-body { max-width: 760px; margin-top: clamp(64px, 9vw, 110px); }
-  .seo-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
-  .seo-body p b { color: var(--ink); font-weight: 500; }
-  .seo-body a { text-decoration: underline; }
-  .art-h2 { font-size: clamp(24px, 2.6vw, 32px); margin: clamp(36px, 5vw, 56px) 0 16px; }
-  .svc-faq { border-top: 1px solid var(--line-soft); padding: 18px 4px; }
-  .svc-faq:last-of-type { border-bottom: 1px solid var(--line-soft); }
-  .svc-faq summary { font-size: 16.5px; font-weight: 500; cursor: pointer; list-style: none; position: relative; padding-right: 30px; }
-  .svc-faq summary::after { content: "+"; position: absolute; right: 4px; top: 0; color: var(--mute); font-weight: 300; font-size: 20px; }
-  .svc-faq[open] summary::after { content: "–"; }
-  .svc-faq p { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
-
-  @media (max-width: 920px) {
-    .builder { grid-template-columns: 1fr; }
-    .paper-col { position: static; }
-    .paper { max-height: 60vh; }
-  }
-  /* ---------- печать: только лист ---------- */
-  @media print {
-    body * { visibility: hidden; }
-    .paper, .paper * { visibility: visible; }
-    .paper { position: absolute; inset: 0; max-height: none; overflow: visible; background: #fff; color: #000; padding: 0; font-size: 12pt; }
-    .paper-shell { border: none; box-shadow: none; background: #fff; }
-  }
 </style>
 </head>
 <body>
@@ -126,6 +49,7 @@
       <a href="raboty.html">Работы</a>
       <a href="index.html#services">Цены</a>
       <a href="articles/">Статьи</a>
+      <a href="instrumenty/">Инструменты</a>
       <a href="education.html">Обучение</a>
     </nav>
     <a class="btn btn-lamp" href="index.html#zayavka">Оставить заявку</a>
@@ -220,24 +144,24 @@
       <section class="cfg-sec">
         <span class="label">06 · Деньги</span>
         <div class="flds">
-          <div class="fld"><label for="f-price">Стоимость, ₽</label><input id="f-price" type="number" min="0" step="1000" placeholder="45000"></div>
-          <div class="fld"><label for="f-prepay">Предоплата</label>
-            <select id="f-prepay">
-              <option value="0">Без предоплаты</option>
-              <option value="20">20%</option>
-              <option value="30" selected>30%</option>
-              <option value="50">50%</option>
-              <option value="100">100%</option>
-            </select>
-          </div>
-          <div class="fld wide"><label for="f-paywhen">Остаток оплачивается</label>
+          <div class="fld wide"><label for="f-price">Стоимость, ₽</label><input id="f-price" type="number" min="0" step="1000" placeholder="45000"></div>
+        </div>
+        <div class="opts" style="margin-top:10px" role="radiogroup" aria-label="Форма брони">
+          <label class="opt"><input type="radio" name="bron" value="avans" checked><span>Аванс<i>обычная предоплата</i></span></label>
+          <label class="opt"><input type="radio" name="bron" value="zadatok"><span>Задаток<i>ст. 380 ГК РФ</i></span></label>
+          <label class="opt"><input type="radio" name="bron" value="none"><span>Без предоплаты</span></label>
+        </div>
+        <div class="flds" id="flds-bron">
+          <div class="fld"><label for="f-bron-sum" id="lbl-bron-sum">Сумма аванса, ₽</label><input id="f-bron-sum" type="number" min="0" step="1000" placeholder="15000"></div>
+          <div class="fld"><label for="f-paywhen">Остаток оплачивается</label>
             <select id="f-paywhen">
               <option value="day">в день съёмки, до её начала</option>
               <option value="result" selected>после передачи результата</option>
             </select>
           </div>
         </div>
-        <div class="hint">Предоплата 20–50% при бронировании — норма рынка. 100% вперёд — почти всегда красный флаг для заказчика; подробнее в <a href="articles/dogovor-s-videografom.html" style="text-decoration:underline">разборе договора с видеографом</a>.</div>
+        <div class="hint" id="hint-avans">Аванс 20–50% от стоимости — норма рынка. При отказе заказчика исполнитель по закону удерживает только фактически понесённые и документально подтверждённые расходы (ст. 782 ГК РФ, для физлиц — ещё и ст. 32 ЗоЗПП): заранее зашитые «проценты удержания» суд с потребителя снимает.</div>
+        <div class="hint warn" id="hint-zadatok" hidden>Задаток работает в обе стороны (ст. 381 ГК РФ): заказчик отказался — задаток остаётся у исполнителя; отказался исполнитель — возвращает в двойном размере. Честная симметрия, которая дисциплинирует обоих. Нюанс: если заказчик — физлицо-потребитель, суды иногда переквалифицируют задаток в аванс и возвращают его; для полной надёжности с потребителем выбирайте аванс.</div>
       </section>
 
       <section class="cfg-sec">
@@ -276,7 +200,7 @@
         <div class="paper" id="paper" aria-live="polite"></div>
         <div class="paper-bar">
           <button class="pbtn main" id="btn-copy" type="button">Скопировать текст</button>
-          <button class="pbtn" id="btn-doc" type="button">Скачать .doc</button>
+          <button class="pbtn" id="btn-doc" type="button">Скачать Word</button>
           <button class="pbtn" id="btn-print" type="button">Распечатать / в PDF</button>
         </div>
       </div>
@@ -313,6 +237,7 @@
     <details class="svc-faq"><summary>Это ИИ-ассистент для договоров?</summary><p>Логику и формулировки собирал ИИ-ассистент под контролем практикующего видеографа, шаблон сверен с ГК РФ. Сам конструктор работает без нейросети: документ собирается мгновенно прямо в браузере, и ваши данные никуда не отправляются.</p></details>
     <details class="svc-faq"><summary>Нужен ли акт выполненных работ к договору на съёмку?</summary><p>Если заказчик — компания или ИП, акт нужен для бухгалтерии почти всегда. С заказчиком-физлицом акт не обязателен, но полезен: он фиксирует, что услуги приняты и претензий нет. Конструктор собирает акт автоматически из тех же данных.</p></details>
     <details class="svc-faq"><summary>Кому принадлежат права на фото и видео по договору?</summary><p>По умолчанию исключительное право на снятые материалы остаётся у автора — фотографа или видеографа, а заказчик получает право использовать их в оговорённых целях. В конструкторе выбирается один из трёх режимов: личное использование, коммерческая лицензия или полная передача прав.</p></details>
+    <details class="svc-faq"><summary>Задаток или аванс — что выбрать для брони даты съёмки?</summary><p>Аванс — обычная предоплата: при отказе заказчика возвращается за вычетом фактически понесённых, документально подтверждённых расходов (ст. 782 ГК РФ). Задаток (ст. 380–381 ГК РФ) жёстче и симметричнее: отказался заказчик — задаток остаётся у исполнителя, отказался исполнитель — возвращает в двойном размере. С заказчиком-физлицом суды иногда переквалифицируют задаток в аванс, поэтому с потребителями надёжнее аванс. Конструктор собирает оба варианта.</p></details>
   </div>
 
   <div class="footer-cta" style="padding-top:70px">
@@ -330,12 +255,14 @@
     <nav>
       <a href="index.html">На главную</a>
       <a href="articles/">Статьи</a>
+      <a href="instrumenty/">Инструменты</a>
       <a href="education.html">Обучение</a>
       <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
     </nav>
   </div>
 </footer>
 
+<script src="assets/js/docx.js" defer></script>
 <script src="assets/js/dogovor.js" defer></script>
 <script src="assets/js/lesson.js" defer></script>
 <script src="assets/js/nav.js" defer></script>
