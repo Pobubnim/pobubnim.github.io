@@ -53,3 +53,8 @@ services: imidzhevyj-film, muzykalnyj-klip, reklamnyj-rolik, semka-meropriyatij,
 svadebnoe-kino, education («в Москве и онлайн» — владелец подтвердил 25.08: обучение
 очное и дистанционное). Без гео осознанно: sozdanie-sajtov, boty-avtomatizaciya,
 cvetokorrekciya (удалённые услуги).
+
+Гайды для новичков (25.08, вечер): cvetokorrekciya-video-kak-sdelat (без гео —
+DIY-тема), kak-snimat-video-na-telefon (без гео), obuchenie-videosemke-s-nulya
+(«Москва и онлайн»). Все с FAQPage+Article schema и прямым ответом в первых
+двух предложениях. admin.html — noindex + Disallow в robots (не SEO-страница).

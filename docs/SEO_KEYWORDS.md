@@ -72,9 +72,15 @@
 | 1 | stati/skolko-stoit-videosemka.html | сколько стоит видеосъёмка 313 · час 26 · съёмка рекламного ролика стоимость · заказать видеоролик москва | СДЕЛАНА 25.08 |
 | 2 | stati/kak-vybrat-svadebnogo-videografa.html | свадебный видеограф (инфо-хвосты: лучшие 66, топ 34, как выбрать 12) | СДЕЛАНА 25.08 |
 | 3 | stati/skolko-stoit-svadebnyj-videograf.html | свадебный видеограф цена 35 · сколько стоит видеосъёмка на свадьбу 41 | СДЕЛАНА 25.08 |
-| 4 | stati/cvetokorrekciya-cena.html | стоимость цветокоррекции 36 · цена 20 · сделать 130 | план |
-| 5 | stati/kak-snyat-reklamnyj-rolik.html | съёмка рекламного ролика 384 · заказать рекламный видеоролик | план |
-| 6 | stati/dogovor-s-videografom.html | договор свадебного видеографа 18 | план |
+| 4 | articles/cvetokorrekciya-video-kak-sdelat.html | цветокоррекция видео 1531 · сделать 130 · как делать 25 (DIY-гайд, конвертит в услугу и обучение) | СДЕЛАНА 25.08 |
+| 5 | articles/kak-snimat-video-na-telefon.html | видеосъемка на телефон обучение 49 · мобильная 25 · на телефон 21 | СДЕЛАНА 25.08 |
+| 6 | articles/obuchenie-videosemke-s-nulya.html | обучение видеосъёмке 466 · и монтажу 87 (гео «Москва и онлайн») | СДЕЛАНА 25.08 |
+| 7 | articles/kak-snyat-reklamnyj-rolik.html | съёмка рекламного ролика 384 · заказать рекламный видеоролик | план |
+| 8 | articles/dogovor-s-videografom.html | договор свадебного видеографа 18 | план |
+
+Гайды 4–6 перелинкованы: блок «Начните бесплатно» на education, строка в
+услугах главной, футеры статей крест-накрест. Каталог живёт в articles/
+(строки «stati/» выше — историческое название, фактический каталог articles/).
 
 Каждая статья: по скиллу local-seo-pages (гео в title/description/H1), schema
 Article+BreadcrumbList, перелинковка на услугу и CTA-пара ТГ+ВК, хаб stati/index.html.
