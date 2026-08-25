@@ -54,6 +54,11 @@ instrumenty/kalkulyator-karty-pamyati.html (karta.js) — запросы «ск�
 БЕЗ гео (онлайн-инструмент). WebApplication + FAQPage (5 вопросов) + Breadcrumb,
 FAQ дублируется на странице. Три режима (влезет / весит / фото), числа —
 EDU_BASE §8г (классы V — стандарт SD Association; «влезет» округляется ВНИЗ).
+Тем же днём по слову владельца чипы-обобщения заменены БАЗОЙ РЕАЛЬНЫХ
+битрейтов из тех. спецификаций (assets/js/karta-db.js, ~20 камер и 60+
+режимов: Sony XAVC, Canon RAW/All-I, N-RAW Nikon, ProRes по white paper
+Apple, BRAW, REDCODE, ARRIRAW, DJI, GoPro, iPhone) — выбор «камера → режим»,
+свой битрейт остаётся ручным вводом; источники в EDU_BASE §8г.3–3а.
 Хаб: добавлена карточка + починено устаревшее description (упоминало снятый
 калькулятор стоимости, не упоминало смету). Sitemap + IndexNow. Разведка №2
 по онлайн-сервисам для фрилансеров (что пусто/что занято) — TOOLS_ROADMAP.md.

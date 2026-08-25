@@ -9,15 +9,6 @@
   if (!paper || !cfg) return;
 
   var CARDS = [32, 64, 128, 256, 512, 1000];
-  /* [подпись, Мбит/с] — типовые режимы из спецификаций производителей (§8г.3) */
-  var VID = [
-    ["Телефон 4K/30", 25],
-    ["Телефон 4K/60", 60],
-    ["Камера 4K/25–30", 100],
-    ["Камера 4K/50–60", 200],
-    ["All-Intra 4K", 600],
-    ["Full HD", 30]
-  ];
   /* средние веса кадра (§8г.4) — в интерфейсе подписаны как средние */
   var PH = [
     ["JPEG 24 Мп", 10],
@@ -30,7 +21,6 @@
       return '<button type="button" class="chip" data-v="' + p[1] + '">' + p[0] + " · " + p[1] + " " + unit + "</button>";
     }).join("");
   }
-  document.getElementById("chips-v").innerHTML = chipRow(VID, "Мбит/с");
   document.getElementById("chips-p").innerHTML = chipRow(PH, "МБ");
   document.getElementById("chips-c").innerHTML = CARDS.map(function (c) {
     return '<button type="button" class="chip" data-v="' + c + '">' + (c >= 1000 ? "1 ТБ" : c + " ГБ") + "</button>";
@@ -44,9 +34,55 @@
       render();
     });
   }
-  bindChips("chips-v", "f-bit");
   bindChips("chips-c", "f-card");
   bindChips("chips-p", "f-shot");
+
+  /* ---- база камер (karta-db.js): камера → режим → битрейт из спеки ---- */
+  var camSel = document.getElementById("f-cam");
+  var modeSel = document.getElementById("f-mode");
+  var CAMS = [];
+  var camHtml = ['<option value="-1">Своя камера — битрейт вручную</option>'];
+  (window.KARTA_DB || []).forEach(function (b) {
+    camHtml.push('<optgroup label="' + b.brand + '">');
+    b.cams.forEach(function (c) {
+      CAMS.push(c);
+      camHtml.push('<option value="' + (CAMS.length - 1) + '">' + c.name + "</option>");
+    });
+    camHtml.push("</optgroup>");
+  });
+  camSel.innerHTML = camHtml.join("");
+
+  function fillModes() {
+    var i = +camSel.value;
+    if (i < 0) {
+      modeSel.innerHTML = '<option value="">— битрейт вручную —</option>';
+      modeSel.disabled = true;
+      return;
+    }
+    modeSel.disabled = false;
+    modeSel.innerHTML = CAMS[i].modes.map(function (m, j) {
+      return '<option value="' + j + '">' + m[0] + " — " + m[1].toLocaleString("ru-RU") + "</option>";
+    }).join("") + '<option value="">— свой битрейт —</option>';
+  }
+  function applyMode() {
+    var i = +camSel.value;
+    if (i >= 0 && modeSel.value !== "") {
+      document.getElementById("f-bit").value = CAMS[i].modes[+modeSel.value][1];
+    }
+  }
+  /* подпись выбранного режима для листа и копирования */
+  function modeInfo() {
+    var i = +camSel.value;
+    if (i < 0 || modeSel.value === "") return null;
+    return CAMS[i].name + " · " + CAMS[i].modes[+modeSel.value][0];
+  }
+  camSel.addEventListener("change", function () { fillModes(); applyMode(); render(); });
+  modeSel.addEventListener("change", function () { applyMode(); render(); });
+
+  /* дефолт: Sony Alpha/FX, 4K 24p XAVC S — 100 Мбит/с */
+  var sonyIdx = CAMS.findIndex(function (c) { return c.name.indexOf("Sony Alpha") === 0; });
+  camSel.value = String(sonyIdx >= 0 ? sonyIdx : -1);
+  fillModes(); applyMode();
 
   function clamp(v, lo, hi, dflt) {
     v = parseFloat(String(v).replace(",", "."));
@@ -55,6 +91,7 @@
   }
   function num(n) { return n.toLocaleString("ru-RU"); }
   function fmtMB(mb) {
+    if (mb >= 1000000) return num(Math.round(mb / 10000) / 100) + " ТБ";
     if (mb >= 1000) {
       var g = mb / 1000;
       return num(g >= 100 ? Math.round(g) : Math.round(g * 10) / 10) + " ГБ";
@@ -103,11 +140,12 @@
   function data() {
     var d = read();
     var sp = d.bit / 8;
-    var flow = [
+    var mi = modeInfo();
+    var flow = (mi ? [["Режим", mi]] : []).concat([
       ["Поток записи", num(d.bit) + " Мбит/с = " + fmtSpeed(sp) + " МБ/с"],
       ["Минута записи", "≈ " + fmtMB(sp * 60)],
       ["Час записи", "≈ " + fmtMB(sp * 3600)]
-    ];
+    ]);
     if (d.mode === "fit") {
       return {
         big: "≈ " + fmtDur(d.card * 1000 / sp),
@@ -151,7 +189,7 @@
     document.getElementById("sec-card").hidden = d.mode === "size";
     document.getElementById("sec-dur").hidden = d.mode !== "size";
 
-    ["chips-v:f-bit", "chips-c:f-card", "chips-p:f-shot"].forEach(function (pair) {
+    ["chips-c:f-card", "chips-p:f-shot"].forEach(function (pair) {
       var p = pair.split(":");
       var v = document.getElementById(p[1]).value;
       Array.prototype.forEach.call(document.getElementById(p[0]).children, function (ch) {
@@ -173,8 +211,15 @@
     paper.innerHTML = h.join("");
   }
 
-  cfg.addEventListener("input", render);
-  cfg.addEventListener("change", render);
+  cfg.addEventListener("input", function (e) {
+    /* ручная правка битрейта = режим «свой», чтобы подпись не врала */
+    if (e && e.target && e.target.id === "f-bit" && modeSel.value !== "") modeSel.value = "";
+    render();
+  });
+  cfg.addEventListener("change", function (e) {
+    if (e && e.target && (e.target.id === "f-cam" || e.target.id === "f-mode")) return; /* уже обработано своими слушателями */
+    render();
+  });
 
   document.getElementById("btn-copy").addEventListener("click", function () {
     var btn = this;

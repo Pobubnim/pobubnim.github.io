@@ -12,7 +12,9 @@
 2. Смета и счёт на оплату (калькулятор смен) — instrumenty/smeta-i-schet.html (smeta.js)
 3. Модельный релиз — instrumenty/modelnyj-reliz.html (reliz.js)
 4. Тайминг свадебного дня — instrumenty/tajming-svadby.html (tajming.js)
-5. Калькулятор карты памяти — instrumenty/kalkulyator-karty-pamyati.html (karta.js), 26.08
+5. Калькулятор карты памяти — instrumenty/kalkulyator-karty-pamyati.html
+   (karta.js + karta-db.js — база РЕАЛЬНЫХ битрейтов ~20 камер из тех.
+   спецификаций, от iPhone до RED/ARRI; источники в EDU_BASE §8г), 26.08
 
 Общее ядро: paper.css (лист+форма), docx.js (настоящий .docx + rubWords/moneyFull).
 
