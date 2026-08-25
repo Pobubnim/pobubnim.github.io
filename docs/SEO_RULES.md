@@ -59,6 +59,14 @@ DIY-тема), kak-snimat-video-na-telefon (без гео), obuchenie-videosemke
 («Москва и онлайн»). Все с FAQPage+Article schema и прямым ответом в первых
 двух предложениях. admin.html — noindex + Disallow в robots (не SEO-страница).
 
+Уроки и хаб (25.08, ночь-2): каталог uroki/ (интерактивные уроки, канон фактов
+docs/EDU_BASE.md), хаб articles/index.html (canonical …/articles/), пункт «Статьи»
+в шапках всех страниц и бургер-меню nav.js (deep-регулярка: services|cases|articles|uroki).
+Виз-блоки lesson.css/lesson.js подключены ко всем статьям — карточки, чек-листы,
+вайпы, панель DaVinci; факты блоков сверяются с EDU_BASE. Фавикон: реальные файлы
+favicon.ico/svg + apple-touch-icon (data:-URI выдача не видит). Хронометраж
+свадебного фильма выровнен по всем страницам: 2–4 минуты (канон — лендинг услуги).
+
 Полировка (25.08, ночь): meta author добавлен на ВСЕ страницы (было только на 4);
 description ужаты в закон 150–190 (education, оба «сколько стоит», кейс MONOLITH
 дотянут). Статьи №7 kak-snyat-reklamnyj-rolik («в Москве», FAQ+Article) и №8
