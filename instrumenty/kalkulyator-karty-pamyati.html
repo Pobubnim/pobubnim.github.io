@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Сколько видео влезет на карту памяти — калькулятор | ПОБУБНИМ</title>
+<meta name="description" content="Калькулятор карты памяти для видео и фото: сколько минут записи влезет на 64–512 ГБ, сколько весит час 4К и какой класс скорости нужен. Бесплатно, без регистрации, считает в браузере.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/instrumenty/kalkulyator-karty-pamyati.html">
+<meta property="og:title" content="Калькулятор карты памяти: сколько видео влезет | ПОБУБНИМ">
+<meta property="og:description" content="Сколько минут видео влезет на карту, сколько весит час записи и какой класс скорости нужен — считается от битрейта камеры. Бесплатно и без регистрации.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/home.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pobubnim.github.io/instrumenty/kalkulyator-karty-pamyati.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<link rel="stylesheet" href="../assets/css/paper.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Калькулятор карты памяти для видео и фото", "url": "https://pobubnim.github.io/instrumenty/kalkulyator-karty-pamyati.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/"}, "description": "Бесплатный калькулятор карты памяти: сколько минут видео влезет на карту, сколько весит запись и какой класс скорости карты нужен для вашего битрейта."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Сколько весит час видео в 4К?", "acceptedAnswer": {"@type": "Answer", "text": "При битрейте 100 Мбит/с (типичный 4K-режим беззеркалки) час записи занимает 45 ГБ: 100 ÷ 8 = 12,5 МБ/с × 3600 секунд. Телефонный 4K/30 в HEVC (около 25 Мбит/с) — примерно 11 ГБ в час, All-Intra на 600 Мбит/с — 270 ГБ."}},
+{"@type": "Question", "name": "Сколько видео влезет на карту 128 ГБ?", "acceptedAnswer": {"@type": "Answer", "text": "При 100 Мбит/с — примерно 2 часа 50 минут, при телефонных 25 Мбит/с — около 11 часов. Всё решает битрейт режима записи: посмотрите его в меню камеры и посчитайте точно калькулятором."}},
+{"@type": "Question", "name": "Какая карта памяти нужна для 4К?", "acceptedAnswer": {"@type": "Answer", "text": "Смотрите не на объём, а на класс скорости V — он гарантирует минимальную скорость записи. V30 (30 МБ/с) держит битрейты до 240 Мбит/с, этого хватает почти всем 4K-режимам H.264/HEVC. All-Intra и видео-RAW требуют V60, V90 или CFexpress. Крупная цифра «до 200 MB/s» на этикетке — скорость чтения, о записи она не говорит."}},
+{"@type": "Question", "name": "Почему карта на 128 ГБ показывает только 119?", "acceptedAnswer": {"@type": "Answer", "text": "Производители маркируют карты десятичными гигабайтами (1 ГБ = 1 000 000 000 байт), а компьютер считает двоичными: 128 × 10⁹ байт ÷ 2³⁰ ≈ 119 ГиБ. Гигабайты не пропали — это одна и та же ёмкость в разных единицах."}},
+{"@type": "Question", "name": "Где посмотреть битрейт своей камеры?", "acceptedAnswer": {"@type": "Answer", "text": "В меню записи или инструкции: Sony пишет его прямо в названии режима («4K 100M» = 100 Мбит/с). Или посчитайте по готовому файлу: вес в мегабайтах ÷ длительность в секундах × 8 = битрейт в Мбит/с."}}
+]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Инструменты", "item": "https://pobubnim.github.io/instrumenty/"}, {"@type": "ListItem", "position": 3, "name": "Калькулятор карты памяти", "item": "https://pobubnim.github.io/instrumenty/kalkulyator-karty-pamyati.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 860px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; max-width: 720px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .chip { padding: 8px 14px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 300 13px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease), color 0.2s var(--ease); }
+  .chip:hover { background: var(--char2); color: var(--ink); }
+  .chip.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+  .paper .big { font: 500 clamp(26px, 4vw, 36px) var(--font-mono); text-align: center; margin: 14px 0 2px; letter-spacing: -0.02em; }
+  .paper .big-sub { text-align: center; font-size: 12px; color: #6b675e; margin-bottom: 14px; }
+  .paper .line { display: flex; gap: 14px; padding: 7px 0; border-bottom: 1px dotted #c9c2b2; justify-content: space-between; }
+  .paper .line b { font-weight: 700; flex: none; }
+  .paper .line span { text-align: right; }
+</style>
+<script src="../assets/js/analytics.js?v=2" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Инструмент · Съёмка · Бесплатно</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Калькулятор карты памяти: сколько видео влезет и сколько весит запись</span>Карта, которая <em>не кончится</em></h1>
+    <p class="lead">Выберите битрейт своей камеры — калькулятор скажет, сколько минут видео влезет на карту, сколько весит час записи и какой класс скорости нужен. Считает и фото: сколько кадров возьмёт карта. Всё в браузере, данные никуда не уходят.</p>
+    <div class="free-note"><b>Вместо оплаты</b> — если помогло, напишите спасибо в <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener" style="text-decoration:underline">личку телеграма</a></div>
+  </section>
+
+  <div class="builder">
+    <form class="cfg" id="cfg" autocomplete="off">
+      <section class="cfg-sec">
+        <span class="label">01 · Что считаем</span>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="mode" value="fit" checked><span>Сколько влезет<i>минуты видео на карту</i></span></label>
+          <label class="opt"><input type="radio" name="mode" value="size"><span>Сколько весит<i>объём записи по времени</i></span></label>
+          <label class="opt"><input type="radio" name="mode" value="photo"><span>Сколько фото<i>кадров на карту</i></span></label>
+        </div>
+      </section>
+
+      <section class="cfg-sec" id="sec-bit">
+        <span class="label">02 · Битрейт записи</span>
+        <div class="chips" id="chips-v" role="group" aria-label="Типовые режимы записи"></div>
+        <div class="flds" style="margin-top:0">
+          <div class="fld wide"><label for="f-bit">Битрейт, Мбит/с</label><input id="f-bit" type="number" min="1" max="10000" step="1" value="100" inputmode="numeric"></div>
+        </div>
+        <div class="hint">Пресеты — типовые режимы из спецификаций камер. Точный битрейт смотрите в меню записи: у Sony он прямо в названии («4K 100M» = 100 Мбит/с).</div>
+      </section>
+
+      <section class="cfg-sec" id="sec-photo" hidden>
+        <span class="label">02 · Вес одного кадра</span>
+        <div class="chips" id="chips-p" role="group" aria-label="Средний вес кадра"></div>
+        <div class="flds" style="margin-top:0">
+          <div class="fld wide"><label for="f-shot">Вес кадра, МБ</label><input id="f-shot" type="number" min="0.1" max="500" step="1" value="25" inputmode="decimal"></div>
+        </div>
+        <div class="hint">Средние значения: реальный вес кадра зависит от сцены, ISO и сжатия. Свой — посмотрите на любом готовом файле.</div>
+      </section>
+
+      <section class="cfg-sec" id="sec-card">
+        <span class="label">03 · Карта памяти</span>
+        <div class="chips" id="chips-c" role="group" aria-label="Ёмкость карты"></div>
+        <div class="flds" style="margin-top:0">
+          <div class="fld wide"><label for="f-card">Ёмкость, ГБ</label><input id="f-card" type="number" min="1" max="8000" step="1" value="128" inputmode="numeric"></div>
+        </div>
+      </section>
+
+      <section class="cfg-sec" id="sec-dur" hidden>
+        <span class="label">03 · Длительность записи</span>
+        <div class="flds" style="margin-top:0">
+          <div class="fld"><label for="f-h">Часы</label><input id="f-h" type="number" min="0" max="99" step="1" value="1" inputmode="numeric"></div>
+          <div class="fld"><label for="f-m">Минуты</label><input id="f-m" type="number" min="0" max="59" step="5" value="0" inputmode="numeric"></div>
+        </div>
+        <div class="hint">Считайте чистое время записи: сколько камера реально пишет за смену, а не длится мероприятие.</div>
+      </section>
+    </form>
+
+    <div class="paper-col">
+      <div class="paper-shell">
+        <div class="paper" id="paper" aria-live="polite"></div>
+        <div class="paper-bar">
+          <button class="pbtn main" id="btn-copy" type="button">Скопировать расчёт</button>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:12.5px;color:var(--mute);text-wrap:pretty">Считается по маркировке карт (1 ГБ = 1000 МБ) прямо в вашем браузере — данные никуда не уходят.</p>
+    </div>
+  </div>
+
+  <div class="seo-body">
+    <h2 class="art-h2" style="margin-top:0">Сколько видео влезет на карту памяти: вся математика</h2>
+    <p>Всё решает одно число — <b>битрейт</b>, скорость потока записи. Делите его на 8 — получаете мегабайты в секунду: режим 100 Мбит/с пишет 12,5 МБ каждую секунду, то есть 750 МБ в минуту и 45 ГБ в час. Дальше простое деление: на карту 128 ГБ такого видео влезает около 2 часов 50 минут. Никакой магии «4К весит много» нет — телефонный 4K в HEVC при 25 Мбит/с занимает вчетверо меньше места, чем тот же 4K с беззеркалки на 100 Мбит/с.</p>
+    <p>Вторая ловушка — <b>скорость карты</b>. Крупная цифра «до 200 MB/s» на этикетке — это чтение, к записи видео она отношения не имеет. Запись гарантирует класс V: V30 обещает не меньше 30 МБ/с — этого хватает битрейтам до 240 Мбит/с. Снимаете All-Intra или видео-RAW — нужна V60, V90 или CFexpress, иначе камера остановит запись на самом важном дубле. Как выжать максимум из съёмки на телефон — в <a href="../articles/kak-snimat-video-na-telefon.html">разборе про мобильное видео</a>; посчитать, сколько стоит ваша смена, — в <a href="smeta-i-schet.html">смете и счёте</a>.</p>
+
+    <h2 class="art-h2">Частые вопросы про карты памяти</h2>
+    <details class="svc-faq"><summary>Сколько весит час видео в 4К?</summary><p>При битрейте 100 Мбит/с (типичный 4K-режим беззеркалки) час записи занимает 45 ГБ: 100 ÷ 8 = 12,5 МБ/с × 3600 секунд. Телефонный 4K/30 в HEVC (около 25 Мбит/с) — примерно 11 ГБ в час, All-Intra на 600 Мбит/с — 270 ГБ.</p></details>
+    <details class="svc-faq"><summary>Сколько видео влезет на карту 128 ГБ?</summary><p>При 100 Мбит/с — примерно 2 часа 50 минут, при телефонных 25 Мбит/с — около 11 часов. Всё решает битрейт режима записи: посмотрите его в меню камеры и посчитайте точно калькулятором выше.</p></details>
+    <details class="svc-faq"><summary>Какая карта памяти нужна для 4К?</summary><p>Смотрите не на объём, а на класс скорости V — он гарантирует минимальную скорость записи. V30 (30 МБ/с) держит битрейты до 240 Мбит/с, этого хватает почти всем 4K-режимам H.264/HEVC. All-Intra и видео-RAW требуют V60, V90 или CFexpress. Крупная цифра «до 200 MB/s» на этикетке — скорость чтения, о записи она не говорит.</p></details>
+    <details class="svc-faq"><summary>Почему карта на 128 ГБ показывает только 119?</summary><p>Производители маркируют карты десятичными гигабайтами (1 ГБ = 1 000 000 000 байт), а компьютер считает двоичными: 128 × 10⁹ байт ÷ 2³⁰ ≈ 119 ГиБ. Гигабайты не пропали — это одна и та же ёмкость в разных единицах.</p></details>
+    <details class="svc-faq"><summary>Где посмотреть битрейт своей камеры?</summary><p>В меню записи или инструкции: Sony пишет его прямо в названии режима («4K 100M» = 100 Мбит/с). Или посчитайте по готовому файлу: вес в мегабайтах ÷ длительность в секундах × 8 = битрейт в Мбит/с.</p></details>
+  </div>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Карты посчитаны — осталось <em>снять</em>.</h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="../instrumenty/">Все инструменты</a>
+      <a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/karta.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+</body>
+</html>
