@@ -183,9 +183,22 @@ def collect(d1: str, d2: str, label: str) -> str:
                              f"{int(ind.get('TOTAL_CLICKS', 0))} кликов")
         else:
             lines.append("Запросов с показами за период пока нет.")
-    except Exception as e:  # Вебмастер не должен ронять сводку Метрики
+    except urllib.error.HTTPError as e:
+        body = ""
+        try:
+            body = e.read().decode("utf-8", "replace")
+        except Exception:
+            pass
         lines.append("")
-        lines.append(f"Вебмастер недоступен: {type(e).__name__}")
+        if "HOST_NOT_LOADED" in body:
+            lines.append("<b>Поиск Яндекса</b>")
+            lines.append("Сайт ещё загружается в Вебмастер — данные по запросам "
+                         "и страницам в поиске появятся в ближайшие дни.")
+        else:
+            lines.append(f"Вебмастер ответил ошибкой {e.code} — загляну завтра.")
+    except Exception as e:  # сеть или что-то ещё не должно ронять сводку Метрики
+        lines.append("")
+        lines.append(f"Вебмастер недоступен ({type(e).__name__}) — данные поиска в следующей сводке.")
 
     lines.append("")
     lines.append('<a href="https://metrika.yandex.ru/dashboard?id=111935483">Метрика</a> · '
