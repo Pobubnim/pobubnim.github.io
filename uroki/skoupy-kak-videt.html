@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Скоупы в DaVinci Resolve: Waveform, Parade, Vectorscope — урок | ПОБУБНИМ</title>
+<meta name="description" content="Как читать скоупы в цветокоррекции: Waveform и шкала IRE, Parade и баланс белого, Vectorscope и линия скин-тона. Интерактивный урок с настоящими скоупами — крутите ползунки и смотрите на приборы.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/uroki/skoupy-kak-videt.html">
+<meta property="og:title" content="Скоупы: как видеть то, что глаз врёт — интерактивный урок | ПОБУБНИМ">
+<meta property="og:description" content="Waveform, Parade, Vectorscope и гистограмма считаются здесь из настоящих пикселей кадра: двигайте экспозицию и баланс — приборы отвечают вживую.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.github.io/uroki/skoupy-kak-videt.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Скоупы: как видеть то, что глаз врёт", "description": "Как читать Waveform, Parade, Vectorscope и гистограмму в цветокоррекции. Интерактивный урок с настоящими скоупами, которые считаются из пикселей кадра.", "datePublished": "2026-08-25", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/skoupy-kak-videt.html", "image": "https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Что такое IRE на скоупе?", "acceptedAnswer": {"@type": "Answer", "text": "IRE — единицы шкалы яркости видеосигнала: 0 — чёрное, 100 — белое. В Rec.709 средне-серая карта 18% ложится примерно на 40–45 IRE, светлая кожа — на 60–75 IRE, диффузный белый — около 100. Эти ориентиры и делают waveform точнее глаза."}},
+{"@type": "Question", "name": "Почему log-материал на скоупе прижат к середине?", "acceptedAnswer": {"@type": "Answer", "text": "Так и должно быть: у log своя разметка. Серая карта 18% в S-Log3 сидит примерно на 41 IRE, в ARRI LogC4 — около 40, а белое не доходит до верха шкалы. Log сжимает широкий диапазон сцены в файл, поэтому картинка выглядит плоской до конверсии в Rec.709."}},
+{"@type": "Question", "name": "Как по скоупу проверить баланс белого?", "acceptedAnswer": {"@type": "Answer", "text": "По Parade: он показывает каналы R, G и B рядом. Найдите в кадре белый или серый объект — на нейтральном балансе следы трёх каналов на его уровне совпадают по высоте. Красный выше — картинка тёплая, синий выше — холодная."}},
+{"@type": "Question", "name": "Зачем нужна линия скин-тона на вектороскопе?", "acceptedAnswer": {"@type": "Answer", "text": "Это ориентир для кожи: здоровая кожа любого оттенка ложится вдоль неё, а расстояние от центра показывает насыщенность. Отклонение следа кожи от линии означает паразитный оттенок на лице — самый заметный для зрителя дефект грейда."}}
+]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Статьи и уроки", "item": "https://pobubnim.github.io/articles/"}, {"@type": "ListItem", "position": 3, "name": "Скоупы: как видеть то, что глаз врёт", "item": "https://pobubnim.github.io/uroki/skoupy-kak-videt.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 820px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 820px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 820px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ---------- доска: кадр + живой скоуп ---------- */
+  .board { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(14px, 2.4vw, 22px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .board-top { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.6vw, 16px); }
+  .board canvas { width: 100%; display: block; border-radius: 8px; background: #0b0a09; }
+  .board .cap { margin-top: 6px; font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); font-family: var(--font-mono); display: flex; justify-content: space-between; gap: 10px; }
+  .views { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 10px; }
+  .vbtn { padding: 7px 13px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
+  .vbtn:hover { background: rgba(245,239,226,0.06); }
+  .vbtn.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+  .board .lab-row { margin-top: 2px; }
+  .stat { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--smoke); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
+  .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
+  .task b { color: var(--ink); font-weight: 500; }
+  .board-reset { margin-top: 12px; padding: 8px 14px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; }
+  .board-reset:hover { background: rgba(245,239,226,0.06); }
+  @media (max-width: 720px) { .board-top { grid-template-columns: 1fr; } }
+  .ire-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; }
+  .ire-table th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+  .ire-table td { color: var(--smoke); font-weight: 300; padding: 11px 12px 11px 0; border-bottom: 1px solid var(--line-soft); }
+  .ire-table td:first-child { color: var(--ink); font-weight: 500; }
+  .ire-table td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 03 · Цвет · Живая доска</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Скоупы в DaVinci Resolve: Waveform, Parade, Vectorscope</span>Видеть то, что глаз <em>врёт</em></h1>
+    <p class="lead">Через десять минут работы глаз привыкает к любой картинке и перестаёт замечать перекос. Приборы не привыкают. Это не пересказ мануала: скоупы ниже считаются из настоящих пикселей кадра прямо в браузере — двигайте ползунки и смотрите, как отвечают приборы.</p>
+    <time datetime="2026-08-25">Обновлено 25.08.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="board">
+        <div class="board-top">
+          <div>
+            <canvas id="bd-frame" width="640" height="360" aria-label="Кадр с применёнными настройками"></canvas>
+            <div class="cap"><span>КАДР</span><span id="bd-mode">REC.709</span></div>
+          </div>
+          <div>
+            <canvas id="bd-scope" width="640" height="360" aria-label="Скоуп: считается из пикселей кадра"></canvas>
+            <div class="cap"><span id="bd-scope-name">WAVEFORM · IRE</span><span>считается из кадра</span></div>
+          </div>
+        </div>
+
+        <div class="views" role="group" aria-label="Вид скоупа">
+          <button class="vbtn on" type="button" data-view="waveform">Waveform</button>
+          <button class="vbtn" type="button" data-view="parade">Parade</button>
+          <button class="vbtn" type="button" data-view="vector">Vectorscope</button>
+          <button class="vbtn" type="button" data-view="hist">Histogram</button>
+        </div>
+        <div class="views" role="group" aria-label="Кадр" style="margin-top:0">
+          <button class="vbtn fbtn on" type="button" data-frame="polya-scope">Кадр: вода</button>
+          <button class="vbtn fbtn" type="button" data-frame="polya-skin">Кожа крупно</button>
+          <button class="vbtn fbtn" type="button" data-frame="polya-splash">Контровое солнце</button>
+          <button class="vbtn fbtn" type="button" data-frame="polya-field">Общий план</button>
+        </div>
+
+        <div class="lab">
+          <div class="lab-row"><span class="snm">ЭКСПОЗИЦИЯ</span><input class="lab-range" id="bd-exp" type="range" min="-200" max="200" value="0" aria-label="Экспозиция в стопах"><span class="sv" id="sv-exp">0.0</span></div>
+          <div class="lab-row"><span class="snm">КОНТРАСТ</span><input class="lab-range" id="bd-con" type="range" min="50" max="200" value="100" aria-label="Контраст"><span class="sv" id="sv-con">100%</span></div>
+          <div class="lab-row"><span class="snm">ТЕМПЕРАТУРА</span><input class="lab-range" id="bd-tmp" type="range" min="-100" max="100" value="0" aria-label="Температура"><span class="sv" id="sv-tmp">0</span></div>
+          <div class="lab-row"><span class="snm">НАСЫЩЕННОСТЬ</span><input class="lab-range" id="bd-sat" type="range" min="0" max="200" value="100" aria-label="Насыщенность"><span class="sv" id="sv-sat">100%</span></div>
+        </div>
+
+        <div class="stat" id="bd-stat" aria-live="polite"></div>
+        <div class="task"><b>Задание.</b> В кадрах есть белое платье, кожа и закатное солнце — вся палитра для приборов. Поднимите экспозицию, пока платье не выгорит в обрез (счётчик светов покраснеет), и отступите назад. Переключитесь на Parade и уведите температуру: следы каналов разъедутся. На «Коже крупно» откройте Vectorscope — облако ляжет вдоль линии скин-тона, а стоит увести температуру, и оно с неё сойдёт.</div>
+        <button class="board-reset" type="button" id="bd-reset">Сбросить настройки</button>
+      </div>
+      <div class="viz-cap">Кадры — стилы из моего проекта «Поля» после финального грейда. Честная математика: кадр обрабатывается попиксельно, скоупы строятся из результата (яркость по Rec.709). Упрощение: правки считаются в дисплейном пространстве, без перехода в линейный свет — форма отклика та же, что у колёс Resolve.</div>
+    </div>
+
+    <p>Скоупы — это не «графики для красоты», а единственный честный свидетель в комнате. Ваш глаз адаптируется к перекосу за минуты, монитор почти наверняка врёт на пару сотен кельвинов, а осциллограмма показывает сигнал как он есть. В DaVinci Resolve они открываются через <b>Workspace → Video Scopes</b>.</p>
+
+    <div class="step-head" id="waveform"><i>ПРИБОР 1 / 4</i><h2>Waveform: <em>экспозиция</em></h2></div>
+    <p><b>Что показывает.</b> Яркость кадра по горизонтали: низ шкалы — тени, верх — света, а сама картинка «разложена» слева направо, как в кадре. Шкала размечена в <b>IRE</b>: 0 — чёрное, 100 — белое.</p>
+    <p><b>Как читать.</b> «Полка», прижатая к самому низу или верху, — это обрез: информация в этих местах потеряна безвозвратно, и никакой грейд её не вернёт. Ориентиры для нормального Rec.709-материала:</p>
+    <table class="ire-table">
+      <tr><th>Что в кадре</th><th>Где на шкале</th><th>Комментарий</th></tr>
+      <tr><td>Средне-серая карта 18%</td><td class="num">40–45 IRE</td><td>опорная точка экспозиции</td></tr>
+      <tr><td>Светлая кожа</td><td class="num">60–75 IRE</td><td>тёмная кожа — ниже по этому же коридору</td></tr>
+      <tr><td>Белая рубашка, бумага</td><td class="num">80–90 IRE</td><td>ещё держит фактуру</td></tr>
+      <tr><td>Диффузный белый</td><td class="num">≈100 IRE</td><td>выше — только блики и источники</td></tr>
+    </table>
+    <div class="why"><span class="label">Важная поправка про log</span><p>У log-материала своя разметка: серая карта 18% в S-Log3 сидит примерно на 41 IRE, в ARRI LogC4 — около 40, а белое не дотягивает до верха шкалы. Поэтому log-кадр на waveform выглядит «сжатым к середине» — это норма, а не ошибка экспозиции. Почему так устроено — в уроке <a href="log-i-grade.html">«Почему видео из камеры блёклое»</a>.</p></div>
+
+    <div class="step-head" id="parade"><i>ПРИБОР 2 / 4</i><h2>Parade: <em>баланс белого</em></h2></div>
+    <p><b>Что показывает.</b> Те же осциллограммы, но по каналам: красный, зелёный, синий рядом. Это главный прибор для баланса белого.</p>
+    <p><b>Как читать.</b> Найдите в кадре предмет, который в жизни был белым или серым, и посмотрите на три следа на его уровне. Совпали по высоте — баланс нейтральный. Красный выше — картинка тёплая, синий выше — холодная. Переключитесь на Parade в доске выше и уведите температуру: следы разъедутся у вас на глазах, и станет видно, чем именно перекос отличается от «просто тёплого света в сцене».</p>
+
+    <div class="step-head" id="vector"><i>ПРИБОР 3 / 4</i><h2>Vectorscope: <em>цвет и кожа</em></h2></div>
+    <p><b>Что показывает.</b> Цветовой круг: угол — оттенок, удалённость от центра — насыщенность. Яркость здесь не участвует вовсе.</p>
+    <p><b>Как читать.</b> Компактное облако у центра — блёклая картинка, разлетевшееся к краям — перенасыщенная. Главный ориентир — <b>линия скин-тона</b> примерно на одиннадцати часах, между красным и жёлтым: здоровая кожа любого оттенка ложится вдоль неё. Ушёл след кожи в сторону от линии — на лицах паразитный оттенок, и зритель почувствует фальшь, даже не понимая причину.</p>
+    <p>Это не образное правило, а арифметика: если посчитать координаты кожи разных оттенков в тех же осях, по которым строится вектороскоп, все они попадают в узкий коридор вокруг одного направления — светлая кожа даёт 127°, средняя 125°, тёмная и очень тёмная — по 123°. Отличается <b>только удалённость от центра, а не направление</b>. Для сравнения, чистый красный лежит на 103°, небо и трава — в совершенно других секторах круга. Поэтому линия скин-тона и работает одинаково для любого человека в кадре.</p>
+
+    <div class="step-head" id="hist"><i>ПРИБОР 4 / 4</i><h2>Гистограмма: <em>общая картина</em></h2></div>
+    <p><b>Что показывает.</b> Сколько пикселей приходится на каждый уровень яркости — без привязки к тому, где они в кадре. Полезна, чтобы одним взглядом увидеть общий характер: всё в тенях, всё в светах, или диапазон использован целиком.</p>
+    <p>Именно поэтому её не хватает для точной работы: гистограмма скажет «в кадре много тёмного», но не покажет, что тёмное — это провалившееся лицо в углу. Для экспозиции колористы смотрят waveform, а гистограмму держат как быстрый обзор.</p>
+
+    <div class="step-head" id="itog"><i>ИТОГ</i><h2>Что <em>запомнить</em></h2></div>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>Waveform</b> — экспозиция и обрез: тени и света на шкале IRE, «полки» у краёв означают потерянную информацию</li>
+      <li><b>Parade</b> — баланс белого: на нейтральном объекте следы R, G и B сходятся по высоте</li>
+      <li><b>Vectorscope</b> — оттенок и насыщенность, кожа держится линии скин-тона</li>
+      <li><b>Histogram</b> — быстрый обзор распределения яркостей, но не замена waveform</li>
+      <li><b>Log читается по своим якорям</b>: серая карта около 40–41 IRE, «сжатый» вид — норма до конверсии</li>
+    </ul>
+    <p>Дальше по серии: <a href="poryadok-cvetokorrekcii.html">порядок цветокоррекции по шагам</a> и <a href="log-i-grade.html">почему видео из камеры блёклое</a>. Хотите разобрать по скоупам собственный материал — это ровно то, чем мы занимаемся на <a href="../education.html">индивидуальных занятиях</a>.</p>
+  </div>
+
+  <a class="art-svc" href="../education.html"><b>Разберём ваш материал по приборам? Обучение цвету — от 3 000 ₽</b><span>Смотреть программы →</span></a>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Обсудим <em>задачу</em>?</h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../education.html">Обучение</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<img id="bd-src" src="../assets/img/polya-scope.webp" alt="" hidden>
+<script src="../assets/js/scope.js" defer></script>
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+<script defer>
+window.addEventListener("load", function () {
+  var img = document.getElementById("bd-src");
+  var statEl = document.getElementById("bd-stat");
+  var names = { waveform: "WAVEFORM · IRE", parade: "PARADE · R G B", vector: "VECTORSCOPE", hist: "HISTOGRAM" };
+
+  var board = PobubnimScope.create({
+    img: img,
+    canvases: { frame: document.getElementById("bd-frame"), scope: document.getElementById("bd-scope") },
+    onStats: function (s, st) {
+      var html = "<span>средняя яркость " + s.avgIre.toFixed(0) + " IRE</span>";
+      html += "<span" + (s.lowPct > 1 ? ' class="warn"' : "") + ">обрез в тенях " + s.lowPct.toFixed(1) + "%</span>";
+      html += "<span" + (s.highPct > 1 ? ' class="warn"' : "") + ">обрез в светах " + s.highPct.toFixed(1) + "%</span>";
+      html += "<span>экспозиция " + (st.exposure > 0 ? "+" : "") + st.exposure.toFixed(1) + " стопа</span>";
+      statEl.innerHTML = html;
+    }
+  });
+
+  function bind(id, key, fmt, conv) {
+    var el = document.getElementById(id), out = document.getElementById(id.replace("bd-", "sv-"));
+    el.addEventListener("input", function () {
+      var v = conv(+el.value);
+      board.set(key, v);
+      out.textContent = fmt(+el.value, v);
+    });
+  }
+  bind("bd-exp", "exposure", function (raw, v) { return (v > 0 ? "+" : "") + v.toFixed(1); }, function (raw) { return raw / 100; });
+  bind("bd-con", "contrast", function (raw) { return raw + "%"; }, function (raw) { return raw / 100; });
+  bind("bd-tmp", "temp", function (raw) { return (raw > 0 ? "+" : "") + raw; }, function (raw) { return raw; });
+  bind("bd-sat", "saturation", function (raw) { return raw + "%"; }, function (raw) { return raw / 100; });
+
+  document.querySelectorAll(".vbtn[data-view]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".vbtn[data-view]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      board.set("view", b.dataset.view);
+      document.getElementById("bd-scope-name").textContent = names[b.dataset.view];
+    });
+  });
+
+  /* смена кадра: скоупы пересчитываются под новый материал */
+  document.querySelectorAll(".fbtn").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".fbtn").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      var next = new Image();
+      next.onload = function () { img.src = next.src; board.update(); };
+      next.src = "../assets/img/" + b.dataset.frame + ".webp";
+    });
+  });
+
+  document.getElementById("bd-reset").addEventListener("click", function () {
+    board.reset();
+    [["bd-exp", 0, "0.0"], ["bd-con", 100, "100%"], ["bd-tmp", 0, "0"], ["bd-sat", 100, "100%"]].forEach(function (p) {
+      document.getElementById(p[0]).value = p[1];
+      document.getElementById(p[0].replace("bd-", "sv-")).textContent = p[2];
+    });
+  });
+
+  if (img.complete) board.update();
+  else img.addEventListener("load", board.update);
+});
+</script>
+</body>
+</html>
