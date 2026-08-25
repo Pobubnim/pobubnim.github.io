@@ -54,7 +54,28 @@ def token() -> str:
     return TOKEN_FILE.read_text(encoding="utf-8").strip()
 
 
-PAUSES = (5, 30, 90)  # сеть здесь падает волнами по несколько минут
+PAUSES = (5, 20, 60, 120, 180)  # сеть здесь падает волнами по несколько минут
+NET_WAIT_MIN = 40  # сколько минут ждать окна сети перед сбором (задача в 09:00)
+
+
+def wait_for_network(minutes: int = NET_WAIT_MIN) -> bool:
+    """Ждёт, пока API Метрики начнёт отвечать. Сеть на машине падает волнами,
+    и утренний запуск не должен молча пропадать из-за провала."""
+    import time
+    deadline = time.time() + minutes * 60
+    probe = urllib.request.Request(
+        "https://api-metrika.yandex.net/management/v1/counters?per_page=1",
+        headers={"Authorization": "OAuth " + token()})
+    while True:
+        try:
+            with urllib.request.urlopen(probe, timeout=20):
+                return True
+        except urllib.error.HTTPError:
+            return True  # сервис отвечает, дальше разберёмся по месту
+        except Exception:
+            if time.time() > deadline:
+                return False
+            time.sleep(60)
 
 
 def api(url: str, params: dict | None = None) -> dict:
@@ -215,6 +236,20 @@ def main() -> None:
         y = date.today() - timedelta(days=1)
         d1 = d2 = y.isoformat()
         label = f"{y:%d.%m.%Y}"
+
+    if not wait_for_network():
+        msg = (f"📊 <b>ПОБУБНИМ — сводка за {label}</b>\n\n"
+               "Не смог собрать статистику: интернет на машине не отвечал "
+               f"{NET_WAIT_MIN} минут подряд. Цифры не потеряны — они в Метрике, "
+               "следующая сводка придёт как обычно.")
+        print(msg)
+        if "--send" in args:
+            tmp = Path(__file__).with_name("_daily_stats_msg.txt")
+            tmp.write_text(msg, encoding="utf-8")
+            subprocess.run([sys.executable, str(NOTIFY), "--text-file", str(tmp)],
+                           capture_output=True, text=True)
+            tmp.unlink(missing_ok=True)
+        sys.exit(2)
 
     text = collect(d1, d2, label)
     print(text)
