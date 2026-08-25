@@ -58,3 +58,12 @@ cvetokorrekciya (удалённые услуги).
 DIY-тема), kak-snimat-video-na-telefon (без гео), obuchenie-videosemke-s-nulya
 («Москва и онлайн»). Все с FAQPage+Article schema и прямым ответом в первых
 двух предложениях. admin.html — noindex + Disallow в robots (не SEO-страница).
+
+Полировка (25.08, ночь): meta author добавлен на ВСЕ страницы (было только на 4);
+description ужаты в закон 150–190 (education, оба «сколько стоит», кейс MONOLITH
+дотянут). Статьи №7 kak-snyat-reklamnyj-rolik («в Москве», FAQ+Article) и №8
+skolko-stoit-cvetokorrekciya (БЕЗ гео — удалённая услуга, «по всей России»)
+на проде, в sitemap, перелинкованы: главная (разборы цен + строка «как это
+устроено»), услуги reklamnyj-rolik/cvetokorrekciya (svc-case блоки), кросс-ссылки
+статей. БАГ-ФИКС nav.js: articles/ добавлен в регулярку deep — до этого бургер-меню
+и дропдаун «Решения» на всех статьях вели в 404 (articles/raboty.html и т.п.).

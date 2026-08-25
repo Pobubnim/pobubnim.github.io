@@ -2,7 +2,7 @@
    Подключается на всех страницах; сам строит меню и понимает вложенность пути. */
 
 (function () {
-  var deep = /\/(services|cases)\//.test(location.pathname);
+  var deep = /\/(services|cases|articles)\//.test(location.pathname);
   var root = deep ? "../" : "";
   var onHome = !deep && /(^\/$|index\.html$)/.test(location.pathname || "/");
 
