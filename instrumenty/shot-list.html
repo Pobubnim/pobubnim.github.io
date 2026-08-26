@@ -44,11 +44,19 @@
   /* сцена = карточка, внутри кадры */
   .scenes { display: flex; flex-direction: column; gap: 12px; }
   .scene { border: 1px solid var(--line); border-radius: var(--r-card); padding: 14px; background: rgba(255,255,255,0.012); }
-  .scene-head { display: grid; grid-template-columns: 74px 1fr 1fr 96px 34px; gap: 8px; align-items: center; }
+  .scene-head { display: grid; grid-template-columns: 74px 1fr 1fr 104px auto; gap: 8px; align-items: center; }
   .scene .scn { font: 500 10.5px var(--font-ui); letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
   .scene-bar { margin-top: 10px; }
   .shot { border-top: 1px solid var(--line-soft); margin-top: 12px; padding-top: 12px; }
-  .shot-top { display: grid; grid-template-columns: 38px 1fr 62px 32px; gap: 8px; align-items: center; }
+  .shot-top { display: grid; grid-template-columns: 18px 36px 1fr 62px auto; gap: 8px; align-items: center; }
+  .scene .grip { color: var(--mute); cursor: grab; font-size: 13px; line-height: 1; user-select: none; }
+  .scene .grip:active { cursor: grabbing; }
+  .rowbtns { display: flex; gap: 2px; }
+  .rowbtns button { width: 30px; min-height: 42px; border-radius: 8px; border: 1px solid transparent; background: none; color: var(--mute); font-size: 14px; cursor: pointer; transition: color 0.15s var(--ease); }
+  .rowbtns button:hover { color: var(--ink); border-color: var(--line); }
+  .rowbtns .del:hover, .rowbtns .del-scene:hover { color: var(--dv-rec); }
+  .shot.dragging { opacity: 0.4; }
+  .shot.drop-here { outline: 2px solid var(--lamp); outline-offset: 2px; border-radius: 8px; }
   .shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(124px, 1fr)); gap: 6px; margin-top: 6px; }
   .scene input, .scene select { background: #0c0c0b; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: 400 14px var(--font-ui); padding: 9px 10px; min-height: 42px; width: 100%; min-width: 0; }
   .scene input:focus, .scene select:focus { border-color: var(--lamp); outline: none; }
@@ -83,10 +91,10 @@
   @media (max-width: 560px) {
     .paper table.shots { font-size: 10.5px; }
     .paper table.shots th, .paper table.shots td { padding: 4px 4px; }
-    .scene-head { grid-template-columns: 1fr 46px; }
+    .scene-head { grid-template-columns: 1fr auto; }
     .scene .scn, .scene-head .sc-name, .scene-head .sc-loc { grid-column: 1 / -1; }
-    .scene-head .del-scene { width: 46px; }
-    .shot-top { grid-template-columns: 30px 1fr 54px 30px; gap: 6px; }
+    .shot-top { grid-template-columns: 16px 32px 1fr 50px; gap: 6px; }
+    .shot-top .rowbtns { grid-column: 1 / -1; justify-content: flex-end; }
     .shot-grid { grid-template-columns: 1fr 1fr; }
     .scene input, .scene select { font-size: 13px; padding: 9px 8px; }
   }
@@ -127,6 +135,8 @@
           <label class="opt"><input type="radio" name="kind" value="reklama"><span>Реклама<i>продукт, процесс</i></span></label>
           <label class="opt"><input type="radio" name="kind" value="klip"><span>Клип<i>липсинк, проходы</i></span></label>
           <label class="opt"><input type="radio" name="kind" value="meropr"><span>Мероприятие<i>сцена, зал, детали</i></span></label>
+          <label class="opt"><input type="radio" name="kind" value="predm"><span>Предметка<i>продукт крупно, свет</i></span></label>
+          <label class="opt"><input type="radio" name="kind" value="vlog"><span>Влог и бэкстейдж<i>процесс, площадка</i></span></label>
         </div>
         <div class="flds">
           <div class="fld wide"><label for="f-proj">Проект</label><input id="f-proj" type="text" placeholder="Свадьба Ани и Миши"></div>
@@ -140,9 +150,10 @@
       <section class="cfg-sec">
         <span class="label">02 · Сцены и кадры — начните с типовых</span>
         <div class="chips" id="chips" role="group" aria-label="Типовые кадры"></div>
+        <div id="datalists" hidden></div>
         <div class="scenes" id="scenes"></div>
         <div style="margin-top:12px"><button type="button" class="mini" id="add-scene">+ Сцена</button></div>
-        <div class="hint">Кадры лестницей: общий даёт географию, средний — действие, крупный — эмоцию, деталь — смысл. Соседние кадры одной крупности на монтаже не склеиваются, поэтому чередуйте. Движение камеры ставьте только там, где оно за кем-то следует или что-то открывает.</div>
+        <div class="hint">Стрелки ↑ ↓ двигают кадр внутри сцены, а на краю перекидывают в соседнюю; на компьютере кадр можно тащить за ручку ⠿ в любую сцену. Кнопка ⧉ дублирует кадр. Крупность, ракурс, движение и время суток — списки с подсказками, но писать в них можно что угодно своё.<br><br>Кадры лестницей: общий даёт географию, средний — действие, крупный — эмоцию, деталь — смысл. Соседние кадры одной крупности на монтаже не склеиваются, поэтому чередуйте. Движение камеры ставьте только там, где оно за кем-то следует или что-то открывает.</div>
       </section>
 
       <section class="cfg-sec">

@@ -11,7 +11,8 @@
 /* ---------- сплит: опции слева, лист справа ---------- */
 .builder { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(20px, 3vw, 36px); margin-top: clamp(40px, 6vw, 64px); align-items: start; }
 .cfg { display: flex; flex-direction: column; gap: clamp(28px, 4vw, 40px); }
-.cfg, .cfg-sec, .fld, .opt { min-width: 0; }
+.cfg, .cfg-sec, .fld, .opt, .paper-col { min-width: 0; }   /* грид-колонки должны уметь
+   сжиматься: без этого широкая таблица внутри листа растягивает всю страницу */
 .cfg-sec > .label { display: block; margin-bottom: 14px; }
 .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 8px; }
 .opt { position: relative; }

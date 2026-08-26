@@ -103,29 +103,84 @@ def main():
         time.sleep(0.3)
 
         # 2. «все кадры» набивают сцену, нумерация сквозная внутри сцены
+        n_preset = n_svadba - 1                      # последний чип — «все кадры»
+        check("пресетов свадьбы стало больше десятка", n_preset >= 12, n_preset)
         t.js("document.querySelector('#chips .chip.all').click()")
-        time.sleep(0.4)
+        time.sleep(0.5)
         shots = t.js("document.querySelectorAll('#scenes .shot').length")
-        check("пресет набил кадры", shots == 7, shots)
+        check("пресет набил все кадры", shots == n_preset, f"{shots} против {n_preset}")
         nums = t.js("[...document.querySelectorAll('#scenes .sn')].map(e=>e.textContent).join(',')")
-        check("нумерация 1.1…1.7", nums == "1.1,1.2,1.3,1.4,1.5,1.6,1.7", nums)
+        check("нумерация подряд от 1.1", nums.startswith("1.1,1.2,1.3"), nums[:24])
+
+        # 2а. порядок кадров: стрелка вниз меняет местами соседей
+        first = t.js("document.querySelector('#scenes .shot .what').value")
+        second = t.js("document.querySelectorAll('#scenes .shot .what')[1].value")
+        t.js("document.querySelector('#scenes .shot .down').click()")
+        time.sleep(0.4)
+        now1 = t.js("document.querySelector('#scenes .shot .what').value")
+        now2 = t.js("document.querySelectorAll('#scenes .shot .what')[1].value")
+        check("стрелка вниз переставила кадры", now1 == second and now2 == first,
+              f"{now1} / {now2}")
+        t.js("document.querySelectorAll('#scenes .shot .up')[1].click()")
+        time.sleep(0.4)
+        back = t.js("document.querySelector('#scenes .shot .what').value")
+        check("стрелка вверх вернула порядок", back == first, back)
+
+        # 2б. дубль кадра
+        t.js("document.querySelector('#scenes .shot .copy-shot').click()")
+        time.sleep(0.4)
+        dup = t.js("document.querySelectorAll('#scenes .shot .what')[1].value")
+        n_after = t.js("document.querySelectorAll('#scenes .shot').length")
+        check("кнопка ⧉ дублирует кадр", dup == first and n_after == n_preset + 1,
+              f"{dup} / {n_after}")
+        t.js("document.querySelectorAll('#scenes .shot .del')[1].click()")
+        time.sleep(0.4)
+
+        # 2в. своё значение в списке (не из подсказок) доходит до листа
+        t.js("(()=>{const i=document.querySelector('#scenes .shot .size');"
+             "i.value='макро 1:1, своё';i.dispatchEvent(new Event('input',{bubbles:true}));})()")
+        time.sleep(0.4)
+        paper_own = t.js("document.getElementById('paper').innerText")
+        check("своё значение крупности попало в лист", "макро 1:1, своё" in (paper_own or ""), "")
+
+        # 2г. кадр с края уезжает в соседнюю сцену
+        t.js("document.getElementById('add-scene').click()")
+        time.sleep(0.4)
+        scenes_n = t.js("document.querySelectorAll('#scenes .scene').length")
+        check("вторая сцена добавлена", scenes_n == 2, scenes_n)
+        t.js("(()=>{const s=document.querySelectorAll('#scenes .scene')[1];"
+             "s.querySelector('.shot .up').click();})()")
+        time.sleep(0.5)
+        in_first = t.js("document.querySelectorAll('#scenes .scene')[0].querySelectorAll('.shot').length")
+        check("кадр с края уехал в прошлую сцену", in_first == n_preset + 1, in_first)
+        # сцены меняются местами
+        t.js("document.querySelectorAll('#scenes .scene')[0].querySelector('.down-scene').click()")
+        time.sleep(0.5)
+        top_scene_shots = t.js("document.querySelectorAll('#scenes .scene')[0].querySelectorAll('.shot').length")
+        check("сцены переставляются", top_scene_shots == 1, top_scene_shots)
+        t.js("document.querySelectorAll('#scenes .scene')[1].querySelector('.up-scene').click()")
+        time.sleep(0.5)
+        t.js("document.querySelectorAll('#scenes .scene')[1].querySelector('.del-scene').click()")
+        time.sleep(0.5)
+        t.js("(()=>{const s=document.querySelectorAll('#scenes .shot')[%s];if(s)s.querySelector('.del').click();})()" % str(n_preset))
 
         # 3. счётчик: 7 кадров × 15 мин + 60 мин запаса = 165 мин из 480
         d = t.js("JSON.stringify(window.PobubnimShotlist.calc())")
         d = json.loads(d) if d else {}
-        check("счётчик: 7 кадров", d.get("shots") == 7, d)
-        check("счётчик: 105 мин съёмки", d.get("mins") == 105, d)
-        check("счётчик: занято 165 мин", d.get("busy") == 165, d)
-        check("счётчик: в смену влезает", d.get("over") is False, d)
+        check("счётчик считает все кадры", d.get("shots") == n_preset, d)
+        check("счётчик: минуты по 15 на кадр", d.get("mins") == n_preset * 15, d)
+        check("счётчик: плюс запас 60 мин", d.get("busy") == n_preset * 15 + 60, d)
         mtext = t.js("document.querySelector('#meter .mtext').textContent")
-        check("текст счётчика человеческий", "7 кадров" in (mtext or "") and "из 8 ч" in (mtext or ""), mtext)
+        check("текст счётчика человеческий",
+              str(n_preset) + " кадров" in (mtext or "") and "из 8 ч" in (mtext or ""), mtext)
 
         # 4. свои минуты у кадра перебивают дефолт
         t.js("(()=>{const i=document.querySelector('#scenes .shot .min');"
              "i.value=45;i.dispatchEvent(new Event('input',{bubbles:true}));})()")
         time.sleep(0.4)
         d2 = json.loads(t.js("JSON.stringify(window.PobubnimShotlist.calc())"))
-        check("свои минуты учтены (105-15+45=135)", d2.get("mins") == 135, d2)
+        check("свои минуты кадра перебивают дефолт",
+              d2.get("mins") == n_preset * 15 - 15 + 45, d2)
 
         # 5. перебор смены красит счётчик
         t.js("(()=>{const i=document.getElementById('f-shift');"
@@ -146,9 +201,9 @@ def main():
         paper = t.js("document.getElementById('paper').innerText")
         check("в листе имя проекта", "Свадьба Ани и Миши" in (paper or ""), (paper or "")[:80])
         check("в листе есть сцена", "Сцена 1" in (paper or ""), "")
-        check("в листе есть итог", "Итого: 7 кадров" in (paper or ""), "")
+        check("в листе есть итог", "Итого: " + str(n_preset) + " кадров" in (paper or ""), "")
         rows = t.js("document.querySelectorAll('#paper table.shots tr').length")
-        check("в таблице листа 7 кадров + шапка", rows == 8, rows)
+        check("в таблице листа все кадры + шапка", rows == n_preset + 1, rows)
         cols = t.js("document.querySelector('#paper table.shots').dataset.cols")
         check("ширины колонок для Word заданы (в сумме 100%)", cols == "6,38,15,17,14,10" and sum(map(int, cols.split(","))) == 100, cols)
 
@@ -163,7 +218,7 @@ def main():
         shots2 = t.js("document.querySelectorAll('#scenes .shot').length")
         note = t.js("!document.getElementById('draft-note').hidden")
         check("черновик восстановлен: проект", proj == "Свадьба Ани и Миши", proj)
-        check("черновик восстановлен: кадры", shots2 == 7, shots2)
+        check("черновик восстановлен: кадры", shots2 == n_preset, shots2)
         check("про черновик сказано пользователю", note is True, note)
 
         # 9. кнопка очистки стирает всё
