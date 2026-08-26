@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Log-кривая в числах: S-Log3, LogC и Rec.709 на графике | ПОБУБНИМ</title>
+<meta name="description" content="Настоящие кривые S-Log3, ARRI LogC и Rec.709 по опубликованным формулам: двигайте экспозицию по стопам и смотрите, куда встаёт серая карта, кожа и белое, сколько стопов в запасе и кому достаются коды.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/uroki/log-krivaya.html">
+<meta property="og:title" content="Log-кривая в числах: S-Log3, LogC и Rec.709 — живой график | ПОБУБНИМ">
+<meta property="og:description" content="Кривые построены по формулам Sony и ARRI, а не срисованы: двигайте экспозицию и смотрите, куда каждая кривая кладёт серую карту и где у неё обрез.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.github.io/uroki/log-krivaya.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Log-кривая в числах: S-Log3, LogC и Rec.709 на одном графике", "description": "Интерактивный график настоящих кривых S-Log3, ARRI LogC3 и Rec.709 по опубликованным формулам: якоря серой карты, запас в стопах и распределение кодов по стопам.", "datePublished": "2026-08-26", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/log-krivaya.html", "image": "https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Почему log-картинка выглядит серой и блёклой?", "acceptedAnswer": {"@type": "Answer", "text": "Log-кривая нарочно сжимает широкий диапазон яркостей сцены в файл: серая карта 18% встаёт в S-Log3 на 41% сигнала, а до отметки 100% остаётся почти восемь стопов запаса под света. Когда такой сигнал показывают на обычном мониторе без конверсии, он и выглядит плоским — это нормальное техническое состояние, а не ошибка."}},
+{"@type": "Question", "name": "Сколько стопов запаса у S-Log3, LogC и Rec.709?", "acceptedAnswer": {"@type": "Answer", "text": "Считается прямо по формулам кривых: у Sony S-Log3 от серой карты до обреза около +7.7 стопа, у ARRI LogC3 (EI800) — около +8.3, а у обычной видеогаммы Rec.709 — всего около +2.5 стопа. Поэтому яркое окно или небо, которые log спокойно удерживает, в Rec.709 выгорают в белую полку."}},
+{"@type": "Question", "name": "Можно ли LUT для S-Log3 применять к материалу LogC?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. У каждой кривой своя формула: одна и та же серая карта лежит в S-Log3 на 41% сигнала, а в LogC3 — на 39%, и дальше кривые расходятся сильнее. LUT, собранный под одну кривую, на другой даст перекошенный контраст и цвет. Сначала конверсия из пространства конкретной камеры (CST или технический LUT), потом творчество."}},
+{"@type": "Question", "name": "Зачем вообще снимать в log, если потом всё равно конвертировать?", "acceptedAnswer": {"@type": "Answer", "text": "Из-за распределения кодов. Линейная запись тратит половину всех значений на один верхний стоп, а тени получают крохи — их растяжка в грейде даёт полосы и шум. Log раздаёт коды по стопам почти поровну: у S-Log3 каждому стопу достаётся около 79 кодов, поэтому материал терпит серьёзную коррекцию без развала."}}
+]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Статьи и уроки", "item": "https://pobubnim.github.io/articles/"}, {"@type": "ListItem", "position": 3, "name": "Log-кривая в числах: S-Log3, LogC и Rec.709", "item": "https://pobubnim.github.io/uroki/log-krivaya.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 820px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 820px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 820px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .board { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(14px, 2.4vw, 22px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .board canvas { width: 100%; display: block; border-radius: 8px; background: #0b0a09; }
+  .board .cap { margin: 6px 0 0; font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); font-family: var(--font-mono); display: flex; justify-content: space-between; gap: 10px; }
+  .views { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 10px; }
+  .views .vlabel { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); align-self: center; margin-right: 4px; }
+  .vbtn { padding: 7px 13px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
+  .vbtn:hover { background: rgba(245,239,226,0.06); }
+  .vbtn.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+  .vbtn .sw { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; }
+  .stat { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--smoke); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
+  .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
+  .task b { color: var(--ink); font-weight: 500; }
+  .anchor-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; }
+  .anchor-table th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+  .anchor-table td { color: var(--smoke); font-weight: 300; padding: 11px 12px 11px 0; border-bottom: 1px solid var(--line-soft); }
+  .anchor-table td:first-child { color: var(--ink); font-weight: 500; }
+  .anchor-table td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--smoke); }
+  .legend i { font-style: normal; display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+</style>
+<script src="../assets/js/analytics.js?v=2" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 05 · Цвет · Живая доска</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Log-кривая в числах: S-Log3, LogC и Rec.709 на одном графике</span>Log-кривая <em>в числах</em></h1>
+    <p class="lead">В уроке про <a href="log-i-grade.html">блёклое видео</a> мы разобрали log на пальцах. Теперь — по-взрослому: кривые на графике ниже не срисованы с картинок, а построены по опубликованным формулам Sony и ARRI. Двигайте экспозицию и смотрите, куда каждая кривая кладёт серую карту, кожу и белую бумагу — и когда у Rec.709 наступает обрез, а log ещё спокоен.</p>
+    <time datetime="2026-08-26">Опубликовано 26.08.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="board" id="lb">
+        <canvas id="lb-graph" width="880" height="430" aria-label="График кривых S-Log3, LogC3 и Rec.709: стопы сцены против процента сигнала"></canvas>
+        <div class="cap"><span>СТОПЫ СЦЕНЫ → СИГНАЛ %</span><span>считается по формулам</span></div>
+
+        <div class="views" role="group" aria-label="Кривые">
+          <span class="vlabel">КРИВЫЕ</span>
+          <button class="vbtn on" type="button" data-curve="slog3"><span class="sw" style="background:#f5efe2"></span>Sony S-Log3</button>
+          <button class="vbtn on" type="button" data-curve="logc3"><span class="sw" style="background:#7fb069"></span>ARRI LogC3</button>
+          <button class="vbtn on" type="button" data-curve="r709"><span class="sw" style="background:#e0492f"></span>Rec.709</button>
+        </div>
+        <div class="lab">
+          <div class="lab-row"><span class="snm">ЭКСПОЗИЦИЯ</span><input class="lab-range" type="range" data-exp min="-30" max="30" value="0" aria-label="Экспозиция сцены в стопах"><span class="sv">0.0</span></div>
+        </div>
+        <div class="stat" id="lb-stat" aria-live="polite"></div>
+        <div class="task"><b>Попробуйте.</b> Поднимайте экспозицию и следите за меткой «бумага 90%»: у Rec.709 она упирается в 100% уже на плюс полстопа — чип покраснеет, света в обрезе. S-Log3 и LogC держат ту же бумагу ещё несколько стопов. Теперь уведите экспозицию в минус: все кривые съезжают вниз, но log-кривые оставляют теням заметную часть шкалы — вот почему недосвет в log вытягивается, а в Rec.709 тонет.</div>
+      </div>
+      <div class="viz-cap">Честная математика: S-Log3 — по Technical Summary Sony, LogC3 (EI800) — по спецификации ARRI, Rec.709 — по ITU-R BT.709 (OETF камеры). Формулы целиком — в базе знаний сайта. Кожа отмечена на +1 стоп над серой картой как ориентир для светлой кожи.</div>
+    </div>
+
+    <div class="step-head" id="chto"><i>ШАГ 1 / 4</i><h2>Как читать <em>этот график</em></h2></div>
+    <p>По горизонтали — <b>стопы сцены</b>: ноль — серая карта 18%, каждый шаг вправо — вдвое больше света, влево — вдвое меньше. По вертикали — <b>процент сигнала</b> в файле: 0 — чёрное, 100 — максимум, дальше некуда. Кривая — это и есть ответ камеры: сколько сигнала она записывает для каждой яркости сцены.</p>
+    <p>Смотрите, что делают log-кривые: они быстро поднимаются в тенях и всё более полого идут в светах. Каждый следующий стоп сцены получает ту же прибавку сигнала — это свойство логарифма. А красная кривая Rec.709 — обычная видеогамма — взлетает и упирается в потолок уже через два с половиной стопа над серым.</p>
+
+    <div class="step-head" id="yakorya"><i>ШАГ 2 / 4</i><h2>Якоря: <em>где что лежит</em></h2></div>
+    <p>У каждой кривой свои опорные точки — по ним экспонируют и проверяют материал. Числа в таблице посчитаны формулами прямо на этой странице:</p>
+    <table class="anchor-table">
+      <tr><th>Кривая</th><th>Серая карта 18%</th><th>Белая бумага 90%</th><th>Запас над серым</th></tr>
+      <tr><td>Sony S-Log3</td><td class="num" data-anchor="slog3:0"></td><td class="num" data-anchor="slog3:2.32"></td><td class="num" data-anchor="slog3:head"></td></tr>
+      <tr><td>ARRI LogC3 (EI800)</td><td class="num" data-anchor="logc3:0"></td><td class="num" data-anchor="logc3:2.32"></td><td class="num" data-anchor="logc3:head"></td></tr>
+      <tr><td>Rec.709 (BT.709)</td><td class="num" data-anchor="r709:0"></td><td class="num" data-anchor="r709:2.32"></td><td class="num" data-anchor="r709:head"></td></tr>
+    </table>
+    <p>Отсюда два практических вывода. Первый: log-кадр на скоупе «жмётся к середине» — серая карта на ~40%, света не дотягивают до верха — и это <b>норма, а не недосвет</b> (подробно — в уроке про <a href="skoupy-kak-videt.html">скоупы</a>). Второй: серая карта в S-Log3 и в LogC лежит на разных процентах, и дальше кривые расходятся сильнее — поэтому <b>LUT одной камеры не подходит другой</b>. Творческий LUT под S-Log3 на материале LogC даст перекошенный контраст: сначала конверсия из пространства конкретной камеры, потом творчество.</p>
+    <div class="why"><span class="label">Почему у каждой камеры своя кривая</span><p>Формула кривой — компромисс между шумом сенсора, его динамическим диапазоном и экономией кодов. Sony, ARRI и Blackmagic решают этот компромисс по-разному, поэтому «log» — это не один стандарт, а семейство кривых с опубликованными формулами. Что у них общее — сама идея: стопы сцены получают почти равные доли сигнала.</p></div>
+
+    <div class="step-head" id="kody"><i>ШАГ 3 / 4</i><h2>Кому достаются <em>коды</em></h2></div>
+    <p>Главный вопрос: зачем вообще эта математика, если потом всё равно конвертировать в Rec.709? Ответ — в том, как три способа записи делят 1023 кода 10-битного файла между стопами:</p>
+
+    <div class="viz lv">
+      <div class="board">
+        <canvas id="lb-codes" width="880" height="300" aria-label="Сколько 10-битных кодов достаётся каждому стопу у S-Log3, Rec.709 и линейной записи"></canvas>
+        <div class="cap"><span>КОДОВ НА СТОП · 10 БИТ</span><span>считается по формулам</span></div>
+        <div class="legend"><i><span class="sw" style="background:#f5efe2"></span>S-Log3</i><i><span class="sw" style="background:#e0492f"></span>Rec.709</i><i><span class="sw" style="background:#6082e0"></span>линейная запись</i></div>
+      </div>
+      <div class="viz-cap">Высота столбика — сколько кодовых значений из 1023 приходится на этот стоп сцены. Линейная запись обрывается на +2.5 стопа: выше для неё просто нет значений — как и для Rec.709.</div>
+    </div>
+
+    <p>Смотрите на синие столбики: <b>линейная запись отдаёт верхнему стопу половину всех кодов</b>, а тени получают крохи — единицы значений на стоп. Потяните такие тени в грейде вверх, и между соседними кодами вылезут полосы и шум: значений физически не хватает. Красный Rec.709 честнее, но тоже кончается на +2.5 стопа. А кремовый S-Log3 выдаёт каждому стопу почти поровну — около 79 кодов — и тянется до +7.7. Это и есть ответ: <b>log — способ распределить биты по стопам так, чтобы кадр пережил цветокоррекцию</b>.</p>
+
+    <div class="step-head" id="praktika"><i>ШАГ 4 / 4</i><h2>Что с этим <em>делать на съёмке и в грейде</em></h2></div>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>Экспонируйте по серой карте или зебре</b>: серая — на ~41% для S-Log3, и кадр встанет на кривую так, как задумали инженеры камеры</li>
+      <li><b>Не бойтесь «плоской» картинки на мониторе</b> — включите в камере или на мониторе просмотровый LUT, а файл оставьте в log</li>
+      <li><b>Клиппинг необратим и в log</b>: запас +7.7 стопа большой, но полка на скоупе — это всё равно потерянные света</li>
+      <li><b>Перед грейдом — конверсия</b>: CST или технический LUT из пространства ВАШЕЙ камеры, и только потом творчество</li>
+      <li><b>В log-грейде до конверсии главное колесо — Offset</b>: сдвиг всего сигнала по log-кривой работает как смена экспозиции — почему, видно на этом графике: стопы лежат на равных интервалах сигнала (разбор колеса — в <a href="kolesa-lift-gamma-gain.html">уроке про колёса</a>)</li>
+    </ul>
+
+    <div class="step-head" id="itog"><i>ИТОГ</i><h2>Что <em>запомнить</em></h2></div>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>Log — это формула</b>, а не «стиль»: стопы сцены получают почти равные доли сигнала</li>
+      <li><b>Серая карта: ~41% в S-Log3, ~39% в LogC, ~41% в Rec.709</b> — но запас над серым 7.7 / 8.3 / 2.5 стопа</li>
+      <li><b>LUT привязан к кривой</b>: чужая кривая — перекошенный результат; сначала CST, потом look</li>
+      <li><b>Линейная запись расточительна</b>: половина кодов — одному стопу; log раздаёт биты поровну</li>
+      <li><b>«Сжатый» вид log-кадра на скоупе — норма</b> до конверсии, а не ошибка экспозиции</li>
+    </ul>
+    <p>Дальше по серии: <a href="kolesa-lift-gamma-gain.html">колёса цветокоррекции</a>, <a href="skoupy-kak-videt.html">как читать скоупы</a> и <a href="poryadok-cvetokorrekcii.html">порядок цветокоррекции</a>. Разобрать log-материал вашей камеры и настроить конвейер — это к <a href="../education.html">индивидуальным занятиям</a>.</p>
+  </div>
+
+  <a class="art-svc" href="../education.html"><b>Настроим ваш log-конвейер от съёмки до грейда? Обучение — от 3 000 ₽</b><span>Смотреть программы →</span></a>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Обсудим <em>задачу</em>?</h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../education.html">Обучение</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/logcurve.js" defer></script>
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+<script defer>
+window.addEventListener("load", function () {
+  PobubnimLogCurve.mount({
+    root: document.getElementById("lb").parentElement.parentElement,
+    graph: document.getElementById("lb-graph"),
+    codes: document.getElementById("lb-codes"),
+    statEl: document.getElementById("lb-stat")
+  });
+});
+</script>
+</body>
+</html>
