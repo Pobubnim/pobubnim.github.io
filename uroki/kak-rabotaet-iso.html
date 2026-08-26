@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Как работает ISO: матрица, фильтр Байера и экспозиция на посте | ПОБУБНИМ</title>
+<meta name="description" content="ISO не делает матрицу чувствительнее — это усиление после захвата. Три живых стенда: колодцы пикселей с настоящим шумом, мозаика Байера с дебайеризацией и честный способ поднять экспозицию на посте.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/uroki/kak-rabotaet-iso.html">
+<meta property="og:title" content="Как работает ISO: от фотона до файла — три живых стенда | ПОБУБНИМ">
+<meta property="og:description" content="Колодцы пикселей с настоящим пуассоновским шумом, мозаика Байера с дебайеризацией и ответ на спор «что на посте работает как ISO» — с числами, а не мнениями.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.github.io/uroki/kak-rabotaet-iso.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Как работает ISO: матрица, фильтр Байера и чем поднять экспозицию на посте", "description": "Интерактивный урок: захват света матрицей и пуассоновский шум, усиление ISO и потолок клипа, мозаика Байера с дебайеризацией и корректные инструменты экспозиции в посте.", "datePublished": "2026-08-26", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/kak-rabotaet-iso.html", "image": "https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "ISO делает матрицу чувствительнее?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. Матрица ловит одинаковое число фотонов на ISO 100 и на ISO 6400 — её квантовая эффективность фиксирована. ISO — это усиление уже пойманного сигнала после захвата: аналоговое перед АЦП и/или цифровое после. Поднятый ISO делает картинку ярче, но света он не добавляет и опускает потолок клипа."}},
+{"@type": "Question", "name": "Почему на высоком ISO шумно?", "acceptedAnswer": {"@type": "Answer", "text": "Главный шум — фотонный: фотоны прилетают со случайным разбросом, и отношение сигнал/шум растёт как корень из их числа. Высокий ISO обычно означает, что света было мало, — усиление просто делает этот недостаток фотонов видимым. Сам усилитель почти не добавляет шума: аналоговое усиление даже улучшает отношение сигнала к шуму чтения."}},
+{"@type": "Question", "name": "Что такое фильтр Байера?", "acceptedAnswer": {"@type": "Answer", "text": "Мозаика цветных фильтров над пикселями матрицы: половина зелёных, четверть красных, четверть синих (патент Брайса Байера, Kodak, 1976). Каждый пиксель видит только один канал, два недостающих восстанавливает дебайеризация — интерполяция по соседям. То есть две трети цветовых значений кадра вычислены, а не измерены."}},
+{"@type": "Question", "name": "Чем поднять экспозицию в DaVinci Resolve, как ISO в камере?", "acceptedAnswer": {"@type": "Answer", "text": "Сменой количества света в линейном пространстве: для RAW — Exposure/ISO во вкладке Camera RAW, для log-материала — колесо Offset до конверсии, для остального — Exposure в HDR-палитре, которая работает в линеаризованном свете. Gain из колёс Lift-Gamma-Gain — не эквивалент ISO: он умножает дисплейный сигнал и ломает соотношение теней и средних тонов."}}
+]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Статьи и уроки", "item": "https://pobubnim.github.io/articles/"}, {"@type": "ListItem", "position": 3, "name": "Как работает ISO: матрица, фильтр Байера и экспозиция на посте", "item": "https://pobubnim.github.io/uroki/kak-rabotaet-iso.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 820px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 820px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 820px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .board { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(14px, 2.4vw, 22px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .board canvas { width: 100%; display: block; border-radius: 8px; background: #0b0a09; }
+  .board .cap { margin-top: 6px; font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); font-family: var(--font-mono); display: flex; justify-content: space-between; gap: 10px; }
+  .board-top { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.6vw, 16px); }
+  @media (max-width: 720px) { .board-top { grid-template-columns: 1fr; } }
+  .views { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 10px; }
+  .views .vlabel { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); align-self: center; margin-right: 4px; }
+  .vbtn { padding: 7px 13px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
+  .vbtn:hover { background: rgba(245,239,226,0.06); }
+  .vbtn.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+  .stat { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--smoke); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
+  .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
+  .task b { color: var(--ink); font-weight: 500; }
+</style>
+<script src="../assets/js/analytics.js?v=2" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 06 · Камера и цвет · Три живых стенда</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Как работает ISO: матрица, фильтр Байера и чем поднять экспозицию на посте</span>Как работает <em>ISO</em></h1>
+    <p class="lead">Этот урок родился из спора в чате: «что на посте отвечает за экспозицию — Gain? гамма? офсет?». Спор честный, потому что ответ не очевиден без понимания, что вообще происходит в камере. Разберём весь путь: фотоны → колодец пикселя → усилитель ISO → АЦП → файл — на трёх живых стендах с настоящей математикой, а в конце дадим точный ответ на вопрос из спора.</p>
+    <time datetime="2026-08-26">Опубликовано 26.08.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="step-head" id="matrica"><i>СТЕНД 1 / 3</i><h2>Матрица: <em>колодцы и фотоны</em></h2></div>
+    <p>Пиксель матрицы — это фотодиод с «колодцем»: фотон выбивает электрон, электроны копятся, пока идёт выдержка. Дальше заряд считывается, проходит <b>усилитель — это и есть ISO</b> — и оцифровывается АЦП. Вся цепочка:</p>
+    <div class="nodes viz lv" style="margin:18px 0">
+      <div class="node"><b>ФОТОНЫ</b><span>свет сцены</span></div><span class="node-arrow">→</span>
+      <div class="node"><b>КОЛОДЕЦ</b><span>электроны, до full well</span></div><span class="node-arrow">→</span>
+      <div class="node"><b>УСИЛИТЕЛЬ</b><span>ISO: аналоговое усиление</span></div><span class="node-arrow">→</span>
+      <div class="node"><b>АЦП</b><span>числа 10–14 бит</span></div><span class="node-arrow">→</span>
+      <div class="node"><b>ФАЙЛ</b><span>RAW / log / 709</span></div>
+    </div>
+
+    <div class="viz lv">
+      <div class="board" id="sb">
+        <canvas id="sb-wells" width="880" height="430" aria-label="Стенд матрицы: колодцы пикселей наполняются фотонами со случайным разбросом"></canvas>
+        <div class="cap"><span>КОЛОДЦЫ ПИКСЕЛЕЙ · 4 ЗОНЫ СЦЕНЫ × 50 ПИКСЕЛЕЙ</span><span>пуассоновская статистика</span></div>
+        <div class="lab" style="margin-top:14px">
+          <div class="lab-row"><span class="snm">СВЕТ СЦЕНЫ</span><input class="lab-range" type="range" data-wells="light" min="-40" max="15" value="0" aria-label="Свет сцены в стопах"><span class="sv">0.0</span></div>
+          <div class="lab-row"><span class="snm">ISO</span><input class="lab-range" type="range" data-wells="iso" min="0" max="60" step="10" value="0" aria-label="Усиление ISO"><span class="sv">ISO 100</span></div>
+        </div>
+        <div class="stat" id="sb-stat" aria-live="polite"></div>
+        <div class="task"><b>Попробуйте.</b> Каждый столбик — отдельный пиксель, фотоны прилетают со случайным разбросом (это настоящая пуассоновская статистика, не украшение). Уберите свет на −3 стопа: столбики в тенях запляшут — SNR падает как корень из числа фотонов. Теперь верните свет и поднимите ISO: ярче стало ВСЁ — и сигнал, и шум, а белая зона упёрлась в красный клип, потому что потолок опустился. Свет добавляет информацию, ISO — только громкость.</div>
+        <button class="board-reset" type="button" data-resample style="margin-top:12px;padding:8px 14px;min-height:36px;border-radius:var(--r-pill);border:1px solid var(--line);background:none;color:var(--smoke);font:400 12.5px var(--font-ui);cursor:pointer">Пересыпать фотоны</button>
+      </div>
+      <div class="viz-cap">Честная модель: фотоны сэмплируются распределением Пуассона, шум чтения — гауссов 6 e⁻, усиление и АЦП считаются как в тракте камеры. Одно упрощение: колодец игрушечный, 2000 e⁻, чтобы шум был виден глазом — у реальных камер десятки тысяч, физика та же.</div>
+    </div>
+
+    <p><b>Главный факт: ISO — не чувствительность.</b> Матрица ловит одинаковое число фотонов на ISO 100 и ISO 6400 — квантовая эффективность зафиксирована на заводе. ISO лишь усиливает пойманное: обычно аналогово, до АЦП, на высоких значениях у части камер — ещё и цифрой после. Отсюда два следствия, которые видно на стенде: усиление поднимает сигнал и шум <b>вместе</b>, и каждое удвоение ISO опускает потолок клипа на стоп — света выгорают раньше.</p>
+    <div class="why"><span class="label">Откуда тогда «шум высокого ISO»</span><p>От недостатка фотонов. Отношение сигнал/шум растёт как корень из их числа: 100 фотонов — разброс 10%, 10 000 — разброс 1%. Высокий ISO почти всегда означает тёмную сцену, то есть мало фотонов — усиление просто делает этот разброс видимым. Сам усилитель почти не виноват: аналоговое усиление даже улучшает отношение сигнала к шуму чтения электроники. Поэтому у современных «ISO-инвариантных» сенсоров кадр, снятый на низком ISO и поднятый в посте, почти не отличается от снятого сразу на высоком — на этом и стоит вся экспозиция на посте. А dual native ISO — это два отдельных аналоговых контура усиления: на пороге переключения шум и динамический диапазон «перезапускаются».</p></div>
+
+    <div class="step-head" id="bayer"><i>СТЕНД 2 / 3</i><h2>Фильтр Байера: <em>откуда цвет</em></h2></div>
+    <p>Колодец считает электроны — он не знает, какого «цвета» был фотон. Цвет появляется благодаря мозаике светофильтров над пикселями — <b>фильтру Байера</b> (Брайс Байер, Kodak, патент 1976 года): половина пикселей накрыта зелёным, по четверти — красным и синим. Зелёных вдвое больше, потому что глаз человека берёт из зелёной части спектра основную резкость — в патенте зелёные так и названы «элементами яркости».</p>
+
+    <div class="viz lv">
+      <div class="board" id="bb">
+        <canvas id="bb-frame" width="864" height="486" aria-label="Кадр через стадии: сцена, что видит сенсор, мозаика Байера, дебайеризация"></canvas>
+        <div class="cap"><span>КАДР 96×54 ПИКСЕЛЯ · УВЕЛИЧЕНО</span><span id="bb-cap">СЦЕНА</span></div>
+        <div class="views" role="group" aria-label="Стадия">
+          <span class="vlabel">СТАДИЯ</span>
+          <button class="vbtn on" type="button" data-bmode="scene">Сцена</button>
+          <button class="vbtn" type="button" data-bmode="sensor">Что видит сенсор</button>
+          <button class="vbtn" type="button" data-bmode="mosaic">Мозаика Байера</button>
+          <button class="vbtn" type="button" data-bmode="debayer">После дебайера</button>
+        </div>
+        <div class="task"><b>Попробуйте.</b> «Что видит сенсор» — это правда жизни: серые яркости, каждая через свой фильтр, никакого цвета в данных нет. «Мозаика» показывает раскладку RGGB — приглядитесь, зелёных клеток вдвое больше. «После дебайера» — восстановление цвета билинейной интерполяцией, которую страница считает по-настоящему: каждому пикселю два недостающих канала достраиваются из соседей.</div>
+      </div>
+      <div class="viz-cap">Кадр уменьшен до 96×54 и показан крупными пикселями, чтобы мозаику было видно глазом. Дебайеризация — честная билинейная (базовый алгоритм; в камерах и Resolve алгоритмы хитрее, но принцип тот же: недостающее вычисляется из соседей).</div>
+    </div>
+
+    <p>Смотрите, что из этого следует: <b>две трети цветовых значений кадра вычислены, а не измерены</b>. У «4K»-матрицы с Байером честных красных пикселей — четверть. Поэтому дебайер всегда чуть мягче «честного» RGB с трёх матриц или монохрома, а на тонких решётках и тканях появляется муар: интерполяции не из чего восстановить то, что мельче шага мозаики.</p>
+
+    <div class="step-head" id="post"><i>СТЕНД 3 / 3</i><h2>«ISO на посте»: <em>ответ на спор</em></h2></div>
+    <p>Теперь сам спор. В камере вы крутите ISO — что в грейде делает то же самое? Прозвучали версии «Gain», «гамма», «офсет», «в DaVinci нет Exposure». Точный ответ такой: смена ISO — это <b>умножение линейного света</b>, значит и на посте экспозицию меняет только инструмент, который работает в линейном свете. Проверьте на стенде — все три метода считаются честно:</p>
+
+    <div class="viz lv">
+      <div class="board" id="pb">
+        <div class="board-top">
+          <div>
+            <canvas id="pb-frame" width="640" height="360" aria-label="Кадр с применённой коррекцией экспозиции"></canvas>
+            <div class="cap"><span>КАДР</span><span>REC.709</span></div>
+          </div>
+          <div>
+            <canvas id="pb-scope" width="640" height="360" aria-label="Waveform или Parade результата"></canvas>
+            <div class="cap"><span>СКОУП</span><span>считается из кадра</span></div>
+          </div>
+        </div>
+        <div class="views" role="group" aria-label="Метод">
+          <span class="vlabel">МЕТОД</span>
+          <button class="vbtn on" type="button" data-method="exposure">Exposure · линейный свет</button>
+          <button class="vbtn" type="button" data-method="offsetlog">Offset · на log</button>
+          <button class="vbtn" type="button" data-method="gain">Gain · дисплейный сигнал</button>
+        </div>
+        <div class="views" role="group" aria-label="Скоуп" style="margin-top:0">
+          <span class="vlabel">СКОУП</span>
+          <button class="vbtn on" type="button" data-pview="waveform">Waveform</button>
+          <button class="vbtn" type="button" data-pview="parade">Parade</button>
+        </div>
+        <div class="lab">
+          <div class="lab-row"><span class="snm">СТОПЫ</span><input class="lab-range" type="range" data-stops min="-20" max="20" value="0" aria-label="Сдвиг экспозиции в стопах"><span class="sv">0.0</span></div>
+        </div>
+        <div class="stat" id="pb-stat" aria-live="polite"></div>
+        <div class="task"><b>Попробуйте.</b> Поставьте +1.0 и переключайте методы, глядя на счётчик «отличие от экспозиции». Exposure — эталон: свет умножается, как сменой ISO. Offset на log повторяет его почти в ноль — сдвиг по log-кривой и есть смена экспозиции. А Gain расходится на десятки IRE: в тенях он даёт +1 стоп, в средних — уже +2.2 стопа света, кадр меняет характер, а не экспозицию. На −1.0 разница ещё нагляднее: Gain душит средние тона вдвое сильнее, чем честная экспозиция.</div>
+      </div>
+      <div class="viz-cap">Честная математика: «Exposure» линеаризует сигнал по BT.709, умножает свет на 2^стопы и кодирует обратно — так работают Camera RAW и HDR-палитра; «Offset на log» кодирует свет настоящей кривой S-Log3, сдвигает и декодирует; «Gain» умножает дисплейный сигнал, как колесо LGG. Счётчик отличия сравнивает метод с эталонной экспозицией по всем уровням сигнала.</div>
+    </div>
+
+    <p>Теперь можно расставить точки в споре. <b>«Gain»</b> — не эквивалент ISO: он тянет точку белого дисплейного сигнала, и его «стоп» в тенях и в средних — это разные стопы света (спорщик, писавший «гейн тени не поднимает, а ISO поднимает», был прав по сути). <b>«В DaVinci нет Exposure»</b> — есть, и не один: для RAW — <b>ISO и Exposure во вкладке Camera RAW</b> (это правка метаданных, второй спорщик прав), для log-материала — <b>колесо Offset до конверсии</b> (сдвиг по log-кривой, что мы разобрали в <a href="log-krivaya.html">уроке про log</a>), для любого материала в управляемом цвете — <b>Exposure в HDR-палитре</b>, которая работает в линеаризованном свете и меняет кадр «как смена ISO или диафрагмы на площадке». <b>«Гамма»</b> — мимо: степенная кривая гнёт середину при стоящих краях, экспозиция так не работает.</p>
+    <div class="why"><span class="label">Почему это важно знать, а не заучить</span><p>Потому что «поднять экспозицию гейном» — реальная привычка, из-за которой кадр после правки выглядит «пластиково»: соотношение теней и средних тонов уехало, хотя цифры вроде бы те же. Инструмент, работающий в линейном свете, сохраняет пропорции света сцены — глаз считывает это как «просто светлее сняли». Разница видна на счётчике стенда, а не на словах.</p></div>
+
+    <div class="step-head" id="itog"><i>ИТОГ</i><h2>Что <em>запомнить</em></h2></div>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>ISO — усиление, не чувствительность</b>: фотонов больше не становится, потолок клипа опускается</li>
+      <li><b>Шум лечится светом</b>: SNR растёт как корень из числа фотонов; высокий ISO лишь проявляет недосвет</li>
+      <li><b>Байер: половина зелёных</b>, 2/3 цветовых значений кадра вычислены дебайеризацией</li>
+      <li><b>ISO на посте = линейный свет</b>: Camera RAW → Offset на log → HDR-палитра Exposure</li>
+      <li><b>Gain — точка белого, не экспозиция</b>: его стоп в тенях и средних — разные стопы света</li>
+    </ul>
+    <p>Дальше по серии: <a href="kolesa-lift-gamma-gain.html">колёса цветокоррекции</a>, <a href="log-krivaya.html">log-кривая в числах</a> и <a href="skoupy-kak-videt.html">как читать скоупы</a>. Хотите разобрать тракт своей камеры и настроить экспозицию под грейд — это на <a href="../education.html">индивидуальных занятиях</a>.</p>
+  </div>
+
+  <a class="art-svc" href="../education.html"><b>Разберём вашу камеру от матрицы до грейда? Обучение — от 3 000 ₽</b><span>Смотреть программы →</span></a>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Обсудим <em>задачу</em>?</h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../education.html">Обучение</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<img id="bb-src" src="../assets/img/polya-splash.webp" alt="" hidden>
+<img id="pb-src" src="../assets/img/polya-scope.webp" alt="" hidden>
+<script src="../assets/js/scope.js" defer></script>
+<script src="../assets/js/sensor.js" defer></script>
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+<script defer>
+window.addEventListener("load", function () {
+  var sb = document.getElementById("sb"), bb = document.getElementById("bb"), pb = document.getElementById("pb");
+  PobubnimSensor.mountWells({ root: sb, canvas: document.getElementById("sb-wells"), statEl: document.getElementById("sb-stat") });
+  PobubnimSensor.mountBayer({ root: bb, canvas: document.getElementById("bb-frame"), img: document.getElementById("bb-src") });
+  PobubnimSensor.mountPost({
+    root: pb, img: document.getElementById("pb-src"),
+    canvases: { frame: document.getElementById("pb-frame"), scope: document.getElementById("pb-scope") },
+    statEl: document.getElementById("pb-stat")
+  });
+  var names = { scene: "СЦЕНА", sensor: "ЧТО ВИДИТ СЕНСОР", mosaic: "МОЗАИКА RGGB", debayer: "ПОСЛЕ ДЕБАЙЕРА" };
+  bb.querySelectorAll("[data-bmode]").forEach(function (b) {
+    b.addEventListener("click", function () { document.getElementById("bb-cap").textContent = names[b.dataset.bmode]; });
+  });
+});
+</script>
+</body>
+</html>

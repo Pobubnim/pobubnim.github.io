@@ -32,7 +32,8 @@ index_repository после крупных правок; проверка: index
 - `uroki/` — интерактивные уроки/доски (канон фактов EDU_BASE, блоки lesson.css):
   01 poryadok-cvetokorrekcii · 02 log-i-grade · 03 skoupy-kak-videt (живые
   скоупы) · 04 kolesa-lift-gamma-gain (прототип колёс, LGG+CDL) ·
-  05 log-krivaya (кривые S-Log3/LogC3/709 по формулам).
+  05 log-krivaya (кривые S-Log3/LogC3/709 по формулам) · 06 kak-rabotaet-iso
+  (матрица+Пуассон, Байер+дебайер, ISO на посте).
 - `instrumenty/` — хаб + smeta-i-schet, modelnyj-reliz, tajming-svadby,
   kalkulyator-karty-pamyati (+karta-db.js), kalkulyator-stoimosti-semki
   (заглушка-редирект, noindex).
@@ -45,7 +46,8 @@ index_repository после крупных правок; проверка: index
   scope.js (ДВИЖОК досок: попиксельная обработка + Waveform/Parade/Vector/
   Histogram; расширяем через cfg.process/state/views) · wheels.js (доска
   колёс: LUT-конвейер LGG, ASC CDL, кривая переноса, задания) · logcurve.js
-  (доска log-кривых: формулы S-Log3/LogC3/709) · dogovor.js, smeta.js,
+  (доска log-кривых: формулы S-Log3/LogC3/709) · sensor.js (доска ISO:
+  колодцы+Пуассон, Байер+дебайер, ISO на посте) · dogovor.js, smeta.js,
   reliz.js, tajming.js, karta.js+karta-db.js (инструменты) · docx.js
   (настоящий .docx: ZIP+OOXML, rubWords/moneyFull).
 - `img/` — webp-фонд: polya-* (стилы «Поля» — кадры досок), tri-*, hz-*,
