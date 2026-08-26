@@ -48,6 +48,13 @@ class Page(HTMLParser):
         self._in_ld = False
         self._ld = ""
         self.scripts = []
+        self.fields = []        # input/select/textarea
+        self.labels = []        # значения for=
+        self.buttons = []       # (атрибуты, текст)
+        self.ids = []
+        self._btn = None
+        self._btntext = ""
+        self._label_depth = 0
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -77,16 +84,32 @@ class Page(HTMLParser):
             if (a.get("type") or "").lower() == "application/ld+json":
                 self._in_ld = True
                 self._ld = ""
+        elif tag in ("input", "select", "textarea"):
+            a["_in_label"] = self._label_depth > 0
+            self.fields.append(a)
+        elif tag == "label":
+            self.labels.append(a.get("for"))
+            self._label_depth += 1
+        elif tag == "button":
+            self._btn = a
+            self._btntext = ""
         elif re.fullmatch(r"h[1-6]", tag):
             self._h = int(tag[1])
             self._htext = ""
+        if a.get("id"):
+            self.ids.append(a["id"])
 
     def handle_endtag(self, tag):
+        if tag == "label" and self._label_depth:
+            self._label_depth -= 1
         if tag == "title":
             self._in_title = False
         elif tag == "script" and self._in_ld:
             self.jsonld.append(self._ld)
             self._in_ld = False
+        elif tag == "button" and self._btn is not None:
+            self.buttons.append((self._btn, " ".join(self._btntext.split())))
+            self._btn = None
         elif re.fullmatch(r"h[1-6]", tag) and self._h:
             self.headings.append((self._h, " ".join(self._htext.split())))
             self._h = None
@@ -98,6 +121,8 @@ class Page(HTMLParser):
             self._ld += data
         if self._h:
             self._htext += data
+        if self._btn is not None:
+            self._btntext += data
 
 
 def html_files():
@@ -183,6 +208,27 @@ def main():
                 warn(rel, f"<img> без alt: {src}")
             if not (a.get("width") and a.get("height")):
                 warn(rel, f"<img> без width/height (скачет вёрстка): {src}")
+
+        # доступность форм: у каждого поля должна быть подпись, у кнопки — имя
+        label_for = set(x for x in p.labels if x)
+        for a in p.fields:
+            if (a.get("type") or "").lower() in ("hidden", "submit", "button", "radio", "checkbox"):
+                continue
+            if (a.get("aria-hidden") or "").lower() == "true":
+                continue          # ловушка для ботов, не для людей
+            named = (a.get("aria-label") or a.get("title") or a.get("_in_label")
+                     or (a.get("id") in label_for))
+            if not named:
+                warn(rel, "поле без подписи: " +
+                     (a.get("id") or a.get("class") or a.get("placeholder") or a.get("type") or "?"))
+        for a, text in p.buttons:
+            if not (text.strip() or a.get("aria-label") or a.get("title")):
+                warn(rel, "кнопка без доступного имени: " + (a.get("id") or a.get("class") or "?"))
+        seen_ids = set()
+        for i in p.ids:
+            if i in seen_ids:
+                err(rel, f"повтор id={i}")
+            seen_ids.add(i)
 
         base = os.path.dirname(os.path.join(ROOT, rel))
         for attr, href in p.links:
