@@ -12,7 +12,7 @@ index_repository после крупных правок; проверка: index
 | HANDOFF.md | вход: состояние, очередь, ритуалы |
 | INDEX.md | этот файл — карта репо |
 | SEO_RULES.md | ЗАКОН страниц (title/description/H1/schema) + журнал по датам |
-| EDU_BASE.md | база СВЕРЕННЫХ фактов уроков: §1–7 канон, §8а источники, §8б числа цвета, §8в карта досок, §8г носители, §8д формулы инструментов Resolve, §8е ISO и Байер, §8ж язык кадра, §8з солнце (восход/закат/золотой час) |
+| EDU_BASE.md | база СВЕРЕННЫХ фактов уроков: §1–7 канон, §8а источники, §8б числа цвета, §8в карта досок, §8г носители, §8д формулы инструментов Resolve, §8е ISO и Байер, §8ж язык кадра, §8з солнце, §8и глубина резкости |
 | EDU_SOURCES.md | каталог первоисточников: школа BMD, школы колористов, стандарты, white papers |
 | TOOLS_ROADMAP.md | карта /instrumenty/: что стоит, очередь, разведка ниш |
 | CONTENT_MAP.md, SEO_KEYWORDS.md, SPEC.md | карта контента и запросов |
@@ -37,6 +37,7 @@ index_repository после крупных правок; проверка: index
 - `instrumenty/` — хаб + smeta-i-schet, modelnyj-reliz, tajming-svadby,
   kalkulyator-karty-pamyati (+karta-db.js), shot-list (план кадров + счётчик
   смены), vyzyvnoj-list (call sheet + расчёт заката и золотого часа),
+  kalkulyator-grip (ГРИП: границы резкости, гиперфокал, размытие фона в px),
   kalkulyator-stoimosti-semki (заглушка-редирект, noindex).
 
 ## assets/
@@ -51,6 +52,7 @@ index_repository после крупных правок; проверка: index
   колодцы+Пуассон, Байер+дебайер, ISO на посте) · dogovor.js, smeta.js,
   reliz.js, tajming.js, karta.js+karta-db.js, shotlist.js, callsheet.js
   (инструменты) · sun.js (солнце: восход/закат/золотой час по NOAA, §8з) ·
+  dof.js + grip.js (ГРИП: формулы §8и и интерфейс калькулятора) ·
   docx.js (настоящий .docx: ZIP+OOXML, rubWords/moneyFull; таблица понимает
   data-cols="%,%,…" и класс .text — все колонки влево).
 - `img/` — webp-фонд: polya-* (стилы «Поля» — кадры досок), tri-*, hz-*,
@@ -77,7 +79,9 @@ sitemap, единая версия analytics.js, width/height у картино�
 **test_callsheet.py** — приёмка вызывного листа (координаты по городу, свет
 против astral, предупреждения, строки локаций и группы, .docx, черновик),
 **verify_sun.py** — сверка assets/js/sun.js с библиотекой astral на 7 городах
-и 6 датах (допуск 2 мин; прогонять после любой правки формул).
+и 6 датах (допуск 2 мин; прогонять после любой правки формул),
+**test_dof.py** и **verify_dof.py** — приёмка калькулятора ГРИП и сверка его
+формул с независимой численной моделью оптики.
 
 ## Ритуалы
 

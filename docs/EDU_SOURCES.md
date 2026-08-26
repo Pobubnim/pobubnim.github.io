@@ -102,6 +102,11 @@ blackmagicdesign.com/products/davinciresolve/training — бесплатные P
   часа; библиотека astral (Python) — независимая реализация для сверки
   (tools/verify_sun.py). Наша реализация — assets/js/sun.js, канон
   EDU_BASE §8з.
+- Глубина резкости [С 26.08]: классические формулы ГРИП и гиперфокала
+  (правило Zeiss «диагональ / 1500» для кружка нерезкости), таблицы
+  стандартных значений CoC по форматам (StudioBinder, Tools for Film,
+  калькуляторы DoF). Наша реализация — assets/js/dof.js, канон EDU_BASE §8и,
+  независимая проверка — tools/verify_dof.py (численная модель оптики).
 
 ## 7. Куда это применяется на сайте
 
