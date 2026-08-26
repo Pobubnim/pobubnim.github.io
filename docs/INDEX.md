@@ -57,7 +57,10 @@ index_repository после крупных правок; проверка: index
 
 build_articles.py, build_services.py, build_og.py, make_favicon.py,
 prepare_media.py, fullshot.py, daily_stats.py (сводка в ТГ, задача
-планировщика PobubnimDailyStats 09:00, токен в ~/.pobubnim/).
+планировщика PobubnimDailyStats 09:00, токен в ~/.pobubnim/),
+**verify_edu_base.py** — самопроверка ВСЕХ числовых якорей EDU_BASE
+независимой реализацией формул (прогонять перед публикацией урока
+с числами; новый факт = новая проверка).
 
 ## Ритуалы
 
