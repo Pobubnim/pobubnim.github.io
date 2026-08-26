@@ -62,11 +62,15 @@ index_repository после крупных правок; проверка: index
   docx.js (настоящий .docx: ZIP+OOXML, rubWords/moneyFull; таблица понимает
   data-cols="%,%,…" и класс .text — все колонки влево).
 - `img/` — webp-фонд: polya-* (стилы «Поля» — кадры досок), tri-*, hz-*,
-  lesson-f* и обложки. `og/` — OG-картинки.
+  lesson-f* и обложки. `og/` — OG-картинки (tool-*.jpg — карточки инструментов).
+- `fonts/` — InterTight-var.ttf (переменный, с кириллицей): нужен генератору
+  og-карточек, чтобы превью были фирменным шрифтом, а не системным.
 
 ## tools/ (локальные скрипты, не деплоятся)
 
-build_articles.py, build_services.py, build_og.py, make_favicon.py,
+build_articles.py, build_services.py, build_og.py, **build_og_tools.py**
+(og-карточки инструментов: тёмный фон + мини-лист, шрифт из assets/fonts),
+make_favicon.py,
 prepare_media.py, fullshot.py, daily_stats.py (сводка в ТГ, задача
 планировщика PobubnimDailyStats 09:00, токен в ~/.pobubnim/),
 **verify_edu_base.py** — самопроверка ВСЕХ числовых якорей EDU_BASE
