@@ -46,7 +46,9 @@ index_repository после крупных правок; проверка: index
 
 ## assets/
 
-- `css/`: style.css (сайт), lesson.css (виз-блоки уроков), paper.css (лист инструментов).
+- `css/`: style.css (сайт), lesson.css (виз-блоки уроков), paper.css (лист
+  инструментов), **fonts.css** (СВОИ шрифты вместо Google Fonts — собирается
+  скриптом tools/fetch_fonts.py, файлы в assets/fonts/*.woff2).
 - `js/`: nav.js (шапка/бургер, deep-регулярка) · analytics.js (Метрика+цели) ·
   main.js (главная) · lesson.js (появление, вайпы, CSS-лаборатории) ·
   scope.js (ДВИЖОК досок: попиксельная обработка + Waveform/Parade/Vector/
@@ -63,14 +65,16 @@ index_repository после крупных правок; проверка: index
   data-cols="%,%,…" и класс .text — все колонки влево).
 - `img/` — webp-фонд: polya-* (стилы «Поля» — кадры досок), tri-*, hz-*,
   lesson-f* и обложки. `og/` — OG-картинки (tool-*.jpg — карточки инструментов).
-- `fonts/` — InterTight-var.ttf (переменный, с кириллицей): нужен генератору
-  og-карточек, чтобы превью были фирменным шрифтом, а не системным.
+- `fonts/` — свои шрифты сайта: *.woff2 (переменные Inter Tight 300–600,
+  JetBrains Mono 400–500, Playfair Display 500 italic; подмножества cyrillic
+  и latin, всего ~135 КБ) + InterTight-var.ttf для генератора og-карточек.
 
 ## tools/ (локальные скрипты, не деплоятся)
 
 build_articles.py, build_services.py, build_og.py, **build_og_tools.py**
 (og-карточки инструментов: тёмный фон + мини-лист, шрифт из assets/fonts),
 make_favicon.py,
+**fetch_fonts.py** (забрать шрифты у Google к себе и пересобрать fonts.css),
 prepare_media.py, fullshot.py, daily_stats.py (сводка в ТГ, задача
 планировщика PobubnimDailyStats 09:00, токен в ~/.pobubnim/),
 **verify_edu_base.py** — самопроверка ВСЕХ числовых якорей EDU_BASE
