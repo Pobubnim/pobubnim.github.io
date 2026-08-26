@@ -107,10 +107,12 @@ input[type="range"].lab-range::-moz-range-thumb { width: 18px; height: 18px; bor
 .viz-card i { font-style: normal; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
 
 .viz-check { display: flex; flex-direction: column; gap: 8px; }
-.viz-check li { list-style: none; display: flex; gap: 12px; align-items: baseline; padding: 12px 16px;
+/* li — обычный поток (не flex): иначе каждая ссылка внутри становится отдельным
+   flex-элементом и строка расползается шире экрана (поймано на мобиле 26.08) */
+.viz-check li { list-style: none; position: relative; padding: 12px 16px 12px 42px;
                 background: var(--char); border-radius: var(--r-card); font-size: 14.5px;
-                color: var(--smoke); font-weight: 300; }
-.viz-check li::before { content: "✓"; color: var(--lamp); font-weight: 600; flex: none; }
+                color: var(--smoke); font-weight: 300; text-wrap: pretty; }
+.viz-check li::before { content: "✓"; position: absolute; left: 16px; top: 12px; color: var(--lamp); font-weight: 600; }
 .viz-check li.no::before { content: "✕"; color: var(--dv-rec); }
 .viz-check li b { color: var(--ink); font-weight: 500; }
 
