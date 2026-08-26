@@ -33,7 +33,8 @@ index_repository после крупных правок; проверка: index
   01 poryadok-cvetokorrekcii · 02 log-i-grade · 03 skoupy-kak-videt (живые
   скоупы) · 04 kolesa-lift-gamma-gain (прототип колёс, LGG+CDL) ·
   05 log-krivaya (кривые S-Log3/LogC3/709 по формулам) · 06 kak-rabotaet-iso
-  (матрица+Пуассон, Байер+дебайер, ISO на посте).
+  (матрица+Пуассон, Байер+дебайер, ISO на посте) · 07 glubina-rezkosti
+  (боке по формуле кружка нерезкости, зона резкости и гиперфокал).
 - `instrumenty/` — хаб + smeta-i-schet, modelnyj-reliz, tajming-svadby,
   kalkulyator-karty-pamyati (+karta-db.js), shot-list (план кадров + счётчик
   смены), vyzyvnoj-list (call sheet + расчёт заката и золотого часа),
@@ -58,7 +59,8 @@ index_repository после крупных правок; проверка: index
   колодцы+Пуассон, Байер+дебайер, ISO на посте) · dogovor.js, smeta.js,
   reliz.js, tajming.js, karta.js+karta-db.js, shotlist.js, callsheet.js
   (инструменты) · sun.js (солнце: восход/закат/золотой час по NOAA, §8з) ·
-  dof.js + grip.js (ГРИП: формулы §8и и интерфейс калькулятора) ·
+  dof.js + grip.js (ГРИП: формулы §8и и интерфейс калькулятора) · dofboard.js
+  (доска урока 07: кружки боке из формулы) ·
   checklist.js (чек-лист сборов) · nd.js + ndcalc.js (ND и экспозиция, §8к) ·
   brief.js (бриф на съёмку) · rate.js (ставка за смену) ·
   docx.js (настоящий .docx: ZIP+OOXML, rubWords/moneyFull; таблица понимает
@@ -96,6 +98,7 @@ sitemap, единая версия analytics.js, width/height у картино�
 и 6 датах (допуск 2 мин; прогонять после любой правки формул),
 **test_dof.py** и **verify_dof.py** — приёмка калькулятора ГРИП и сверка его
 формул с независимой численной моделью оптики,
+**test_dofboard.py** — приёмка доски урока 07 (кружки сверяются с расчётом),
 **test_checklist.py** — приёмка чек-листа сборов,
 **test_nd.py** — приёмка ND-калькулятора с независимым пересчётом стопов,
 **test_brief.py** — приёмка брифа на съёмку,
