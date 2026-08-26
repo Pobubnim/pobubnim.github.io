@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Ставка за съёмочную смену — калькулятор фрилансера | ПОБУБНИМ</title>
+<meta name="description" content="Сколько брать за съёмочную смену: калькулятор считает ставку от желаемого дохода с учётом налога, расходов, амортизации техники и простоя. И проверяет вашу цену обратным счётом. Бесплатно.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/instrumenty/stavka-frilansera.html">
+<meta property="og:title" content="Ставка за съёмочную смену — калькулятор фрилансера | ПОБУБНИМ">
+<meta property="og:description" content="Считает минимальную ставку от желаемого дохода: налог, расходы, амортизация техники и простой — всё, что обычно забывают заложить.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/home.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pobubnim.github.io/instrumenty/stavka-frilansera.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<link rel="stylesheet" href="../assets/css/paper.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Калькулятор ставки за съёмочную смену", "url": "https://pobubnim.github.io/instrumenty/stavka-frilansera.html", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/"}, "description": "Бесплатный калькулятор ставки фрилансера за съёмочную смену: расчёт от желаемого дохода с учётом налога, постоянных расходов, амортизации техники и резерва на простой."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Почему нельзя просто разделить желаемый доход на количество дней?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что съёмочных дней в месяце не тридцать. Между сменами идут монтаж, переписка, поиск клиентов, поездки и техника на ремонте. Плюс из выручки уходят налог, постоянные расходы и износ техники. Ставка считается от того, сколько смен вы реально снимаете, а не от календаря."}},
+{"@type": "Question", "name": "Что такое амортизация техники и зачем её закладывать?", "acceptedAnswer": {"@type": "Answer", "text": "Камера, оптика, свет и компьютер изнашиваются и устаревают: через несколько лет комплект придётся обновлять. Если не откладывать на это из каждой смены, деньги на новую камеру придётся брать из дохода или в кредит. Разделите стоимость комплекта на срок службы в месяцах — это и есть сумма, которую ставка обязана покрывать."}},
+{"@type": "Question", "name": "НПД 4% или 6% — какую ставку выбирать?", "acceptedAnswer": {"@type": "Answer", "text": "Налог на профессиональный доход считается по плательщику: 4% с доходов от физических лиц и 6% с доходов от компаний и ИП. Если снимаете и свадьбы, и корпоративные ролики, считайте по 6% — так расчёт будет с запасом, а не впритык."}},
+{"@type": "Question", "name": "Сколько съёмочных смен в месяц — это реально?", "acceptedAnswer": {"@type": "Answer", "text": "Зависит от жанра и от того, сами ли вы монтируете. Если на каждую смену приходится два-три дня поста, больше шести–восьми смен в месяц не выходит физически. Именно поэтому попытка «брать дешевле, но больше снимать» упирается в потолок и заканчивается выгоранием."}},
+{"@type": "Question", "name": "Это рыночная цена?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. Калькулятор показывает минимум, ниже которого работа идёт в убыток при ваших вводных. Рынок может быть выше — тогда разница уходит в развитие, помощников и технику. Но если ваша текущая ставка ниже расчётной, вы просто финансируете чужие съёмки из своего кармана."}}
+]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Инструменты", "item": "https://pobubnim.github.io/instrumenty/"}, {"@type": "ListItem", "position": 3, "name": "Ставка за смену", "item": "https://pobubnim.github.io/instrumenty/stavka-frilansera.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 880px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; max-width: 720px; }
+  /* полоса состава ставки */
+  .split { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--char); }
+  .split .track { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: #131211; }
+  .split .track i { display: block; height: 100%; }
+  .split i.want { background: var(--lamp); }
+  .split i.reserve { background: #8a7f63; }
+  .split i.costs { background: #5f5a4f; }
+  .split i.amort { background: #45413a; }
+  .split i.tax { background: var(--dv-rec); }
+  .split .legend { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 12px; font-size: 12.5px; color: var(--smoke); font-weight: 300; }
+  .split .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .split .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  /* лист */
+  .paper .big { font: 500 clamp(26px, 4vw, 36px) var(--font-mono); text-align: center; margin: 14px 0 2px; letter-spacing: -0.02em; }
+  .paper .big-sub { text-align: center; font-size: 12px; color: #6b675e; margin-bottom: 14px; text-wrap: pretty; }
+  .paper .line { display: flex; gap: 14px; padding: 7px 0; border-bottom: 1px dotted #c9c2b2; justify-content: space-between; }
+  .paper .line b { font-weight: 700; flex: none; }
+  .paper .line span { text-align: right; }
+</style>
+<script src="../assets/js/analytics.js?v=3" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Инструмент · Деньги · Без регистрации</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Калькулятор ставки за съёмочную смену</span>Сколько брать, <em>чтобы не в минус</em></h1>
+    <p class="lead">Считает ставку не «по рынку», а от вашей жизни: желаемый доход, реальное число смен, налог, постоянные расходы, износ техники и резерв на простой. И проверяет вашу нынешнюю цену обратным счётом.</p>
+    <div class="free-note"><b>Вместо оплаты</b> — если помогло, напишите спасибо в <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener" style="text-decoration:underline">личку телеграма</a></div>
+  </section>
+
+  <div class="builder">
+    <form class="cfg" id="cfg" autocomplete="off">
+      <section class="cfg-sec">
+        <span class="label">01 · Сколько хочу и сколько снимаю</span>
+        <div class="flds" style="margin-top:0">
+          <div class="fld wide"><label for="f-want">Доход на руки, ₽ в месяц</label><input id="f-want" type="number" min="0" step="5000" value="120000" inputmode="numeric"></div>
+          <div class="fld"><label for="f-shifts">Смен в месяц</label><input id="f-shifts" type="number" min="0.5" max="30" step="0.5" value="6"></div>
+          <div class="fld"><label for="f-hours">Часов на смену со всем постом</label><input id="f-hours" type="number" min="1" max="200" step="1" value="20"></div>
+        </div>
+        <div class="hint">Смены — только те, что реально снимаются: если на каждую приходится два дня монтажа, тридцати смен в месяце не бывает. Часы считайте честно: подготовка, съёмочный день, отбор, монтаж, цвет и правки.</div>
+      </section>
+
+      <section class="cfg-sec">
+        <span class="label">02 · Расходы и техника</span>
+        <div class="flds" style="margin-top:0">
+          <div class="fld wide"><label for="f-costs">Постоянные расходы, ₽ в месяц</label><input id="f-costs" type="number" min="0" step="1000" value="15000" inputmode="numeric"></div>
+          <div class="fld"><label for="f-gear">Стоимость комплекта, ₽</label><input id="f-gear" type="number" min="0" step="10000" value="900000" inputmode="numeric"></div>
+          <div class="fld"><label for="f-years">Срок службы, лет</label><input id="f-years" type="number" min="0.5" max="20" step="0.5" value="5"></div>
+          <div class="fld wide"><label for="f-reserve">Резерв на простой и ремонт, % от дохода</label><input id="f-reserve" type="number" min="0" max="90" step="1" value="10"></div>
+        </div>
+        <div class="hint">В постоянные расходы идут связь и интернет, подписки, реклама, транспорт, бухгалтерия, аренда — всё, что списывается каждый месяц независимо от съёмок.</div>
+      </section>
+
+      <section class="cfg-sec">
+        <span class="label">03 · Налог и проверка своей цены</span>
+        <div class="opts" role="radiogroup" aria-label="Налоговый режим">
+          <label class="opt"><input type="radio" name="tax" value="npd6" checked><span>НПД 6%<i>заказчики — компании</i></span></label>
+          <label class="opt"><input type="radio" name="tax" value="npd4"><span>НПД 4%<i>заказчики — физлица</i></span></label>
+          <label class="opt"><input type="radio" name="tax" value="usn6"><span>УСН 6%<i>ИП</i></span></label>
+          <label class="opt"><input type="radio" name="tax" value="none"><span>Без налога<i>прикидка «как есть»</i></span></label>
+        </div>
+        <div class="flds">
+          <div class="fld wide"><label for="f-real">Моя нынешняя ставка за смену, ₽</label><input id="f-real" type="number" min="0" step="1000" placeholder="например, 30 000" inputmode="numeric"></div>
+        </div>
+        <div class="split" id="split">
+          <div class="track"></div>
+          <div class="legend"></div>
+        </div>
+        <div class="hint">Полоса показывает, из чего состоит ставка. Обычно неожиданность в том, что доход — заметно меньше половины: остальное съедают налог, расходы и техника.</div>
+      </section>
+    </form>
+
+    <div class="paper-col">
+      <div class="paper-shell">
+        <div class="paper" id="paper" aria-live="polite"></div>
+        <div class="paper-bar">
+          <button class="pbtn main" id="btn-copy" type="button">Скопировать расчёт</button>
+          <button class="pbtn" id="btn-print" type="button">Распечатать / в PDF</button>
+        </div>
+      </div>
+      <p style="margin-top:10px;font-size:12.5px;color:var(--mute);text-wrap:pretty">Считается в вашем браузере — цифры дохода никуда не уходят.</p>
+    </div>
+  </div>
+
+  <div class="seo-body">
+    <h2 class="art-h2" style="margin-top:0">Почему ставка «по рынку» разоряет</h2>
+    <p>Обычная ошибка звучит так: «хочу 120 тысяч, буду снимать по 20 смен — значит, 6 тысяч за смену». В этой арифметике нет ни налога, ни постоянных расходов, ни новой камеры взамен убитой, ни месяца, когда заказов просто нет. А ещё в ней нет монтажа: смена — это не день, а два-три дня работы, из которых снимается один.</p>
+    <p>Честный расчёт идёт с конца: сколько нужно <b>на руки</b>, плюс резерв на простой, плюс постоянные расходы, плюс износ техники — и вся эта сумма делится на реальное число смен, а сверху накидывается налог. Получается цифра, ниже которой работать нельзя: каждая смена по такой цене — это доплата заказчику за возможность у него поснимать.</p>
+    <p>Дальше: <a href="smeta-i-schet.html">смета и счёт</a> переведут ставку в документ для клиента, <a href="brif-na-semku.html">бриф</a> соберёт вводные, а <a href="../konstruktor-dogovora.html">конструктор договоров</a> закрепит условия и предоплату.</p>
+
+    <h2 class="art-h2">Частые вопросы про ставку</h2>
+    <details class="svc-faq"><summary>Почему нельзя просто разделить желаемый доход на количество дней?</summary><p>Потому что съёмочных дней в месяце не тридцать. Между сменами идут монтаж, переписка, поиск клиентов, поездки и техника на ремонте. Плюс из выручки уходят налог, постоянные расходы и износ техники. Ставка считается от того, сколько смен вы реально снимаете, а не от календаря.</p></details>
+    <details class="svc-faq"><summary>Что такое амортизация техники и зачем её закладывать?</summary><p>Камера, оптика, свет и компьютер изнашиваются и устаревают: через несколько лет комплект придётся обновлять. Если не откладывать на это из каждой смены, деньги на новую камеру придётся брать из дохода или в кредит. Разделите стоимость комплекта на срок службы в месяцах — это и есть сумма, которую ставка обязана покрывать.</p></details>
+    <details class="svc-faq"><summary>НПД 4% или 6% — какую ставку выбирать?</summary><p>Налог на профессиональный доход считается по плательщику: 4% с доходов от физических лиц и 6% с доходов от компаний и ИП. Если снимаете и свадьбы, и корпоративные ролики, считайте по 6% — так расчёт будет с запасом, а не впритык.</p></details>
+    <details class="svc-faq"><summary>Сколько съёмочных смен в месяц — это реально?</summary><p>Зависит от жанра и от того, сами ли вы монтируете. Если на каждую смену приходится два-три дня поста, больше шести–восьми смен в месяц не выходит физически. Именно поэтому попытка «брать дешевле, но больше снимать» упирается в потолок и заканчивается выгоранием.</p></details>
+    <details class="svc-faq"><summary>Это рыночная цена?</summary><p>Нет. Калькулятор показывает минимум, ниже которого работа идёт в убыток при ваших вводных. Рынок может быть выше — тогда разница уходит в развитие, помощников и технику. Но если ваша текущая ставка ниже расчётной, вы просто финансируете чужие съёмки из своего кармана.</p></details>
+  </div>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Помогло? <em>Побубним.</em></h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Сказать спасибо в телеграме</a>
+      <a class="btn btn-ghost" href="index.html">Все инструменты</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/rate.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+</body>
+</html>
