@@ -169,6 +169,11 @@
         out.push(itemsTableXml(el));
       } else if (el.tagName === "TABLE" && cls.contains("req")) {
         out.push(tableXml(el));
+      } else if (cls.contains("ticks")) {
+        /* чек-лист: каждая строка с квадратиком — отдельный абзац */
+        [].forEach.call(el.querySelectorAll(".tick-row"), function (row) {
+          out.push(par(inlineRuns(row), { spaceAfter: 40 }));
+        });
       } else if (cls.contains("line")) {
         /* строка расписания/сметы: <b>метка</b><span>текст</span> */
         var lb = el.querySelector("b"), ls = el.querySelector("span");

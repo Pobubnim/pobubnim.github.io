@@ -38,6 +38,7 @@ index_repository после крупных правок; проверка: index
   kalkulyator-karty-pamyati (+karta-db.js), shot-list (план кадров + счётчик
   смены), vyzyvnoj-list (call sheet + расчёт заката и золотого часа),
   kalkulyator-grip (ГРИП: границы резкости, гиперфокал, размытие фона в px),
+  chek-list-semki (сборы на смену: набор под тип съёмки, галочки в браузере),
   kalkulyator-stoimosti-semki (заглушка-редирект, noindex).
 
 ## assets/
@@ -53,6 +54,7 @@ index_repository после крупных правок; проверка: index
   reliz.js, tajming.js, karta.js+karta-db.js, shotlist.js, callsheet.js
   (инструменты) · sun.js (солнце: восход/закат/золотой час по NOAA, §8з) ·
   dof.js + grip.js (ГРИП: формулы §8и и интерфейс калькулятора) ·
+  checklist.js (чек-лист сборов) ·
   docx.js (настоящий .docx: ZIP+OOXML, rubWords/moneyFull; таблица понимает
   data-cols="%,%,…" и класс .text — все колонки влево).
 - `img/` — webp-фонд: polya-* (стилы «Поля» — кадры досок), tri-*, hz-*,
@@ -81,7 +83,8 @@ sitemap, единая версия analytics.js, width/height у картино�
 **verify_sun.py** — сверка assets/js/sun.js с библиотекой astral на 7 городах
 и 6 датах (допуск 2 мин; прогонять после любой правки формул),
 **test_dof.py** и **verify_dof.py** — приёмка калькулятора ГРИП и сверка его
-формул с независимой численной моделью оптики.
+формул с независимой численной моделью оптики,
+**test_checklist.py** — приёмка чек-листа сборов.
 
 ## Ритуалы
 
