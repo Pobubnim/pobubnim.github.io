@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Вызывной лист (call sheet) онлайн — шаблон | ПОБУБНИМ</title>
+<meta name="description" content="Вызывной лист съёмочного дня онлайн: время сбора и выезда, локации, контакты группы, а ещё восход, закат и золотой час по дате и городу. Скачать в Word или распечатать, бесплатно.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/instrumenty/vyzyvnoj-list.html">
+<meta property="og:title" content="Вызывной лист (call sheet) онлайн — шаблон | ПОБУБНИМ">
+<meta property="og:description" content="Смена на одном листе: время, локации, контакты группы и свет — закат и золотой час считаются по дате и координатам.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/home.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pobubnim.github.io/instrumenty/vyzyvnoj-list.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<link rel="stylesheet" href="../assets/css/paper.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Вызывной лист онлайн", "url": "https://pobubnim.github.io/instrumenty/vyzyvnoj-list.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/"}, "description": "Бесплатный конструктор вызывного листа (call sheet): расписание смены, локации, контакты группы, расчёт восхода, заката и золотого часа, выгрузка в Word и печать."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Что такое вызывной лист и зачем он нужен?", "acceptedAnswer": {"@type": "Answer", "text": "Вызывной лист (call sheet) — это лист на один съёмочный день, который рассылают группе накануне вечером. В нём время сбора и выезда, адреса локаций, кто во сколько приезжает, телефоны и важные заметки по площадке. Смысл простой: утром никто никому не звонит с вопросом «а где мы снимаем и во сколько»."}},
+{"@type": "Question", "name": "Чем вызывной лист отличается от шот-листа?", "acceptedAnswer": {"@type": "Answer", "text": "Шот-лист отвечает на вопрос «что снимаем» — список кадров с крупностями и движением камеры. Вызывной лист отвечает на вопрос «когда и где» — время, адреса, люди, телефоны. На площадке нужны оба: один у оператора, другой у всей группы."}},
+{"@type": "Question", "name": "Откуда берётся время заката и золотого часа?", "acceptedAnswer": {"@type": "Answer", "text": "Считается прямо в браузере по формулам солнечного калькулятора NOAA для координат выбранного города и указанной даты. Золотой час — период, когда солнце стоит между −4° и +6° над горизонтом, синий час — от −6° до −4°. Точность около минуты, интернет для расчёта не нужен."}},
+{"@type": "Question", "name": "Можно ли поставить свои координаты, если города нет в списке?", "acceptedAnswer": {"@type": "Answer", "text": "Да. Города из списка подставляют широту, долготу и часовой пояс автоматически, но все три поля можно исправить руками — например, вписать координаты загородной локации. Расчёт пересчитается сразу."}},
+{"@type": "Question", "name": "Данные группы никуда не уходят?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. Телефоны и адреса остаются в вашем браузере: страница ничего не отправляет на сервер, а черновик сохраняется только на вашем устройстве и стирается кнопкой «Очистить черновик»."}}
+]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Инструменты", "item": "https://pobubnim.github.io/instrumenty/"}, {"@type": "ListItem", "position": 3, "name": "Вызывной лист онлайн", "item": "https://pobubnim.github.io/instrumenty/vyzyvnoj-list.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 880px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; max-width: 720px; }
+  /* строки локаций и группы */
+  .rows { display: flex; flex-direction: column; gap: 8px; }
+  .row-i { display: grid; gap: 8px; align-items: center; }
+  /* две линии: сверху главное (что/кто и во сколько), снизу подробности */
+  #locs .row-i { grid-template-columns: 26px 1fr 104px auto;
+    grid-template-areas: "n name time btns" ". addr addr ."; }
+  #locs .l-name { grid-area: name; } #locs .l-addr { grid-area: addr; }
+  #locs .l-time { grid-area: time; }
+  #crew .row-i { grid-template-columns: 26px 1fr 1fr 104px auto;
+    grid-template-areas: "n role role at btns" ". who phone phone ."; }
+  #crew .c-role { grid-area: role; } #crew .c-who { grid-area: who; }
+  #crew .c-phone { grid-area: phone; } #crew .c-at { grid-area: at; }
+  .row-i .rn { grid-area: n; }
+  .row-i .rowbtns { grid-area: btns; }
+  .row-i input { background: #0c0c0b; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: 400 14px var(--font-ui); padding: 9px 10px; min-height: 42px; width: 100%; min-width: 0; }
+  .row-i input:focus { border-color: var(--lamp); outline: none; }
+  .row-i input::placeholder { color: var(--mute); font-weight: 300; }
+  .row-i .rn { font: 500 12px var(--font-mono); color: var(--mute); text-align: center; }
+  .row-i input[type="time"] { font-variant-numeric: tabular-nums; }
+  .coords { display: grid; grid-template-columns: 1fr 1fr 92px; gap: 10px 12px; margin-top: 10px; }
+  textarea#f-notes { background: #0c0c0b; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: 400 15px var(--font-ui); padding: 11px 12px; width: 100%; min-height: 92px; resize: vertical; }
+  textarea#f-notes:focus { border-color: var(--lamp); outline: none; }
+  /* полоса светового дня — сигнатура инструмента */
+  .sunbar { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--char); }
+  .sunbar .track { position: relative; height: 12px; border-radius: 6px; background: #131211; overflow: hidden; }
+  .sunbar .track i { position: absolute; top: 0; height: 100%; }
+  .sunbar .track .day { background: #2b2721; }
+  .sunbar .track .gold { background: var(--lamp); opacity: 0.85; }
+  .sunbar .track .shift { background: rgba(255,255,255,0.16); top: 0; height: 100%; border-left: 1px solid var(--ink); border-right: 1px solid var(--ink); }
+  .sunbar .scale { display: flex; justify-content: space-between; margin-top: 6px; font: 400 10.5px var(--font-mono); color: var(--mute); }
+  .sunbar .stext { margin-top: 10px; font-size: 13.5px; color: var(--smoke); font-weight: 300; text-wrap: pretty; font-variant-numeric: tabular-nums; }
+  .sunbar .stext b { color: var(--ink); font-weight: 500; }
+  .draft-note { margin-top: 10px; font-size: 12.5px; color: var(--mute); }
+  .paper table.items.text { font-size: 12px; }
+  .paper table.items.text th, .paper table.items.text td { text-align: left; padding: 5px 6px; }
+  .paper table.items.text th:first-child, .paper table.items.text td:first-child { width: 8%; text-align: center; }
+  @media (max-width: 560px) {
+    #locs .row-i { grid-template-columns: 22px 1fr 96px;
+      grid-template-areas: "n name time" ". addr addr" "btns btns btns"; }
+    #crew .row-i { grid-template-columns: 22px 1fr 96px;
+      grid-template-areas: "n role at" ". who who" ". phone phone" "btns btns btns"; }
+    .row-i .rowbtns { justify-content: flex-end; }
+    .coords { grid-template-columns: 1fr 1fr; }
+    .paper table.items.text { font-size: 10.5px; }
+  }
+</style>
+<script src="../assets/js/analytics.js?v=3" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Инструмент · Съёмочный день · Без регистрации</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Вызывной лист (call sheet) онлайн</span>Смена на одном листе — <em>со светом</em></h1>
+    <p class="lead">Время сбора, адреса, телефоны группы — и сразу закат с золотым часом для вашей даты и города. Группа получает лист накануне и утром никому не звонит с вопросом «а где мы снимаем».</p>
+    <div class="free-note"><b>Вместо оплаты</b> — если помогло, напишите спасибо в <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener" style="text-decoration:underline">личку телеграма</a></div>
+  </section>
+
+  <div class="builder">
+    <form class="cfg" id="cfg" autocomplete="off">
+      <section class="cfg-sec">
+        <span class="label">01 · Смена</span>
+        <div class="flds" style="margin-top:0">
+          <div class="fld wide"><label for="f-proj">Проект</label><input id="f-proj" type="text" placeholder="Рекламный ролик EVERGO"></div>
+          <div class="fld"><label for="f-date">Дата съёмки</label><input id="f-date" type="date"></div>
+          <div class="fld"><label for="f-day">Номер смены</label><input id="f-day" type="text" placeholder="1 из 2"></div>
+          <div class="fld"><label for="f-city">Город</label><input id="f-city" type="text" list="dl-city" placeholder="Москва" value="Москва"></div>
+          <div class="fld"><label for="f-client">Заказчик или продакшн</label><input id="f-client" type="text" placeholder="ООО «Ромашка»"></div>
+        </div>
+        <datalist id="dl-city"></datalist>
+        <div class="coords">
+          <div class="fld"><label for="f-lat">Широта</label><input id="f-lat" type="number" step="0.0001" placeholder="55.7558"></div>
+          <div class="fld"><label for="f-lng">Долгота</label><input id="f-lng" type="number" step="0.0001" placeholder="37.6173"></div>
+          <div class="fld"><label for="f-tz">Пояс UTC+</label><input id="f-tz" type="number" step="1" min="-12" max="14" placeholder="3"></div>
+        </div>
+        <div class="hint">Город подставляет координаты и пояс — но если снимаете за городом, впишите свои: закат за 100 км отличается на минуты, а на золотом часе это заметно.</div>
+      </section>
+
+      <section class="cfg-sec">
+        <span class="label">02 · Время смены</span>
+        <div class="flds" style="margin-top:0">
+          <div class="fld"><label for="f-call">Сбор группы</label><input id="f-call" type="time"></div>
+          <div class="fld"><label for="f-go">Выезд</label><input id="f-go" type="time"></div>
+          <div class="fld"><label for="f-start">Начало съёмки</label><input id="f-start" type="time"></div>
+          <div class="fld"><label for="f-lunch">Обед</label><input id="f-lunch" type="time"></div>
+          <div class="fld wide"><label for="f-end">Планируемый конец</label><input id="f-end" type="time"></div>
+        </div>
+        <div class="sunbar" id="sunbar">
+          <div class="track"></div>
+          <div class="scale"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+          <p class="stext">Укажите дату и город — покажу световой день и золотой час.</p>
+        </div>
+      </section>
+
+      <section class="cfg-sec">
+        <span class="label">03 · Локации</span>
+        <div class="rows" id="locs"></div>
+        <div style="margin-top:12px"><button type="button" class="mini" id="add-loc">+ Локация</button></div>
+      </section>
+
+      <section class="cfg-sec">
+        <span class="label">04 · Группа — добавляйте ролями</span>
+        <div class="chips" id="chips" role="group" aria-label="Роли на площадке"></div>
+        <datalist id="dl-role"></datalist>
+        <div class="rows" id="crew"></div>
+        <div style="margin-top:12px"><button type="button" class="mini" id="add-crew">+ Человек</button></div>
+        <div class="hint">Стрелки ↑ ↓ меняют порядок строк, ✕ убирает. Роль можно выбрать из подсказок или написать свою.</div>
+      </section>
+
+      <section class="cfg-sec">
+        <span class="label">05 · Важное для группы</span>
+        <textarea id="f-notes" placeholder="Парковка во дворе, шлагбаум — звонить администратору. Обед привозят на площадку. Форма одежды тёмная, обувь удобная."></textarea>
+      </section>
+    </form>
+
+    <div class="paper-col">
+      <div class="paper-shell">
+        <div class="paper" id="paper" aria-live="polite"></div>
+        <div class="paper-bar">
+          <button class="pbtn main" id="btn-copy" type="button">Скопировать текст</button>
+          <button class="pbtn" id="btn-doc" type="button">Скачать Word</button>
+          <button class="pbtn" id="btn-print" type="button">Распечатать / в PDF</button>
+          <button class="pbtn" id="btn-clear" type="button">Очистить черновик</button>
+        </div>
+      </div>
+      <p class="draft-note" id="draft-note" hidden>Черновик восстановлен из памяти браузера — продолжайте с того же места.</p>
+      <p style="margin-top:10px;font-size:12.5px;color:var(--mute);text-wrap:pretty">Телефоны и адреса остаются на вашем устройстве: страница ничего не отправляет на сервер.</p>
+    </div>
+  </div>
+
+  <div class="seo-body">
+    <h2 class="art-h2" style="margin-top:0">Что должно быть в вызывном листе</h2>
+    <p>Вызывной лист рассылают группе накануне вечером, и работает он ровно до тех пор, пока в нём есть четыре вещи: <b>время</b> (сбор, выезд, начало съёмки, обед, конец), <b>адреса</b> локаций с указанием, во сколько где снимаем, <b>люди</b> — кто, во сколько приезжает и по какому телефону его искать, и <b>заметки площадки</b>: парковка, шлагбаум, питание, форма одежды.</p>
+    <p>Пятая вещь, которую в шаблонах обычно забывают, — <b>свет</b>. Смена, свёрстанная без оглядки на закат, разваливается на последнем блоке: группа приезжает на натуру, а солнце уже село. Поэтому здесь восход, закат, золотой и синий час считаются автоматически по дате и координатам, а лист сам предупреждает, если съёмка заканчивается после заката или если золотой час попадает внутрь смены — на него стоит поставить ключевые кадры.</p>
+    <p>Дальше: <a href="shot-list.html">шот-лист</a> разложит смену по кадрам, <a href="tajming-svadby.html">тайминг свадебного дня</a> соберёт расписание свадьбы, <a href="smeta-i-schet.html">смета и счёт</a> переведут смены в деньги, а <a href="../konstruktor-dogovora.html">конструктор договоров</a> закрепит условия на бумаге.</p>
+
+    <h2 class="art-h2">Золотой час, синий час и сумерки</h2>
+    <p><b>Золотой час</b> — время, когда солнце стоит между −4° и +6° над горизонтом: свет мягкий, тёплый, тени длинные. <b>Синий час</b> — от −6° до −4°: солнце уже за горизонтом, небо ровное и холодное, в кадре хорошо читаются окна и вывески. Гражданские сумерки заканчиваются на −6°: после этого без своего света снимать нечего.</p>
+    <p>Продолжительность зависит от широты и сезона: в Москве в июне золотой час тянется больше часа, а в марте укладывается в сорок минут. Инструмент считает это для вашей даты, поэтому «золотой час» перестаёт быть фигурой речи и превращается в строку расписания.</p>
+
+    <h2 class="art-h2">Частые вопросы про вызывной лист</h2>
+    <details class="svc-faq"><summary>Что такое вызывной лист и зачем он нужен?</summary><p>Вызывной лист (call sheet) — это лист на один съёмочный день, который рассылают группе накануне вечером. В нём время сбора и выезда, адреса локаций, кто во сколько приезжает, телефоны и важные заметки по площадке. Смысл простой: утром никто никому не звонит с вопросом «а где мы снимаем и во сколько».</p></details>
+    <details class="svc-faq"><summary>Чем вызывной лист отличается от шот-листа?</summary><p>Шот-лист отвечает на вопрос «что снимаем» — список кадров с крупностями и движением камеры. Вызывной лист отвечает на вопрос «когда и где» — время, адреса, люди, телефоны. На площадке нужны оба: один у оператора, другой у всей группы.</p></details>
+    <details class="svc-faq"><summary>Откуда берётся время заката и золотого часа?</summary><p>Считается прямо в браузере по формулам солнечного калькулятора NOAA для координат выбранного города и указанной даты. Золотой час — период, когда солнце стоит между −4° и +6° над горизонтом, синий час — от −6° до −4°. Точность около минуты, интернет для расчёта не нужен.</p></details>
+    <details class="svc-faq"><summary>Можно ли поставить свои координаты, если города нет в списке?</summary><p>Да. Города из списка подставляют широту, долготу и часовой пояс автоматически, но все три поля можно исправить руками — например, вписать координаты загородной локации. Расчёт пересчитается сразу.</p></details>
+    <details class="svc-faq"><summary>Данные группы никуда не уходят?</summary><p>Нет. Телефоны и адреса остаются в вашем браузере: страница ничего не отправляет на сервер, а черновик сохраняется только на вашем устройстве и стирается кнопкой «Очистить черновик».</p></details>
+  </div>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Помогло? <em>Побубним.</em></h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Сказать спасибо в телеграме</a>
+      <a class="btn btn-ghost" href="index.html">Все инструменты</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/docx.js" defer></script>
+<script src="../assets/js/sun.js" defer></script>
+<script src="../assets/js/callsheet.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+</body>
+</html>

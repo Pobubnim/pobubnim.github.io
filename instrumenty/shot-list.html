@@ -36,11 +36,6 @@
   .art-hero { padding-top: 150px; max-width: 880px; }
   .art-hero .label { margin-bottom: 14px; display: block; }
   .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; max-width: 720px; }
-  /* чипы типовых кадров */
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-  .chip { padding: 8px 14px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 300 13px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease), color 0.2s var(--ease); text-align: left; }
-  .chip:hover { background: var(--char2); color: var(--ink); }
-  .chip.all { border-style: dashed; color: var(--mute); }
   /* сцена = карточка, внутри кадры */
   .scenes { display: flex; flex-direction: column; gap: 12px; }
   .scene { border: 1px solid var(--line); border-radius: var(--r-card); padding: 14px; background: rgba(255,255,255,0.012); }
@@ -49,14 +44,6 @@
   .scene-bar { margin-top: 10px; }
   .shot { border-top: 1px solid var(--line-soft); margin-top: 12px; padding-top: 12px; }
   .shot-top { display: grid; grid-template-columns: 18px 36px 1fr 62px auto; gap: 8px; align-items: center; }
-  .scene .grip { color: var(--mute); cursor: grab; font-size: 13px; line-height: 1; user-select: none; }
-  .scene .grip:active { cursor: grabbing; }
-  .rowbtns { display: flex; gap: 2px; }
-  .rowbtns button { width: 30px; min-height: 42px; border-radius: 8px; border: 1px solid transparent; background: none; color: var(--mute); font-size: 14px; cursor: pointer; transition: color 0.15s var(--ease); }
-  .rowbtns button:hover { color: var(--ink); border-color: var(--line); }
-  .rowbtns .del:hover, .rowbtns .del-scene:hover { color: var(--dv-rec); }
-  .shot.dragging { opacity: 0.4; }
-  .shot.drop-here { outline: 2px solid var(--lamp); outline-offset: 2px; border-radius: 8px; }
   .shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(124px, 1fr)); gap: 6px; margin-top: 6px; }
   .scene input, .scene select { background: #0c0c0b; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: 400 14px var(--font-ui); padding: 9px 10px; min-height: 42px; width: 100%; min-width: 0; }
   .scene input:focus, .scene select:focus { border-color: var(--lamp); outline: none; }
@@ -64,11 +51,6 @@
   .scene .sn { font: 500 13px var(--font-mono); color: var(--mute); text-align: center; }
   .scene .min { text-align: right; font-variant-numeric: tabular-nums; }
   .scene .sc-name { font-weight: 500; }
-  .del, .del-scene { min-height: 42px; border-radius: 8px; border: 1px solid transparent; background: none; color: var(--mute); font-size: 16px; cursor: pointer; }
-  .del:hover, .del-scene:hover { color: var(--dv-rec); border-color: var(--line); }
-  .mini { padding: 8px 16px; min-height: 40px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 13px var(--font-ui); cursor: pointer; }
-  .mini:hover { background: var(--char2); color: var(--ink); }
-  .mini:active { transform: scale(0.97); }
   /* счётчик смены — главное отличие от бумажного шаблона */
   .meter { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--char); }
   .meter .bar { height: 8px; border-radius: 4px; background: #1a1917; overflow: hidden; }
@@ -195,7 +177,7 @@
     <h2 class="art-h2">Крупности и движение: короткий словарь</h2>
     <p><b>Крупности.</b> Дальний (ELS) — человек мелкой фигурой, работает место. Общий (WS) — фигура целиком, видно, где мы. Средний (MS) — по пояс, основной план действия и диалога. Грудной (MCU) — план речи, им снимают интервью. Крупный (CU) — лицо, план эмоции. Деталь (ECU) — руки, глаза, предмет.</p>
     <p><b>Движение.</b> Статика, панорама, наклон, проезд, слайдер, стедикам, с рук, кран, зум, дрон. Правило одно: движение должно за чем-то следовать или что-то открывать. Панорама «чтобы было красиво» на монтаже вырезается первой.</p>
-    <p>Дальше по плану съёмки: <a href="tajming-svadby.html">тайминг свадебного дня</a> расставит по часам сам день, <a href="smeta-i-schet.html">смета и счёт</a> переведут смены в деньги, а <a href="../konstruktor-dogovora.html">конструктор договоров</a> закрепит условия. Как это выглядит на практике — в разборах: <a href="../articles/kak-snyat-reklamnyj-rolik.html">как снять рекламный ролик</a> и <a href="../articles/kak-snimat-video-na-telefon.html">как снимать видео на телефон</a>.</p>
+    <p>Дальше по плану съёмки: <a href="vyzyvnoj-list.html">вызывной лист</a> соберёт день смены — время, адреса, телефоны группы и закат с золотым часом, <a href="tajming-svadby.html">тайминг свадебного дня</a> расставит по часам сам день, <a href="smeta-i-schet.html">смета и счёт</a> переведут смены в деньги, а <a href="../konstruktor-dogovora.html">конструктор договоров</a> закрепит условия. Как это выглядит на практике — в разборах: <a href="../articles/kak-snyat-reklamnyj-rolik.html">как снять рекламный ролик</a> и <a href="../articles/kak-snimat-video-na-telefon.html">как снимать видео на телефон</a>.</p>
 
     <h2 class="art-h2">Частые вопросы про шот-лист</h2>
     <details class="svc-faq"><summary>Что такое шот-лист и зачем он нужен?</summary><p>Шот-лист — список кадров, которые нужно снять, разложенный по сценам. У каждого кадра написано, что в нём происходит, какая крупность, ракурс, движение камеры и оптика. На площадке он заменяет память: группа видит, что уже снято и что осталось, а заказчик заранее понимает, что получит.</p></details>

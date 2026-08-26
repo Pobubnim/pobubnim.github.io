@@ -95,6 +95,13 @@ blackmagicdesign.com/products/davinciresolve/training — бесплатные P
 - Канон монтажной (свой, C:/src/cutroom/docs/COMPOSITION.md) — крупности как
   язык §4, причина движения камеры §6; из него собрана номенклатура
   EDU_BASE §8ж.
+- Солнце и свет на смене [С 26.08]: NOAA Solar Calculator
+  (gml.noaa.gov/grad/solcalc) — формулы склонения, уравнения времени и
+  часового угла, зенит восхода 90.833°; PhotoPills «Mastering Golden Hour,
+  Blue Hour and Twilights» — границы золотого (−4°…+6°) и синего (−6°…−4°)
+  часа; библиотека astral (Python) — независимая реализация для сверки
+  (tools/verify_sun.py). Наша реализация — assets/js/sun.js, канон
+  EDU_BASE §8з.
 
 ## 7. Куда это применяется на сайте
 

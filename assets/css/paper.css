@@ -34,6 +34,25 @@
 .hint { margin-top: 10px; font-size: 13px; color: var(--mute); border-left: 2px solid var(--line); padding: 2px 0 2px 12px; text-wrap: pretty; }
 .hint.warn { color: var(--smoke); border-color: var(--dv-rec); }
 
+/* ---------- динамические строки: чипы, ручка, кнопки порядка ----------
+   общее для инструментов, где список строк собирается кликами (шот-лист,
+   вызывной лист): чипы-пресеты, ручка перетаскивания, стрелки порядка */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.chip { padding: 8px 14px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 300 13px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease), color 0.2s var(--ease); text-align: left; }
+.chip:hover { background: var(--char2); color: var(--ink); }
+.chip.all { border-style: dashed; color: var(--mute); }
+.mini { padding: 8px 16px; min-height: 40px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 13px var(--font-ui); cursor: pointer; }
+.mini:hover { background: var(--char2); color: var(--ink); }
+.mini:active { transform: scale(0.97); }
+.grip { color: var(--mute); cursor: grab; font-size: 13px; line-height: 1; user-select: none; }
+.grip:active { cursor: grabbing; }
+.rowbtns { display: flex; gap: 2px; }
+.rowbtns button { width: 30px; min-height: 42px; border-radius: 8px; border: 1px solid transparent; background: none; color: var(--mute); font-size: 14px; cursor: pointer; transition: color 0.15s var(--ease); }
+.rowbtns button:hover { color: var(--ink); border-color: var(--line); }
+.rowbtns .del:hover, .rowbtns .del-scene:hover, .rowbtns .del-row:hover { color: var(--dv-rec); }
+.dragging { opacity: 0.4; }
+.drop-here { outline: 2px solid var(--lamp); outline-offset: 2px; border-radius: 8px; }
+
 /* ---------- лист документа ---------- */
 .paper-col { position: sticky; top: 84px; }
 .paper-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
@@ -52,6 +71,8 @@
 .paper table.items th, .paper table.items td { border: 1px solid #b8b1a2; padding: 6px 8px; text-align: right; }
 .paper table.items th { font-weight: 700; background: #efe9db; }
 .paper table.items th:first-child, .paper table.items td:first-child { text-align: left; width: 46%; }
+.paper .line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; }
+.paper .line.grand { border-top: 2px solid #22201c; margin-top: 10px; padding-top: 10px; font-weight: 700; font-size: 14.5px; }
 .paper .total-row { display: flex; justify-content: space-between; align-items: baseline; border-top: 2px solid #22201c; margin-top: 12px; padding-top: 8px; font-weight: 700; font-size: 14.5px; }
 .paper table.req { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 12.5px; }
 .paper table.req td { width: 50%; vertical-align: top; padding-right: 12px; }
