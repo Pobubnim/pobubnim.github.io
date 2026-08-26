@@ -43,6 +43,10 @@
   .tool-mini { background: #f7f4ec; border-radius: 10px; padding: 16px 18px; color: #22201c; font-family: Georgia, serif; font-size: 11px; display: flex; flex-direction: column; gap: 7px; pointer-events: none; }
   .tool-mini u { text-decoration: none; border-bottom: 1px solid #c9c2b2; padding-bottom: 4px; }
   .tool-mini .num { font: 500 20px var(--font-mono); letter-spacing: -0.01em; }
+  .tool-group { margin: clamp(44px, 6vw, 72px) 0 clamp(18px, 2vw, 24px); }
+  .tool-group:first-of-type { margin-top: 0; }
+  .tool-group-h { font-size: clamp(22px, 2.4vw, 30px); font-weight: 300; letter-spacing: -0.02em; }
+  .tool-group-sub { margin-top: 8px; color: var(--mute); font-size: 15px; font-weight: 300; max-width: 620px; text-wrap: pretty; }
   @media (max-width: 760px) { .tool-grid { grid-template-columns: 1fr; } }
   .seo-body { max-width: 760px; margin-top: clamp(64px, 9vw, 110px); }
   .seo-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
@@ -76,6 +80,10 @@
     <div class="free-note"><b>Вместо оплаты</b> — если инструмент помог, напишите спасибо в <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener" style="text-decoration:underline">личку телеграма</a></div>
   </section>
 
+    <div class="tool-group">
+    <h2 class="tool-group-h">Документы и деньги</h2>
+    <p class="tool-group-sub">Бумаги, которые просят клиенты, и цифры, которые считают за них</p>
+  </div>
   <div class="tool-grid">
     <a class="tool-card" href="../konstruktor-dogovora.html">
       <i><span class="pulse"></span>Документы · договор + акт</i>
@@ -84,19 +92,19 @@
       <div class="tool-mini"><u style="text-align:center;font-weight:700">ДОГОВОР № ___</u><u>1. Предмет договора</u><u>2. Результат и сроки</u>3. Стоимость и порядок расчётов</div>
       <span class="go">Собрать договор →</span>
     </a>
+    <a class="tool-card" href="smeta-i-schet.html">
+      <i><span class="pulse"></span>Деньги · документы</i>
+      <b>Смета и счёт на оплату</b>
+      <span>Рабочий калькулятор смен для снимающих: позиции по своим ставкам, скидка, итог прописью — и счёт с реквизитами из тех же строк.</span>
+      <div class="tool-mini"><u style="text-align:center;font-weight:700">СМЕТА № ___</u><u>Съёмочная смена × 2</u><u>Монтаж, за минуту × 3</u><span style="font-weight:700">Итого: 78 000 ₽</span></div>
+      <span class="go">Собрать смету →</span>
+    </a>
     <a class="tool-card" href="stavka-frilansera.html">
       <i><span class="pulse"></span>Деньги · ставка</i>
       <b>Ставка за съёмочную смену</b>
       <span>Сколько брать, чтобы не работать в минус: расчёт от желаемого дохода с налогом, расходами, износом техники и резервом на простой. И проверка своей нынешней цены.</span>
       <div class="tool-mini"><u style="text-align:center;font-weight:700">СТАВКА ЗА СМЕНУ</u><span class="num">28 723 ₽</span>доход 120 000 ₽ · 6 смен · НПД 6% · техника 900 000 ₽</div>
       <span class="go">Посчитать ставку →</span>
-    </a>
-    <a class="tool-card" href="modelnyj-reliz.html">
-      <i><span class="pulse"></span>Документы · согласие</i>
-      <b>Модельный релиз онлайн</b>
-      <span>Согласие модели на съёмку и публикацию по ст. 152.1 ГК РФ: взрослый или ребёнок, портфолио или реклама, TFP или за плату. Готовый бланк за минуту.</span>
-      <div class="tool-mini"><u style="text-align:center;font-weight:700">СОГЛАСИЕ (МОДЕЛЬНЫЙ РЕЛИЗ)</u><u>1. Разрешаю съёмку и публикацию</u>2. Объём использования</div>
-      <span class="go">Собрать релиз →</span>
     </a>
     <a class="tool-card" href="brif-na-semku.html">
       <i><span class="pulse"></span>Клиент · документы</i>
@@ -105,13 +113,19 @@
       <div class="tool-mini"><u style="text-align:center;font-weight:700">БРИФ НА СЪЁМКУ</u><u>1. Какая задача у ролика?</u><u>2. Где будет публиковаться?</u>3. Хронометраж и формат кадра</div>
       <span class="go">Собрать бриф →</span>
     </a>
-    <a class="tool-card" href="smeta-i-schet.html">
-      <i><span class="pulse"></span>Деньги · документы</i>
-      <b>Смета и счёт на оплату</b>
-      <span>Рабочий калькулятор смен для снимающих: позиции по своим ставкам, скидка, итог прописью — и счёт с реквизитами из тех же строк.</span>
-      <div class="tool-mini"><u style="text-align:center;font-weight:700">СМЕТА № ___</u><u>Съёмочная смена × 2</u><u>Монтаж, за минуту × 3</u><span style="font-weight:700">Итого: 78 000 ₽</span></div>
-      <span class="go">Собрать смету →</span>
+    <a class="tool-card" href="modelnyj-reliz.html">
+      <i><span class="pulse"></span>Документы · согласие</i>
+      <b>Модельный релиз онлайн</b>
+      <span>Согласие модели на съёмку и публикацию по ст. 152.1 ГК РФ: взрослый или ребёнок, портфолио или реклама, TFP или за плату. Готовый бланк за минуту.</span>
+      <div class="tool-mini"><u style="text-align:center;font-weight:700">СОГЛАСИЕ (МОДЕЛЬНЫЙ РЕЛИЗ)</u><u>1. Разрешаю съёмку и публикацию</u>2. Объём использования</div>
+      <span class="go">Собрать релиз →</span>
     </a>
+  </div>
+  <div class="tool-group">
+    <h2 class="tool-group-h">План съёмки</h2>
+    <p class="tool-group-sub">Что снимаем, когда собираемся и что берём с собой</p>
+  </div>
+  <div class="tool-grid">
     <a class="tool-card" href="shot-list.html">
       <i><span class="pulse"></span>Планирование · съёмка</i>
       <b>Шот-лист: план кадров</b>
@@ -140,6 +154,12 @@
       <div class="tool-mini"><u style="text-align:center;font-weight:700">ЧЕК-ЛИСТ СЪЁМОЧНОГО ДНЯ</u><u>☑ Камера · ☑ Батареи · ☐ Петличка</u>☐ Гаффер-скотч · ☐ Аптечка<span style="font-weight:700">Собрано 12 из 55</span></div>
       <span class="go">Собрать список →</span>
     </a>
+  </div>
+  <div class="tool-group">
+    <h2 class="tool-group-h">Расчёты на площадке</h2>
+    <p class="tool-group-sub">Оптика, свет и носители — арифметика, которая экономит смену</p>
+  </div>
+  <div class="tool-grid">
     <a class="tool-card" href="kalkulyator-grip.html">
       <i><span class="pulse"></span>Съёмка · оптика</i>
       <b>Калькулятор ГРИП</b>
