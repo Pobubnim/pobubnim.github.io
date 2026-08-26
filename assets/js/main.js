@@ -80,7 +80,9 @@ FILMS_VERT.forEach(f => gridV.appendChild(filmCard(f, true)));
 const strip = document.getElementById("strip");
 STRIP.forEach(s => {
   const fig = document.createElement("figure");
-  fig.innerHTML = `<img loading="lazy" src="assets/img/${s.img}.webp" alt="${s.cap}"><figcaption>${s.cap}</figcaption>`;
+  /* размеры кадра ленты одинаковые (720x1280) — резервируем место, чтобы
+     лента не прыгала, пока грузятся плитки при горизонтальной прокрутке */
+  fig.innerHTML = `<img loading="lazy" width="720" height="1280" src="assets/img/${s.img}.webp" alt="${s.cap}"><figcaption>${s.cap}</figcaption>`;
   strip.appendChild(fig);
 });
 

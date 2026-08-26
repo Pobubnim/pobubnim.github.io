@@ -53,7 +53,11 @@ PROBE = r"""
   // картинки: загрузились и не искажены
   for (const i of document.images) {
     const src = (i.currentSrc || i.src || '').split('/').pop();
-    if (!i.complete || i.naturalWidth === 0) { out.missing.push(src); continue; }
+    const box = i.getBoundingClientRect();
+    /* плитки горизонтальных лент лежат правее экрана: браузер честно не грузит
+       их, пока ленту не прокрутят вбок — это не поломка */
+    const offstage = box.left >= vw || box.right <= 0;
+    if (!i.complete || i.naturalWidth === 0) { if (!offstage) out.missing.push(src); continue; }
     const cs = getComputedStyle(i);
     if (cs.objectFit === 'cover' || cs.objectFit === 'contain') continue;
     const r = i.getBoundingClientRect();
