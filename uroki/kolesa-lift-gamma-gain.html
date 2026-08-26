@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Lift, Gamma, Gain: колёса цветокоррекции в DaVinci Resolve | ПОБУБНИМ</title>
+<meta name="description" content="Рабочий прототип колёс DaVinci Resolve в браузере: настоящая математика Lift, Gamma, Gain и Offset, кривая переноса, скоупы и перевод в ASC CDL. Крутите колёса — и учитесь делать правильно.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/uroki/kolesa-lift-gamma-gain.html">
+<meta property="og:title" content="Колёса цветокоррекции: рабочий прототип с настоящей математикой | ПОБУБНИМ">
+<meta property="og:description" content="Lift, Gamma, Gain и Offset считают здесь ту же формулу, что и в грейдинге: тащите колёса, смотрите кривую переноса, скоупы и живой перевод в ASC CDL.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.github.io/uroki/kolesa-lift-gamma-gain.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Lift, Gamma, Gain: как работают колёса цветокоррекции в DaVinci Resolve", "description": "Интерактивный прототип колёс Primaries: каноническая математика Lift, Gamma, Gain и Offset, кривая переноса, скоупы и перевод в индустриальный стандарт ASC CDL.", "datePublished": "2026-08-26", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/kolesa-lift-gamma-gain.html", "image": "https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Чем Lift отличается от Offset?", "acceptedAnswer": {"@type": "Answer", "text": "Lift тянет тени: чем ярче пиксель, тем слабее эффект, и белая точка стоит на месте — в формуле это множитель (1 − in). Offset сдвигает весь сигнал целиком, от чёрного до белого, на одну и ту же величину — наследник printer lights из фотопечати и главное колесо при работе с log-материалом."}},
+{"@type": "Question", "name": "Что именно делает колесо Gamma?", "acceptedAnswer": {"@type": "Answer", "text": "Gamma гнёт середину степенной кривой: out = in^(1/gamma). Чёрное (0) и белое (1) при этом стоят на месте, а середина уходит вверх или вниз. Поэтому гаммой правят общую светлоту и настроение кадра, не трогая точки чёрного и белого — и именно в этой зоне живёт кожа."}},
+{"@type": "Question", "name": "Что такое ASC CDL и зачем он нужен?", "acceptedAnswer": {"@type": "Answer", "text": "ASC CDL — стандарт Американского общества кинооператоров для обмена первичной цветокоррекцией: десять чисел (slope, offset, power по каналам и общая saturation) описывают грейд так, что его одинаково поймут софт на площадке, монтажная и грейдинг-студия. Колёса Lift, Gamma, Gain математически переводятся в slope, offset и power."}},
+{"@type": "Question", "name": "Почему нельзя крутить колёса на глаз, без скоупов?", "acceptedAnswer": {"@type": "Answer", "text": "Глаз адаптируется к перекосу за минуты и перестаёт его видеть, а монитор почти наверняка врёт по температуре. Скоупы считаются из самого сигнала и не адаптируются: waveform показывает, сели ли тени и не обрезались ли света, parade — сведён ли баланс, vectorscope — не ушла ли кожа с линии скин-тона."}}
+]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Статьи и уроки", "item": "https://pobubnim.github.io/articles/"}, {"@type": "ListItem", "position": 3, "name": "Lift, Gamma, Gain: колёса цветокоррекции", "item": "https://pobubnim.github.io/uroki/kolesa-lift-gamma-gain.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 820px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 820px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 820px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ---------- доска: кадр + прибор + живые колёса ---------- */
+  .board { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(14px, 2.4vw, 22px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .board-top { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.6vw, 16px); }
+  .board canvas { width: 100%; display: block; border-radius: 8px; background: #0b0a09; }
+  .board .cap { margin-top: 6px; font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); font-family: var(--font-mono); display: flex; justify-content: space-between; gap: 10px; }
+  .views { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 10px; }
+  .views .vlabel { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); align-self: center; margin-right: 4px; }
+  .vbtn { padding: 7px 13px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
+  .vbtn:hover { background: rgba(245,239,226,0.06); }
+  .vbtn.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+
+  /* живые колёса: без ленивой анимации точки, с рейкой мастера */
+  .wheels-live { margin-top: 16px; }
+  .wheels-live .wheel { position: relative; }
+  .wheels-live .disc { cursor: grab; touch-action: none; }
+  .wheels-live .disc:active { cursor: grabbing; }
+  .wheels-live .dot { transition: none; pointer-events: none; }
+  .mrail { position: relative; height: 18px; margin: 10px auto 0; max-width: 120px; cursor: ew-resize; touch-action: none; }
+  .mrail::before { content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 3px; border-radius: 2px; background: var(--line); }
+  .mrail::after { content: ""; position: absolute; left: 50%; top: 5px; width: 1px; height: 9px; background: rgba(245,239,226,0.35); }
+  .mthumb { position: absolute; top: 3px; left: 50%; width: 13px; height: 13px; margin-left: -6.5px; border-radius: 50%; background: var(--lamp); box-shadow: 0 0 8px rgba(0,0,0,0.7); pointer-events: none; }
+  .wreset { position: absolute; top: -4px; right: 2px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); background: none; color: var(--mute); font-size: 12px; cursor: pointer; line-height: 1; }
+  .wreset:hover { color: var(--ink); background: rgba(245,239,226,0.06); }
+
+  .fbar { margin-top: 16px; padding: 10px 12px; border-radius: 8px; background: rgba(245,239,226,0.045); font-family: var(--font-mono); font-size: 11.5px; line-height: 1.7; color: var(--smoke); overflow-x: auto; white-space: nowrap; }
+  .fbar .cdl { color: var(--mute); display: block; }
+
+  .stat { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--smoke); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
+  .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  .stat span.ok { color: #a9d29a; background: rgba(127,176,105,0.16); }
+  .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
+  .task b { color: var(--ink); font-weight: 500; }
+  .board-reset { margin-top: 12px; padding: 8px 14px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; }
+  .board-reset:hover { background: rgba(245,239,226,0.06); }
+  @media (max-width: 720px) { .board-top { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .wheels-live .wheels { flex-wrap: wrap; row-gap: 18px; }
+    .wheels-live .wheel { flex: 1 1 42%; }
+  }
+</style>
+<script src="../assets/js/analytics.js?v=2" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 04 · Цвет · Прототип инструмента</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Lift, Gamma, Gain: как работают колёса цветокоррекции в DaVinci Resolve</span>Колёса <em>цветокоррекции</em></h1>
+    <p class="lead">Это не картинка колёс — это рабочий прототип. Lift, Gamma, Gain и Offset здесь считают ту же математику, что и в грейдинге: тащите колесо, и каждый пиксель кадра пересчитывается по формуле, кривая переноса показывает, что вы сделали с сигналом, а строка ASC CDL переводит ваши движения на язык, которым обмениваются студии.</p>
+    <time datetime="2026-08-26">Опубликовано 26.08.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="board" id="wb">
+        <div class="board-top">
+          <div>
+            <canvas id="wb-frame" width="640" height="360" aria-label="Кадр с применённым грейдом"></canvas>
+            <div class="cap"><span>КАДР</span><span>REC.709</span></div>
+          </div>
+          <div>
+            <canvas id="wb-scope" width="640" height="360" aria-label="Прибор: кривая переноса или скоуп"></canvas>
+            <div class="cap"><span data-scope-name>КРИВАЯ ПЕРЕНОСА · IRE</span><span>считается из кадра</span></div>
+          </div>
+        </div>
+
+        <div class="views" role="group" aria-label="Прибор">
+          <span class="vlabel">ПРИБОР</span>
+          <button class="vbtn on" type="button" data-view="curve">Кривая переноса</button>
+          <button class="vbtn" type="button" data-view="waveform">Waveform</button>
+          <button class="vbtn" type="button" data-view="parade">Parade</button>
+          <button class="vbtn" type="button" data-view="vector">Vectorscope</button>
+        </div>
+        <div class="views" role="group" aria-label="Кадр" style="margin-top:0">
+          <span class="vlabel">КАДР</span>
+          <button class="vbtn on" type="button" data-frame="polya-scope">Вода</button>
+          <button class="vbtn" type="button" data-frame="polya-skin">Кожа крупно</button>
+          <button class="vbtn" type="button" data-frame="polya-splash">Контровое солнце</button>
+          <button class="vbtn" type="button" data-frame="polya-field">Общий план</button>
+        </div>
+        <div class="views" role="group" aria-label="Задание" style="margin-top:0">
+          <span class="vlabel">ЗАДАНИЕ</span>
+          <button class="vbtn on" type="button" data-scene="clean">Чистый кадр</button>
+          <button class="vbtn" type="button" data-scene="milky">Молочные тени</button>
+          <button class="vbtn" type="button" data-scene="warm">Тёплый перекос</button>
+        </div>
+
+        <div class="davinci wheels-live" style="background:none;border:none;box-shadow:none;padding:0">
+          <div class="wheels">
+            <div class="wheel" data-wheel="lift">
+              <button class="wreset" type="button" data-wreset aria-label="Сбросить Lift">⟲</button>
+              <div class="disc" data-disc role="application" aria-label="Колесо Lift: тащите для смещения теней к цвету"><span class="dot" data-dot></span></div>
+              <div class="mrail" data-rail aria-label="Мастер Lift"><span class="mthumb" data-thumb></span></div>
+              <div class="nm">LIFT</div>
+              <div class="val" data-val>0.00 0.00 0.00</div>
+              <div class="role">тени</div>
+            </div>
+            <div class="wheel" data-wheel="gamma">
+              <button class="wreset" type="button" data-wreset aria-label="Сбросить Gamma">⟲</button>
+              <div class="disc" data-disc role="application" aria-label="Колесо Gamma: тащите для смещения мид-тонов к цвету"><span class="dot" data-dot></span></div>
+              <div class="mrail" data-rail aria-label="Мастер Gamma"><span class="mthumb" data-thumb></span></div>
+              <div class="nm">GAMMA</div>
+              <div class="val" data-val>1.00 1.00 1.00</div>
+              <div class="role">мид-тона</div>
+            </div>
+            <div class="wheel" data-wheel="gain">
+              <button class="wreset" type="button" data-wreset aria-label="Сбросить Gain">⟲</button>
+              <div class="disc" data-disc role="application" aria-label="Колесо Gain: тащите для смещения светов к цвету"><span class="dot" data-dot></span></div>
+              <div class="mrail" data-rail aria-label="Мастер Gain"><span class="mthumb" data-thumb></span></div>
+              <div class="nm">GAIN</div>
+              <div class="val" data-val>1.00 1.00 1.00</div>
+              <div class="role">света</div>
+            </div>
+            <div class="wheel" data-wheel="offset">
+              <button class="wreset" type="button" data-wreset aria-label="Сбросить Offset">⟲</button>
+              <div class="disc" data-disc role="application" aria-label="Колесо Offset: тащите для смещения всего сигнала"><span class="dot" data-dot></span></div>
+              <div class="mrail" data-rail aria-label="Мастер Offset"><span class="mthumb" data-thumb></span></div>
+              <div class="nm">OFFSET</div>
+              <div class="val" data-val>0.00 0.00 0.00</div>
+              <div class="role">весь сигнал</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab" style="margin-top:16px">
+          <div class="lab-row"><span class="snm">КОНТРАСТ</span><input class="lab-range" type="range" data-param="contrast" min="50" max="200" value="100" aria-label="Контраст"><span class="sv">100%</span></div>
+          <div class="lab-row"><span class="snm">PIVOT</span><input class="lab-range" type="range" data-param="pivot" min="0" max="100" step="0.5" value="43.5" aria-label="Точка опоры контраста"><span class="sv">0.44</span></div>
+          <div class="lab-row"><span class="snm">НАСЫЩЕННОСТЬ</span><input class="lab-range" type="range" data-param="sat" min="0" max="200" value="100" aria-label="Насыщенность"><span class="sv">100%</span></div>
+        </div>
+
+        <div class="fbar"><span data-formula>out = ( 1.00 × ( in + 0.00×(1−in) ) )^(1/1.00)</span><span class="cdl" data-cdl>ASC CDL · slope 1.00 · offset 0.00 · power 1.00 · sat 1.00</span></div>
+
+        <div class="stat" id="wb-stat" aria-live="polite"></div>
+        <div class="task"><b>Как играть.</b> Колёса тащатся в любую сторону (как трекболы в Resolve): смещение к цвету красит свою зону, рейка под колесом — мастер-яркость этой зоны, ⟲ и двойной клик — сброс. Начните с кривой переноса: потяните мастер Lift вниз и посмотрите, как гнётся низ кривой, а белая точка стоит. Затем возьмите задание «Молочные тени» — верните чёрное на место и следите за счётчиком. В «Тёплом перекосе» уводите Gain в сине-голубую сторону, пока Parade не сойдётся.</div>
+        <button class="board-reset" type="button" data-reset-all>Сбросить грейд</button>
+      </div>
+      <div class="viz-cap">Кадры — стилы из моего проекта «Поля». Математика честная и опубликованная (формулы — в базе знаний сайта): каноническая модель Lift-Gamma-Gain — та же форма отклика, что у колёс Primaries; перевод в ASC CDL — по спецификации стандарта; Contrast и Pivot в строку CDL не входят, потому что в стандарте их нет. Упрощение одно: расчёт в дисплейном пространстве Rec.709, без перехода в линейный свет.</div>
+    </div>
+
+    <p>Четыре трекбола на странице Color — первое, что видит человек в DaVinci Resolve, и главный инструмент первичной коррекции: панель <b>Color Wheels → Primaries</b>. Каждое колесо управляет своей зоной яркости, под колесом — мастер-кольцо, двигающее зону целиком, двойной клик сбрасывает. Звучит просто, но за колёсами стоит конкретная формула — и колорист, который её понимает, крутит их осознанно, а не «пока не станет красиво». Разберём каждое.</p>
+
+    <div class="step-head" id="lift"><i>КОЛЕСО 1 / 4</i><h2>Lift: <em>тени</em></h2></div>
+    <p><b>Что считает.</b> В формуле Lift — это слагаемое <span class="mono">lift × (1 − in)</span>: чем ярче пиксель (in ближе к 1), тем меньше добавка. Чёрному достаётся весь сдвиг, белому — ноль. Посмотрите на кривую переноса, потянув мастер Lift: низ кривой поднимается или опускается, а правый верхний угол пришит к месту.</p>
+    <p><b>Зачем он.</b> Lift ставит точку чёрного — фундамент контраста. Опустили тени до 0–5 IRE — кадр обрёл плотность; подняли — картинка «молочная», как выцветшая печать. Это и есть первая типовая ошибка: смотрите задание «Молочные тени» на доске — и обратите внимание, что возвращать чёрное надо до посадки теней на 0–5 IRE, но без «полки» на waveform: полка — уже обрез, потерянная фактура.</p>
+    <div class="why"><span class="label">Почему белое не двигается</span><p>Множитель (1 − in) — это математическая формулировка слова «тени»: он равен единице в чёрном и нулю в белом. Инструмент не «знает», где в кадре тени — он просто ослабляет своё действие пропорционально яркости каждого пикселя. Все колёса устроены такими весами, только веса разные.</p></div>
+
+    <div class="step-head" id="gamma"><i>КОЛЕСО 2 / 4</i><h2>Gamma: <em>мид-тона</em></h2></div>
+    <p><b>Что считает.</b> Степенную кривую: <span class="mono">out = in^(1/gamma)</span>. У степенной функции 0 и 1 — неподвижные точки: ноль в любой степени ноль, единица в любой — единица. Гнётся только середина. На кривой переноса это видно сразу: тяните мастер Gamma — кривая выгибается дугой, а оба конца стоят.</p>
+    <p><b>Зачем он.</b> Гамма — это светлота кадра при уже расставленных точках чёрного и белого: тот самый «сделай посветлее, но не выжигай» из правок клиента. И это зона кожи: светлая кожа живёт на 60–75 IRE, и когда кадр «давит», чаще всего мид-тона просто сидят слишком низко. Переключитесь на кадр «Кожа крупно», откройте Waveform и подвигайте гамму — след кожи ходит по этому коридору.</p>
+
+    <div class="step-head" id="gain"><i>КОЛЕСО 3 / 4</i><h2>Gain: <em>света</em></h2></div>
+    <p><b>Что считает.</b> Умножение: <span class="mono">out = in × gain</span>. Чёрное множитель не трогает (ноль на что ни умножай — ноль), а чем ярче пиксель, тем сильнее сдвиг — верх кривой ходит, низ пришит.</p>
+    <p><b>Зачем он.</b> Gain ставит точку белого и правит света: солнце, небо, блики, платье. Главная опасность — обрез: задерите gain, и на waveform у отметки 100 вырастет «полка», а счётчик обреза на доске покраснеет. Информация в полке потеряна: сколько ни опускай обратно, фактуры там уже нет. Правило из урока про <a href="skoupy-kak-videt.html">скоупы</a>: света вверх до яркости, но не до полки.</p>
+    <div class="why"><span class="label">Баланс белого живёт здесь</span><p>Перекос по температуре — это разъехавшиеся каналы, и правится он колесом Gain в сторону, противоположную перекосу: тёплый кадр — тянем к сине-голубому. Возьмите задание «Тёплый перекос», откройте Parade и сводите следы каналов, пока белые объекты не встанут вровень — счётчик подтвердит, когда баланс сойдётся с эталоном кадра.</p></div>
+
+    <div class="step-head" id="offset"><i>КОЛЕСО 4 / 4</i><h2>Offset: <em>весь сигнал</em></h2></div>
+    <p><b>Что считает.</b> Простое сложение: <span class="mono">out = in + offset</span> для каждого пикселя, от чёрного до белого одинаково. Кривая переноса ездит вверх-вниз целиком, не меняя формы.</p>
+    <p><b>Зачем он.</b> Это наследник printer lights — «света печати» из эпохи фотохимической печати кино, когда экспозицию копии меняли целиком, а не по зонам. В display-грейде Offset кажется грубым (двигает и чёрное), но при работе с log-материалом до конверсии он — главное колесо: log-кривая устроена так, что сдвиг всего сигнала работает как смена экспозиции. Почему — разберём в уроке про <a href="log-krivaya.html">log-кривую в числах</a>.</p>
+
+    <div class="step-head" id="formula"><i>МАТЕМАТИКА</i><h2>Формула, которую вы <em>крутите</em></h2></div>
+    <p>Соберём всё в одну строку — она живёт на доске и пересчитывается при каждом движении:</p>
+    <p style="font-family:var(--font-mono);font-size:14px;color:var(--ink)">out = ( gain × ( in + lift×(1−in) ) )^(1/gamma)</p>
+    <p>Это каноническая модель Lift-Gamma-Gain — общая для грейдинг-софта форма отклика колёс (Blackmagic точный код Resolve не публикует, но колёса Primaries ведут себя именно так). Каждое колесо — это одна операция над каждым пикселем: сложение с затуханием к белому, умножение, степень. Смещение колеса к цвету означает, что для R, G и B эти числа становятся разными — посмотрите на строку формулы, потянув колесо в сторону: одно число превратится в три.</p>
+    <p>Дальше в цепочке — <b>Contrast и Pivot</b>: <span class="mono">out = (in − pivot) × contrast + pivot</span>. Контраст растягивает кривую вокруг точки опоры: что выше pivot — светлеет, что ниже — темнеет. В Resolve по умолчанию включено смягчение «Use S-curve for contrast» (Project Settings → General), которое заворачивает края кривой вместо обреза — наша доска считает линейную форму, поэтому края здесь честно обрезаются, и это видно по счётчикам. И замыкает цепочку <b>Saturation</b>: насыщенность — это расстояние каждого канала от яркости, умноженное на коэффициент.</p>
+
+    <div class="step-head" id="cdl"><i>ИНДУСТРИЯ</i><h2>ASC CDL: ваши колёса <em>в обменном формате</em></h2></div>
+    <p>Строка внизу доски — не украшение. <b>ASC CDL</b> (Color Decision List) — стандарт Американского общества кинооператоров: десять чисел, которые одинаково понимает софт на площадке, в монтажной и в грейдинг-студии. DIT ставит look прямо на съёмке, CDL уезжает вместе с материалом, и колорист открывает кадр уже «как задумал оператор».</p>
+    <p>Формула стандарта — <span class="mono">out = (in × slope + offset)^power</span> по каналам плюс общая saturation, и колёса переводятся в неё точно: slope = gain×(1−lift), offset в CDL собирается из lift и offset-колеса, power = 1/gamma. Подвигайте колёса и следите за строкой — это и есть перевод. Заметьте: Contrast и Pivot в строке нет — в стандарте таких операций не существует, поэтому «контрастные» правки между студиями возят не через CDL.</p>
+
+    <div class="step-head" id="poryadok"><i>МЕТОД</i><h2>Как этим <em>работать</em></h2></div>
+    <p>Колёса — инструмент, порядок — метод. Он разобран в <a href="poryadok-cvetokorrekcii.html">уроке №1</a>, здесь — как он ложится на колёса:</p>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>Баланс белого</b> — Gain в сторону, противоположную перекосу, по Parade на белом объекте</li>
+      <li><b>Точка чёрного</b> — Lift вниз до посадки теней на 0–5 IRE, без полки</li>
+      <li><b>Точка белого</b> — Gain вверх до ярких светов, без полки у 100</li>
+      <li><b>Светлота</b> — Gamma до честной кожи в коридоре 60–75 IRE</li>
+      <li><b>Насыщенность</b> — вверх до «стало живым», затем на треть назад</li>
+      <li>Каждое решение — отдельная нода (Alt+S): правка «чуть теплее» потом займёт секунду</li>
+    </ul>
+    <p>И правило, которое отличает метод от гадания: <b>сначала прибор, потом глаз</b>. Глаз адаптируется и врёт, кривая переноса и скоупы — нет. На этой доске приборы всегда под рукой — приучайтесь переключаться на них после каждого движения колеса.</p>
+
+    <div class="step-head" id="trenirovka"><i>ПРАКТИКА</i><h2>Как <em>тренироваться</em></h2></div>
+    <p>Доска даёт рефлексы, настоящий материал даёт руку. Путь такой: скачайте бесплатный DaVinci Resolve (это полноценная версия, не демка — так Blackmagic продаёт железо) и официальную книгу <b>The Colorist Guide to DaVinci Resolve</b> с сайта Blackmagic Design — она бесплатная, с упражнениями и материалом к ним. Повторите оба задания доски на своих кадрах: испортите кадр сами (поднимите lift, уведите баланс), сохраните стил, выправьте по приборам, сравните со стилом. Десять таких кругов дают больше, чем месяц «крутил, пока не понравилось».</p>
+
+    <div class="step-head" id="itog"><i>ИТОГ</i><h2>Что <em>запомнить</em></h2></div>
+    <ul class="viz-check lv" style="margin:18px 0">
+      <li><b>Lift</b> — сложение с затуханием к белому: точка чёрного, плотность теней</li>
+      <li><b>Gamma</b> — степень: светлота и кожа, края стоят на месте</li>
+      <li><b>Gain</b> — умножение: точка белого, света, баланс</li>
+      <li><b>Offset</b> — сдвиг всего сигнала: наследник printer lights, король log-грейда</li>
+      <li><b>ASC CDL</b> — стандарт обмена: slope/offset/power/sat, колёса переводятся в него точно</li>
+      <li><b>Сначала прибор, потом глаз</b> — кривая переноса и скоупы не адаптируются</li>
+    </ul>
+    <p>Дальше по серии: <a href="skoupy-kak-videt.html">как читать скоупы</a>, <a href="log-krivaya.html">log-кривая в числах</a> и <a href="poryadok-cvetokorrekcii.html">порядок цветокоррекции</a>. Хотите поставить руку на своём материале — приходите на <a href="../education.html">индивидуальные занятия</a>.</p>
+  </div>
+
+  <a class="art-svc" href="../education.html"><b>Разберём ваш материал по колёсам и приборам? Обучение цвету — от 3 000 ₽</b><span>Смотреть программы →</span></a>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Обсудим <em>задачу</em>?</h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../education.html">Обучение</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<img id="wb-src" src="../assets/img/polya-scope.webp" alt="" hidden>
+<script src="../assets/js/scope.js" defer></script>
+<script src="../assets/js/wheels.js" defer></script>
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+<script defer>
+window.addEventListener("load", function () {
+  PobubnimWheels.mount({
+    root: document.getElementById("wb"),
+    img: document.getElementById("wb-src"),
+    canvases: { frame: document.getElementById("wb-frame"), scope: document.getElementById("wb-scope") },
+    statEl: document.getElementById("wb-stat")
+  });
+});
+</script>
+</body>
+</html>

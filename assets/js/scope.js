@@ -33,7 +33,10 @@
     var frameC = cfg.canvases.frame, scopeC = cfg.canvases.scope;
     var work = document.createElement("canvas");   // уменьшенная копия для расчёта скоупа
     var WORK_W = 240;
-    var state = { exposure: 0, contrast: 1, saturation: 1, temp: 0, view: "waveform" };
+    /* доска может отдать свой state и свой попиксельный процессор (колёса LGG и т.п.) */
+    var state = cfg.state || { exposure: 0, contrast: 1, saturation: 1, temp: 0, view: "waveform" };
+    if (!state.view) state.view = "waveform";
+    var proc = cfg.process || processPixel;
 
     function drawFrame() {
       var w = frameC.width, h = frameC.height;
@@ -43,7 +46,7 @@
       var px = [0, 0, 0];
       for (var i = 0; i < d.data.length; i += 4) {
         px[0] = d.data[i]; px[1] = d.data[i + 1]; px[2] = d.data[i + 2];
-        processPixel(px, state);
+        proc(px, state);
         d.data[i] = px[0]; d.data[i + 1] = px[1]; d.data[i + 2] = px[2];
       }
       ctx.putImageData(d, 0, 0);
@@ -60,7 +63,7 @@
       var px = [0, 0, 0];
       for (var i = 0; i < d.data.length; i += 4) {
         px[0] = d.data[i]; px[1] = d.data[i + 1]; px[2] = d.data[i + 2];
-        processPixel(px, state);
+        proc(px, state);
         d.data[i] = px[0]; d.data[i + 1] = px[1]; d.data[i + 2] = px[2];
       }
       return d;
@@ -155,22 +158,32 @@
         ]);
       } else if (state.view === "vector") {
         drawVectorscope(ctx, d, W, H);
+      } else if (cfg.views && cfg.views[state.view]) {
+        cfg.views[state.view](ctx, d, W, H);   // свой прибор доски (например, кривая переноса)
       } else {
         drawHistogram(ctx, d, W, H);
       }
     }
 
-    /* ---------- статистика кадра: клиппинг и средний IRE ---------- */
+    /* ---------- статистика кадра: клиппинг, средний IRE, каналы, уровень теней ---------- */
     function stats(d) {
       var lo = 0, hi = 0, sum = 0, n = 0;
+      var sr = 0, sg = 0, sb = 0;
+      var bins = new Array(64).fill(0);
       for (var i = 0; i < d.data.length; i += 4) {
-        var v = luma(d.data[i], d.data[i + 1], d.data[i + 2]);
+        var r = d.data[i], g = d.data[i + 1], b = d.data[i + 2];
+        var v = luma(r, g, b);
         if (v <= 1) lo++; if (v >= 254) hi++;
-        sum += v; n++;
+        sum += v; n++; sr += r; sg += g; sb += b;
+        bins[Math.min(63, v >> 2)]++;
       }
+      /* уровень теней: яркость, ниже которой лежат 2% пикселей (2-й перцентиль) */
+      var acc = 0, p2 = 0;
+      for (var k = 0; k < 64; k++) { acc += bins[k]; if (acc >= n * 0.02) { p2 = k * 4; break; } }
       return {
         lowPct: (lo / n) * 100, highPct: (hi / n) * 100,
-        avgIre: (sum / n / 255) * 100
+        avgIre: (sum / n / 255) * 100, loIre: (p2 / 255) * 100,
+        meanR: sr / n, meanG: sg / n, meanB: sb / n
       };
     }
 
