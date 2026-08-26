@@ -34,6 +34,49 @@ ym(YM_ID, "init", {
   }
   window.pbGoal = goal;
 
+  /* ---- интерактивы: какая доска и какой контрол ----
+     дерево параметров визита: lesson → доска → контрол; в Метрике читается
+     отчётом «Параметры визитов» и сводкой daily_stats.py (paramsLevel1..3) */
+  var BOARD = (location.pathname.split("/").pop() || "index.html").replace(".html", "") || "index";
+  function lesson(goalName, control) {
+    if (typeof ym === "function") {
+      var tree = { lesson: {} };
+      tree.lesson[BOARD] = {};
+      tree.lesson[BOARD][control] = 1;
+      ym(YM_ID, "params", tree);
+    }
+    goal(goalName, { board: BOARD, control: control });
+  }
+  /* драги и ползунки шлём по разу за страницу НА КАЖДЫЙ контрол (не шквалом) */
+  var seen = {};
+  function lessonOnce(goalName, control) {
+    if (seen[control]) return;
+    seen[control] = true;
+    lesson(goalName, control);
+  }
+  /* имя кнопки доски по data-атрибутам виз-движков */
+  function btnControl(b) {
+    var d = b.dataset || {};
+    if (d.view) return "прибор:" + d.view;
+    if (d.pview) return "прибор:" + d.pview;
+    if (d.frame) return "кадр:" + d.frame;
+    if (d.scene) return "задание:" + d.scene;
+    if (d.method) return "метод:" + d.method;
+    if (d.bmode) return "стадия:" + d.bmode;
+    if (d.curve) return "кривая:" + d.curve;
+    if (d.resample !== undefined) return "кнопка:пересыпать";
+    if (d.resetAll !== undefined || d.wreset !== undefined) return "кнопка:сброс";
+    return "кнопка:" + (b.textContent || "").trim().slice(0, 24);
+  }
+  /* имя ползунка по его атрибутам */
+  function rangeControl(r) {
+    var d = r.dataset || {};
+    var nm = d.param || d.wells || (d.stops !== undefined ? "stops" : "") ||
+             (d.exp !== undefined ? "exposure" : "") || d.labFilter || r.id ||
+             (r.getAttribute("aria-label") || "range").slice(0, 24);
+    return "ползунок:" + nm;
+  }
+
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a, button");
     if (!a) return;
@@ -53,8 +96,18 @@ ym(YM_ID, "init", {
     if (a.id === "btn-print") goal("tool_pdf", { tool: location.pathname });
     if (a.id === "btn-copy") goal("tool_copy", { tool: location.pathname });
 
-    /* уроки: работа с интерактивной доской */
-    if (a.classList && (a.classList.contains("vbtn") || a.classList.contains("fbtn"))) goal("lesson_board");
+    /* уроки: кнопки досок — каждый клик, с именем доски и контрола */
+    if (a.classList && (a.classList.contains("vbtn") || a.classList.contains("fbtn")))
+      lesson("lesson_board", btnControl(a));
+  }, true);
+
+  /* колёса и мастер-рейки досок — драг, а не клик: ловим pointerdown */
+  document.addEventListener("pointerdown", function (e) {
+    var t = e.target.closest && (e.target.closest("[data-disc]") || e.target.closest("[data-rail]"));
+    if (!t) return;
+    var w = t.closest("[data-wheel]");
+    var kind = t.hasAttribute("data-disc") ? "колесо:" : "рейка:";
+    lessonOnce("lesson_board", kind + (w ? w.dataset.wheel : "?"));
   }, true);
 
   /* заявка ушла успешно — статус меняется скриптом формы */
@@ -65,10 +118,8 @@ ym(YM_ID, "init", {
     }).observe(st, { childList: true, subtree: true, characterData: true });
   }
 
-  /* ползунки уроков и инструментов — считаем один раз за страницу */
-  var slid = false;
+  /* ползунки уроков и инструментов — раз за страницу на КАЖДЫЙ ползунок */
   document.addEventListener("input", function (e) {
-    if (slid) return;
-    if (e.target.type === "range") { slid = true; goal("lesson_slider"); }
+    if (e.target.type === "range") lessonOnce("lesson_slider", rangeControl(e.target));
   }, true);
 })();

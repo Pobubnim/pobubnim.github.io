@@ -167,15 +167,44 @@ def collect(d1: str, d2: str, label: str) -> str:
             if glist:
                 metrics = ",".join(f"ym:s:goal{g['id']}reaches" for g in glist[:18])
                 vals = metrika({"metrics": metrics, "date1": d1, "date2": d2}).get("totals") or []
-                hits = [(GOAL_RU.get(g["name"], g["name"]), int(v))
-                        for g, v in zip(glist, vals) if v]
-                if hits:
+                # одноимённые цели складываем: в кабинете есть дубль «Клик во
+                # ВКонтакте» (id 601892845), удалить его API не может (нет
+                # скоупа metrika:write) — дважды в сводке не показываем
+                merged: dict[str, int] = {}
+                for g, v in zip(glist, vals):
+                    if v:
+                        nm = GOAL_RU.get(g["name"], g["name"])
+                        merged[nm] = merged.get(nm, 0) + int(v)
+                if merged:
                     lines.append("")
                     lines.append("<b>Действия (цели)</b>")
-                    for nm, n in sorted(hits, key=lambda x: -x[1]):
+                    for nm, n in sorted(merged.items(), key=lambda x: -x[1]):
                         lines.append(f"· {nm} — {n}")
         except Exception:
             pass  # цели не должны ронять сводку
+
+        # --- интерактивы: параметры визитов lesson → доска → контрол ---
+        try:
+            for metric in ("ym:s:paramsNumber", "ym:s:visits"):
+                try:
+                    rows = metrika({
+                        "metrics": metric,
+                        "dimensions": "ym:s:paramsLevel2,ym:s:paramsLevel3",
+                        "filters": "ym:s:paramsLevel1=='lesson'",
+                        "date1": d1, "date2": d2, "sort": "-" + metric, "limit": 12,
+                    })["data"]
+                    break
+                except urllib.error.HTTPError:
+                    rows = []
+            if rows:
+                lines.append("")
+                lines.append("<b>Интерактивы (доска › что крутили)</b>")
+                for row in rows:
+                    board = row["dimensions"][0].get("name") or "?"
+                    ctrl = row["dimensions"][1].get("name") or "?"
+                    lines.append(f"· {board} › {ctrl} — {int(row['metrics'][0])}")
+        except Exception:
+            pass  # интерактивы не должны ронять сводку
 
     # --- Вебмастер: индексация и поиск ---
     try:
