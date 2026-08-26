@@ -169,6 +169,13 @@
         out.push(itemsTableXml(el));
       } else if (el.tagName === "TABLE" && cls.contains("req")) {
         out.push(tableXml(el));
+      } else if (cls.contains("qa")) {
+        /* бриф: вопрос жирным, ответ следующим абзацем */
+        [].forEach.call(el.querySelectorAll(".qa-row"), function (row) {
+          var q = row.querySelector("b"), a = row.querySelector(".qa-ans");
+          if (q) out.push(par(inlineRuns(q, { bold: true }), { spaceAfter: 40 }));
+          if (a) out.push(par(inlineRuns(a), { spaceAfter: 120 }));
+        });
       } else if (cls.contains("ticks")) {
         /* чек-лист: каждая строка с квадратиком — отдельный абзац */
         [].forEach.call(el.querySelectorAll(".tick-row"), function (row) {
