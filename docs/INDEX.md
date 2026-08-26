@@ -1,0 +1,66 @@
+# INDEX — мастер-карта репозитория ПОБУБНИМ (заведена 26.08.2026)
+
+Сайт pobubnim.github.io (GitHub Pages, деплой = git push в main).
+Вход в проект — docs/HANDOFF.md; этот файл — карта «что где лежит».
+Граф кода — codebase-memory MCP, проект `C-src-pobubnim` (переиндексация:
+index_repository после крупных правок; проверка: index_status / detect_changes).
+
+## Доки (docs/)
+
+| Файл | Что это |
+|---|---|
+| HANDOFF.md | вход: состояние, очередь, ритуалы |
+| INDEX.md | этот файл — карта репо |
+| SEO_RULES.md | ЗАКОН страниц (title/description/H1/schema) + журнал по датам |
+| EDU_BASE.md | база СВЕРЕННЫХ фактов уроков: §1–7 канон, §8а источники, §8б числа цвета, §8в карта досок, §8г носители, §8д формулы инструментов Resolve |
+| EDU_SOURCES.md | каталог первоисточников: школа BMD, школы колористов, стандарты, white papers |
+| TOOLS_ROADMAP.md | карта /instrumenty/: что стоит, очередь, разведка ниш |
+| CONTENT_MAP.md, SEO_KEYWORDS.md, SPEC.md | карта контента и запросов |
+| ANALYTICS.md | Метрика 111935483, цели, Вебмастер, ежедневная сводка в ТГ |
+| LEADS_ADMIN.md | заявки: Supabase-бэкенд, админка |
+| VIDEO_LESSONS_PLAN.md, YANDEX_ALGO.md | архив (ролики отменены 25.08; конспект алгоритмов) |
+
+## Страницы
+
+- Корень: index (главная+прайс), raboty, education (обучение+карточки уроков),
+  konstruktor-dogovora (инструмент №1, URL не менять), privacy (152-ФЗ),
+  404, admin (noindex), videograf-{aprelevka,naro-fominsk,obninsk} (гео).
+- `services/` — 8 услуг (свадьбы, клипы, реклама, имидж, мероприятия,
+  цветокоррекция, сайты, боты). Прайс — ТОЛЬКО с главной.
+- `cases/` — monolith, seversvet.
+- `articles/` — хаб index + 9 статей (цены, гайды, договор).
+- `uroki/` — интерактивные уроки/доски (канон фактов EDU_BASE, блоки lesson.css):
+  01 poryadok-cvetokorrekcii · 02 log-i-grade · 03 skoupy-kak-videt (живые
+  скоупы) · 04 kolesa-lift-gamma-gain (прототип колёс, LGG+CDL) ·
+  05 log-krivaya (кривые S-Log3/LogC3/709 по формулам).
+- `instrumenty/` — хаб + smeta-i-schet, modelnyj-reliz, tajming-svadby,
+  kalkulyator-karty-pamyati (+karta-db.js), kalkulyator-stoimosti-semki
+  (заглушка-редирект, noindex).
+
+## assets/
+
+- `css/`: style.css (сайт), lesson.css (виз-блоки уроков), paper.css (лист инструментов).
+- `js/`: nav.js (шапка/бургер, deep-регулярка) · analytics.js (Метрика+цели) ·
+  main.js (главная) · lesson.js (появление, вайпы, CSS-лаборатории) ·
+  scope.js (ДВИЖОК досок: попиксельная обработка + Waveform/Parade/Vector/
+  Histogram; расширяем через cfg.process/state/views) · wheels.js (доска
+  колёс: LUT-конвейер LGG, ASC CDL, кривая переноса, задания) · logcurve.js
+  (доска log-кривых: формулы S-Log3/LogC3/709) · dogovor.js, smeta.js,
+  reliz.js, tajming.js, karta.js+karta-db.js (инструменты) · docx.js
+  (настоящий .docx: ZIP+OOXML, rubWords/moneyFull).
+- `img/` — webp-фонд: polya-* (стилы «Поля» — кадры досок), tri-*, hz-*,
+  lesson-f* и обложки. `og/` — OG-картинки.
+
+## tools/ (локальные скрипты, не деплоятся)
+
+build_articles.py, build_services.py, build_og.py, make_favicon.py,
+prepare_media.py, fullshot.py, daily_stats.py (сводка в ТГ, задача
+планировщика PobubnimDailyStats 09:00, токен в ~/.pobubnim/).
+
+## Ритуалы
+
+- Каждая страница — по закону SEO_RULES.md; факты — только из EDU_BASE
+  (нет в базе → сверить по EDU_SOURCES → внести → потом публиковать).
+- После правок: превью (preview pobubnim, порт 8765) десктоп+мобила 375,
+  коммит+push, sitemap при новых URL, IndexNow-пинг, журнал SEO_RULES,
+  переиндексация графа при крупных правках кода.

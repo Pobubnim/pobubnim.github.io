@@ -48,6 +48,22 @@
 
 ## Состояние (журнал; свежее сверху)
 
+Уроки 04–05: прототипы инструментов Resolve (26.08, ночь): цикл обучалок
+с настоящей математикой. uroki/kolesa-lift-gamma-gain.html — рабочие колёса
+Lift/Gamma/Gain/Offset (драг-трекболы, мастер-рейки, кривая переноса,
+скоупы, живой перевод в ASC CDL, задания «почини кадр» со счётчиком;
+запросы «lift gamma gain», «колёса цветокоррекции davinci»). uroki/
+log-krivaya.html — кривые S-Log3/LogC3/Rec.709 по опубликованным формулам
+(якоря таблицы считает страница, диаграмма «кодов на стоп»; запросы
+«s-log3 экспозиция», «log кривая»). Оба БЕЗ гео (DIY), Article+FAQPage(4)+
+Breadcrumb, title/description в законе. Движок scope.js расширен
+(cfg.process/state/views), новые wheels.js/logcurve.js. Хабы articles/ и
+education + sitemap + IndexNow. База: EDU_BASE §8д (формулы LGG/CDL/
+Contrast-Pivot/S-Log3/LogC3/709, сверено) + docs/EDU_SOURCES.md (каталог:
+школа BMD, Mixing Light, Lowepost, ICA, голливудские колористы, стандарты).
+Репо: заведён docs/INDEX.md (мастер-карта), сайт проиндексирован в граф
+codebase-memory (C-src-pobubnim, 576 узлов).
+
 Калькулятор карты памяти (26.08): шестой инструмент
 instrumenty/kalkulyator-karty-pamyati.html (karta.js) — запросы «сколько весит
 час видео 4к», «сколько видео влезет на 128 гб», «какая карта нужна для 4k»;
