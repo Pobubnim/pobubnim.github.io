@@ -115,15 +115,24 @@
     var trs = tbl.querySelectorAll("tr");
     var cols = trs[0] ? trs[0].children.length : 0;
     if (!cols) return "";
-    var wide = 4200, rest = Math.floor((9638 - wide) / (cols - 1 || 1));
+    /* ширины: по data-cols="7,40,13,..." (проценты) либо первая широкая */
+    var pct = (tbl.dataset.cols || "").split(",").filter(function (x) { return x !== ""; });
     var widths = [];
-    for (var i = 0; i < cols; i++) widths.push(i === 0 ? wide : rest);
+    if (pct.length === cols) {
+      widths = pct.map(function (p) { return Math.round(9638 * parseFloat(p) / 100); });
+    } else {
+      var wide = 4200, rest = Math.floor((9638 - wide) / (cols - 1 || 1));
+      for (var i = 0; i < cols; i++) widths.push(i === 0 ? wide : rest);
+    }
+    /* .items.text — таблица не с деньгами, все колонки по левому краю */
+    var leftAll = tbl.classList.contains("text");
     var border = '<w:tblBorders><w:top w:val="single" w:sz="4" w:color="999999"/><w:left w:val="single" w:sz="4" w:color="999999"/><w:bottom w:val="single" w:sz="4" w:color="999999"/><w:right w:val="single" w:sz="4" w:color="999999"/><w:insideH w:val="single" w:sz="4" w:color="999999"/><w:insideV w:val="single" w:sz="4" w:color="999999"/></w:tblBorders>';
     var rows = [].map.call(trs, function (tr) {
       var cells = [].map.call(tr.children, function (td, i) {
         var bold = td.tagName === "TH";
         return '<w:tc><w:tcPr><w:tcW w:w="' + widths[i] + '" w:type="dxa"/></w:tcPr>' +
-          par(inlineRuns(td, bold ? { bold: true } : {}), { spaceAfter: 40, jc: i === 0 ? "left" : "right" }) + "</w:tc>";
+          par(inlineRuns(td, bold ? { bold: true } : {}),
+              { spaceAfter: 40, jc: (leftAll || i === 0) ? "left" : "right" }) + "</w:tc>";
       }).join("");
       return "<w:tr>" + cells + "</w:tr>";
     }).join("");

@@ -22,7 +22,7 @@ import websocket
 
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 PORT = 9334
-LOCAL = "http://localhost:8765/"
+LOCAL = os.environ.get("POBUBNIM_URL", "http://localhost:8765/")
 WIDTHS = (375, 1280)
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

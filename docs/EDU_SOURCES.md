@@ -88,6 +88,13 @@ blackmagicdesign.com/products/davinciresolve/training — бесплатные P
 - Hollywood Camera Work (hollywoodcamerawork.com) — Master Course in
   High-End Blocking & Staging, Hot Moves, Directing Actors, VFX for
   Directors; приложения Shot Designer, Green Screener; Free Downloads.
+- Шот-листы и вызывные листы: StudioBinder (studiobinder.com/blog/
+  shot-list-template-free-download/) и Boords (boords.com/shot-list-template) —
+  мировые эталоны, из них взят набор колонок (scene/shot, size, angle,
+  movement, lens, notes) [С 26.08].
+- Канон монтажной (свой, C:/src/cutroom/docs/COMPOSITION.md) — крупности как
+  язык §4, причина движения камеры §6; из него собрана номенклатура
+  EDU_BASE §8ж.
 
 ## 7. Куда это применяется на сайте
 

@@ -12,7 +12,7 @@ index_repository после крупных правок; проверка: index
 | HANDOFF.md | вход: состояние, очередь, ритуалы |
 | INDEX.md | этот файл — карта репо |
 | SEO_RULES.md | ЗАКОН страниц (title/description/H1/schema) + журнал по датам |
-| EDU_BASE.md | база СВЕРЕННЫХ фактов уроков: §1–7 канон, §8а источники, §8б числа цвета, §8в карта досок, §8г носители, §8д формулы инструментов Resolve |
+| EDU_BASE.md | база СВЕРЕННЫХ фактов уроков: §1–7 канон, §8а источники, §8б числа цвета, §8в карта досок, §8г носители, §8д формулы инструментов Resolve, §8е ISO и Байер, §8ж язык кадра (крупности/ракурсы/движение) |
 | EDU_SOURCES.md | каталог первоисточников: школа BMD, школы колористов, стандарты, white papers |
 | TOOLS_ROADMAP.md | карта /instrumenty/: что стоит, очередь, разведка ниш |
 | CONTENT_MAP.md, SEO_KEYWORDS.md, SPEC.md | карта контента и запросов |
@@ -35,8 +35,8 @@ index_repository после крупных правок; проверка: index
   05 log-krivaya (кривые S-Log3/LogC3/709 по формулам) · 06 kak-rabotaet-iso
   (матрица+Пуассон, Байер+дебайер, ISO на посте).
 - `instrumenty/` — хаб + smeta-i-schet, modelnyj-reliz, tajming-svadby,
-  kalkulyator-karty-pamyati (+karta-db.js), kalkulyator-stoimosti-semki
-  (заглушка-редирект, noindex).
+  kalkulyator-karty-pamyati (+karta-db.js), shot-list (план кадров + счётчик
+  смены), kalkulyator-stoimosti-semki (заглушка-редирект, noindex).
 
 ## assets/
 
@@ -48,8 +48,9 @@ index_repository после крупных правок; проверка: index
   колёс: LUT-конвейер LGG, ASC CDL, кривая переноса, задания) · logcurve.js
   (доска log-кривых: формулы S-Log3/LogC3/709) · sensor.js (доска ISO:
   колодцы+Пуассон, Байер+дебайер, ISO на посте) · dogovor.js, smeta.js,
-  reliz.js, tajming.js, karta.js+karta-db.js (инструменты) · docx.js
-  (настоящий .docx: ZIP+OOXML, rubWords/moneyFull).
+  reliz.js, tajming.js, karta.js+karta-db.js, shotlist.js (инструменты) ·
+  docx.js (настоящий .docx: ZIP+OOXML, rubWords/moneyFull; таблица понимает
+  data-cols="%,%,…" и класс .text — все колонки влево).
 - `img/` — webp-фонд: polya-* (стилы «Поля» — кадры досок), tri-*, hz-*,
   lesson-f* и обложки. `og/` — OG-картинки.
 
@@ -67,7 +68,10 @@ sitemap, единая версия analytics.js, width/height у картино�
 иерархия заголовков; код 1 = есть ошибки),
 **check_live.py** — живая проверка в headless Chrome (оверфлоу на 375 и
 1280 с именем виновника, ошибки консоли, не загрузившиеся картинки,
-искажённые пропорции); сервер превью поднимать заранее.
+искажённые пропорции); сервер превью поднимать заранее,
+**test_shotlist.py** — приёмка шот-листа на живой странице (пресеты,
+нумерация, счётчик смены, лист, сборка .docx, черновик, мобила без
+веб-шрифтов; 25 проверок).
 
 ## Ритуалы
 
