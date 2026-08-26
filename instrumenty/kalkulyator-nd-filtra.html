@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Калькулятор ND-фильтра — стопы и выдержка | ПОБУБНИМ</title>
+<meta name="description" content="Калькулятор ND-фильтра: сколько стопов нужно, чтобы держать шаттер 180° на видео, и во что превращается выдержка под фильтром на фото. Таблица EV, подбор ND8–ND1000. Бесплатно.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/instrumenty/kalkulyator-nd-filtra.html">
+<meta property="og:title" content="Калькулятор ND-фильтра — стопы и выдержка | ПОБУБНИМ">
+<meta property="og:description" content="Сколько стопов ND нужно для шаттера 180° при вашей диафрагме и ISO — и во что превратится выдержка под фильтром на фото.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/home.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pobubnim.github.io/instrumenty/kalkulyator-nd-filtra.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<link rel="stylesheet" href="../assets/css/paper.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Калькулятор ND-фильтра", "url": "https://pobubnim.github.io/instrumenty/kalkulyator-nd-filtra.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/"}, "description": "Бесплатный калькулятор ND-фильтров: расчёт нужных стопов для видео с шаттером 180 градусов и пересчёт выдержки под фильтром для фото."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Зачем ND-фильтр на видео?", "acceptedAnswer": {"@type": "Answer", "text": "Чтобы держать выдержку около 1/50 при 25 кадрах в секунду — это правило 180 градусов, оно даёт привычный глазу смаз движения. На солнце такая выдержка вместе с открытой диафрагмой пересвечивает кадр, и лишний свет убирают именно фильтром, а не более короткой выдержкой: короткая выдержка делает движение рваным."}},
+{"@type": "Question", "name": "Как перевести маркировку ND в стопы?", "acceptedAnswer": {"@type": "Answer", "text": "Цифра в названии — во сколько раз фильтр гасит свет: ND8 гасит в восемь раз, то есть на три стопа (2³ = 8). ND64 — шесть стопов, ND1000 — десять. Оптическая плотность в тех же единицах: один стоп равен 0,3 D, поэтому ND1000 подписывают как 3.0."}},
+{"@type": "Question", "name": "Что такое переменный ND и почему он хуже?", "acceptedAnswer": {"@type": "Answer", "text": "Переменный ND — два поляризатора, вращением которых меняется плотность. Он удобен на репортаже, но на краях диапазона даёт крест на кадре и неравномерность, а на широкоугольной оптике — заметное потемнение по углам. Для постановочной съёмки предсказуемее набор фиксированных фильтров."}},
+{"@type": "Question", "name": "Откуда калькулятор знает освещённость сцены?", "acceptedAnswer": {"@type": "Answer", "text": "Из таблицы значений EV: яркое солнце с резкими тенями — EV 15, лёгкая дымка — 14, светлая облачность — 13, плотная пасмурность — 12 (для ISO 100). Это правило Sunny 16, ориентир по типу освещения. Точную экспозицию всё равно проверяйте по зебре, ложным цветам или гистограмме камеры."}},
+{"@type": "Question", "name": "Почему после сильного ND картинка уходит в цвет?", "acceptedAnswer": {"@type": "Answer", "text": "Плотные фильтры редко бывают нейтральными: у большинства есть сдвиг в тёплое или холодное, и чем плотнее стекло, тем он заметнее. Лечится балансом белого — снимите кадр серой карты через тот же фильтр и правьте по нему на посте."}}
+]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Инструменты", "item": "https://pobubnim.github.io/instrumenty/"}, {"@type": "ListItem", "position": 3, "name": "Калькулятор ND-фильтра", "item": "https://pobubnim.github.io/instrumenty/kalkulyator-nd-filtra.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 880px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; max-width: 720px; }
+  .paper .big { font: 500 clamp(24px, 3.6vw, 34px) var(--font-mono); text-align: center; margin: 14px 0 2px; letter-spacing: -0.02em; }
+  .paper .big-sub { text-align: center; font-size: 12px; color: #6b675e; margin-bottom: 14px; text-wrap: pretty; }
+  .paper .line { display: flex; gap: 14px; padding: 7px 0; border-bottom: 1px dotted #c9c2b2; justify-content: space-between; }
+  .paper .line b { font-weight: 700; flex: none; }
+  .paper .line span { text-align: right; }
+  .nd-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 14px; }
+  .nd-table th, .nd-table td { border-bottom: 1px solid var(--line-soft); padding: 8px 6px; text-align: left; color: var(--smoke); font-weight: 300; }
+  .nd-table th { color: var(--mute); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+  .nd-table td:first-child { color: var(--ink); font-weight: 500; font-family: var(--font-mono); }
+</style>
+<script src="../assets/js/analytics.js?v=3" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="../index.html">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="../index.html#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="../index.html#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Инструмент · Свет и экспозиция · Без регистрации</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Калькулятор ND-фильтра: стопы и выдержка</span>Сколько света <em>убрать</em></h1>
+    <p class="lead">Для видео: сколько стопов ND нужно, чтобы удержать шаттер 180° на солнце. Для фото: во что превратится выдержка под ND8, ND64 или ND1000. Считается в браузере, без регистрации.</p>
+    <div class="free-note"><b>Вместо оплаты</b> — если помогло, напишите спасибо в <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener" style="text-decoration:underline">личку телеграма</a></div>
+  </section>
+
+  <div class="builder">
+    <form class="cfg" id="cfg" autocomplete="off">
+      <section class="cfg-sec">
+        <span class="label">01 · Что считаем</span>
+        <div class="opts" role="radiogroup" aria-label="Режим расчёта">
+          <label class="opt"><input type="radio" name="mode" value="video" checked><span>Видео<i>держим шаттер 180°</i></span></label>
+          <label class="opt"><input type="radio" name="mode" value="photo"><span>Фото<i>длинная выдержка</i></span></label>
+        </div>
+      </section>
+
+      <section class="cfg-sec" id="sec-video">
+        <span class="label">02 · Съёмка и свет</span>
+        <div class="flds" style="margin-top:0">
+          <div class="fld"><label for="f-fps">Кадров в секунду</label><input id="f-fps" type="number" min="1" max="240" step="1" value="25"></div>
+          <div class="fld"><label for="f-angle">Угол шаттера, °</label><input id="f-angle" type="number" min="11" max="360" step="1" value="180"></div>
+          <div class="fld"><label for="f-ap">Диафрагма f/</label><input id="f-ap" type="number" min="0.7" max="32" step="0.1" value="2.8"></div>
+          <div class="fld"><label for="f-iso">ISO</label><input id="f-iso" type="number" min="12" max="102400" step="50" value="800"></div>
+          <div class="fld wide"><label for="f-scene">Освещение сцены</label><select id="f-scene"></select></div>
+        </div>
+        <div class="hint">Угол шаттера 180° — это выдержка вдвое короче кадра: 1/50 при 25 к/с. Меньше угол — рванее движение, больше — мягче смаз. Кинокамеры считают углом, фотокамеры — дробью, суть одна.</div>
+      </section>
+
+      <section class="cfg-sec" id="sec-photo" hidden>
+        <span class="label">02 · Выдержка и фильтр</span>
+        <div class="flds" style="margin-top:0">
+          <div class="fld wide"><label for="f-shut">Выдержка без фильтра</label><select id="f-shut"></select></div>
+          <div class="fld wide"><label for="f-filter">Фильтр</label><select id="f-filter"></select></div>
+          <div class="fld wide" id="fld-custom" hidden><label for="f-stops">Своя плотность, стопов</label><input id="f-stops" type="number" min="0.3" max="20" step="0.1" value="10"></div>
+        </div>
+        <div class="hint">Сначала наводитесь и меряете экспозицию без фильтра, потом накручиваете стекло: под плотным ND автофокус и замер обычно уже не работают.</div>
+      </section>
+    </form>
+
+    <div class="paper-col">
+      <div class="paper-shell">
+        <div class="paper" id="paper" aria-live="polite"></div>
+        <div class="paper-bar">
+          <button class="pbtn main" id="btn-copy" type="button">Скопировать расчёт</button>
+        </div>
+      </div>
+      <p style="margin-top:10px;font-size:12.5px;color:var(--mute);text-wrap:pretty">Считается в вашем браузере — данные никуда не уходят.</p>
+    </div>
+  </div>
+
+  <div class="seo-body">
+    <h2 class="art-h2" style="margin-top:0">Зачем ND-фильтр и как считать стопы</h2>
+    <p>На видео выдержку не выбирают — её держат. Правило 180 градусов говорит: выдержка вдвое короче длительности кадра, то есть 1/50 при 25 к/с. Это тот смаз движения, к которому глаз привык в кино. На солнце удержать 1/50 с открытой диафрагмой невозможно — кадр улетает в пересвет, и лишний свет убирают <b>ND-фильтром</b>, а не более короткой выдержкой.</p>
+    <p>Маркировка читается просто: цифра — во сколько раз фильтр гасит свет. ND8 гасит в восемь раз, это три стопа. ND64 — шесть стопов, ND1000 — десять. Плотность в другой системе: один стоп равен 0,3 D, поэтому тот же ND1000 подписывают как 3.0.</p>
+
+    <h2 class="art-h2">Таблица: маркировка, стопы, плотность</h2>
+    <table class="nd-table">
+      <thead><tr><th>Фильтр</th><th>Стопов</th><th>Плотность</th><th>Гасит в</th></tr></thead>
+      <tbody>
+        <tr><td>ND2</td><td>1</td><td>0,3</td><td>2 раза</td></tr>
+        <tr><td>ND4</td><td>2</td><td>0,6</td><td>4 раза</td></tr>
+        <tr><td>ND8</td><td>3</td><td>0,9</td><td>8 раз</td></tr>
+        <tr><td>ND16</td><td>4</td><td>1,2</td><td>16 раз</td></tr>
+        <tr><td>ND32</td><td>5</td><td>1,5</td><td>32 раза</td></tr>
+        <tr><td>ND64</td><td>6</td><td>1,8</td><td>64 раза</td></tr>
+        <tr><td>ND256</td><td>8</td><td>2,4</td><td>256 раз</td></tr>
+        <tr><td>ND1000</td><td>10</td><td>3,0</td><td>1000 раз</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:18px">Рядом по теме: <a href="kalkulyator-grip.html">калькулятор ГРИП</a> покажет, что попадёт в резкость на выбранной диафрагме, <a href="chek-list-semki.html">чек-лист сборов</a> напомнит положить фильтры в сумку, а <a href="../uroki/kak-rabotaet-iso.html">урок про ISO</a> объясняет, почему поднимать ISO вместо света — плохой обмен.</p>
+
+    <h2 class="art-h2">Частые вопросы про ND-фильтры</h2>
+    <details class="svc-faq"><summary>Зачем ND-фильтр на видео?</summary><p>Чтобы держать выдержку около 1/50 при 25 кадрах в секунду — это правило 180 градусов, оно даёт привычный глазу смаз движения. На солнце такая выдержка вместе с открытой диафрагмой пересвечивает кадр, и лишний свет убирают именно фильтром, а не более короткой выдержкой: короткая выдержка делает движение рваным.</p></details>
+    <details class="svc-faq"><summary>Как перевести маркировку ND в стопы?</summary><p>Цифра в названии — во сколько раз фильтр гасит свет: ND8 гасит в восемь раз, то есть на три стопа (2³ = 8). ND64 — шесть стопов, ND1000 — десять. Оптическая плотность в тех же единицах: один стоп равен 0,3 D, поэтому ND1000 подписывают как 3.0.</p></details>
+    <details class="svc-faq"><summary>Что такое переменный ND и почему он хуже?</summary><p>Переменный ND — два поляризатора, вращением которых меняется плотность. Он удобен на репортаже, но на краях диапазона даёт крест на кадре и неравномерность, а на широкоугольной оптике — заметное потемнение по углам. Для постановочной съёмки предсказуемее набор фиксированных фильтров.</p></details>
+    <details class="svc-faq"><summary>Откуда калькулятор знает освещённость сцены?</summary><p>Из таблицы значений EV: яркое солнце с резкими тенями — EV 15, лёгкая дымка — 14, светлая облачность — 13, плотная пасмурность — 12 (для ISO 100). Это правило Sunny 16, ориентир по типу освещения. Точную экспозицию всё равно проверяйте по зебре, ложным цветам или гистограмме камеры.</p></details>
+    <details class="svc-faq"><summary>Почему после сильного ND картинка уходит в цвет?</summary><p>Плотные фильтры редко бывают нейтральными: у большинства есть сдвиг в тёплое или холодное, и чем плотнее стекло, тем он заметнее. Лечится балансом белого — снимите кадр серой карты через тот же фильтр и правьте по нему на посте.</p></details>
+  </div>
+
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Помогло? <em>Побубним.</em></h2>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Сказать спасибо в телеграме</a>
+      <a class="btn btn-ghost" href="index.html">Все инструменты</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="../index.html">На главную</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/nd.js" defer></script>
+<script src="../assets/js/ndcalc.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+</body>
+</html>

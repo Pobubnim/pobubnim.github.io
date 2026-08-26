@@ -107,6 +107,10 @@ blackmagicdesign.com/products/davinciresolve/training — бесплатные P
   стандартных значений CoC по форматам (StudioBinder, Tools for Film,
   калькуляторы DoF). Наша реализация — assets/js/dof.js, канон EDU_BASE §8и,
   независимая проверка — tools/verify_dof.py (численная модель оптики).
+- Экспозиция и ND [С 26.08]: правило Sunny 16 и таблицы EV (Wikipedia
+  «Sunny 16 rule», scantips.com/lights/evchart, photographylife «Exposure
+  Value»), правило 180° для видео. Канон — EDU_BASE §8к, реализация —
+  assets/js/nd.js.
 
 ## 7. Куда это применяется на сайте
 
