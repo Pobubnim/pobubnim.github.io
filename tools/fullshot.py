@@ -12,6 +12,7 @@ def main():
     width = int(sys.argv[3]) if len(sys.argv) > 3 else 1440
     scale = float(sys.argv[4]) if len(sys.argv) > 4 else 0.62
     proc = subprocess.Popen([CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+             "--user-data-dir=" + tempfile.mkdtemp(prefix="pbchrome-"),
         "--force-prefers-reduced-motion", f"--remote-debugging-port={PORT}",
         "--remote-allow-origins=*", f"--window-size={width},900", url],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

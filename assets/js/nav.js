@@ -42,7 +42,7 @@
   burger.innerHTML = "<i></i><i></i><i></i>";
   navIn.appendChild(burger);
 
-  function home(hash) { return onHome ? hash : root + "index.html" + hash; }
+  function home(hash) { return onHome ? hash : "/" + hash; }
 
   var menu = document.createElement("nav");
   menu.className = "menu";

@@ -10,6 +10,7 @@
 """
 import json
 import subprocess
+import tempfile
 import sys
 import time
 import urllib.request
@@ -33,6 +34,7 @@ class Tab:
     def __init__(self):
         self.proc = subprocess.Popen(
             [CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+             "--user-data-dir=" + tempfile.mkdtemp(prefix="pbchrome-"),
              f"--remote-debugging-port={PORT}", "--remote-allow-origins=*",
              "--window-size=1280,900", "about:blank"],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

@@ -67,7 +67,17 @@
 
 <!-- ЭКРАН 1: фон — «Поля», цвет перетекает из лога в грейд -->
 <section class="hero" id="top">
-  <video autoplay muted loop playsinline poster="assets/img/hero-poster.webp" src="assets/video/hero-loop.mp4"></video>
+  <video autoplay muted loop playsinline poster="assets/img/hero-poster.webp"></video>
+  <script>
+  /* источник обложки выбирается ДО загрузки: телефон берёт лёгкую копию,
+     компьютер — HD; при включённой экономии трафика остаётся постер */
+  (function () {
+    var v = document.currentScript.previousElementSibling;
+    var c = navigator.connection || {};
+    if (c.saveData) return;
+    v.src = innerWidth >= 1024 ? "assets/video/hero-loop-hd.mp4" : "assets/video/hero-loop-m.mp4";
+  })();
+  </script>
   <div class="hero-in wrap">
     <div class="hero-copy">
       <h1 class="display"><span class="label">Савелий Бубнов · видеограф · колорист · Москва и область</span>Снимаю. Крашу.<br>И <em>строю</em> цифровое.</h1>

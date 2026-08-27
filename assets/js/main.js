@@ -158,13 +158,6 @@ lfSend.addEventListener("click", async () => {
   }
 });
 
-/* ---------- hero: HD-версия для больших экранов ---------- */
-
-const heroVideo = document.querySelector(".hero video");
-if (heroVideo && innerWidth >= 1024 && !(navigator.connection && navigator.connection.saveData)) {
-  heroVideo.src = "assets/video/hero-loop-hd.mp4";
-}
-
 /* ---------- навигация: фон после первого экрана ---------- */
 
 const nav = document.getElementById("nav");
