@@ -17,6 +17,7 @@ index_repository после крупных правок; проверка: index
 | TOOLS_ROADMAP.md | карта /instrumenty/: что стоит, очередь, разведка ниш |
 | CONTENT_MAP.md, SEO_KEYWORDS.md, SPEC.md | карта контента и запросов |
 | ANALYTICS.md | Метрика 111935483, цели, Вебмастер, ежедневная сводка в ТГ |
+| GROWTH_PLAN.md | разбор цифр 27.08 + очередь роста: техдолг, домен, мост «инструмент→заявка» |
 | LEADS_ADMIN.md | заявки: Supabase-бэкенд, админка |
 | VIDEO_LESSONS_PLAN.md, YANDEX_ALGO.md | архив (ролики отменены 25.08; конспект алгоритмов) |
 
