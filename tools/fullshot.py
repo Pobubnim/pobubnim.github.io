@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Полностраничный скриншот через Chrome CDP (headless).
 Запуск: python tools/fullshot.py <url> <out.jpg> [width] [scale]"""
+import tempfile
 import base64, json, subprocess, sys, time, urllib.request
 import websocket
 

@@ -280,6 +280,19 @@
     return (+n).toLocaleString("ru-RU") + (w ? " (" + w + ")" : "") + " " + rubPlural(n);
   }
 
+  /* документ сохранён — предлагаем показать его живому человеку.
+     Строка появляется один раз за страницу, под панелью кнопок. */
+  function offerReview() {
+    var bar = document.querySelector(".paper-bar");
+    if (!bar || document.querySelector(".paper-hint")) return;
+    var hint = document.createElement("p");
+    hint.className = "paper-hint";
+    hint.innerHTML = 'Файл сохранён. Хотите — пришлите его мне в телеграм ' +
+      '<a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">@sbphotoshoter</a>: ' +
+      'посмотрю и скажу, что стоит поправить.';
+    bar.insertAdjacentElement("afterend", hint);
+  }
+
   window.PobubnimDocx = {
     build: build,
     rubWords: rubWords,
@@ -290,6 +303,7 @@
       a.download = filename;
       document.body.appendChild(a); a.click();
       setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+      offerReview();
     }
   };
 })();

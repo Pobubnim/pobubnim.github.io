@@ -541,6 +541,9 @@ a.product:hover .product-shot img { transform: scale(1.03); }
 }
 
 .footer-cta { display: flex; flex-direction: column; gap: 26px; align-items: flex-start; }
+.footer-cta .cta-note { max-width: 56ch; color: var(--smoke); font-size: 15px; margin-top: -8px; text-wrap: pretty; }
+.footer-cta .cta-note a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
 
 .footer-links {
   margin-top: clamp(48px, 7vw, 80px);

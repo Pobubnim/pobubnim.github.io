@@ -116,3 +116,7 @@
   .paper { position: absolute; inset: 0; max-height: none; overflow: visible; background: #fff; color: #000; padding: 0; font-size: 12pt; }
   .paper-shell { border: none; box-shadow: none; background: #fff; }
 }
+
+.paper-hint { margin-top: 12px; font-size: 13px; color: var(--smoke); line-height: 1.5; }
+.paper-hint a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.paper-note { margin-top: 12px; font-size: 13px; color: var(--mute); line-height: 1.5; }
