@@ -43,6 +43,9 @@ def changed_pages() -> list[str]:
 
 def main() -> int:
     pages = sys.argv[1:] or changed_pages()
+    # Git Bash разворачивает одиночный "/" в путь установки — принимаем index.html как главную
+    pages = ["/" if p in ("index.html", "/index.html") else p for p in pages
+             if not p.startswith(("C:", "/c/", "D:"))]
     if not pages:
         print("нечего пинговать: в последнем коммите нет страниц")
         return 0
