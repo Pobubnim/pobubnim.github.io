@@ -49,6 +49,8 @@ index_repository после крупных правок; проверка: index
   kalkulyator-nd-filtra (ND: стопы для шаттера 180° и выдержка под фильтром),
   brif-na-semku (анкета клиенту под тип съёмки + текст для мессенджера),
   stavka-frilansera (минимальная ставка за смену: налог, расходы, амортизация),
+  pribory-onlajn (ПРИБОРЫ: waveform/парад, гистограмма, вектроскоп с
+  мишенями и линией кожи, false color; источник — экран/файл/камера),
   kalkulyator-stoimosti-semki (заглушка-редирект, noindex).
 
 ## assets/
@@ -56,7 +58,11 @@ index_repository после крупных правок; проверка: index
 - `css/`: style.css (сайт), lesson.css (виз-блоки уроков), paper.css (лист
   инструментов), **fonts.css** (СВОИ шрифты вместо Google Fonts — собирается
   скриптом tools/fetch_fonts.py, файлы в assets/fonts/*.woff2).
-- `js/`: nav.js (шапка/бургер, deep-регулярка) · analytics.js (Метрика+цели) ·
+- `js/`: **scopes-core.js** (ЯДРО ПРИБОРОВ: Y'CbCr, IRE, waveform,
+  гистограмма, вектроскоп, false color — только математика) + **pribory.js**
+  (интерфейс прибора: источники кадра, разметка, мишени) ·
+  **films.js** (поведение карточек работ) ·
+  nav.js (шапка/бургер, deep-регулярка) · analytics.js (Метрика+цели) ·
   main.js (главная) · lesson.js (появление, вайпы, CSS-лаборатории) ·
   scope.js (ДВИЖОК досок: попиксельная обработка + Waveform/Parade/Vector/
   Histogram; расширяем через cfg.process/state/views) · wheels.js (доска
@@ -114,7 +120,10 @@ sitemap, единая версия analytics.js, width/height у картино�
 **test_checklist.py** — приёмка чек-листа сборов,
 **test_nd.py** — приёмка ND-калькулятора с независимым пересчётом стопов,
 **test_brief.py** — приёмка брифа на съёмку,
-**test_rate.py** — приёмка калькулятора ставки (обратный счёт до дохода).
+**test_rate.py** — приёмка калькулятора ставки (обратный счёт до дохода),
+**test_pribory.py** — приёмка приборов на эталонных цветных полосах
+(28 проверок: мишени вектроскопа против независимого расчёта, IRE против
+кривой, зоны false color, уровни waveform, матрицы 709/601, legal/full).
 
 ## Ритуалы
 
