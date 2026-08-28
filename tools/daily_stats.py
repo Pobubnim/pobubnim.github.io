@@ -231,10 +231,11 @@ def collect(d1: str, d2: str, label: str) -> str:
         q = api(base + "/search-queries/popular",
                 {"order_by": "TOTAL_SHOWS",
                  "query_indicator": ["TOTAL_SHOWS", "TOTAL_CLICKS"],
-                 "date_from": week, "date_to": d2, "limit": 5})
+                 "date_from": week, "date_to": d2, "limit": 100})
         rows = q.get("queries", [])
         shows = sum(int(r.get("indicators", {}).get("TOTAL_SHOWS", 0)) for r in rows)
         clicks = sum(int(r.get("indicators", {}).get("TOTAL_CLICKS", 0)) for r in rows)
+        rows = rows[:5]  # суммы по всем запросам, в текст — только пятёрка
         if rows:
             lines.append(f"За неделю показов: {shows} · кликов: {clicks}")
             lines.append("<b>Топ запросов за неделю</b>")
