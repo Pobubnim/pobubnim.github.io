@@ -31,8 +31,10 @@ index_repository после крупных правок; проверка: index
 - `services/` — 8 услуг (свадьбы, клипы, реклама, имидж, мероприятия,
   цветокоррекция, сайты, боты). Прайс — ТОЛЬКО с главной.
 - `cases/` — monolith, seversvet.
-- `articles/` — хаб index + 9 статей (цены, гайды, договор).
-- `uroki/` — интерактивные уроки/доски (канон фактов EDU_BASE, блоки lesson.css):
+- `articles/` — хаб index + 10 статей (цены, гайды, договор; 28.08 добавлен разбор цены клипа).
+- `uroki/` — ХАБ index (28.08: карта интерфейса DaVinci + FAQ, целит в кластер
+  «davinci resolve уроки/обучение») и интерактивные уроки/доски (канон фактов
+  EDU_BASE, блоки lesson.css):
   01 poryadok-cvetokorrekcii · 02 log-i-grade · 03 skoupy-kak-videt (живые
   скоупы) · 04 kolesa-lift-gamma-gain (прототип колёс, LGG+CDL) ·
   05 log-krivaya (кривые S-Log3/LogC3/709 по формулам) · 06 kak-rabotaet-iso
