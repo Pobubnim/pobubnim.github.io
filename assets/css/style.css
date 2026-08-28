@@ -511,6 +511,7 @@ a.product:hover .product-shot img { transform: scale(1.03); }
 /* ---------- процесс ---------- */
 
 .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.steps.four { grid-template-columns: repeat(4, 1fr); }  /* этапы услуг: четыре шага, а не пять */
 
 .step { display: flex; flex-direction: column; gap: 10px; padding: 20px; background: var(--char); border-radius: var(--r-card); }
 .step i { font-style: normal; font-size: 12px; color: var(--mute); letter-spacing: 0.1em; }
@@ -656,7 +657,7 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
   .films { grid-template-columns: repeat(2, 1fr); }
   .films-vert { grid-template-columns: repeat(2, 1fr); }
   .color-grid, .about-grid { grid-template-columns: 1fr; }
-  .steps { grid-template-columns: repeat(2, 1fr); }
+  .steps, .steps.four { grid-template-columns: repeat(2, 1fr); }
   .service { grid-template-columns: 1fr auto; }
   .service-desc { display: none; }
   .channel { flex-direction: column; align-items: flex-start; }
