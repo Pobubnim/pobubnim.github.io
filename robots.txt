@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Clean-param: fbclid&diag&fresh&utm_source&utm_medium&utm_campaign&yclid&gclid
+
 Sitemap: https://pobubnim.github.io/sitemap.xml

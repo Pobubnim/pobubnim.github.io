@@ -28,6 +28,7 @@ PAGES = {
     "kak-vybrat-svadebnogo-videografa": (os.path.join(IMG, "hz-wedding.webp"), "Как выбрать свадебного видеографа"),
     "case-monolith":     (os.path.join(SCRATCH, "monolith-shot.jpg"), "Кейс: приложение MONOLITH"),
     "case-seversvet":    (os.path.join(IMG, "case-seversvet.webp"), "Кейс: сайт СЕВЕРСВЕТ"),
+    "uroki":             (os.path.join(IMG, "about-monitor.webp"), "Уроки DaVinci Resolve"),
 }
 
 W, H = 1200, 630

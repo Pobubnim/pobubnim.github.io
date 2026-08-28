@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Уроки DaVinci Resolve — цвет, камера, оптика | ПОБУБНИМ</title>
+<meta name="description" content="Восемь бесплатных уроков DaVinci Resolve и видеосъёмки с живыми досками: колёса Lift/Gamma/Gain, скоупы, log-кривые, ISO, глубина резкости. Крутите ползунки в браузере, без регистрации.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.github.io/uroki/">
+<meta property="og:title" content="Уроки DaVinci Resolve — цвет, камера, оптика">
+<meta property="og:description" content="Восемь уроков с интерактивными досками: колёса, скоупы, log, ISO, ГРИП. Всё считается вживую в браузере.">
+<meta property="og:image" content="https://pobubnim.github.io/assets/og/uroki.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pobubnim.github.io/uroki/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Уроки DaVinci Resolve и видеосъёмки", "description": "Восемь бесплатных интерактивных уроков по цвету, камере и оптике.", "url": "https://pobubnim.github.io/uroki/", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.github.io/uroki/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Где в DaVinci Resolve менять экспозицию?", "acceptedAnswer": {"@type": "Answer", "text": "Зависит от материала. RAW — вкладка Camera RAW, поле Exposure. Log — колесо Offset на странице Color: сдвиг по log-кривой и есть стопы. Линейный свет — палитра HDR, Global Exposure. Колесо Gain для этого не подходит: оно множит дисплейный сигнал, а не свет сцены, и ломает контраст."}},
+{"@type": "Question", "name": "Где находится баланс белого в DaVinci Resolve?", "acceptedAnswer": {"@type": "Answer", "text": "Страница Color, панель Color Wheels — Primaries: ползунки Temp и Tint рядом с колёсами. Для RAW-материала честнее править во вкладке Camera RAW. Проверять баланс надо по скоупу Parade: перекос каналов R, G, B на белом или сером предмете и есть сбитый баланс."}},
+{"@type": "Question", "name": "Как включить скоупы в DaVinci Resolve?", "acceptedAnswer": {"@type": "Answer", "text": "Меню Workspace — Video Scopes. Четыре вида: Waveform (яркость по кадру), Parade (каналы R, G, B отдельно), Vectorscope (оттенок и насыщенность, с линией скин-тона) и Histogram."}},
+{"@type": "Question", "name": "DaVinci Resolve бесплатный?", "acceptedAnswer": {"@type": "Answer", "text": "Да. Бесплатная версия закрывает монтаж и цветокоррекцию почти целиком, платная Studio добавляет шумодав и часть эффектов. Это модель продаж Blackmagic, а не демоверсия с обрезанным сроком."}},
+{"@type": "Question", "name": "С какого урока начать новичку?", "acceptedAnswer": {"@type": "Answer", "text": "С порядка цветокоррекции: баланс белого, экспозиция и контраст, насыщенность, look. Дальше — скоупы, чтобы судить кадр по приборам, а не на глаз, и колёса Lift/Gamma/Gain. Log-кривые и ISO имеет смысл смотреть, когда база уже лежит."}}]}</script>
+<style>
+  .hub-hero { padding-top: 150px; max-width: 780px; }
+  .hub-hero .label { margin-bottom: 14px; display: block; }
+  .hub-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .hub-sec { margin-top: clamp(48px, 6vw, 72px); }
+  .hub-sec > .label { display: block; margin-bottom: 18px; }
+  .hub-sec h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 300; letter-spacing: -0.02em; margin-bottom: 18px; text-wrap: balance; }
+  .hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .hub-card { padding: 22px; background: var(--char); border-radius: var(--r-card); display: flex; flex-direction: column; gap: 8px; transition: background 0.2s var(--ease); }
+  .hub-card:hover { background: var(--char2); }
+  .hub-card b { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; text-wrap: balance; }
+  .hub-card span { font-size: 13.5px; color: var(--smoke); font-weight: 300; text-wrap: pretty; }
+  .hub-card i { font-style: normal; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+  .hub-lesson { grid-column: 1 / -1; display: grid; grid-template-columns: 5fr 4fr; gap: clamp(18px, 3vw, 32px); align-items: center; padding: clamp(22px, 3.5vw, 34px); border: 1px solid var(--line); }
+  .hub-lesson .tagline { display: inline-flex; align-items: center; gap: 8px; }
+  .hub-lesson .tagline .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--lamp); animation: hub-pulse 1.6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .hub-lesson .tagline .pulse { animation: none; } }
+  @keyframes hub-pulse { 50% { opacity: 0.25; } }
+  .hub-lesson b { font-size: clamp(19px, 2.2vw, 24px); }
+  .hub-lesson span { font-size: 14.5px; }
+  .hub-lesson .mini { pointer-events: none; }
+  .hub-grid.two { grid-template-columns: repeat(2, 1fr); margin-top: 14px; }
+  .where { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .where > div { padding: 20px 22px; border: 1px solid var(--line); border-radius: var(--r-card); }
+  .where h3 { font-size: 15.5px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .where p { font-size: 14px; color: var(--smoke); font-weight: 300; line-height: 1.6; text-wrap: pretty; }
+  .where p a { text-decoration: underline; text-underline-offset: 3px; }
+  .where code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; color: var(--bone); }
+  @media (max-width: 900px) { .hub-grid, .hub-grid.two { grid-template-columns: repeat(2, 1fr); } .hub-lesson { grid-template-columns: 1fr; } .hub-lesson .mini { display: none; } .where { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .hub-grid, .hub-grid.two { grid-template-columns: 1fr; } }
+</style>
+<script src="../assets/js/analytics.js?v=3" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links">
+      <a href="../raboty.html">Работы</a>
+      <a href="/#services">Цены</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+    </nav>
+    <a class="btn btn-lamp" href="/#zayavka">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hub-hero">
+    <span class="label">Уроки · бесплатно · без регистрации</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Уроки DaVinci Resolve и видеосъёмки</span>Не читать, а <em>крутить</em></h1>
+    <p class="lead">Восемь уроков с живыми досками: колёса и скоупы считаются из настоящих пикселей кадра, log-кривые нарисованы по формулам Sony и ARRI, шум в колодцах пикселей — фотонный. Двигаете ползунок — картинка и приборы отвечают, как в программе.</p>
+  </section>
+
+  <section class="hub-sec">
+    <h2>Где что в DaVinci Resolve</h2>
+    <div class="where">
+      <div>
+        <h3>Экспозиция</h3>
+        <p>RAW — вкладка <code>Camera RAW</code>, поле Exposure. Log — колесо <code>Offset</code> на странице Color: сдвиг по log-кривой и есть стопы. Линейный свет — палитра <code>HDR</code>, Global Exposure. Колесо Gain для этого не годится: оно множит дисплейный сигнал, а не свет сцены. <a href="kak-rabotaet-iso.html">Урок про ISO и экспозицию на посте</a>.</p>
+      </div>
+      <div>
+        <h3>Баланс белого</h3>
+        <p>Страница Color, панель <code>Color Wheels → Primaries</code>: ползунки Temp и Tint рядом с колёсами; для RAW честнее вкладка Camera RAW. Судить не на глаз, а по Parade — перекос R, G, B на белом предмете и есть сбитый баланс. <a href="poryadok-cvetokorrekcii.html">Урок про порядок коррекции</a>.</p>
+      </div>
+      <div>
+        <h3>Скоупы</h3>
+        <p>Меню <code>Workspace → Video Scopes</code>. Waveform — яркость по кадру, Parade — каналы отдельно, Vectorscope — оттенок и насыщенность с линией скин-тона, Histogram — распределение яркостей. <a href="skoupy-kak-videt.html">Урок, где приборы живые</a>.</p>
+      </div>
+      <div>
+        <h3>Колёса и ноды</h3>
+        <p>Четыре колеса <code>Lift · Gamma · Gain · Offset</code>, под каждым мастер-колёсико яркости; двойной клик сбрасывает. Каждое решение — своя нода (<code>Alt+S</code>), тогда «чуть теплее» правится одной нодой, а не всем грейдом. <a href="kolesa-lift-gamma-gain.html">Урок-прототип колёс</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="hub-sec">
+    <h2>Уроки по цвету</h2>
+    <div class="hub-grid">
+      <a class="hub-card hub-lesson lv on" href="poryadok-cvetokorrekcii.html">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <i class="tagline"><span class="pulse"></span>Начните отсюда</i>
+          <b>Порядок цветокоррекции: четыре шага, строго по порядку</b>
+          <span>Баланс белого, экспозиция по скоупу, насыщенность, look. Панель «как в DaVinci», вайпы до и после, лаборатории, где кадр правите вы.</span>
+          <span style="color:var(--mute);font-size:12.5px;letter-spacing:0.05em">УРОК 01 · ЦВЕТ · ~7 МИНУТ</span>
+        </div>
+        <div class="mini davinci" aria-hidden="true">
+          <div class="wheels">
+            <div class="wheel"><div class="disc"><div class="dot"></div></div><div class="nm">LIFT</div></div>
+            <div class="wheel"><div class="disc"><div class="dot"></div></div><div class="nm">GAMMA</div></div>
+            <div class="wheel"><div class="disc"><div class="dot"></div></div><div class="nm">GAIN</div></div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="hub-grid two">
+      <a class="hub-card" href="log-i-grade.html"><i>Урок 02 · Интерактив</i><b>Почему видео из камеры блёклое</b><span>Log — цифровой негатив. Проявите кадр ползунками и увидите, откуда берётся «кислота» после LUT</span></a>
+      <a class="hub-card" href="skoupy-kak-videt.html"><i>Урок 03 · Живая доска</i><b>Как читать скоупы: Waveform, Parade, Vectorscope</b><span>Приборы считаются из настоящих пикселей: крутите экспозицию и баланс — шкалы отвечают вживую</span></a>
+      <a class="hub-card" href="kolesa-lift-gamma-gain.html"><i>Урок 04 · Прототип</i><b>Lift, Gamma, Gain: колёса цветокоррекции</b><span>Каноническая математика LGG, кривая переноса, скоупы, перевод в ASC CDL и задания «почини кадр»</span></a>
+      <a class="hub-card" href="log-krivaya.html"><i>Урок 05 · Живая доска</i><b>Log-кривая в числах: S-Log3, LogC и Rec.709</b><span>Кривые по опубликованным формулам Sony и ARRI: куда каждая кладёт серую карту, кожу и света</span></a>
+    </div>
+  </section>
+
+  <section class="hub-sec">
+    <h2>Уроки по камере и оптике</h2>
+    <div class="hub-grid">
+      <a class="hub-card" href="kak-rabotaet-iso.html"><i>Урок 06 · Три стенда</i><b>Как работает ISO: матрица, Байер и пост</b><span>Колодцы пикселей с фотонным шумом, живая дебайеризация и ответ с числами, чем поднимать экспозицию на посте</span></a>
+      <a class="hub-card" href="glubina-rezkosti.html"><i>Урок 07 · Живая доска</i><b>Глубина резкости: почему размывается фон</b><span>Кружки боке — это кружки нерезкости, и диаметр каждого считается формулой. Смотрите, где кончается резкость</span></a>
+      <a class="hub-card" href="ekspozicionnyj-treugolnik.html"><i>Урок 08 · Живая доска</i><b>Экспозиционный треугольник: чем платишь за свет</b><span>Диафрагма, выдержка и ISO поднимают яркость одинаково, а платите разным: резкостью, смазом и шумом</span></a>
+    </div>
+    <p style="margin-top:14px;font-size:13px;color:var(--mute)">Серия пополняется: следующие уроки — три ошибки новичка в цвете и свет из окна.</p>
+  </section>
+
+  <section class="hub-sec">
+    <h2>Частые вопросы</h2>
+    <div class="where">
+      <div>
+        <h3>DaVinci Resolve бесплатный?</h3>
+        <p>Да, и это не демка. Бесплатная версия закрывает монтаж и цвет почти целиком; Studio добавляет шумодав и часть эффектов. Blackmagic зарабатывает на камерах и панелях, поэтому программу раздаёт.</p>
+      </div>
+      <div>
+        <h3>С какого урока начать?</h3>
+        <p>С порядка цветокоррекции. Потом скоупы — чтобы судить кадр по приборам, а не на глаз. Потом колёса. Log-кривые и ISO берите, когда база уже лежит: без неё они превращаются в набор слов.</p>
+      </div>
+      <div>
+        <h3>Нужна ли камера, чтобы разобраться?</h3>
+        <p>Нет. Все доски работают в браузере на своих кадрах и своей математике — телефон и ноутбук подойдут. Камера пригодится, когда захотите повторить на своём материале.</p>
+      </div>
+      <div>
+        <h3>Это заменит курс?</h3>
+        <p>Базу — да, руку — нет. Уроки объясняют, почему инструмент делает то, что делает. Ставит руку практика на своём материале: <a href="../education.html">занятие 90 минут от 3 000 ₽</a>, разбираем ваш кадр, а не абстрактный.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-cta" style="padding-top:80px">
+    <h2 class="display">Разберём <em>ваш</em> материал?</h2>
+    <p class="cta-note">Занятие 90 минут — от 3 000 ₽, работаем на вашем кадре. Новые уроки и разборы выходят в канале.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+      <a class="btn btn-ghost" href="../education.html">Программы обучения</a>
+      <a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео»</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav>
+      <a href="/">На главную</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/nav.js" defer></script>
+</body>
+</html>

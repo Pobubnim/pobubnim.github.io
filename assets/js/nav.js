@@ -33,6 +33,14 @@
       }).join("") +
       "</div>";
     links.insertBefore(drop, links.querySelector('a[href$="education.html"]'));
+
+    var artLink = links.querySelector('a[href$="articles/"]');
+    if (artLink && !links.querySelector('a[href$="uroki/"]')) {
+      var lessons = document.createElement("a");
+      lessons.href = root + "uroki/";
+      lessons.textContent = "Уроки";
+      links.insertBefore(lessons, artLink.nextSibling);
+    }
   }
 
   /* --- бургер + полноэкранное меню (мобила) --- */
@@ -55,7 +63,8 @@
     '<a href="' + home("#digital") + '">Продукты</a>' +
     '<a href="' + home("#services") + '">Цены</a>' +
     '<a href="' + home("#about") + '">Обо мне</a>' +
-    '<a href="' + root + 'articles/">Статьи и уроки</a>' +
+    '<a href="' + root + 'articles/">Статьи</a>' +
+    '<a href="' + root + 'uroki/">Уроки DaVinci</a>' +
     '<a href="' + root + 'instrumenty/">Инструменты</a>' +
     '<a href="' + root + 'education.html">Обучение</a>' +
     "</div>" +
