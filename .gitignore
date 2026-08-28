@@ -4,3 +4,4 @@ videos/**/*.mov
 videos/**/*.wav
 videos/**/*.mp3
 videos/**/frames/
+tools/__pycache__/

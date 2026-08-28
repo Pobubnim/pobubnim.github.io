@@ -211,28 +211,40 @@ def collect(d1: str, d2: str, label: str) -> str:
         uid = api("https://api.webmaster.yandex.net/v4/user")["user_id"]
         base = f"https://api.webmaster.yandex.net/v4/user/{uid}/hosts/{HOST_ID}"
         s = api(base + "/summary")
+        # summary пересчитывается раз в сутки и держит вчерашний ноль, когда
+        # страницы в индексе уже есть: живую цифру берём из выборки (28.08)
+        pages = s.get("searchable_pages_count", 0)
+        try:
+            fresh = api(base + "/search-urls/in-search/samples", {"limit": 1}).get("count")
+            if fresh is not None and fresh > (pages or 0):
+                pages = fresh
+        except Exception:
+            pass
         lines.append("")
         lines.append("<b>Поиск Яндекса</b>")
-        lines.append(f"Страниц в поиске: <b>{s.get('searchable_pages_count', '?')}</b> "
+        lines.append(f"Страниц в поиске: <b>{pages}</b> "
                      f"· исключено: {s.get('excluded_pages_count', '?')} "
                      f"· ИКС: {s.get('sqi', '?')}")
+        # данные по запросам приходят с лагом в несколько дней: за один вчерашний
+        # день их обычно ещё нет, поэтому берём неделю (28.08)
+        week = (date.fromisoformat(d1) - timedelta(days=6)).isoformat()
         q = api(base + "/search-queries/popular",
                 {"order_by": "TOTAL_SHOWS",
                  "query_indicator": ["TOTAL_SHOWS", "TOTAL_CLICKS"],
-                 "date_from": d1, "date_to": d2, "limit": 5})
+                 "date_from": week, "date_to": d2, "limit": 5})
         rows = q.get("queries", [])
         shows = sum(int(r.get("indicators", {}).get("TOTAL_SHOWS", 0)) for r in rows)
         clicks = sum(int(r.get("indicators", {}).get("TOTAL_CLICKS", 0)) for r in rows)
         if rows:
-            lines.append(f"Показы (топ-запросы): {shows} · клики: {clicks}")
-            lines.append("<b>Топ запросов</b>")
+            lines.append(f"За неделю показов: {shows} · кликов: {clicks}")
+            lines.append("<b>Топ запросов за неделю</b>")
             for r in rows:
                 ind = r.get("indicators", {})
                 lines.append(f"· «{r.get('query_text', '?')}» — "
                              f"{int(ind.get('TOTAL_SHOWS', 0))} показов, "
                              f"{int(ind.get('TOTAL_CLICKS', 0))} кликов")
         else:
-            lines.append("Запросов с показами за период пока нет.")
+            lines.append("Запросов с показами пока нет — данные Вебмастера идут с лагом в несколько дней.")
     except urllib.error.HTTPError as e:
         body = ""
         try:
