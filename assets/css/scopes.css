@@ -1,0 +1,274 @@
+/* ПОБУБНИМ — рабочая станция приборов. Аппаратная, а не страница: тёмное поле,
+   тонкие линии, цвет только внутри приборов. Токены — из style.css. */
+
+.sc-app {
+  --sc-line: rgba(255, 253, 245, 0.10);
+  --sc-line-soft: rgba(255, 253, 245, 0.055);
+  --sc-surface: #0e0e0c;
+  --sc-panel: #0a0a09;
+  --sc-head: 30px;
+  border: 1px solid var(--sc-line);
+  border-radius: 12px;
+  background: var(--sc-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  margin-top: 26px;
+  contain: paint;
+}
+
+/* ---------- тулбар ---------- */
+
+.sc-bar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--sc-line-soft);
+  background: #111110;
+}
+.sc-bar .sp { flex: 1 1 auto; }
+
+.sc-btn {
+  height: 32px; padding: 0 12px;
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--sc-line); border-radius: 8px;
+  background: #171715; color: var(--ink);
+  font: 500 12.5px/1 var(--font-ui); letter-spacing: 0.01em;
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.16s var(--ease), border-color 0.16s var(--ease), transform 0.1s var(--ease);
+}
+.sc-btn:hover { background: #201f1c; border-color: rgba(255, 253, 245, 0.18); }
+.sc-btn:active { transform: scale(0.97); }
+.sc-btn:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; }
+.sc-btn.on { background: var(--lamp); border-color: var(--lamp); color: #0b0b0a; }
+.sc-btn.key { background: var(--lamp); border-color: var(--lamp); color: #0b0b0a; }
+.sc-btn.key:hover { background: #fffaf0; }
+.sc-btn i { font-style: normal; opacity: 0.75; font-size: 11px; }
+.sc-btn input[type=file] { display: none; }
+
+.sc-seg { display: inline-flex; border: 1px solid var(--sc-line); border-radius: 8px; overflow: hidden; }
+.sc-seg button {
+  height: 32px; min-width: 34px; padding: 0 10px;
+  background: #171715; color: var(--smoke); border: 0; border-right: 1px solid var(--sc-line-soft);
+  font: 500 12px/1 var(--font-ui); cursor: pointer;
+  transition: background 0.16s var(--ease), color 0.16s var(--ease);
+}
+.sc-seg button:last-child { border-right: 0; }
+.sc-seg button:hover { background: #201f1c; color: var(--ink); }
+.sc-seg button.on { background: var(--lamp); color: #0b0b0a; }
+.sc-seg button:focus-visible { outline: 2px solid var(--lamp); outline-offset: -2px; }
+
+/* ---------- сетка приборов ---------- */
+
+.sc-grid {
+  display: grid; gap: 1px;
+  background: var(--sc-line-soft);
+  min-height: 420px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  flex: 1 1 auto;
+}
+.sc-grid.lay-1 { grid-template-columns: minmax(0, 1fr); }
+.sc-grid.lay-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sc-grid.lay-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sc-grid.lay-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sc-slot {
+  background: var(--sc-panel);
+  display: flex; flex-direction: column; min-width: 0; min-height: 0;
+  position: relative;
+}
+.sc-slot.off { display: none; }
+
+.sc-slot-head {
+  height: var(--sc-head); flex: none;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 8px 0 10px;
+  border-bottom: 1px solid var(--sc-line-soft);
+}
+.sc-slot-head select {
+  appearance: none; -webkit-appearance: none;
+  background: transparent; border: 1px solid transparent; border-radius: 6px;
+  color: var(--ink); font: 500 12px/1 var(--font-ui);
+  padding: 4px 20px 4px 6px; cursor: pointer; min-width: 0;
+  background-image: linear-gradient(45deg, transparent 50%, var(--mute) 50%), linear-gradient(135deg, var(--mute) 50%, transparent 50%);
+  background-position: right 9px center, right 4px center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+.sc-slot-head select:hover { border-color: var(--sc-line); background-color: #171715; }
+.sc-slot-head select:focus-visible { outline: 2px solid var(--lamp); outline-offset: 1px; }
+.sc-slot-head select option { background: #171715; color: var(--ink); }
+.sc-slot-note {
+  margin-left: auto; font: 400 10.5px/1 var(--font-mono, ui-monospace, monospace);
+  color: var(--mute); letter-spacing: 0.02em; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+
+.sc-canvas-wrap {
+  position: relative; flex: 1 1 auto; min-height: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px;
+}
+.sc-canvas-wrap canvas {
+  display: block; max-width: 100%; max-height: 100%;
+  width: 100%; height: 100%; object-fit: contain;
+  background: #060605; border-radius: 6px;
+}
+/* график тянется на всё поле — пропорции ему не нужны; кадр и вектроскоп
+   пропорции держат: круг обязан остаться кругом, кадр — кадром */
+.sc-slot[data-kind="wf"] .sc-canvas-wrap canvas,
+.sc-slot[data-kind="hist"] .sc-canvas-wrap canvas { object-fit: fill; }
+.sc-slot[data-kind="vector"] .sc-canvas-wrap canvas { aspect-ratio: 1 / 1; width: auto; }
+.sc-slot[data-kind="frame"] .sc-canvas-wrap { cursor: crosshair; }
+
+/* легенда прибора поверх нижнего края */
+.sc-legend:not(:empty) {
+  position: absolute; left: 8px; right: 8px; bottom: 6px;
+  display: flex; flex-wrap: wrap; gap: 3px 10px;
+  font: 400 10px/1.35 var(--font-ui); color: var(--smoke);
+  pointer-events: none;
+  background: rgba(6, 6, 5, 0.78); padding: 5px 7px; border-radius: 6px;
+}
+.sc-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.sc-legend i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; flex: none; }
+
+/* рамка кропа поверх кадра */
+.sc-crop {
+  position: absolute; border: 1px dashed rgba(245, 239, 226, 0.8);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+}
+.sc-crop-hint {
+  position: absolute; left: 50%; top: 8px; transform: translateX(-50%);
+  font: 500 11px/1 var(--font-ui); color: #0b0b0a; background: var(--lamp);
+  padding: 5px 9px; border-radius: 6px; pointer-events: none;
+}
+
+/* ---------- нижняя лента: числа и паспорт ---------- */
+
+.sc-foot {
+  border-top: 1px solid var(--sc-line-soft);
+  background: #111110;
+  display: flex; flex-direction: column;
+}
+.sc-nums {
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-bottom: 1px solid var(--sc-line-soft);
+}
+.sc-num {
+  padding: 8px 10px; border-right: 1px solid var(--sc-line-soft); min-width: 0;
+}
+.sc-num:last-child { border-right: 0; }
+.sc-num i {
+  display: block; font-style: normal; font-size: 9.5px; color: var(--mute);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sc-num b {
+  font: 500 17px/1.1 var(--font-mono, ui-monospace, monospace);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+  display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sc-num b.warn { color: #ff9d6b; }
+.sc-num b.bad { color: #ff6b5a; }
+
+.sc-sig {
+  display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline;
+  padding: 7px 10px;
+  font: 400 11px/1.5 var(--font-mono, ui-monospace, monospace); color: var(--mute);
+}
+.sc-sig b { color: var(--smoke); font-weight: 500; }
+.sc-sig .dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; display: inline-block; }
+.sc-sig .dot.idle { background: var(--mute); }
+
+/* ---------- шторка настроек ---------- */
+
+.sc-cfg {
+  border-top: 1px solid var(--sc-line-soft);
+  background: #0d0d0c;
+  padding: 12px 12px 14px;
+  display: none;
+}
+.sc-cfg.on { display: block; }
+.sc-cfg-grid {
+  display: grid; gap: 12px 22px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.sc-fld { min-width: 0; }
+.sc-fld > i {
+  display: block; font-style: normal; font-size: 10px; color: var(--mute);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;
+}
+.sc-fld-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.sc-fld select {
+  appearance: none; -webkit-appearance: none;
+  height: 30px; padding: 0 26px 0 9px; min-width: 0; max-width: 100%;
+  border: 1px solid var(--sc-line); border-radius: 7px; background-color: #171715;
+  color: var(--ink); font: 400 12.5px/1 var(--font-ui); cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--mute) 50%), linear-gradient(135deg, var(--mute) 50%, transparent 50%);
+  background-position: right 12px center, right 7px center;
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
+}
+.sc-fld select option { background: #171715; }
+.sc-fld input[type=range] { width: 100%; max-width: 220px; accent-color: var(--lamp); }
+.sc-fld .val {
+  font: 400 12px var(--font-mono, ui-monospace, monospace); color: var(--smoke);
+  font-variant-numeric: tabular-nums; min-width: 46px;
+}
+.sc-sw {
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  font: 400 12.5px/1 var(--font-ui); color: var(--smoke);
+  min-height: 30px;
+}
+.sc-sw input { accent-color: var(--lamp); width: 15px; height: 15px; }
+.sc-hint { font-size: 11.5px; color: var(--mute); margin-top: 7px; line-height: 1.5; text-wrap: pretty; }
+
+/* ---------- пипетка ---------- */
+
+.sc-probe {
+  position: absolute; right: 8px; top: calc(var(--sc-head) + 8px);
+  background: rgba(8, 8, 7, 0.92); border: 1px solid var(--sc-line);
+  border-radius: 8px; padding: 8px 10px; pointer-events: none;
+  font: 400 11px/1.6 var(--font-mono, ui-monospace, monospace); color: var(--smoke);
+  display: none; min-width: 138px;
+}
+.sc-probe.on { display: block; }
+.sc-probe b { color: var(--ink); font-weight: 500; }
+.sc-probe .sw { width: 26px; height: 10px; border-radius: 3px; display: block; margin-bottom: 6px; border: 1px solid var(--sc-line); }
+
+/* ---------- полноэкранный режим ---------- */
+
+.sc-app:fullscreen { border-radius: 0; border: 0; margin: 0; height: 100%; }
+.sc-app:fullscreen .sc-grid { min-height: 0; }
+
+/* ---------- окно поверх (Document PiP) ---------- */
+.sc-pip-note {
+  font-size: 12px; color: var(--lamp); padding: 10px 12px;
+  border-top: 1px solid var(--sc-line-soft); display: none;
+}
+.sc-pip-note.on { display: block; }
+
+/* ---------- мобильная раскладка ---------- */
+
+@media (max-width: 900px) {
+  .sc-grid, .sc-grid.lay-2, .sc-grid.lay-3, .sc-grid.lay-4 {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(260px, auto);
+    min-height: 0;
+  }
+  .sc-nums { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sc-num { border-bottom: 1px solid var(--sc-line-soft); }
+  .sc-btn, .sc-seg button { height: 40px; }
+  .sc-slot-head { height: 36px; }
+  .sc-slot-head select { font-size: 13px; padding: 6px 20px 6px 6px; }
+}
+@media (max-width: 560px) {
+  .sc-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sc-bar { gap: 6px; padding: 8px; }
+  .sc-btn { padding: 0 10px; font-size: 12px; }
+  .sc-app { margin-left: -8px; margin-right: -8px; border-radius: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-btn, .sc-seg button { transition: none; }
+}

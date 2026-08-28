@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#000000">
-<title>Приборы онлайн: waveform, вектроскоп, false color | ПОБУБНИМ</title>
-<meta name="description" content="Браузерные приборы для видео: waveform и парад RGB, гистограмма, вектроскоп с мишенями и линией кожи, false color по IRE. Кадр берётся с экрана, из файла или камеры и считается локально.">
+<title>Приборы онлайн: waveform, вектроскоп, false color, зебра | ПОБУБНИМ</title>
+<meta name="description" content="Бесплатные видеоприборы онлайн: waveform и парад, гистограмма, вектроскоп с линией кожи, false color, зебра и фокус-пикинг. Кадр с экрана, из файла или камеры считается в браузере.">
 <meta name="author" content="Савелий Бубнов">
 <link rel="canonical" href="https://pobubnim.github.io/instrumenty/pribory-onlajn.html">
-<meta property="og:title" content="Приборы онлайн: waveform, вектроскоп, false color | ПОБУБНИМ">
-<meta property="og:description" content="Waveform, парад, гистограмма, вектроскоп и false color прямо в браузере. Источник — экран, файл или камера; всё считается на вашей машине.">
+<meta property="og:title" content="Приборы онлайн: waveform, вектроскоп, false color, зебра | ПОБУБНИМ">
+<meta property="og:description" content="Waveform, парад, гистограмма, вектроскоп, false color, зебра и пикинг прямо в браузере. Источник — экран, файл или камера; всё считается на вашей машине.">
 <meta property="og:image" content="https://pobubnim.github.io/assets/og/tool-pribory-onlajn.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -23,100 +23,25 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/lesson.css">
 <link rel="stylesheet" href="../assets/css/paper.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Приборы онлайн: waveform, вектроскоп, false color", "url": "https://pobubnim.github.io/instrumenty/pribory-onlajn.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/"}, "description": "Бесплатные видеоприборы в браузере: waveform, парад RGB, гистограмма, вектроскоп с мишенями цветных полос и линией кожи, false color по шкале IRE. Источник кадра — захват экрана, файл или камера."}</script>
+<link rel="stylesheet" href="../assets/css/scopes.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Приборы онлайн: waveform, вектроскоп, false color", "url": "https://pobubnim.github.io/instrumenty/pribory-onlajn.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/"}, "featureList": "Waveform (яркость, цветная трасса, RGB, парад RGB, парад Y'CbCr); гистограмма; вектроскоп с мишенями цветных полос и линией кожи; false color по IRE, по стопам и по спецификации ARRI LogC3; зебра; фокус-пикинг; пипетка; кроп области измерения; захват экрана, файл, камера", "description": "Бесплатные видеоприборы в браузере: waveform и парады, гистограмма, вектроскоп с мишенями и линией кожи, false color по трём шкалам, зебра и фокус-пикинг. Источник кадра — захват экрана, файл или камера, всё считается локально."}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Что показывает waveform и чем он лучше гистограммы?", "acceptedAnswer": {"@type": "Answer", "text": "Waveform сохраняет горизонталь кадра: столбец прибора соответствует вертикальной колонке пикселей, а высота точки — яркости. Поэтому по нему видно не только сколько пересвета, но и где именно он в кадре — слева, справа, в центре. Гистограмма координат не хранит: она отвечает только на вопрос «сколько пикселей какой яркости»."}},
 {"@type": "Question", "name": "Почему серая карта должна быть на 40–45 IRE?", "acceptedAnswer": {"@type": "Answer", "text": "Это следствие кривой Rec.709, а не договорённость. Подставив 18% отражения в формулу гаммы BT.709, получаем 40,9% сигнала. В логарифмических профилях якорь другой: S-Log3 даёт 41,1%, ARRI LogC3 — 39,1%, поэтому log-кадр на приборе жмётся к середине, и это норма."}},
 {"@type": "Question", "name": "Что за наклонная линия на вектроскопе?", "acceptedAnswer": {"@type": "Answer", "text": "Линия скин-тона — направление, вдоль которого ложится кожа любого оттенка. В осях Cb/Cr по Rec.709 это примерно 123 градуса от горизонтали. Проверка на четырёх тонах кожи от светлого до очень тёмного даёт 122,7–127,4 градуса: оттенок у всех практически один, отличается только насыщенность, то есть удалённость от центра."}},
-{"@type": "Question", "name": "Насколько точны показания прибора в браузере?", "acceptedAnswer": {"@type": "Answer", "text": "Прибор считает ровно то, что ему отдал браузер: 8 бит на канал после декодера, обычно в диапазоне 0–255. RAW и десятибитный сигнал по SDI в вебе недоступны, а захват экрана показывает картинку плеера вместе с его цветоуправлением. Поэтому прибор всегда подписывает источник, диапазон и матрицу — без этих трёх подписей любые цифры бессмысленны."}},
-{"@type": "Question", "name": "Что такое false color и по каким порогам он красит?", "acceptedAnswer": {"@type": "Answer", "text": "False color заливает зоны экспозиции плоскими цветами: фиолетовый — шумовой пол до 2,5 IRE, синий — край теней 2,5–9, зелёный — 18% серый 38–43, розовый — коридор кожи 60–75, жёлтый — подход к белому 92–97, красный — клиппинг выше 97. Пороги выведены из кривой Rec.709. У камер ARRI шкала своя и задана для сигнала LogC, поэтому переносить её на обычный кадр нельзя."}}
+{"@type": "Question", "name": "Как измерить только окно плеера, а не весь экран?", "acceptedAnswer": {"@type": "Answer", "text": "Включите захват экрана, откройте окно «Кадр» и нажмите «Кроп»: выделите мышью область картинки. Дальше все приборы считают только её — интерфейс программы, панели и рамки в измерение не попадают. Кроп снимается той же кнопкой."}},
+{"@type": "Question", "name": "Чем зебра отличается от false color?", "acceptedAnswer": {"@type": "Answer", "text": "Зебра штрихует только один заданный уровень: обычно 95–100 IRE, чтобы поймать пересвет, или окно около 70 IRE под кожу. False color красит сразу все зоны экспозиции разными цветами. Зебра точнее для одной задачи, false color даёт полную картину кадра."}},
+{"@type": "Question", "name": "Насколько точны показания прибора в браузере?", "acceptedAnswer": {"@type": "Answer", "text": "Прибор считает ровно то, что ему отдал браузер: 8 бит на канал после декодера, обычно в диапазоне 0–255. RAW и десятибитный сигнал по SDI в вебе недоступны, а захват экрана показывает картинку плеера вместе с его цветоуправлением. Поэтому прибор всегда подписывает источник, диапазон, матрицу и разрешение анализа — без этих подписей любые цифры бессмысленны."}},
+{"@type": "Question", "name": "Что такое false color и по каким порогам он красит?", "acceptedAnswer": {"@type": "Answer", "text": "False color заливает зоны экспозиции плоскими цветами. В шкале IRE: фиолетовый — шумовой пол до 2,5 IRE, синий — край теней 2,5–9, зелёный — 18% серый 38–43, розовый — коридор кожи 60–75, жёлтый — подход к белому 92–97, красный — клиппинг выше 97; пороги выведены из кривой Rec.709. Есть также шкала в стопах от 18% серого и шкала ARRI по официальной спецификации LogC — её границы заданы в 10-битных кодах и зависят от EI, поэтому она применима только к материалу LogC3."}}
 ]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Инструменты", "item": "https://pobubnim.github.io/instrumenty/"}, {"@type": "ListItem", "position": 3, "name": "Приборы онлайн", "item": "https://pobubnim.github.io/instrumenty/pribory-onlajn.html"}]}</script>
 <style>
   .art-hero { padding-top: 150px; max-width: 880px; }
   .art-hero .label { margin-bottom: 14px; display: block; }
   .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; max-width: 720px; }
-
-  /* --- панель источника --- */
-  .pr-src { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 26px; }
-  .pr-src .btn { height: 40px; }
-  .pr-src label.btn { cursor: pointer; }
-  .pr-src input[type=file] { display: none; }
-  .pr-sig {
-    display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline;
-    margin-top: 12px; font: 400 13px/1.5 var(--font-mono); color: var(--mute);
-  }
-  .pr-sig b { color: var(--smoke); font-weight: 500; }
-  .pr-note { margin-top: 10px; font-size: 13px; color: var(--lamp); opacity: 0; transition: opacity 0.25s var(--ease); }
-  .pr-note.on { opacity: 1; }
-
-  /* --- сетка приборов --- */
-  .pr-grid {
-    display: grid; gap: 14px; margin-top: 22px;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  }
-  .pr-card {
-    border: 1px solid var(--line); border-radius: var(--r-card);
-    background: var(--char); padding: 12px 12px 10px;
-    display: flex; flex-direction: column; min-width: 0;
-  }
-  .pr-card.wide { grid-column: 1 / -1; }
-  .pr-card.off { display: none; }
-  .pr-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    gap: 12px; margin-bottom: 10px;
-  }
-  .pr-head b { font-size: 13px; font-weight: 500; letter-spacing: 0.02em; }
-  .pr-head span { font-size: 11px; color: var(--mute); font-family: var(--font-mono); }
-  .pr-card canvas {
-    width: 100%; height: auto; display: block;
-    background: #0b0b0a; border-radius: 8px;
-    image-rendering: pixelated;
-  }
-  .pr-card.sq canvas { aspect-ratio: 1 / 1; }
-
-  /* --- числа --- */
-  .pr-nums {
-    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;
-    margin-top: 14px;
-  }
-  .pr-num {
-    border: 1px solid var(--line); border-radius: 10px; background: var(--char);
-    padding: 10px 12px;
-  }
-  .pr-num i {
-    display: block; font-style: normal; font-size: 11px; color: var(--mute);
-    letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px;
-  }
-  .pr-num b {
-    font: 500 20px var(--font-mono); font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
-  }
-
-  /* --- настройки --- */
-  .pr-cfg { margin-top: 18px; display: grid; gap: 14px; }
-  .pr-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .pr-row > i {
-    font-style: normal; font-size: 11px; color: var(--mute); letter-spacing: 0.06em;
-    text-transform: uppercase; min-width: 116px;
-  }
-  .pr-row .chip { cursor: pointer; }
-  .chip.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
-  .pr-row input[type=range] { width: 190px; accent-color: var(--lamp); }
-  .pr-row label.sw { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--smoke); cursor: pointer; }
-  .pr-val { font: 400 13px var(--font-mono); color: var(--smoke); font-variant-numeric: tabular-nums; }
-
-  .pr-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 12px; color: var(--mute); }
-  .pr-legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .pr-legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
-
-  #pr-video { display: none; }
-
-  @media (max-width: 860px) {
-    .pr-grid { grid-template-columns: minmax(0, 1fr); }
-    .pr-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .pr-row > i { min-width: 100%; }
-  }
+  #sc-video { display: none; }
+  .sc-keys { margin-top: 14px; font-size: 12px; color: var(--mute); line-height: 1.7; }
+  .sc-keys b { color: var(--smoke); font-weight: 500; font-family: var(--font-mono); }
 </style>
 <script src="../assets/js/analytics.js?v=3" defer></script>
 </head>
@@ -159,117 +84,195 @@
   <section class="art-hero">
     <span class="label">Инструменты · приборы</span>
     <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Приборы онлайн: waveform, вектроскоп, false color</span>Кадр в <em>цифрах</em></h1>
-    <p class="lead">Waveform и парад RGB, гистограмма, вектроскоп с мишенями цветных полос и линией кожи, false color по шкале IRE. Источник — захват экрана, файл или камера: удобно смотреть на плеер, на грейд в чужой программе или на собственный кадр. Всё считается у вас в браузере, никуда не отправляется.</p>
-
-    <div class="pr-src">
-      <label class="btn btn-lamp">Открыть файл<input type="file" id="pr-file" accept="video/*,image/*"></label>
-      <button class="btn btn-ghost" id="pr-screen" type="button">Захват экрана</button>
-      <button class="btn btn-ghost" id="pr-camera" type="button">Камера</button>
-    </div>
-    <div class="pr-sig">
-      <span>Источник: <b id="pr-source-name">демо — цветные полосы 75%</b></span>
-      <span>Считаю как: <b id="pr-signature">Rec.709 (HD) · Full 0–255</b></span>
-    </div>
-    <p class="pr-note" id="pr-note"></p>
+    <p class="lead">Рабочая стойка приборов прямо в браузере: waveform и парады, гистограмма, вектроскоп, false color по трём шкалам, зебра и фокус-пикинг. Источник — захват экрана, файл или камера: смотрите на плеер, на чужой грейд или на собственный кадр. Всё считается у вас на машине и никуда не отправляется.</p>
   </section>
 
-  <video id="pr-video" muted playsinline></video>
+  <video id="sc-video" muted playsinline></video>
 
-  <div class="pr-grid">
-    <div class="pr-card wide">
-      <div class="pr-head"><b>Waveform</b><span>шкала IRE · 0 внизу, 100 наверху</span></div>
-      <canvas id="pr-wf" width="480" height="256"></canvas>
+  <div class="sc-app" id="sc-app">
+    <div class="sc-bar">
+      <label class="sc-btn key">Открыть файл<input type="file" id="sc-file" accept="video/*,image/*"></label>
+      <button class="sc-btn" id="sc-screen" type="button">Захват экрана</button>
+      <button class="sc-btn" id="sc-camera" type="button">Камера</button>
+      <button class="sc-btn" id="sc-crop" type="button">Кроп</button>
+      <button class="sc-btn" id="sc-freeze" type="button">Заморозить</button>
+      <button class="sc-btn" id="sc-shot" type="button">Снимок</button>
+      <span class="sp"></span>
+      <span class="sc-seg" role="group" aria-label="Сколько приборов на экране">
+        <button type="button" data-layout="1">1</button>
+        <button type="button" data-layout="2">2</button>
+        <button type="button" data-layout="3">3</button>
+        <button type="button" data-layout="4" class="on">4</button>
+      </span>
+      <button class="sc-btn" id="sc-full" type="button">Во весь экран</button>
+      <button class="sc-btn" id="sc-pip" type="button">Окно поверх</button>
+      <button class="sc-btn" id="sc-settings" type="button">Настройки</button>
     </div>
 
-    <div class="pr-card sq">
-      <div class="pr-head"><b>Вектроскоп</b><span>Cb вправо · Cr вверх</span></div>
-      <canvas id="pr-vec" width="320" height="320"></canvas>
-      <div class="pr-legend">
-        <span><i style="background:rgba(240,214,150,0.8)"></i>линия кожи 123°</span>
-        <span>квадраты — мишени полос</span>
+    <div class="sc-bar" id="sc-transport" style="display:none">
+      <button class="sc-btn" id="sc-play" type="button">Пауза</button>
+      <button class="sc-btn" id="sc-prev" type="button">◀ кадр</button>
+      <button class="sc-btn" id="sc-next" type="button">кадр ▶</button>
+      <input type="range" id="sc-seek" min="0" max="1000" value="0" style="flex:1 1 200px;accent-color:var(--lamp)" aria-label="Перемотка">
+    </div>
+
+    <div class="sc-grid lay-4" id="sc-grid"></div>
+
+    <div class="sc-foot">
+      <div class="sc-nums">
+        <div class="sc-num"><i>минимум</i><b id="sc-min">—</b></div>
+        <div class="sc-num"><i>средний уровень</i><b id="sc-avg">—</b></div>
+        <div class="sc-num"><i>максимум</i><b id="sc-max">—</b></div>
+        <div class="sc-num"><i>чёрное в упор</i><b id="sc-clip-lo">—</b></div>
+        <div class="sc-num"><i>белое в упор</i><b id="sc-clip-hi">—</b></div>
+        <div class="sc-num"><i>канал в упор</i><b id="sc-legal">—</b></div>
+      </div>
+      <div class="sc-sig" id="sc-signature"></div>
+    </div>
+
+    <div class="sc-cfg" id="sc-cfg">
+      <div class="sc-cfg-grid">
+        <div class="sc-fld">
+          <i>Как читать сигнал</i>
+          <div class="sc-fld-row">
+            <select id="cfg-matrix" aria-label="Матрица яркости">
+              <option value="709">Rec.709 (HD)</option>
+              <option value="601">Rec.601 (SD)</option>
+              <option value="2020">Rec.2020 (UHD)</option>
+            </select>
+            <select id="cfg-range" aria-label="Диапазон кодов">
+              <option value="full">Full 0–255</option>
+              <option value="legal">Legal 16–235</option>
+            </select>
+          </div>
+          <div class="sc-fld-row" style="margin-top:6px">
+            <select id="cfg-unit" aria-label="Единицы шкалы">
+              <option value="ire">Шкала IRE 0–100</option>
+              <option value="code8">Коды 8 бит</option>
+              <option value="code10">Коды 10 бит</option>
+            </select>
+            <select id="cfg-curve" aria-label="Кривая записи">
+              <option value="709">Кривая Rec.709</option>
+              <option value="srgb">Кривая sRGB</option>
+              <option value="slog3">Sony S-Log3</option>
+              <option value="logc3">ARRI LogC3</option>
+            </select>
+          </div>
+          <p class="sc-hint">Кривая нужна пипетке и шкале в стопах: по ней сигнал пересчитывается обратно в экспозицию сцены.</p>
+        </div>
+
+        <div class="sc-fld">
+          <i>Приборы</i>
+          <div class="sc-fld-row">
+            <input type="range" id="cfg-gain" min="0.4" max="8" step="0.2" aria-label="Яркость трассы">
+            <span class="val" id="cfg-gain-val">2.2×</span>
+          </div>
+          <div class="sc-fld-row" style="margin-top:6px">
+            <select id="cfg-vzoom" aria-label="Зум вектроскопа">
+              <option value="1">Вектроскоп ×1</option>
+              <option value="2">Вектроскоп ×2</option>
+              <option value="4">Вектроскоп ×4</option>
+            </select>
+            <select id="cfg-targets" aria-label="Мишени полос">
+              <option value="75">Мишени 75%</option>
+              <option value="100">Мишени 100%</option>
+            </select>
+          </div>
+          <div class="sc-fld-row" style="margin-top:6px">
+            <label class="sc-sw"><input type="checkbox" id="cfg-vcolor"> цветная трасса вектроскопа</label>
+          </div>
+          <div class="sc-fld-row">
+            <label class="sc-sw"><input type="checkbox" id="cfg-hist-log"> логарифм в гистограмме</label>
+            <label class="sc-sw"><input type="checkbox" id="cfg-hist-y"> гистограмма по яркости</label>
+          </div>
+        </div>
+
+        <div class="sc-fld">
+          <i>Накладки на кадр</i>
+          <div class="sc-fld-row">
+            <select id="cfg-fc" aria-label="Шкала false color">
+              <option value="ire">False color по IRE</option>
+              <option value="stops">False color в стопах</option>
+              <option value="arri">False color ARRI LogC3</option>
+            </select>
+          </div>
+          <div class="sc-fld-row" id="cfg-ei-row" style="margin-top:6px">
+            <select id="cfg-ei" aria-label="EI камеры для шкалы ARRI">
+              <option value="160">EI 160</option><option value="200">EI 200</option>
+              <option value="250">EI 250</option><option value="320">EI 320</option>
+              <option value="400">EI 400</option><option value="500">EI 500</option>
+              <option value="640">EI 640</option><option value="800">EI 800</option>
+              <option value="1000">EI 1000</option><option value="1280">EI 1280</option>
+              <option value="1600">EI 1600</option><option value="2000">EI 2000</option>
+              <option value="2560">EI 2560</option><option value="3200">EI 3200</option>
+            </select>
+          </div>
+          <div class="sc-fld-row" style="margin-top:6px">
+            <label class="sc-sw"><input type="checkbox" id="cfg-zebra"> зебра</label>
+            <input type="range" id="cfg-zebra-level" min="0.5" max="1.05" step="0.01" aria-label="Уровень зебры">
+            <span class="val" id="cfg-zebra-val">95 IRE</span>
+          </div>
+          <div class="sc-fld-row">
+            <label class="sc-sw"><input type="checkbox" id="cfg-zebra-band"> зебра окном (±5 IRE, как под кожу)</label>
+          </div>
+          <div class="sc-fld-row" style="margin-top:6px">
+            <label class="sc-sw"><input type="checkbox" id="cfg-peak"> фокус-пикинг</label>
+            <input type="range" id="cfg-peak-level" min="0.05" max="1" step="0.05" aria-label="Порог пикинга">
+            <span class="val" id="cfg-peak-val">35%</span>
+          </div>
+        </div>
+
+        <div class="sc-fld">
+          <i>Скорость и точность</i>
+          <div class="sc-fld-row">
+            <select id="cfg-quality" aria-label="Разрешение анализа">
+              <option value="fast">Анализ 480 px — быстро</option>
+              <option value="work">Анализ 960 px — рабочий</option>
+              <option value="max">Анализ 1440 px — точно</option>
+            </select>
+            <select id="cfg-fps" aria-label="Частота обновления">
+              <option value="15">15 обновлений в секунду</option>
+              <option value="30">30 обновлений в секунду</option>
+              <option value="60">60 обновлений в секунду</option>
+            </select>
+          </div>
+          <p class="sc-hint">Чем выше разрешение анализа, тем вернее ловится одиночный пересвет: клип в несколько пикселей на уменьшенной копии кадра просто исчезает.</p>
+          <p class="sc-keys">Клавиши: <b>F</b> — заморозить, <b>C</b> — кроп, <b>S</b> — снимок, <b>Z</b> — зебра, <b>P</b> — пикинг, <b>U</b> — шкала, <b>1–4</b> — сколько приборов, <b>пробел</b> — пауза видео.</p>
+        </div>
       </div>
     </div>
 
-    <div class="pr-card">
-      <div class="pr-head"><b>Гистограмма</b><span>256 корзин · R G B</span></div>
-      <canvas id="pr-hist" width="320" height="200"></canvas>
-      <div class="pr-legend"><span>вертикаль логарифмическая — иначе ровное поле съедает всё остальное</span></div>
-    </div>
-
-    <div class="pr-card wide off" id="pr-fc-card">
-      <div class="pr-head"><b>False color</b><span>зоны экспозиции по IRE</span></div>
-      <canvas id="pr-fc" width="480" height="270"></canvas>
-      <div class="pr-legend">
-        <span><i style="background:rgb(179,0,255)"></i>0–2,5 шумовой пол</span>
-        <span><i style="background:rgb(0,90,255)"></i>2,5–9 край теней</span>
-        <span><i style="background:rgb(0,220,60)"></i>38–43 серый 18%</span>
-        <span><i style="background:rgb(255,150,165)"></i>60–75 кожа</span>
-        <span><i style="background:rgb(255,225,0)"></i>92–97 подход к белому</span>
-        <span><i style="background:rgb(255,40,30)"></i>97+ клиппинг</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="pr-nums">
-    <div class="pr-num"><i>минимум</i><b id="pr-min">—</b></div>
-    <div class="pr-num"><i>средний IRE</i><b id="pr-avg">—</b></div>
-    <div class="pr-num"><i>максимум</i><b id="pr-max">—</b></div>
-    <div class="pr-num"><i>чёрное в упор</i><b id="pr-clip-low">—</b></div>
-    <div class="pr-num"><i>белое в упор</i><b id="pr-clip-high">—</b></div>
-  </div>
-
-  <div class="pr-cfg">
-    <div class="pr-row">
-      <i>Waveform</i>
-      <button class="chip on" data-set="wfmode" data-val="luma" type="button">Яркость</button>
-      <button class="chip" data-set="wfmode" data-val="rgb" type="button">RGB вместе</button>
-      <button class="chip" data-set="wfmode" data-val="parade" type="button">Парад</button>
-    </div>
-    <div class="pr-row">
-      <i>Матрица</i>
-      <button class="chip on" data-set="matrix" data-val="709" type="button">Rec.709 (HD)</button>
-      <button class="chip" data-set="matrix" data-val="601" type="button">Rec.601 (SD)</button>
-    </div>
-    <div class="pr-row">
-      <i>Диапазон</i>
-      <button class="chip on" data-set="range" data-val="full" type="button">Full 0–255</button>
-      <button class="chip" data-set="range" data-val="legal" type="button">Legal 16–235</button>
-    </div>
-    <div class="pr-row">
-      <i>Мишени</i>
-      <button class="chip on" data-set="targets" data-val="75" type="button">полосы 75%</button>
-      <button class="chip" data-set="targets" data-val="100" type="button">полосы 100%</button>
-      <button class="chip on" data-set="zoom" data-val="1" type="button">×1</button>
-      <button class="chip" data-set="zoom" data-val="2" type="button">×2</button>
-      <button class="chip" data-set="zoom" data-val="4" type="button">×4</button>
-    </div>
-    <div class="pr-row">
-      <i>Яркость трассы</i>
-      <input type="range" id="pr-gain" min="0.4" max="8" step="0.2" value="2.2" aria-label="Яркость трассы приборов">
-      <span class="pr-val" id="pr-gain-val">2.2×</span>
-      <label class="sw"><input type="checkbox" id="pr-hist-log" checked> логарифм в гистограмме</label>
-      <label class="sw"><input type="checkbox" id="pr-fc-toggle"> показывать false color</label>
-    </div>
+    <p class="sc-pip-note" id="sc-note"></p>
   </div>
 
   <div class="art-body" style="margin-top:60px">
-    <h2 class="art-h2" style="margin-top:0">Как это читать</h2>
-    <p><b>Waveform.</b> Горизонталь прибора — это горизонталь кадра: пересвет справа на приборе будет справа. Высота точки — яркость, снизу 0 IRE, сверху 100. Яркость самой точки говорит, сколько пикселей туда попало, поэтому одинокий блик и небо в полкадра выглядят по-разному. Серая карта при правильной экспозиции ложится около 41 IRE, кожа держится в коридоре 60–75, а всё, что упёрлось в потолок, уже не вернуть.</p>
-    <p><b>Парад.</b> Тот же график, разложенный на красный, зелёный и синий. По нему ловят паразитный оттенок: если в тенях синий стоит выше остальных, кадр уходит в холод, и это видно раньше, чем глазом.</p>
-    <p><b>Вектроскоп.</b> Центр — серый, дальше от центра — насыщеннее, угол — оттенок. Квадраты по кругу — мишени цветных полос: у полос 75% и 100% углы одинаковые, отличается только радиус. Пунктир на 123° — линия кожи: на неё ложится кожа любого оттенка, от очень светлой до очень тёмной, разной будет только удалённость от центра.</p>
-    <p><b>Гистограмма.</b> Отвечает только на вопрос «сколько пикселей какой яркости». Место в кадре она не знает — за этим к waveform. Вертикаль логарифмическая: с линейной один ровный фон превращает всё остальное в невидимую полоску.</p>
-    <p><b>False color.</b> Кадр становится серым, а зоны экспозиции заливаются плоскими цветами. Пороги выведены из кривой Rec.709: 18% серого даёт 40,9 IRE, отсюда зелёная зона 38–43; диффузный белый 90% сцены даёт 94,9 — отсюда жёлтая. Шкала ARRI устроена иначе и задана для сигнала LogC, поэтому подмешивать её к обычному кадру нельзя.</p>
+    <h2 class="art-h2" style="margin-top:0">Как этим пользоваться</h2>
+    <p><b>Смотреть на чужую программу.</b> Нажмите «Захват экрана» и выберите окно Resolve, Premiere или плеера. Дальше откройте окно «Кадр» и нажмите «Кроп»: выделите мышью только картинку — панели и интерфейс программы в измерение больше не попадут. Кнопка «Окно поверх» (Chrome и Edge) выносит приборы в отдельное окно, которое держится над остальными: смотрите грейд и приборы одновременно.</p>
+    <p><b>Смотреть на свой файл.</b> «Открыть файл» — видео или фотографию. У видео появляется транспорт: пауза, перемотка и шаг в один кадр, чтобы измерять именно тот момент, который нужен. «Заморозить» фиксирует кадр — приборы застывают, и его можно спокойно разобрать.</p>
+    <p><b>Смотреть на площадке.</b> С телефона нажмите «Камера»: приборы работают на живой картинке. Зебра ловит пересвет, false color показывает зоны экспозиции, пикинг подсвечивает то, что реально в фокусе.</p>
+
+    <h2 class="art-h2">Как это читать</h2>
+    <p><b>Waveform.</b> Горизонталь прибора — это горизонталь кадра: пересвет справа на приборе будет справа. Высота точки — яркость, снизу 0 IRE, сверху 100. Яркость самой точки говорит, сколько пикселей туда попало, поэтому одинокий блик и небо в полкадра выглядят по-разному. Серая карта при правильной экспозиции ложится около 41 IRE, кожа держится в коридоре 60–75, а всё, что упёрлось в потолок, уже не вернуть. Красноватая заливка сверху и снизу — зона за границами выбранного диапазона: сигнал туда уходить не должен.</p>
+    <p><b>Парад RGB и парад Y′CbCr.</b> Первый раскладывает тот же график на красный, зелёный и синий — по нему ловят паразитный оттенок: если в тенях синий выше остальных, кадр уходит в холод. Второй показывает яркость и обе цветоразностные составляющие отдельно: так видно, что именно вылезает за пределы — свет или цвет.</p>
+    <p><b>Вектроскоп.</b> Центр — серый, дальше от центра — насыщеннее, угол — оттенок. Рамки по кругу — мишени цветных полос с допуском ±5° и ±5% насыщенности: у полос 75% и 100% углы одинаковые, отличается только радиус. Пунктир на 123° — линия кожи: на неё ложится кожа любого оттенка, от очень светлой до очень тёмной, разной будет только удалённость от центра. Режим цветной трассы красит точки их собственным цветом — удобно понимать, какая часть кадра куда улетела.</p>
+    <p><b>Гистограмма.</b> Отвечает только на вопрос «сколько пикселей какой яркости». Место в кадре она не знает — за этим к waveform. Вертикаль логарифмическая: с линейной один ровный фон превращает всё остальное в невидимую полоску. Две красные линии — границы выбранного диапазона.</p>
+    <p><b>False color.</b> Кадр становится серым, а зоны экспозиции заливаются плоскими цветами. Шкал три. По IRE — наша, пороги выведены из кривой Rec.709: 18% серого даёт 40,9 IRE, отсюда зелёная зона 38–43; диффузный белый 90% сцены даёт 94,9 — отсюда жёлтая. В стопах — зоны отсчитываются от 18% серого по выбранной кривой, как привыкли считать экспонометром. ARRI — точные границы из официальной спецификации ARRI LogC False Color (04.02.2025), они заданы в 10-битных кодах и зависят от EI, поэтому применимы только к сигналу LogC3, а не к обычному кадру.</p>
+    <p><b>Зебра и пикинг.</b> Зебра штрихует один уровень: поставьте 95–100 IRE, чтобы поймать пересвет, или включите режим окна и поставьте 70 — тогда штриховка появится ровно на правильно выставленной коже. Фокус-пикинг подсвечивает границы с высоким градиентом яркости — то, что действительно в фокусе.</p>
+    <p><b>Пипетка.</b> Наведите мышь на кадр или на false color: рядом появятся коды R, G, B, уровень в выбранной шкале, оттенок и насыщенность в осях вектроскопа и — по выбранной кривой — на сколько стопов эта точка отстоит от 18% серого.</p>
 
     <h2 class="art-h2">Чего прибор в браузере не может</h2>
-    <p>Кадр приходит после декодера: 8 бит на канал, чаще всего растянутый в полный диапазон 0–255. RAW и десятибитный сигнал по SDI вебу недоступны, а захват экрана показывает картинку плеера вместе с его цветоуправлением и масштабированием. Поэтому прибор всегда пишет три вещи: источник, диапазон и матрицу. Без них цифра ничего не значит — и обманывает сильнее, чем отсутствие прибора.</p>
-    <p>Полная база формул и первоисточников, по которой собран этот инструмент, лежит в репозитории сайта: матрицы выводятся из координат первичных цветов, мишени — из матрицы, зоны экспозиции — из кривых. Все числа пересчитываются независимым скриптом.</p>
+    <p>Кадр приходит после декодера: 8 бит на канал, чаще всего растянутый в полный диапазон 0–255. RAW и десятибитный сигнал по SDI вебу недоступны, а захват экрана показывает картинку плеера вместе с его цветоуправлением и масштабированием. Поэтому прибор всегда пишет, что именно он считает: источник, диапазон, матрицу и разрешение анализа. Без этих подписей цифра ничего не значит — и обманывает сильнее, чем отсутствие прибора.</p>
+    <p>Отдельно про разрешение анализа: кадр уменьшается до 480, 960 или 1440 пикселей по ширине без сглаживания — прибор смотрит на реальные пиксели, а не на их среднее. Чем больше разрешение, тем надёжнее ловится точечный клип, но тем дороже каждый кадр — на слабой машине ставьте 480.</p>
+    <p>Полная база формул и первоисточников, по которой собран этот инструмент, лежит в репозитории сайта: матрицы выводятся из координат первичных цветов, мишени — из матрицы, зоны экспозиции — из кривых, а зоны ARRI взяты из опубликованной спецификации. Все числа пересчитываются независимым скриптом.</p>
 
     <h2 class="art-h2">Частые вопросы про приборы</h2>
     <details class="svc-faq"><summary>Что показывает waveform и чем он лучше гистограммы?</summary><p>Waveform сохраняет горизонталь кадра: столбец прибора соответствует вертикальной колонке пикселей, а высота точки — яркости. Поэтому видно не только сколько пересвета, но и где он в кадре. Гистограмма координат не хранит: она отвечает только на вопрос «сколько пикселей какой яркости».</p></details>
     <details class="svc-faq"><summary>Почему серая карта должна быть на 40–45 IRE?</summary><p>Это следствие кривой Rec.709, а не договорённость. Подставив 18% отражения в формулу гаммы BT.709, получаем 40,9% сигнала. В логарифмических профилях якорь другой: S-Log3 даёт 41,1%, ARRI LogC3 — 39,1%, поэтому log-кадр на приборе жмётся к середине, и это норма.</p></details>
     <details class="svc-faq"><summary>Что за наклонная линия на вектроскопе?</summary><p>Линия скин-тона — направление, вдоль которого ложится кожа любого оттенка. В осях Cb/Cr по Rec.709 это примерно 123°. Проверка на четырёх тонах от светлого до очень тёмного даёт 122,7–127,4°: оттенок у всех практически один, отличается насыщенность.</p></details>
-    <details class="svc-faq"><summary>Насколько точны показания прибора в браузере?</summary><p>Прибор считает ровно то, что отдал браузер: 8 бит на канал после декодера, обычно в диапазоне 0–255. RAW и SDI в вебе недоступны, а захват экрана показывает картинку плеера. Поэтому источник, диапазон и матрица всегда подписаны рядом с показаниями.</p></details>
-    <details class="svc-faq"><summary>Что такое false color и по каким порогам он красит?</summary><p>Фиолетовый — шумовой пол до 2,5 IRE, синий — край теней 2,5–9, зелёный — 18% серый 38–43, розовый — коридор кожи 60–75, жёлтый — подход к белому 92–97, красный — клиппинг выше 97. Пороги выведены из кривой Rec.709; шкала ARRI задана для LogC и на обычный кадр не переносится.</p></details>
+    <details class="svc-faq"><summary>Как измерить только окно плеера, а не весь экран?</summary><p>Включите захват экрана, откройте окно «Кадр» и нажмите «Кроп»: выделите мышью область картинки. Дальше все приборы считают только её. Кроп снимается той же кнопкой.</p></details>
+    <details class="svc-faq"><summary>Чем зебра отличается от false color?</summary><p>Зебра штрихует один заданный уровень: 95–100 IRE ловит пересвет, окно около 70 IRE — правильно выставленную кожу. False color красит сразу все зоны экспозиции. Зебра точнее для одной задачи, false color даёт полную картину.</p></details>
+    <details class="svc-faq"><summary>Насколько точны показания прибора в браузере?</summary><p>Прибор считает ровно то, что отдал браузер: 8 бит на канал после декодера, обычно в диапазоне 0–255. RAW и SDI в вебе недоступны, а захват экрана показывает картинку плеера. Поэтому источник, диапазон, матрица и разрешение анализа всегда подписаны рядом с показаниями.</p></details>
+    <details class="svc-faq"><summary>Что такое false color и по каким порогам он красит?</summary><p>В шкале IRE: фиолетовый — шумовой пол до 2,5 IRE, синий — край теней 2,5–9, зелёный — 18% серый 38–43, розовый — коридор кожи 60–75, жёлтый — подход к белому 92–97, красный — клиппинг выше 97. Пороги выведены из кривой Rec.709. Шкала в стопах считает зоны от 18% серого по выбранной кривой, а шкала ARRI берёт границы из официальной спецификации LogC и применима только к материалу LogC3.</p></details>
 
     <h2 class="art-h2">Рядом по теме</h2>
     <p>Разобраться, что вообще происходит на приборах, помогает урок <a href="../uroki/skoupy-kak-videt.html">«Скоупы: как видеть кадр цифрами»</a> — там живые приборы на учебном кадре. Про кривые и лог — <a href="../uroki/log-krivaya.html">урок про log-кривую</a>, про порядок работы с цветом — <a href="../uroki/poryadok-cvetokorrekcii.html">порядок цветокоррекции</a>. Остальные инструменты — в <a href="../instrumenty/">разделе инструментов</a>.</p>

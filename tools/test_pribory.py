@@ -2,8 +2,8 @@
 """Приёмка приборов (instrumenty/pribory-onlajn.html).
 
 Проверяет не «нарисовалось ли что-то», а СОВПАДАЮТ ЛИ ЦИФРЫ: странице подаётся
-эталонный кадр (цветные полосы 75%), а ожидания считаются здесь же независимо
-по формулам из docs/SCOPES_BASE.md. Если прибор врёт — тест краснеет.
+эталонный кадр, а ожидания считаются здесь же независимо по формулам из
+docs/SCOPES_BASE.md. Если прибор врёт — тест краснеет.
 
 Запуск:  python tools/test_pribory.py [url]
 """
@@ -31,6 +31,7 @@ KR, KG, KB = 0.2126, 0.7152, 0.0722
 KR601, KG601, KB601 = 0.299, 0.587, 0.114
 BARS = [(1, 1, 1), (1, 1, 0), (0, 1, 1), (0, 1, 0), (1, 0, 1), (1, 0, 0), (0, 0, 1)]
 LEVEL = 0.75
+CODE75 = round(LEVEL * 255)          # 191 — код полосы 75%
 
 
 def check(name, cond, got=""):
@@ -48,13 +49,22 @@ def ycbcr(r, g, b, kr=KR, kg=KG, kb=KB):
     return y, (b - y) / (2 * (1 - kb)), (r - y) / (2 * (1 - kr))
 
 
+def oetf709(L):
+    return 4.5 * L if L < 0.018 else 1.099 * L ** 0.45 - 0.099
+
+
+def logc3(x):
+    cut, a, b, c, d, e, f = 0.010591, 5.555556, 0.052272, 0.247190, 0.385537, 5.367655, 0.092809
+    return c * math.log10(a * x + b) + d if x > cut else e * x + f
+
+
 class Tab:
-    def __init__(self):
+    def __init__(self, width=1400, height=1000):
         self.proc = subprocess.Popen(
             [CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars",
              "--user-data-dir=" + tempfile.mkdtemp(prefix="pbchrome-"),
              f"--remote-debugging-port={PORT}", "--remote-allow-origins=*",
-             "--window-size=1400,1000", "about:blank"],
+             f"--window-size={width},{height}", "about:blank"],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         tabs = None
         for _ in range(80):
@@ -74,7 +84,7 @@ class Tab:
         self.cmd("Runtime.enable")
         self.cmd("Network.enable")
         self.cmd("Network.setBlockedURLs",
-                 urls=["*fonts.googleapis.com*", "*fonts.gstatic.com*"])
+                 urls=["*fonts.googleapis.com*", "*fonts.gstatic.com*", "*mc.yandex.ru*"])
 
     def cmd(self, method, **params):
         self.mid += 1
@@ -84,7 +94,9 @@ class Tab:
             if msg.get("id") == self.mid:
                 return msg
             if msg.get("method") == "Runtime.exceptionThrown":
-                self.errors.append(msg["params"]["exceptionDetails"].get("text", "JS error"))
+                d = msg["params"]["exceptionDetails"]
+                desc = (d.get("exception", {}) or {}).get("description", "")
+                self.errors.append((d.get("text", "JS error") + " " + str(desc))[:200])
 
     def js(self, expr):
         r = self.cmd("Runtime.evaluate", expression=expr, returnByValue=True,
@@ -97,11 +109,20 @@ class Tab:
             return None
         return res.get("result", {}).get("value")
 
+    def jsobj(self, expr):
+        raw = self.js("JSON.stringify(" + expr + ")")
+        return json.loads(raw) if raw else None
+
+    def size(self, width, height):
+        self.cmd("Emulation.setDeviceMetricsOverride", width=width, height=height,
+                 deviceScaleFactor=1, mobile=(width < 700))
+
     def goto(self, url):
         self.cmd("Page.navigate", url=url)
-        for _ in range(30):
+        for _ in range(40):
             time.sleep(0.4)
             if self.js("typeof window.PobubnimPribory") == "object":
+                time.sleep(0.5)
                 return
         raise RuntimeError("прибор не поднялся")
 
@@ -112,18 +133,47 @@ class Tab:
             self.proc.kill()
 
 
-FEED_BARS = """
-(() => {
-  const c = document.createElement('canvas');
-  c.width = 700; c.height = 270;
-  const g = c.getContext('2d');
-  const bars = [[1,1,1],[1,1,0],[0,1,1],[0,1,0],[1,0,1],[1,0,0],[0,0,1]];
-  bars.forEach((b, i) => {
-    g.fillStyle = 'rgb(' + b.map(v => Math.round(v * 0.75 * 255)).join(',') + ')';
-    g.fillRect(i * 100, 0, 100, 270);
+def feed_bars(width=700, height=270):
+    """эталонный кадр: цветные полосы 75%"""
+    return """
+(function () {
+  var c = document.createElement('canvas');
+  c.width = %d; c.height = %d;
+  var g = c.getContext('2d');
+  var bars = [[1,1,1],[1,1,0],[0,1,1],[0,1,0],[1,0,1],[1,0,0],[0,0,1]];
+  bars.forEach(function (b, i) {
+    g.fillStyle = 'rgb(' + b.map(function (v) { return Math.round(v * 0.75 * 255); }).join(',') + ')';
+    g.fillRect(Math.round(i * c.width / 7), 0, Math.ceil(c.width / 7), c.height);
   });
-  window.PobubnimPribory.useSource(c);
-  window.PobubnimPribory.render();
+  window.PobubnimPribory.useSource(c, 'полосы 75%%');
+  window.PobubnimPribory.render(true);
+  return true;
+})()
+""" % (width, height)
+
+
+FEED_FLAT = """
+(function () {
+  var c = document.createElement('canvas');
+  c.width = 640; c.height = 360;
+  var g = c.getContext('2d');
+  g.fillStyle = 'rgb(%d,%d,%d)';
+  g.fillRect(0, 0, c.width, c.height);
+  window.PobubnimPribory.useSource(c, 'ровное поле');
+  window.PobubnimPribory.render(true);
+  return true;
+})()
+"""
+
+FEED_HALVES = """
+(function () {
+  var c = document.createElement('canvas');
+  c.width = 640; c.height = 360;
+  var g = c.getContext('2d');
+  g.fillStyle = 'rgb(0,0,0)'; g.fillRect(0, 0, 320, 360);
+  g.fillStyle = 'rgb(255,255,255)'; g.fillRect(320, 0, 320, 360);
+  window.PobubnimPribory.useSource(c, 'две половины');
+  window.PobubnimPribory.render(true);
   return true;
 })()
 """
@@ -133,159 +183,315 @@ def main():
     t = Tab()
     try:
         t.goto(URL)
+        t.js("localStorage.removeItem('pobubnim-pribory-v1')")
 
-        # ---------- 1. ядро на месте ----------
+        # ---------- 1. каркас ----------
         check("ядро приборов загружено", t.js("typeof window.PobubnimScopes") == "object")
-        check("страница подписала матрицу и диапазон",
-              "Rec.709" in (t.js("document.getElementById('pr-signature').innerText") or ""))
+        check("рабочая станция поднялась", t.js("typeof window.PobubnimPribory") == "object")
+        sig = t.js("document.getElementById('sc-signature').innerText") or ""
+        check("паспорт сигнала подписан (источник/матрица/диапазон)",
+              "Rec.709" in sig and "Full" in sig and "Источник" in sig, sig[:120])
+        check("шесть чисел кадра на месте",
+              t.js("document.querySelectorAll('.sc-num').length") == 6)
+        check("четыре окна приборов созданы",
+              t.js("document.querySelectorAll('.sc-slot').length") == 4)
 
-        # ---------- 2. эталонный кадр посчитан ----------
-        t.js(FEED_BARS)
-        st = json.loads(t.js("JSON.stringify(window.PobubnimPribory.stats())") or "null")
+        # ---------- 2. эталонный кадр: числа ----------
+        t.js(feed_bars())
+        st = t.jsobj("window.PobubnimPribory.stats()")
         check("прибор посчитал кадр", st is not None, st)
 
+        ys = [KR * r + KG * g + KB * b for r, g, b in BARS]
+        ys = [y * CODE75 for y in ys]
+        want_min, want_max = min(ys) / 255 * 100, max(ys) / 255 * 100
+        want_avg = sum(ys) / len(ys) / 255 * 100
         if st:
-            ys = [KR * r * LEVEL + KG * g * LEVEL + KB * b * LEVEL for r, g, b in BARS]
-            # экран отдаёт full range: IRE = код / 255 * 100, код = round(v*255)
-            want_min = round(min(ys) * 255) / 255 * 100
-            want_max = round(max(ys) * 255) / 255 * 100
-            want_avg = sum(round(y * 255) / 255 * 100 for y in ys) / len(ys)
-            check(f"минимум IRE ≈ {want_min:.1f} (синяя полоса)",
-                  near(st["min"], want_min, 0.6), st["min"])
-            check(f"максимум IRE ≈ {want_max:.1f} (белая полоса 75%)",
-                  near(st["max"], want_max, 0.6), st["max"])
-            check(f"средний IRE ≈ {want_avg:.1f}",
-                  near(st["avg"], want_avg, 1.5), st["avg"])
-            check("на полосах 75% нет клиппинга сверху",
-                  st["highPct"] < 0.01, st["highPct"])
+            check(f"минимум {want_min:.2f} IRE (синяя полоса)", near(st["min"], want_min, 0.15), st["min"])
+            check(f"максимум {want_max:.2f} IRE (белая полоса)", near(st["max"], want_max, 0.15), st["max"])
+            check(f"средний уровень {want_avg:.2f} IRE", near(st["avg"], want_avg, 0.3), st["avg"])
+            check("клип чёрного = 0 (полосы не в полу)", near(st["clipLow"], 0, 0.01), st["clipLow"])
+            check("клип белого = 0 (полосы не в потолке)", near(st["clipHigh"], 0, 0.01), st["clipHigh"])
+            check("«канал в упор» = 85,7% (шесть полос из семи с нулевым каналом)",
+                  near(st["chanOut"], 600 / 7, 0.5), st["chanOut"])
 
-        # ---------- 3. вектроскоп кладёт полосы в мишени ----------
-        S_ = t.js("window.PobubnimPribory.field.VEC_S")
-        peaks = t.js("""
-        (() => {
-          const S = window.PobubnimPribory.field.VEC_S, a = window.PobubnimPribory.vecAcc;
-          const out = [];
-          for (let i = 0; i < a.length; i++) if (a[i] > 0) out.push([i % S, (i / S) | 0, a[i]]);
-          out.sort((p, q) => q[2] - p[2]);
-          return JSON.stringify(out.slice(0, 40));
-        })()
-        """)
-        pts = json.loads(peaks or "[]")
-        check("вектроскоп накопил точки", len(pts) > 0, len(pts))
+        # ---------- 3. диапазон legal ----------
+        t.js("window.PobubnimPribory.state.range='legal'; window.PobubnimPribory.render(true)")
+        stl = t.jsobj("window.PobubnimPribory.stats()")
+        want_min_l = (min(ys) - 16) / 219 * 100
+        want_max_l = (max(ys) - 16) / 219 * 100
+        check(f"legal: минимум {want_min_l:.2f} IRE (ниже нуля — так и должно быть)",
+              near(stl["min"], want_min_l, 0.15), stl["min"])
+        check(f"legal: максимум {want_max_l:.2f} IRE", near(stl["max"], want_max_l, 0.15), stl["max"])
+        check("legal: шкала показывает запас за 0 и 100 IRE",
+              near(stl["viewLo"], -0.1, 1e-6) and near(stl["viewHi"], 1.1, 1e-6),
+              (stl["viewLo"], stl["viewHi"]))
+        t.js("window.PobubnimPribory.state.range='full'; window.PobubnimPribory.render(true)")
 
-        half = S_ / 2
-        found = []
-        for x, y, _n in pts:
-            cb, cr = (x - half) / S_, (half - y) / S_
-            if math.hypot(cb, cr) < 0.05:      # белая полоса стоит в центре
-                continue
-            found.append((math.degrees(math.atan2(cr, cb)) % 360, math.hypot(cb, cr)))
+        # ---------- 4. матрица 601 ----------
+        t.js("window.PobubnimPribory.state.matrix='601'; window.PobubnimPribory.render(true)")
+        st601 = t.jsobj("window.PobubnimPribory.stats()")
+        want_blue_601 = KB601 * CODE75 / 255 * 100
+        check(f"Rec.601: синяя полоса даёт {want_blue_601:.2f} IRE вместо {want_min:.2f}",
+              near(st601["min"], want_blue_601, 0.15), st601["min"])
+        t.js("window.PobubnimPribory.state.matrix='709'; window.PobubnimPribory.render(true)")
 
-        for name, rgb in (("красный", (1, 0, 0)), ("пурпурный", (1, 0, 1)),
-                          ("синий", (0, 0, 1)), ("голубой", (0, 1, 1)),
-                          ("зелёный", (0, 1, 0)), ("жёлтый", (1, 1, 0))):
-            _, cb, cr = ycbcr(*[c * LEVEL for c in rgb])
-            want_a = math.degrees(math.atan2(cr, cb)) % 360
-            want_r = math.hypot(cb, cr)
-            hit = any(abs((a - want_a + 180) % 360 - 180) <= 4 and abs(r - want_r) <= 0.03
-                      for a, r in found)
-            check(f"мишень {name}: угол {want_a:.1f}°, радиус {want_r:.3f}", hit,
-                  sorted(found)[:8])
+        # ---------- 5. мишени вектроскопа ----------
+        targets = t.jsobj("window.PobubnimPribory.targets()")
+        by = {x["name"]: x for x in targets}
+        for name, ang, rad in (("R", 102.9, 0.385), ("Mg", 49.7, 0.447), ("B", 354.8, 0.377)):
+            check(f"мишень {name}: угол {ang}°", near(by[name]["angle"], ang, 0.15), by[name]["angle"])
+            check(f"мишень {name}: радиус {rad}", near(by[name]["radius"], rad, 0.005), by[name]["radius"])
 
-        # ---------- 4. матрица меняет расчёт ----------
-        y709 = st["avg"] if st else 0
-        t.js("(()=>{document.querySelector('[data-set=\"matrix\"][data-val=\"601\"]').click();"
-             "window.PobubnimPribory.render();})()")
-        st601 = json.loads(t.js("JSON.stringify(window.PobubnimPribory.stats())") or "null")
-        # средний IRE по полному набору полос к матрице НЕ чувствителен: каждый
-        # канал встречается в четырёх полосах, а веса в сумме дают единицу.
-        # Разницу видно на отдельной полосе — берём синюю (она же минимум кадра).
-        want_min601 = round(KB601 * LEVEL * 255) / 255 * 100
-        check(f"матрица 601: синяя полоса даёт {want_min601:.1f} IRE",
-              st601 and near(st601["min"], want_min601, 0.6), st601 and st601["min"])
-        want_min709 = round(KB * LEVEL * 255) / 255 * 100
-        check("601 и 709 действительно расходятся на синей полосе",
-              st601 and abs(st601["min"] - want_min709) > 2,
-              (want_min709, st601 and st601["min"]))
-        t.js("(()=>{document.querySelector('[data-set=\"matrix\"][data-val=\"709\"]').click();"
-             "window.PobubnimPribory.render();})()")
+        # точки кадра обязаны лечь в мишени: ищем максимум накопления рядом с целью
+        hit = t.jsobj("""(function () {
+          var P = window.PobubnimPribory, b = P.buffers(), S = P.field().VEC_S;
+          var half = S / 2, out = [];
+          P.targets().forEach(function (t) {
+            var cx = Math.round(half + t.cb * S), cy = Math.round(half - t.cr * S);
+            var best = 0;
+            for (var dy = -3; dy <= 3; dy++) for (var dx = -3; dx <= 3; dx++) {
+              var x = cx + dx, y = cy + dy;
+              if (x < 0 || y < 0 || x >= S || y >= S) continue;
+              if (b.vec[y * S + x] > best) best = b.vec[y * S + x];
+            }
+            out.push({ name: t.name, hits: best });
+          });
+          return out;
+        })()""")
+        for h in hit:
+            check(f"точки полосы {h['name']} попали в мишень", h["hits"] > 0, h["hits"])
 
-        # ---------- 5. legal range сдвигает шкалу ----------
-        t.js("(()=>{document.querySelector('[data-set=\"range\"][data-val=\"legal\"]').click();"
-             "window.PobubnimPribory.render();})()")
-        stl = json.loads(t.js("JSON.stringify(window.PobubnimPribory.stats())") or "null")
-        if stl and st:
-            code_max = round(max(KR * r * LEVEL + KG * g * LEVEL + KB * b * LEVEL
-                                 for r, g, b in BARS) * 255)
-            want_legal = (code_max - 16) / 219 * 100
-            check(f"legal: максимум пересчитан в {want_legal:.1f} IRE",
-                  near(stl["max"], want_legal, 0.8), stl["max"])
-        t.js("(()=>{document.querySelector('[data-set=\"range\"][data-val=\"full\"]').click();"
-             "window.PobubnimPribory.render();})()")
+        # ---------- 6. false color: три шкалы ----------
+        zones = t.jsobj("window.PobubnimPribory.zones()")
+        check("шкала IRE: шесть зон", len(zones) == 6, len(zones))
+        grey_code = round(oetf709(0.18) * 255)          # 18% серый в full range
+        col = t.jsobj("""(function () {
+          var S = window.PobubnimScopes, st = window.PobubnimPribory.state;
+          var lut = S.buildLUT(S.ireZones(S.FC_IRE), S.RANGE.full);
+          function at(v) { return [lut[v*3], lut[v*3+1], lut[v*3+2]]; }
+          return { grey: at(%d), skin: at(Math.round(0.65*255)), clip: at(252), shadow: at(4) };
+        })()""" % grey_code)
+        check("false color: 18%% серый красится зелёным", col["grey"] == [0, 220, 60], col["grey"])
+        check("false color: кожа 65 IRE красится розовым", col["skin"] == [255, 150, 165], col["skin"])
+        check("false color: 98 IRE красится красным", col["clip"] == [255, 40, 30], col["clip"])
+        check("false color: 1,6 IRE — фиолетовый шумовой пол", col["shadow"] == [179, 0, 255], col["shadow"])
 
-        # ---------- 6. false color красит по зонам ----------
-        fc = t.js("""
-        (() => {
-          const S = window.PobubnimScopes;
-          const lut = S.falseColorLUT(S.FC_IRE, S.RANGE.full);
-          const at = ire => { const v = Math.round(ire / 100 * 255) * 3;
-                              return [lut[v], lut[v+1], lut[v+2]]; };
-          return JSON.stringify({grey: at(41), skin: at(67), clip: at(99),
-                                 shadow: at(5), none: at(50)});
-        })()
-        """)
-        z = json.loads(fc or "{}")
-        check("18% серый (41 IRE) красится зелёным", z.get("grey") == [0, 220, 60], z.get("grey"))
-        check("кожа (67 IRE) красится розовым", z.get("skin") == [255, 150, 165], z.get("skin"))
-        check("клиппинг (99 IRE) красится красным", z.get("clip") == [255, 40, 30], z.get("clip"))
-        check("тени (5 IRE) красятся синим", z.get("shadow") == [0, 90, 255], z.get("shadow"))
-        check("вне зон остаётся серым",
-              z.get("none") and z["none"][0] == z["none"][1] == z["none"][2], z.get("none"))
+        # шкала ARRI: наша формула LogC3 обязана попасть в опубликованную зону
+        arri = t.jsobj("""(function () {
+          var S = window.PobubnimScopes;
+          var z = S.arriZones(800, 'legal');
+          return z.map(function (x) { return { t: x.t, lo: x.lo, hi: x.hi, code: x.code }; });
+        })()""")
+        green = [z for z in arri if z["t"] == "18% серый"][0]
+        grey_logc = logc3(0.18)
+        check("ARRI EI800: зелёная зона — коды 397–415 (спецификация 04.02.2025)",
+              green["code"] == [397, 415], green["code"])
+        check(f"ARRI: 18%% серый по LogC3 ({grey_logc*100:.2f}%%) попадает в зелёную зону",
+              green["lo"] <= grey_logc <= green["hi"], (green["lo"], grey_logc, green["hi"]))
 
-        # ---------- 7. waveform ----------
-        wf = t.js("""
-        (() => {
-          const f = window.PobubnimPribory.field, a = window.PobubnimPribory.wfAcc;
-          let filled = 0;
-          const perRow = new Uint32Array(f.WF_H);
-          for (let i = 0; i < f.WF_W * f.WF_H; i++)
-            if (a[i]) { filled++; perRow[(i / f.WF_W) | 0] += a[i]; }
-          let peak = 0;
-          for (let r = 0; r < f.WF_H; r++) if (perRow[r] > peak) peak = perRow[r];
-          let strong = 0, weak = 0;
-          for (let r = 0; r < f.WF_H; r++) {
-            if (perRow[r] > peak * 0.2) strong++;
-            else if (perRow[r]) weak++;
+        stops = t.jsobj("window.PobubnimScopes.stopZones('709').map(function(z){return {t:z.t,lo:z.lo,hi:z.hi,stop:z.stop};})")
+        zero = [z for z in stops if z["stop"] == 0][0]
+        check("шкала в стопах: зона «0 стоп» накрывает серую карту",
+              zero["lo"] <= oetf709(0.18) <= zero["hi"], (zero["lo"], oetf709(0.18), zero["hi"]))
+
+        # ---------- 7. единицы шкалы ----------
+        units = t.jsobj("""(function () {
+          var S = window.PobubnimScopes;
+          return { legal8: S.toUnit(1, 'code8', S.RANGE.legal), legal10: S.toUnit(1, 'code10', S.RANGE.legal),
+                   legal0: S.toUnit(0, 'code8', S.RANGE.legal), full10: S.toUnit(1, 'code10', S.RANGE.full),
+                   ire: S.toUnit(0.409, 'ire', S.RANGE.legal) };
+        })()""")
+        check("единицы: legal 100 IRE = код 235", near(units["legal8"], 235, 0.01), units["legal8"])
+        check("единицы: legal 100 IRE = 10-битный 940", near(units["legal10"], 940, 0.01), units["legal10"])
+        check("единицы: legal 0 IRE = код 16", near(units["legal0"], 16, 0.01), units["legal0"])
+        check("единицы: full 100% = 10-битный 1023", near(units["full10"], 1023, 0.01), units["full10"])
+
+        # ---------- 8. пипетка ----------
+        probe = t.jsobj("""(function () {
+          var S = window.PobubnimScopes;
+          var p = S.probe(191, 191, 191, S.MATRIX['709'], S.RANGE.full, '709');
+          var skin = S.probe(198, 134, 102, S.MATRIX['709'], S.RANGE.full, '709');
+          return { white: p, skin: skin };
+        })()""")
+        check("пипетка: белая полоса 74,9 IRE", near(probe["white"]["ire"], 74.9, 0.1), probe["white"]["ire"])
+        check("пипетка: тон кожи ложится на 120–130° (линия кожи 123°)",
+              120 <= probe["skin"]["angle"] <= 130, probe["skin"]["angle"])
+        check("пипетка: белая полоса примерно +1,7 стопа от серого",
+              near(probe["white"]["stops"], 1.72, 0.15), probe["white"]["stops"])
+
+        # ---------- 9. клип на белом поле ----------
+        t.js(FEED_FLAT % (255, 255, 255))
+        stw = t.jsobj("window.PobubnimPribory.stats()")
+        check("белое поле: клип белого 100%", near(stw["clipHigh"], 100, 0.01), stw["clipHigh"])
+        check("белое поле: 100 IRE", near(stw["max"], 100, 0.01), stw["max"])
+        t.js(FEED_FLAT % (0, 0, 0))
+        stb = t.jsobj("window.PobubnimPribory.stats()")
+        check("чёрное поле: клип чёрного 100%", near(stb["clipLow"], 100, 0.01), stb["clipLow"])
+
+        # ---------- 10. нормировка трассы не зависит от размера кадра ----------
+        bright = []
+        for w, h in ((480, 270), (1280, 720)):
+            t.js(feed_bars(w, h))
+            bright.append(t.jsobj("""(function () {
+              var c = document.querySelectorAll('.sc-slot')[0].querySelector('canvas');
+              var d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+              var sum = 0, n = 0;
+              for (var i = 0; i < d.length; i += 4) { if (d[i] > 30) { sum += d[i]; n++; } }
+              return n ? sum / n : 0;
+            })()"""))
+        rel = abs(bright[0] - bright[1]) / max(1e-9, bright[0])
+        check(f"яркость трассы не зависит от размера кадра (расхождение {rel*100:.1f}%)",
+              rel < 0.12, bright)
+
+        # ---------- 10б. трасса сплошная, а не пунктир ----------
+        t.js(FEED_FLAT % (120, 120, 120))
+        solid = t.jsobj("""(function () {
+          var P = window.PobubnimPribory, b = P.buffers(), f = P.field();
+          var W = f.WF_W, H = f.WF_H, filled = 0;
+          for (var x = 0; x < W; x++) {
+            for (var y = 0; y < H; y++) { if (b.wf[y * W + x]) { filled++; break; } }
           }
-          return JSON.stringify({filled: filled, strong: strong, weak: weak});
-        })()
-        """)
-        w = json.loads(wf or "{}")
-        check("waveform накопил трассу", w.get("filled", 0) > 100, w)
-        # семь полос — семь уровней; лишних (переходных) строк быть не должно:
-        # выборка пикселей вместо усреднения при уменьшении кадра
-        check("у семи полос ровно семь уровней", w.get("strong") == 7, w)
-        check("переходных уровней от сглаживания нет", w.get("weak") == 0, w)
+          return { filled: filled, width: W };
+        })()""")
+        check("трасса заполняет всю ширину поля (не пунктир)",
+              solid["filled"] == solid["width"], solid)
 
-        # ---------- 8. интерфейс жив ----------
-        check("переключатель false color есть",
-              t.js("!!document.getElementById('pr-fc-toggle')"))
-        check("кнопки источников на месте",
-              all(t.js(f"!!document.getElementById('{i}')")
-                  for i in ("pr-file", "pr-screen", "pr-camera")))
-        check("ошибок в консоли нет", not t.errors, t.errors[:3])
+        # ---------- 11. кроп ----------
+        t.js(feed_bars(700, 270))
+        t.js("window.PobubnimPribory.setCrop({x: 6/7, y: 0, w: 1/7, h: 1})")
+        stc = t.jsobj("window.PobubnimPribory.stats()")
+        want_blue = KB * CODE75 / 255 * 100
+        check("кроп по синей полосе: средний уровень равен её яркости",
+              near(stc["avg"], want_blue, 0.4), (stc["avg"], want_blue))
+        check("кроп отражён в паспорте сигнала",
+              "кроп" in (t.js("document.getElementById('sc-signature').innerText") or ""))
+        t.js("window.PobubnimPribory.setCrop(null)")
+
+        # ---------- 12. зебра и пикинг ----------
+        zeb = t.jsobj("""(function () {
+          var S = window.PobubnimScopes;
+          var n = 64, px = new Uint8ClampedArray(n * n * 4);
+          for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) {
+            var v = x < n / 2 ? 120 : 250, o = (y * n + x) * 4;
+            px[o] = px[o+1] = px[o+2] = v; px[o+3] = 255;
+          }
+          S.applyZebra(px, n, n, { matrix: S.MATRIX['709'], range: S.RANGE.full, lo: 0.95, hi: 1e4, period: 8, phase: 0 });
+          var left = 0, right = 0;
+          for (var y2 = 0; y2 < n; y2++) for (var x2 = 0; x2 < n; x2++) {
+            var o2 = (y2 * n + x2) * 4;
+            if (px[o2] === 255 && px[o2+1] === 255 && px[o2+2] === 255) { if (x2 < n/2) left++; else right++; }
+          }
+          return { left: left, right: right };
+        })()""")
+        check("зебра: штрихует только пересвет (правая половина)",
+              zeb["left"] == 0 and zeb["right"] > 500, zeb)
+
+        peak = t.jsobj("""(function () {
+          var S = window.PobubnimScopes;
+          var n = 64;
+          function make(sharp) {
+            var px = new Uint8ClampedArray(n * n * 4);
+            for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) {
+              var v = sharp ? (x < n / 2 ? 20 : 235) : Math.round(20 + x / n * 215);
+              var o = (y * n + x) * 4;
+              px[o] = px[o+1] = px[o+2] = v; px[o+3] = 255;
+            }
+            return px;
+          }
+          function count(px) {
+            S.applyPeaking(px, n, n, { matrix: S.MATRIX['709'], threshold: 0.35 });
+            var k = 0;
+            for (var i = 0; i < px.length; i += 4) if (px[i] === 255 && px[i+1] === 60 && px[i+2] === 60) k++;
+            return k;
+          }
+          return { sharp: count(make(true)), soft: count(make(false)) };
+        })()""")
+        check("пикинг: резкая граница подсвечена", peak["sharp"] > 50, peak)
+        check("пикинг: плавный градиент не подсвечен", peak["soft"] == 0, peak)
+
+        # ---------- 13. приборы в окнах ----------
+        for idx, scope in ((0, "wf-parade"), (1, "wf-ycc"), (2, "fc"), (3, "wf-color")):
+            t.js(f"window.PobubnimPribory.setSlot({idx}, '{scope}')")
+        t.js(feed_bars())
+        painted = t.jsobj("""(function () {
+          return Array.prototype.map.call(document.querySelectorAll('.sc-slot'), function (sl) {
+            var c = sl.querySelector('canvas');
+            var d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+            var bright = 0, colored = 0;
+            for (var i = 0; i < d.length; i += 4) {
+              var mx = Math.max(d[i], d[i+1], d[i+2]), mn = Math.min(d[i], d[i+1], d[i+2]);
+              if (mx > 120) bright++;
+              if (mx - mn > 40) colored++;
+            }
+            return { scope: sl.querySelector('select').value, bright: bright, colored: colored };
+          });
+        })()""")
+        for p in painted:
+            check(f"прибор «{p['scope']}» рисует картинку", p["bright"] > 100, p)
+        check("парад RGB цветной", [p for p in painted if p["scope"] == "wf-parade"][0]["colored"] > 100)
+        check("false color красит зоны", [p for p in painted if p["scope"] == "fc"][0]["colored"] > 1000)
+
+        # ---------- 14. раскладка и настройки живут ----------
+        t.js("document.querySelector('[data-layout=\\\"2\\\"]').click()")
+        time.sleep(0.3)
+        check("раскладка 2 прибора: два окна видимы",
+              t.js("Array.prototype.filter.call(document.querySelectorAll('.sc-slot'), function(s){return !s.classList.contains('off');}).length") == 2)
+        saved = t.js("localStorage.getItem('pobubnim-pribory-v1')")
+        check("настройки сохраняются в браузере", saved is not None and '"layout":2' in saved, saved)
+        t.js("document.querySelector('[data-layout=\\\"4\\\"]').click()")
+
+        # ---------- 15. заморозка ----------
+        t.js("document.getElementById('sc-freeze').click()")
+        check("заморозка подписана в паспорте",
+              "заморожен" in (t.js("document.getElementById('sc-signature').innerText") or ""))
+        t.js("document.getElementById('sc-freeze').click()")
+
+        # ---------- 16. настройки открываются ----------
+        t.js("document.getElementById('sc-settings').click()")
+        check("шторка настроек открывается",
+              t.js("document.getElementById('sc-cfg').classList.contains('on')"))
+        check("выбор шкалы false color есть", t.js("!!document.getElementById('cfg-fc')"))
+        check("список EI ARRI на 14 позиций",
+              t.js("document.getElementById('cfg-ei').options.length") == 14)
+        t.js("document.getElementById('sc-settings').click()")
+
+        # ---------- 17. горячие клавиши ----------
+        before = t.js("window.PobubnimPribory.state.zebra")
+        t.js("document.dispatchEvent(new KeyboardEvent('keydown', {key: 'z'}))")
+        after = t.js("window.PobubnimPribory.state.zebra")
+        check("горячая клавиша Z переключает зебру", before != after, (before, after))
+        t.js("document.dispatchEvent(new KeyboardEvent('keydown', {key: 'z'}))")
+
+        # ---------- 18. мобильная ширина ----------
+        t.size(390, 844)
+        time.sleep(0.8)
+        t.js("window.dispatchEvent(new Event('resize')); window.PobubnimPribory.render(true)")
+        time.sleep(0.4)
+        over = t.jsobj("""(function () {
+          return { doc: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+                   app: (function () { var a = document.getElementById('sc-app');
+                         return a.scrollWidth - a.clientWidth; })(),
+                   btn: Math.round(document.getElementById('sc-screen').getBoundingClientRect().height) };
+        })()""")
+        check("телефон: страница не едет вбок", over["doc"] <= 2, over)
+        check("телефон: рабочая область не едет вбок", over["app"] <= 2, over)
+        check("телефон: кнопки под палец (≥40px)", over["btn"] >= 40, over)
+        t.size(1400, 1000)
+
+        # ---------- 19. ошибок в консоли нет ----------
+        real = [e for e in t.errors if "favicon" not in e and "yandex" not in e.lower()]
+        check("нет ошибок JS", not real, real[:3])
 
     finally:
         t.close()
 
     print()
     if fails:
-        print(f"ПРОВАЛЕНО: {len(fails)}")
+        print("ПРОВАЛЫ:", len(fails))
         for f in fails:
-            print("  ✗ " + f)
+            print("  ✗", f)
         sys.exit(1)
     print("Все проверки пройдены.")
 
 
-if __name__ == "__main__":
-    main()
+main()

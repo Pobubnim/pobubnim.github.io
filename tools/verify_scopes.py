@@ -23,6 +23,29 @@ PRIMARIES = {
     "BT.2020": ((0.7080, 0.2920), (0.1700, 0.7970), (0.1310, 0.0460), (0.3127, 0.3290)),
 }
 
+# --- зоны false color ARRI LogC3: границы из открытой спецификации ARRI
+#     «LogC False Color Exposure Zones and Key», 04.02.2025 (таблицы 2–15).
+#     Лежат здесь ради одной проверки: наша формула LogC3 обязана попадать
+#     ровно в опубликованные зоны. Разойдётся — врёт формула или таблица.
+ARRI_LOGC3_LEGAL = {
+    160:  {"Red": (753, 940), "Yellow": (729, 753), "Pink": (461, 480), "Green": (397, 415), "Blue": (147, 151), "Purple": (64, 147)},
+    800:  {"Red": (878, 940), "Yellow": (857, 878), "Pink": (461, 480), "Green": (397, 415), "Blue": (152, 172), "Purple": (64, 152)},
+    3200: {"Red": (927, 940), "Yellow": (914, 927), "Pink": (461, 480), "Green": (397, 415), "Blue": (170, 241), "Purple": (64, 170)},
+}
+ARRI_LOGC3_FULL = {
+    800: {"Red": (951, 1023), "Yellow": (926, 951), "Pink": (464, 486), "Green": (389, 410), "Blue": (103, 127), "Purple": (0, 103)},
+}
+
+
+def code10_legal(sig):
+    """доля сигнала → 10-битный legal-код (64 — чёрный, 940 — номинальный белый)"""
+    return 64 + sig * 876
+
+
+def code10_full(sig):
+    return sig * 1023
+
+
 FAILS: list[str] = []
 
 
@@ -324,6 +347,91 @@ def main() -> None:
         FAILS.append("на кросс-канальном LUT методы совпали — тетраэдральная неверна")
     if diff > 0.05:
         FAILS.append(f"методы разошлись слишком сильно ({diff:.3f}) — ищите ошибку")
+
+    print("\n=== 8. ЗОНЫ FALSE COLOR ARRI ↔ НАША ФОРМУЛА LogC3 ===")
+    print("  спецификация ARRI задаёт зоны в 10-битных кодах; проверяем, что")
+    print("  формула LogC3 из EDU_BASE §8д попадает ровно в них")
+    grey = logc3(0.18)
+    grey_code = code10_legal(grey)
+    lo, hi = ARRI_LOGC3_LEGAL[800]["Green"]
+    ok = lo <= grey_code <= hi
+    if not ok:
+        FAILS.append(f"18% серый по LogC3 даёт код {grey_code:.1f}, зелёная зона ARRI — {lo}–{hi}")
+    print(f"  {'✓' if ok else '✗'} 18% серый: LogC3 → {grey * 100:.2f}% сигнала → код {grey_code:.1f} "
+          f"(зелёная зона ARRI {lo}–{hi})")
+
+    stop_up = logc3(0.36)
+    stop_code = code10_legal(stop_up)
+    plo, phi = ARRI_LOGC3_LEGAL[800]["Pink"]
+    ok2 = plo <= stop_code <= phi
+    if not ok2:
+        FAILS.append(f"стоп над серым по LogC3 даёт код {stop_code:.1f}, розовая зона ARRI — {plo}–{phi}")
+    print(f"  {'✓' if ok2 else '✗'} +1 стоп (36% сцены): код {stop_code:.1f} (розовая зона {plo}–{phi})")
+
+    for zone in ("Green", "Pink"):
+        l0, l1 = ARRI_LOGC3_LEGAL[800][zone]
+        f0, f1 = ARRI_LOGC3_FULL[800][zone]
+        sig_l = ((l0 - 64) / 876 + (l1 - 64) / 876) / 2
+        sig_f = (f0 / 1023 + f1 / 1023) / 2
+        d = abs(sig_l - sig_f)
+        if d > 0.004:
+            FAILS.append(f"зона {zone}: legal и full таблицы ARRI расходятся на {d:.4f} сигнала")
+        print(f"  {'✓' if d <= 0.004 else '✗'} зона {zone}: legal {sig_l * 100:.2f}% ↔ full {sig_f * 100:.2f}% "
+              f"(расхождение {d * 100:.2f} п.п.)")
+
+    for ei, tab in ARRI_LOGC3_LEGAL.items():
+        prev, bad = -1, False
+        for z in ("Purple", "Blue", "Green", "Pink", "Yellow", "Red"):
+            a, b = tab[z]
+            if a < prev or b < a:
+                FAILS.append(f"EI {ei}: зона {z} ({a}–{b}) нарушает порядок")
+                bad = True
+            prev = b
+        print(f"  {'✗' if bad else '✓'} EI {ei}: зоны идут по возрастанию, перекрытий нет")
+
+    print("\n=== 9. ШКАЛА В СТОПАХ: границы зон по кривым ===")
+    print(f'  {"стоп":>6} {"709 низ":>9} {"709 верх":>10} {"LogC3 низ":>11} {"LogC3 верх":>12}')
+    for stop in (-2, -1, 0, 1, 2):
+        lo709 = oetf709(0.18 * 2 ** (stop - 0.5)) * 100
+        hi709 = oetf709(min(1.0, 0.18 * 2 ** (stop + 0.5))) * 100
+        lo_lc = logc3(0.18 * 2 ** (stop - 0.5)) * 100
+        hi_lc = logc3(0.18 * 2 ** (stop + 0.5)) * 100
+        print(f"  {stop:+6d} {lo709:9.2f} {hi709:10.2f} {lo_lc:11.2f} {hi_lc:12.2f}")
+    z_lo, z_hi = oetf709(0.18 * 2 ** -0.5) * 100, oetf709(0.18 * 2 ** 0.5) * 100
+    grey709 = oetf709(0.18) * 100
+    ok3 = z_lo <= grey709 <= z_hi
+    if not ok3:
+        FAILS.append(f"зона «0 стоп» ({z_lo:.1f}–{z_hi:.1f}) не накрывает серую карту {grey709:.1f}")
+    print(f"  {'✓' if ok3 else '✗'} зона «0 стоп» по 709: {z_lo:.2f}–{z_hi:.2f} IRE, серая карта {grey709:.2f}")
+
+    print("\n=== 10. ШКАЛЫ ЕДИНИЦ (IRE / 8 бит / 10 бит) ===")
+    for name, black, white, span10, base10 in (("legal", 16, 235, 876, 64), ("full", 0, 255, 1023, 0)):
+        for ire_val in (0, 40.9, 100):
+            sig = ire_val / 100
+            print(f"  {name:5} {ire_val:6.1f} IRE → 8 бит {black + sig * (white - black):6.1f} "
+                  f"→ 10 бит {base10 + sig * span10:7.1f}")
+    check("legal: 0 IRE = код 16", 16 + 0.0 * 219, 16, 1e-9)
+    check("legal: 100 IRE = код 235", 16 + 1.0 * 219, 235, 1e-9)
+    check("legal: 100 IRE = 10-битный 940", code10_legal(1.0), 940, 1e-9)
+    check("full: 100% = 10-битный 1023", code10_full(1.0), 1023, 1e-9)
+    check("18% серый в 8-битном legal", 16 + oetf709(0.18) * 219, 105.57, 0.2)
+
+    print("\n=== 11. КЛИППИНГ И ЛЕГАЛЬНОСТЬ НА ЦВЕТНЫХ ПОЛОСАХ ===")
+    print("  клип пикселя — когда ВСЕ каналы уперлись в потолок или пол кода;")
+    print("  у цветных полос синий канал равен нулю, и это НЕ «чёрное в упор»:")
+    bars75 = [(1, 1, 1), (1, 1, 0), (0, 1, 1), (0, 1, 0), (1, 0, 1), (1, 0, 0), (0, 0, 1)]
+    all_low = sum(1 for b in bars75 if max(b) == 0)
+    any_zero = sum(1 for b in bars75 if min(b) == 0)
+    print(f"  полос {len(bars75)}: «все каналы в полу» {all_low}, «хотя бы один канал в полу» {any_zero}")
+    if all_low != 0:
+        FAILS.append("на полосах не должно быть пикселей со всеми каналами в нуле")
+    check("доля «канал в упор» на полосах, %", any_zero / len(bars75) * 100, 85.71, 0.01)
+    check("белая полоса 75% в кодах", round(0.75 * 255), 191, 0.5)
+    check("яркость белой полосы 75% в IRE (full)", round(0.75 * 255) / 255 * 100, 74.90, 0.02)
+    kb = 0.0722
+    check("яркость синей полосы 75% в IRE (full)", kb * round(0.75 * 255) / 255 * 100, 5.41, 0.02)
+    check("яркость синей полосы 75% в IRE (legal)",
+          (kb * round(0.75 * 255) - 16) / 219 * 100, -1.01, 0.02)
 
     print("\n" + ("ПРОВАЛЫ:" if FAILS else "Все проверки пройдены."))
     for f in FAILS:
