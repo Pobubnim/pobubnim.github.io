@@ -134,14 +134,29 @@ h2 {
 }
 .wordmark span { color: var(--mute); font-weight: 300; }
 
-.nav-links { display: flex; gap: 24px; margin-left: auto; }
-.nav-links a {
-  font-size: 14px;
-  font-weight: 500;
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;   /* строка пунктов не переносится */
+  gap: 22px;
+  margin-left: auto;
+}
+/* один рост и одна базовая линия у всех пунктов, включая кнопки дропдаунов:
+   до этого «Обо мне» рвалось на две строки и роняло выравнивание всей строки */
+.nav-links > a,
+.nav-links .nav-drop > button {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  white-space: nowrap;
+  font: 500 14px/1 var(--font-ui);
   color: var(--smoke);
   transition: color 0.2s;
 }
-.nav-links a:hover { color: var(--ink); }
+.nav-links > a:hover { color: var(--ink); }
+/* где человек сейчас находится */
+.nav-links > a[aria-current],
+.nav-links .nav-drop[data-here] > button { color: var(--ink); }
 
 .nav .btn { height: 38px; padding: 0 20px; font-size: 14px; }
 
@@ -163,11 +178,9 @@ h2 {
 /* --- дропдаун «Решения» --- */
 .nav-drop { position: relative; }
 .nav-drop > button {
-  font: 500 14px var(--font-ui);
-  color: var(--smoke);
   background: none; border: 0; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 10px 0;
+  gap: 5px;
+  padding: 0;
 }
 .nav-drop > button .caret { font-size: 9px; transition: transform 0.2s; }
 .nav-drop:hover > button, .nav-drop:focus-within > button { color: var(--ink); }

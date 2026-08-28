@@ -20,28 +20,8 @@
   var navIn = document.querySelector(".nav-in");
   if (!navIn) return;
 
-  /* --- дропдаун «Решения» в строке ссылок (десктоп) --- */
-  var links = navIn.querySelector(".nav-links");
-  if (links) {
-    var drop = document.createElement("div");
-    drop.className = "nav-drop";
-    drop.innerHTML =
-      '<button type="button">Решения<span class="caret">▾</span></button>' +
-      '<div class="drop-panel">' +
-      SOLUTIONS.map(function (s) {
-        return '<a href="' + root + "services/" + s[0] + '.html">' + s[1] + "</a>";
-      }).join("") +
-      "</div>";
-    links.insertBefore(drop, links.querySelector('a[href$="education.html"]'));
-
-    var artLink = links.querySelector('a[href$="articles/"]');
-    if (artLink && !links.querySelector('a[href$="uroki/"]')) {
-      var lessons = document.createElement("a");
-      lessons.href = root + "uroki/";
-      lessons.textContent = "Уроки";
-      links.insertBefore(lessons, artLink.nextSibling);
-    }
-  }
+  /* Строку ссылок и дропдауны строит tools/build_nav.py — статикой, чтобы их
+     видел поисковый робот. Здесь остаётся только бургер-меню. */
 
   /* --- бургер + полноэкранное меню (мобила) --- */
   var burger = document.createElement("button");
