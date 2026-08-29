@@ -10,6 +10,7 @@ docs/SCOPES_BASE.md. Если прибор врёт — тест краснее�
 import io
 import json
 import math
+import os
 import subprocess
 import sys
 import tempfile
@@ -56,6 +57,47 @@ def oetf709(L):
 def logc3(x):
     cut, a, b, c, d, e, f = 0.010591, 5.555556, 0.052272, 0.247190, 0.385537, 5.367655, 0.092809
     return c * math.log10(a * x + b) + d if x > cut else e * x + f
+
+
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# verify_scopes на верхнем уровне подменяет sys.stdout своей обёрткой utf-8.
+# Наш вывод после этого умирает: сборщик мусора закрывает общий буфер вместе с
+# отброшенной обёрткой. Поэтому чужую держим за ссылку, а свою возвращаем.
+_stdout_keep = sys.stdout
+from verify_scopes import trilinear, tetrahedral   # noqa: E402  эталон §7
+_stdout_alien = sys.stdout
+sys.stdout = _stdout_keep
+
+
+def cross_lut(n):
+    """кросс-канальный LUT: подъём насыщенности ×1,5 (методы обязаны разойтись)"""
+    lut, m = [], n - 1
+    for k in range(n):
+        for j in range(n):
+            for i in range(n):
+                r, g, b = i / m, j / m, k / m
+                y = KR * r + KG * g + KB * b
+                lut += [min(1.0, max(0.0, y + (v - y) * 1.5)) for v in (r, g, b)]
+    return lut
+
+
+def separable_lut(n, gamma):
+    """сепарабельный LUT: гамма по своему каналу (методы обязаны совпасть)"""
+    lut, m = [], n - 1
+    for k in range(n):
+        for j in range(n):
+            for i in range(n):
+                lut += [(i / m) ** gamma, (j / m) ** gamma, (k / m) ** gamma]
+    return lut
+
+
+def cube_text(lut, n, title):
+    out = ['TITLE "%s"' % title, "LUT_3D_SIZE %d" % n, "DOMAIN_MIN 0.0 0.0 0.0",
+           "DOMAIN_MAX 1.0 1.0 1.0", ""]
+    for i in range(0, len(lut), 3):
+        out.append("%.6f %.6f %.6f" % (lut[i], lut[i + 1], lut[i + 2]))
+    return "\n".join(out) + "\n"
 
 
 class Tab:
@@ -564,6 +606,161 @@ def main():
         after = t.js("window.PobubnimPribory.state.zebra")
         check("горячая клавиша Z переключает зебру", before != after, (before, after))
         t.js("document.dispatchEvent(new KeyboardEvent('keydown', {key: 'z'}))")
+
+        # ---------- 17б. 3D-LUT (.cube) ----------
+        # эталон — те же интерполяции, что в docs/SCOPES_BASE.md §8 и в
+        # verify_scopes.py: JS обязан совпасть с питоном, а не «примерно».
+        check("ядро LUT загружено", t.js("typeof window.PobubnimLut") == "object")
+
+        lut_cross = cross_lut(17)                      # подъём насыщенности ×1,5
+        lut_sep = separable_lut(17, 2.2)               # гамма по каналу
+        t.js("window.PobubnimPribory.state.lutSplit = false")
+
+        loaded = t.jsobj("(function(){var l = window.PobubnimPribory.loadLutText(%s, 'кросс.cube');"
+                         "return {size: l.size, dim: l.dim, title: l.title};})()"
+                         % json.dumps(cube_text(lut_cross, 17, "кросс")))
+        check("файл .cube разобран", loaded and loaded["size"] == 17 and loaded["dim"] == 3, loaded)
+
+        # ровное поле известного цвета: результат считаем в питоне независимо
+        R0, G0, B0 = 150, 90, 60
+        t.js(FEED_FLAT % (R0, G0, B0))
+        t.js("window.PobubnimPribory.render(true)")
+        got = t.jsobj("window.PobubnimPribory.stats()")
+        want = tetrahedral(lut_cross, 17, R0 / 255, G0 / 255, B0 / 255)
+        want_codes = [max(0, min(255, round(v * 255))) for v in want]
+        # ЛОВУШКА: подъём насыщенности почти не трогает яркость, поэтому
+        # сверяем средние по каналам — иначе тест зелёный и без LUT
+        check("LUT применён к кадру: каналы как в питоне",
+              got and max(abs(got["avgRGB"][i] - v) for i, v in enumerate(want_codes)) <= 1.5,
+              (got["avgRGB"], want_codes))
+        check("LUT реально изменил кадр",
+              got and max(abs(got["avgRGB"][i] - v) for i, v in enumerate((R0, G0, B0))) > 5,
+              (got["avgRGB"], (R0, G0, B0)))
+
+        # сила 0 — кадра не касаемся; сила 0.5 — ровно середина пути
+        t.js("window.PobubnimPribory.state.lutStrength = 0; window.PobubnimPribory.render(true)")
+        s0 = t.jsobj("window.PobubnimPribory.stats()")
+        check("сила 0 не меняет кадр",
+              s0 and max(abs(s0["avgRGB"][i] - v) for i, v in enumerate((R0, G0, B0))) <= 1,
+              (s0["avgRGB"], (R0, G0, B0)))
+        t.js("window.PobubnimPribory.state.lutStrength = 0.5; window.PobubnimPribory.render(true)")
+        s5 = t.jsobj("window.PobubnimPribory.stats()")
+        mid = [(R0 + want_codes[0]) / 2, (G0 + want_codes[1]) / 2, (B0 + want_codes[2]) / 2]
+        check("сила 50% — середина между до и после",
+              s5 and max(abs(s5["avgRGB"][i] - v) for i, v in enumerate(mid)) <= 1.5,
+              (s5["avgRGB"], mid))
+        t.js("window.PobubnimPribory.state.lutStrength = 1")
+
+        # тетраэдральная и трилинейная: на кросс-канальном расходятся, на
+        # сепарабельном совпадают (§8, п. 3 и 4 — иначе метод не реализован)
+        t.js("window.PobubnimPribory.state.lutMethod = 'tri'; window.PobubnimPribory.render(true)")
+        tri_stats = t.jsobj("window.PobubnimPribory.stats()")
+        want_tri = [max(0, min(255, round(v * 255)))
+                    for v in trilinear(lut_cross, 17, R0 / 255, G0 / 255, B0 / 255)]
+        check("трилинейная тоже совпала с питоном",
+              tri_stats and max(abs(tri_stats["avgRGB"][i] - v) for i, v in enumerate(want_tri)) <= 1.5,
+              (tri_stats["avgRGB"], want_tri))
+
+        t.js("window.PobubnimPribory.loadLutText(%s, 'сепарабельный.cube')"
+             % json.dumps(cube_text(lut_sep, 17, "гамма")))
+        t.js("window.PobubnimPribory.state.lutMethod = 'tri'; window.PobubnimPribory.render(true)")
+        sep_tri = t.jsobj("window.PobubnimPribory.stats()")["avgSig"]
+        t.js("window.PobubnimPribory.state.lutMethod = 'tetra'; window.PobubnimPribory.render(true)")
+        sep_tet = t.jsobj("window.PobubnimPribory.stats()")["avgSig"]
+        check("на сепарабельном LUT методы совпали", abs(sep_tri - sep_tet) < 1e-6,
+              (sep_tri, sep_tet))
+        # тот же тест на кросс-канальном: разница обязана быть (§8 п. 4).
+        # Сравниваем по расчёту, а не по кадру: ровное поле может лечь в узел.
+        spread = t.jsobj("""(function () {
+          var L = window.PobubnimLut, lut = window.PobubnimPribory.lut(), worst = 0;
+          for (var r = 0.03; r < 1; r += 0.11) {
+            for (var g = 0.07; g < 1; g += 0.13) {
+              for (var b = 0.05; b < 1; b += 0.17) {
+                var a = L.sample(lut, r, g, b, 'tri'), c = L.sample(lut, r, g, b, 'tetra');
+                for (var i = 0; i < 3; i++) worst = Math.max(worst, Math.abs(a[i] - c[i]));
+              }
+            }
+          }
+          return worst;
+        })()""")
+        check("на сепарабельном LUT методы совпали и в расчёте", spread is not None and spread < 1e-6, spread)
+
+        # выключение возвращает исходный сигнал, клавиша L переключает
+        t.js("window.PobubnimPribory.state.lutOn = false; window.PobubnimPribory.render(true)")
+        off = t.jsobj("window.PobubnimPribory.stats()")
+        check("выключенный LUT возвращает исходный кадр",
+              off and max(abs(off["avgRGB"][i] - v) for i, v in enumerate((R0, G0, B0))) <= 1,
+              (off["avgRGB"], (R0, G0, B0)))
+        t.js("document.dispatchEvent(new KeyboardEvent('keydown', {key: 'l'}))")
+        check("клавиша L включает LUT", t.js("window.PobubnimPribory.state.lutOn") is True)
+
+        # паспорт обязан называть LUT — иначе снимок приборов врёт
+        sig_txt = t.js("document.getElementById('sc-signature').textContent")
+        check("паспорт называет LUT", "LUT" in (sig_txt or ""), sig_txt)
+        lut_ms = t.js("window.PobubnimPribory.lutMs()")
+        check("время применения LUT измерено", lut_ms is not None and 0 <= lut_ms < 500, lut_ms)
+
+        # сравнение до/после: левая половина окна «Кадр» — исходник
+        t.js("window.PobubnimPribory.loadLutText(%s, 'кросс.cube');"
+             "window.PobubnimPribory.state.lutMethod = 'tetra';"
+             "window.PobubnimPribory.setSlot(0, 'frame');"
+             "window.PobubnimPribory.state.lutSplit = true;"
+             "window.PobubnimPribory.render(true)"
+             % json.dumps(cube_text(lut_cross, 17, "кросс")))
+        halves = t.jsobj("""(function () {
+          var cv = document.querySelectorAll('.sc-canvas-wrap canvas')[0];
+          var g = cv.getContext('2d');
+          var y = Math.round(cv.height * 0.7);
+          var a = g.getImageData(Math.round(cv.width * 0.25), y, 1, 1).data;
+          var b = g.getImageData(Math.round(cv.width * 0.75), y, 1, 1).data;
+          return {left: [a[0], a[1], a[2]], right: [b[0], b[1], b[2]]};
+        })()""")
+        check("сплит: слева исходный кадр",
+              halves and max(abs(halves["left"][i] - v) for i, v in enumerate((R0, G0, B0))) <= 2,
+              halves)
+        check("сплит: справа кадр после LUT",
+              halves and max(abs(halves["right"][i] - v) for i, v in enumerate(want_codes)) <= 2,
+              (halves, want_codes))
+        t.js("window.PobubnimPribory.state.lutSplit = false")
+
+        # заморозка держит сырой кадр: сила LUT обязана менять и стоп-кадр
+        t.js("document.getElementById('sc-freeze').click(); window.PobubnimPribory.render(true)")
+        fr_on = t.jsobj("window.PobubnimPribory.stats()")["avgRGB"]
+        t.js("window.PobubnimPribory.state.lutOn = false; window.PobubnimPribory.render(true)")
+        fr_off = t.jsobj("window.PobubnimPribory.stats()")["avgRGB"]
+        check("на стоп-кадре LUT не впечён",
+              max(abs(fr_off[i] - v) for i, v in enumerate((R0, G0, B0))) <= 1
+              and abs(fr_on[0] - fr_off[0]) > 5,
+              (fr_on, fr_off, (R0, G0, B0)))
+        t.js("document.getElementById('sc-freeze').click();"
+             "window.PobubnimPribory.state.lutOn = true; window.PobubnimPribory.render(true)")
+
+        # выгрузка: пересчёт в другую сетку и обратный разбор дают ту же функцию
+        rt = t.jsobj("""(function () {
+          var L = window.PobubnimLut, src = window.PobubnimPribory.lut();
+          var big = L.resample(src, 33, 'tetra');
+          var back = L.parseCube(L.toCube(big, 'экспорт'));
+          var worst = 0;
+          for (var r = 0; r <= 1.0001; r += 0.17) {
+            for (var g = 0; g <= 1.0001; g += 0.23) {
+              for (var b = 0; b <= 1.0001; b += 0.29) {
+                var a = L.sample(src, r, g, b, 'tetra'), c = L.sample(back, r, g, b, 'tetra');
+                for (var i = 0; i < 3; i++) worst = Math.max(worst, Math.abs(a[i] - c[i]));
+              }
+            }
+          }
+          return {size: back.size, title: back.title, worst: worst};
+        })()""")
+        check("выгрузка 33³: сетка и заголовок на месте",
+              rt and rt["size"] == 33 and rt["title"] == "экспорт", rt)
+        check("выгрузка 33³ повторяет исходный LUT", rt and rt["worst"] < 0.01, rt)
+
+        # битый файл не должен применяться молча
+        bad = t.jsobj("""(function () {
+          try { window.PobubnimPribory.loadLutText('это не лут', 'битый.cube'); return {threw: false}; }
+          catch (e) { return {threw: true, msg: String(e.message)}; }
+        })()""")
+        check("битый .cube отбит с сообщением", bad and bad["threw"], bad)
 
         # ---------- 18. мобильная ширина ----------
         t.size(390, 844)

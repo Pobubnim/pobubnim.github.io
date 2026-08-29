@@ -305,6 +305,14 @@
   min-height: 28px;
 }
 .sc-sw input { accent-color: var(--lamp); width: 15px; height: 15px; flex: none; }
+/* имя загруженного LUT и ошибки разбора файла */
+.sc-lut-name {
+  font-size: 11.5px;
+  color: var(--smoke);
+  line-height: 1.45;
+  word-break: break-word;
+}
+.sc-lut-name.bad { color: #e8a37c; }
 .sc-hint { font-size: 11px; color: var(--mute); line-height: 1.5; text-wrap: pretty; }
 .sc-keys { font-size: 11px; color: var(--mute); line-height: 1.7; }
 .sc-keys b { color: var(--smoke); font-weight: 500; font-family: var(--font-mono, ui-monospace, monospace); }

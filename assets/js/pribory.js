@@ -56,6 +56,7 @@
     fcScale: "ire", fcEI: 800,
     zebra: false, zebraLevel: 0.95, zebraBand: false,
     peak: false, peakLevel: 0.35,
+    lutOn: true, lutStrength: 1, lutMethod: "tetra", lutSplit: false, lutSize: 33,
     quality: "auto", fps: 30,
     layout: 4, panel: true,
     slots: ["wf-luma", "vector", "hist", "frame"]
@@ -268,8 +269,44 @@
     return video.readyState >= 2 && video.videoWidth > 0;
   }
 
+  /* ---------------- 3D-LUT ----------------
+
+     LUT применяется к кадру АНАЛИЗА, а не к картинке на экране: приборы,
+     false color и пипетка обязаны видеть одно и то же. Поэтому результат
+     кладётся обратно в work-канвас (пипетка читает пиксель именно оттуда),
+     а копия исходника остаётся для сравнения «до/после». */
+  var LUT = null, lutName = "", lutMs = 0, lutOrig = null;
+
+  function lutActive() { return !!(LUT && st.lutOn && st.lutStrength > 0); }
+
+  function applyLut(img) {
+    var need = st.lutSplit ? img.data.length : 0;
+    if (need) {
+      if (!lutOrig || lutOrig.length !== need) lutOrig = new Uint8ClampedArray(need);
+      lutOrig.set(img.data);
+    } else if (lutOrig) {
+      lutOrig = null;
+    }
+    var t0 = performance.now();
+    window.PobubnimLut.apply(img.data, img.data.length, LUT,
+      { method: st.lutMethod, strength: st.lutStrength });
+    lutMs = performance.now() - t0;
+    /* пипетка берёт пиксель из work-канваса — возвращаем туда кадр после LUT */
+    wctx.putImageData(img, 0, 0);
+  }
+
   function grab() {
-    if (frozen) return frozen;
+    /* заморозка держит СЫРОЙ кадр: сила LUT и его выключение обязаны менять
+       картинку и на стоп-кадре, а не оставаться впечёнными навсегда */
+    if (frozen) {
+      if (work.width !== frozen.width || work.height !== frozen.height) {
+        work.width = frozen.width; work.height = frozen.height;
+      }
+      wctx.putImageData(frozen, 0, 0);
+      var f = wctx.getImageData(0, 0, frozen.width, frozen.height);
+      if (lutActive()) applyLut(f);
+      return f;
+    }
     var src = still || video;
     var sw = still ? (still.naturalWidth || still.width) : video.videoWidth;
     var sh = still ? (still.naturalHeight || still.height) : video.videoHeight;
@@ -290,7 +327,17 @@
     }
     wctx.imageSmoothingEnabled = false;
     wctx.drawImage(src, cx, cy, cw, ch, 0, 0, w, h);
-    return wctx.getImageData(0, 0, w, h);
+    var img = wctx.getImageData(0, 0, w, h);
+    if (lutActive()) applyLut(img);
+    return img;
+  }
+
+  /* кнопка «Заморозить» берёт кадр ДО LUT — иначе стоп-кадр застынет с той
+     силой LUT, что стояла в момент нажатия */
+  function grabRaw() {
+    var wasOn = st.lutOn;
+    st.lutOn = false;
+    try { return grab(); } finally { st.lutOn = wasOn; }
   }
 
   /* ---------------- разметка приборов ---------------- */
@@ -664,6 +711,17 @@
       }
       var copy = slot.img;
       copy.data.set(d.data);
+      /* сравнение до/после: левая половина строк берётся из копии, снятой
+         перед применением LUT */
+      var splitAt = 0;
+      if (sc.kind === "frame" && st.lutSplit && lutActive() && lutOrig) {
+        splitAt = work.width >> 1;
+        var half = splitAt * 4, rowBytes = work.width * 4;
+        for (var yy = 0; yy < work.height; yy++) {
+          var row = yy * rowBytes;
+          copy.data.set(lutOrig.subarray(row, row + half), row);
+        }
+      }
       if (sc.kind === "fc") {
         S.applyFalseColor(copy.data, work.width * work.height * 4, fcLut, S.MATRIX[st.matrix]);
       } else {
@@ -680,6 +738,21 @@
         }
       }
       ctx.putImageData(copy, 0, 0);
+      if (splitAt) {
+        ctx.fillStyle = "rgba(245,239,226,0.8)";
+        ctx.fillRect(splitAt, 0, 1, work.height);
+        var fs = Math.max(11, Math.round(work.width / 46));
+        ctx.font = "500 " + fs + "px system-ui, sans-serif";
+        ctx.textBaseline = "top";
+        /* плашки только под подписями: кадр закрывать нечем */
+        ["до", "после"].forEach(function (t, i) {
+          var x = i ? splitAt + 7 : 7, w2 = ctx.measureText(t).width;
+          ctx.fillStyle = "rgba(0,0,0,0.55)";
+          ctx.fillRect(x - 4, 4, w2 + 8, fs + 6);
+          ctx.fillStyle = "rgba(245,239,226,0.92)";
+          ctx.fillText(t, x, 7);
+        });
+      }
       if (sc.kind === "fc") {
         slot.legend.innerHTML = fcLegendHTML();
         slot.note.textContent = st.fcScale === "arri" ? "ARRI LogC3 · EI " + st.fcEI
@@ -688,7 +761,9 @@
       } else {
         slot.legend.innerHTML = "";
         slot.note.textContent = (st.zebra ? "зебра " + Math.round(st.zebraLevel * 100) + " · " : "") +
-          (st.peak ? "пикинг · " : "") + work.width + "×" + work.height;
+          (st.peak ? "пикинг · " : "") +
+          (lutActive() ? "LUT " + Math.round(st.lutStrength * 100) + "% · " : "") +
+          work.width + "×" + work.height;
       }
     }
   }
@@ -738,6 +813,12 @@
       "<span>Шкала: <b>" + unitLabel() + "</b></span>" +
       "<span>Анализ: <b>" + work.width + "×" + work.height + "</b>" +
       (CROP ? " · кроп" : "") + "</span>" +
+      /* LUT обязан быть в паспорте: снимок приборов без этой строки врёт */
+      (lutActive()
+        ? "<span>LUT: <b>" + escapeHtml(lutName) + "</b> · " + LUT.size + "³ · " +
+          (st.lutMethod === "tri" ? "трилинейная" : "тетраэдральная") + " · " +
+          Math.round(st.lutStrength * 100) + "% · " + lutMs.toFixed(1) + " мс</span>"
+        : (LUT ? "<span>LUT: <b>выключен</b></span>" : "")) +
       "<span>Обновление: <b>" + fps.val + "/с</b></span>";
   }
   function escapeHtml(s) {
@@ -963,7 +1044,7 @@
   el("sc-freeze").addEventListener("click", function () {
     if (frozen) { frozen = null; }
     else {
-      var d = grab();
+      var d = grabRaw();
       if (!d) { note("Кадра ещё нет."); return; }
       frozen = d;
     }
@@ -1136,6 +1217,78 @@
   bindRange("cfg-peak-level", "peakLevel", "cfg-peak-val", function (v) { return Math.round(v * 100) + "%"; });
   el("cfg-ei-row").style.display = st.fcScale === "arri" ? "" : "none";
 
+  /* ---------------- LUT: загрузка, сила, выгрузка ---------------- */
+
+  bindCheck("cfg-lut-on", "lutOn", markDirty);
+  bindSelect("cfg-lut-method", "lutMethod", null, markDirty);
+  bindCheck("cfg-lut-split", "lutSplit", markDirty);
+  bindSelect("cfg-lut-size", "lutSize", Number);
+  bindRange("cfg-lut-strength", "lutStrength", "cfg-lut-strength-val",
+    function (v) { return Math.round(v * 100) + "%"; }, markDirty);
+
+  function lutStatus(text, bad) {
+    var n = el("sc-lut-name");
+    if (!n) return;
+    n.textContent = text;
+    n.classList.toggle("bad", !!bad);
+  }
+
+  function setLut(lut, name) {
+    LUT = lut; lutName = name; lutOrig = null;
+    lutStatus(lut
+      ? name + " · сетка " + lut.size + (lut.dim === 1 ? " (1D)" : "³") +
+        (lut.title ? " · «" + lut.title + "»" : "")
+      : "Файл не загружен — приборы смотрят на исходный сигнал.");
+    markDirty(); render(true);
+  }
+
+  el("sc-lut-file").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f) return;
+    if (f.size > 64 * 1024 * 1024) { lutStatus("Файл больше 64 МБ — это не .cube", true); return; }
+    var rd = new FileReader();
+    rd.onload = function () {
+      try {
+        var lut = window.PobubnimLut.parseCube(rd.result);
+        setLut(lut, f.name);
+        st.lutOn = true;
+        el("cfg-lut-on").checked = true;
+        save();
+        note("LUT загружен: сетка " + lut.size + (lut.dim === 1 ? " (1D)" : "³") +
+             ". Приборы считают кадр после него.");
+      } catch (err) {
+        setLut(null, "");
+        lutStatus("Не разобрал файл: " + err.message, true);
+      }
+    };
+    rd.onerror = function () { lutStatus("Файл не прочитался", true); };
+    rd.readAsText(f);
+    e.target.value = "";
+  });
+
+  el("sc-lut-clear").addEventListener("click", function () {
+    if (!LUT) { note("LUT и так не загружен."); return; }
+    setLut(null, "");
+    note("LUT снят — приборы снова смотрят на исходный сигнал.");
+  });
+
+  el("sc-lut-save").addEventListener("click", function () {
+    if (!LUT) { note("Сначала загрузите .cube."); return; }
+    if (LUT.dim === 1) { lutStatus("1D-LUT выгружается только как есть — пересчёт не делаю", true); return; }
+    try {
+      var out = LUT.size === st.lutSize ? LUT : window.PobubnimLut.resample(LUT, st.lutSize, st.lutMethod);
+      var text = window.PobubnimLut.toCube(out, (LUT.title || lutName.replace(/\.cube$/i, "")));
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+      a.download = lutName.replace(/\.cube$/i, "") + "_" + st.lutSize + ".cube";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+      note("Выгружен .cube на сетке " + st.lutSize + "³.");
+    } catch (err) {
+      lutStatus("Выгрузка не вышла: " + err.message, true);
+    }
+  });
+
   /* ---------------- горячие клавиши ---------------- */
 
   document.addEventListener("keydown", function (e) {
@@ -1153,6 +1306,12 @@
       st.unit = order[(order.indexOf(st.unit) + 1) % 3];
       el("cfg-unit").value = st.unit; save(); render(true);
       note("Шкала: " + unitLabel());
+    } else if (k === "l") {
+      if (!LUT) { note("LUT не загружен — откройте .cube в панели слева."); return; }
+      st.lutOn = !st.lutOn;
+      el("cfg-lut-on").checked = st.lutOn;
+      save(); markDirty(); render(true);
+      note(st.lutOn ? "LUT включён." : "LUT выключен.");
     } else if (k === "b") { setPanel(!st.panel); }
     else if (k >= "1" && k <= "4") {
       var b = document.querySelector('[data-layout="' + k + '"]');
@@ -1222,6 +1381,14 @@
       setSource(label || "тестовый кадр"); render(true);
     },
     field: function () { return { WF_W: WF_W, WF_H: WF_H, VEC_S: VEC_S }; },
-    work: work
+    work: work,
+    loadLutText: function (text, name) {
+      setLut(window.PobubnimLut.parseCube(text), name || "тест.cube");
+      st.lutOn = true; el("cfg-lut-on").checked = true;
+      render(true);
+      return LUT;
+    },
+    lut: function () { return LUT; },
+    lutMs: function () { return lutMs; }
   };
 })();
