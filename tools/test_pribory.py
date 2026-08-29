@@ -446,14 +446,117 @@ def main():
               "заморожен" in (t.js("document.getElementById('sc-signature').innerText") or ""))
         t.js("document.getElementById('sc-freeze').click()")
 
-        # ---------- 16. настройки открываются ----------
+        # ---------- 16. панель управления ----------
+        was = t.js("document.getElementById('sc-cfg').classList.contains('on')")
+        check("панель управления открыта на широком экране", was is True, was)
         t.js("document.getElementById('sc-settings').click()")
-        check("шторка настроек открывается",
-              t.js("document.getElementById('sc-cfg').classList.contains('on')"))
+        time.sleep(0.25)
+        check("панель сворачивается кнопкой",
+              t.js("document.getElementById('sc-cfg').classList.contains('on')") is False)
+        wide = t.js("Math.round(document.getElementById('sc-grid').getBoundingClientRect().width)")
+        t.js("document.getElementById('sc-settings').click()")
+        time.sleep(0.25)
+        narrow = t.js("Math.round(document.getElementById('sc-grid').getBoundingClientRect().width)")
+        check("свёрнутая панель отдаёт приборам свою ширину", wide - narrow > 200, (wide, narrow))
         check("выбор шкалы false color есть", t.js("!!document.getElementById('cfg-fc')"))
         check("список EI ARRI на 14 позиций",
               t.js("document.getElementById('cfg-ei').options.length") == 14)
-        t.js("document.getElementById('sc-settings').click()")
+
+        # ---------- 16б. приборы рисуются один к одному ----------
+        t.js("window.PobubnimPribory.state.quality = 'auto'; window.PobubnimPribory.render(true)")
+        time.sleep(0.3)
+        fit = t.jsobj("""(function () {
+          var slot = document.querySelectorAll('.sc-slot')[0];
+          var c = slot.querySelector('canvas'), f = window.PobubnimPribory.field();
+          var dpr = Math.min(2, window.devicePixelRatio || 1);
+          return { field: f.WF_W, want: Math.round(c.getBoundingClientRect().width * dpr - 34 * dpr),
+                   fieldH: f.WF_H, wantH: Math.round(c.getBoundingClientRect().height * dpr),
+                   work: window.PobubnimPribory.work.width };
+        })()""")
+        check("поле waveform равно окну по ширине (без растяжки)",
+              abs(fit["field"] - fit["want"]) <= 1, fit)
+        check("поле waveform равно окну по высоте", abs(fit["fieldH"] - fit["wantH"]) <= 1, fit)
+        check("режим «под размер окна» поднимает разрешение анализа",
+              fit["work"] >= min(1440, fit["want"]), fit)
+
+        # ---------- 16в. окно яркости на трассе ----------
+        # градиент 0-255: у трассы есть и тени, и света, и её видно диагональю
+        t.js("""(function () {
+          var c = document.createElement('canvas'); c.width = 640; c.height = 360;
+          var g = c.getContext('2d');
+          var lg = g.createLinearGradient(0, 0, 640, 0);
+          lg.addColorStop(0, '#000'); lg.addColorStop(1, '#fff');
+          g.fillStyle = lg; g.fillRect(0, 0, 640, 360);
+          window.PobubnimPribory.setSlot(0, 'wf-luma');
+          window.PobubnimPribory.state.zone = 'all';
+          window.PobubnimPribory.useSource(c, 'градиент');
+        })()""")
+        time.sleep(0.3)
+        # считаем накопление в самом поле прибора: разметка и подписи в него
+        # не входят, поэтому видно именно трассу
+        halves = """(function () {
+          var b = window.PobubnimPribory.buffers(), f = window.PobubnimPribory.field();
+          var W = f.WF_W, H = f.WF_H, top = 0, bot = 0;
+          for (var y = 0; y < H; y++) {
+            for (var x = 0; x < W; x++) {
+              var v = b.wf[y * W + x];
+              if (y < H / 2) top += v; else bot += v;
+            }
+          }
+          return { top: top, bot: bot };
+        })()"""
+        both = t.jsobj(halves)
+        t.js("window.PobubnimPribory.state.zone='low'; window.PobubnimPribory.render(true)")
+        time.sleep(0.25)
+        low = t.jsobj(halves)
+        t.js("window.PobubnimPribory.state.zone='high'; window.PobubnimPribory.render(true)")
+        time.sleep(0.25)
+        high = t.jsobj(halves)
+        t.js("window.PobubnimPribory.state.zone='all'; window.PobubnimPribory.render(true)")
+        check("трасса градиента заполняет обе половины поля", both["top"] > 1000 and both["bot"] > 1000, both)
+        check("зона «тени»: света с трассы уходят", low["top"] < both["top"] * 0.02, (low, both))
+        check("зона «тени»: тени остаются", low["bot"] > both["bot"] * 0.3, (low, both))
+        check("зона «света»: тени с трассы уходят", high["bot"] < both["bot"] * 0.02, (high, both))
+        check("зона «света»: света остаются", high["top"] > both["top"] * 0.3, (high, both))
+        t.js(feed_bars())
+        t.js("window.PobubnimPribory.render(true)")
+        time.sleep(0.25)
+
+        # ---------- 16г. цвет трассы не переставлен по каналам ----------
+        trace = t.jsobj("""(function () {
+          var c = document.querySelectorAll('.sc-slot')[0].querySelector('canvas');
+          var d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data, best = -1, o = 0;
+          for (var p = 0; p < d.length; p += 4) {
+            var s = d[p] + d[p + 1] + d[p + 2];
+            if (s > best) { best = s; o = p; }
+          }
+          return { r: d[o], g: d[o + 1], b: d[o + 2] };
+        })()""")
+        check("трасса яркости остаётся тёплой белой (245/239/226 — каналы не переставлены)",
+              trace["r"] >= trace["g"] >= trace["b"] and trace["r"] > 200 and trace["r"] - trace["b"] < 40, trace)
+
+        # ---------- 16д. превью источника и кроп по нему ----------
+        prev = t.jsobj("""(function () {
+          var c = document.getElementById('sc-preview-cv');
+          var d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data, bright = 0;
+          for (var p = 0; p < d.length; p += 4) if (d[p] + d[p + 1] + d[p + 2] > 60) bright++;
+          return { w: c.width, h: c.height, bright: bright };
+        })()""")
+        check("превью источника в панели живое", prev["bright"] > 100 and prev["w"] > 100, prev)
+        drag = t.jsobj("""(function () {
+          var box = document.getElementById('sc-preview');
+          var r = box.getBoundingClientRect();
+          function ev(type, fx, fy) {
+            box.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 1,
+              clientX: r.left + r.width * fx, clientY: r.top + r.height * fy }));
+          }
+          ev('pointerdown', 0.1, 0.1); ev('pointermove', 0.6, 0.7); ev('pointerup', 0.6, 0.7);
+          var c = window.PobubnimPribory.crop();
+          return c ? { x: +c.x.toFixed(2), y: +c.y.toFixed(2), w: +c.w.toFixed(2), h: +c.h.toFixed(2) } : null;
+        })()""")
+        check("кроп задаётся мышью по превью, без окна «Кадр»",
+              drag is not None and abs(drag["w"] - 0.5) < 0.06 and abs(drag["h"] - 0.6) < 0.06, drag)
+        t.js("window.PobubnimPribory.setCrop(null); document.getElementById('sc-crop').textContent = 'Кроп'")
 
         # ---------- 17. горячие клавиши ----------
         before = t.js("window.PobubnimPribory.state.zebra")

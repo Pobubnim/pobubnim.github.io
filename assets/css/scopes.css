@@ -1,30 +1,42 @@
 /* ПОБУБНИМ — рабочая станция приборов. Аппаратная, а не страница: тёмное поле,
-   тонкие линии, цвет только внутри приборов. Токены — из style.css. */
+   тонкие линии, цвет только внутри приборов. Токены — из style.css.
+   Раскладка: панель управления слева, приборы занимают весь остаток экрана. */
+
+/* стойка выходит за колонку текста: прибор — рабочее место, а не врезка.
+   Ширина считается от body, а не от 100vw: vw включает полосу прокрутки и
+   даёт горизонтальный оверфлоу на пару пикселей. */
+.sc-stage {
+  max-width: 1800px;
+  margin: 18px auto 0;
+  padding: 0 16px;
+}
 
 .sc-app {
   --sc-line: rgba(255, 253, 245, 0.10);
   --sc-line-soft: rgba(255, 253, 245, 0.055);
   --sc-surface: #0e0e0c;
   --sc-panel: #0a0a09;
-  --sc-head: 30px;
+  --sc-head: 28px;
+  --sc-side: 286px;
   border: 1px solid var(--sc-line);
   border-radius: 12px;
   background: var(--sc-surface);
   display: flex;
   flex-direction: column;
-  gap: 0;
   overflow: hidden;
-  margin-top: 26px;
+  /* высота экрана минус шапка и компактный заголовок: работать, а не скроллить */
+  height: clamp(520px, calc(100vh - 172px), 1000px);
   contain: paint;
 }
 
-/* ---------- тулбар ---------- */
+/* ---------- верхняя полоса ---------- */
 
 .sc-bar {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  padding: 8px 10px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 9px;
   border-bottom: 1px solid var(--sc-line-soft);
   background: #111110;
+  flex: none;
 }
 .sc-bar .sp { flex: 1 1 auto; }
 
@@ -43,12 +55,26 @@
 .sc-btn.on { background: var(--lamp); border-color: var(--lamp); color: #0b0b0a; }
 .sc-btn.key { background: var(--lamp); border-color: var(--lamp); color: #0b0b0a; }
 .sc-btn.key:hover { background: #fffaf0; }
+.sc-btn.wide { width: 100%; justify-content: center; }
 .sc-btn i { font-style: normal; opacity: 0.75; font-size: 11px; }
 .sc-btn input[type=file] { display: none; }
 
+/* кнопка-иконка: сворачивание панели */
+.sc-icon {
+  width: 34px; height: 32px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--sc-line); border-radius: 8px;
+  background: #171715; color: var(--ink); cursor: pointer;
+  transition: background 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+.sc-icon:hover { background: #201f1c; }
+.sc-icon:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; }
+.sc-icon.on { background: var(--lamp); border-color: var(--lamp); color: #0b0b0a; }
+.sc-icon svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+
 .sc-seg { display: inline-flex; border: 1px solid var(--sc-line); border-radius: 8px; overflow: hidden; }
 .sc-seg button {
-  height: 32px; min-width: 34px; padding: 0 10px;
+  height: 32px; min-width: 32px; padding: 0 9px;
   background: #171715; color: var(--smoke); border: 0; border-right: 1px solid var(--sc-line-soft);
   font: 500 12px/1 var(--font-ui); cursor: pointer;
   transition: background 0.16s var(--ease), color 0.16s var(--ease);
@@ -58,15 +84,27 @@
 .sc-seg button.on { background: var(--lamp); color: #0b0b0a; }
 .sc-seg button:focus-visible { outline: 2px solid var(--lamp); outline-offset: -2px; }
 
-/* ---------- сетка приборов ---------- */
+/* живой статус источника прямо в полосе — всегда видно, что мерится */
+.sc-live {
+  display: inline-flex; align-items: center; gap: 7px; min-width: 0;
+  font: 400 11.5px/1 var(--font-mono, ui-monospace, monospace); color: var(--smoke);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sc-live .dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; flex: none; }
+.sc-live .dot.idle { background: var(--mute); }
+.sc-live b { color: var(--ink); font-weight: 500; }
+
+/* ---------- корпус: панель + приборы ---------- */
+
+.sc-body { flex: 1 1 auto; display: flex; min-height: 0; position: relative; }
+.sc-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
 
 .sc-grid {
   display: grid; gap: 1px;
   background: var(--sc-line-soft);
-  min-height: 420px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: minmax(0, 1fr);
-  flex: 1 1 auto;
+  flex: 1 1 auto; min-height: 0;
 }
 .sc-grid.lay-1 { grid-template-columns: minmax(0, 1fr); }
 .sc-grid.lay-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -82,7 +120,7 @@
 .sc-slot-head {
   height: var(--sc-head); flex: none;
   display: flex; align-items: center; gap: 8px;
-  padding: 0 8px 0 10px;
+  padding: 0 8px;
   border-bottom: 1px solid var(--sc-line-soft);
 }
 .sc-slot-head select {
@@ -107,12 +145,12 @@
 .sc-canvas-wrap {
   position: relative; flex: 1 1 auto; min-height: 0;
   display: flex; align-items: center; justify-content: center;
-  padding: 6px;
+  padding: 4px;
 }
 .sc-canvas-wrap canvas {
   display: block; max-width: 100%; max-height: 100%;
   width: 100%; height: 100%; object-fit: contain;
-  background: #060605; border-radius: 6px;
+  background: #060605; border-radius: 4px;
 }
 /* график тянется на всё поле — пропорции ему не нужны; кадр и вектроскоп
    пропорции держат: круг обязан остаться кругом, кадр — кадром */
@@ -132,9 +170,9 @@
 .sc-legend span { display: inline-flex; align-items: center; gap: 5px; }
 .sc-legend i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; flex: none; }
 
-/* рамка кропа поверх кадра */
+/* рамка кропа: и поверх окна «Кадр», и поверх превью в панели */
 .sc-crop {
-  position: absolute; border: 1px dashed rgba(245, 239, 226, 0.8);
+  position: absolute; border: 1px dashed rgba(245, 239, 226, 0.85);
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
   pointer-events: none;
 }
@@ -142,6 +180,20 @@
   position: absolute; left: 50%; top: 8px; transform: translateX(-50%);
   font: 500 11px/1 var(--font-ui); color: #0b0b0a; background: var(--lamp);
   padding: 5px 9px; border-radius: 6px; pointer-events: none;
+  white-space: nowrap; max-width: calc(100% - 16px); overflow: hidden; text-overflow: ellipsis;
+}
+
+/* транспорт видеофайла — под приборами, появляется только с видео */
+.sc-transport {
+  display: none; align-items: center; gap: 8px;
+  padding: 6px 9px; border-top: 1px solid var(--sc-line-soft); background: #111110;
+  flex: none;
+}
+.sc-transport.on { display: flex; }
+.sc-transport input[type=range] { flex: 1 1 120px; accent-color: var(--lamp); min-width: 0; }
+.sc-time {
+  font: 400 11px/1 var(--font-mono, ui-monospace, monospace); color: var(--smoke);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
 }
 
 /* ---------- нижняя лента: числа и паспорт ---------- */
@@ -149,23 +201,23 @@
 .sc-foot {
   border-top: 1px solid var(--sc-line-soft);
   background: #111110;
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; flex: none;
 }
 .sc-nums {
   display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
   border-bottom: 1px solid var(--sc-line-soft);
 }
 .sc-num {
-  padding: 8px 10px; border-right: 1px solid var(--sc-line-soft); min-width: 0;
+  padding: 6px 10px; border-right: 1px solid var(--sc-line-soft); min-width: 0;
 }
 .sc-num:last-child { border-right: 0; }
 .sc-num i {
   display: block; font-style: normal; font-size: 9.5px; color: var(--mute);
-  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px;
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .sc-num b {
-  font: 500 17px/1.1 var(--font-mono, ui-monospace, monospace);
+  font: 500 16px/1.1 var(--font-mono, ui-monospace, monospace);
   font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
   display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
@@ -173,55 +225,89 @@
 .sc-num b.bad { color: #ff6b5a; }
 
 .sc-sig {
-  display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline;
-  padding: 7px 10px;
-  font: 400 11px/1.5 var(--font-mono, ui-monospace, monospace); color: var(--mute);
+  display: flex; flex-wrap: wrap; gap: 3px 16px; align-items: baseline;
+  padding: 6px 10px;
+  font: 400 10.5px/1.5 var(--font-mono, ui-monospace, monospace); color: var(--mute);
 }
 .sc-sig b { color: var(--smoke); font-weight: 500; }
 .sc-sig .dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; display: inline-block; }
 .sc-sig .dot.idle { background: var(--mute); }
 
-/* ---------- шторка настроек ---------- */
+/* ---------- панель управления ---------- */
 
 .sc-cfg {
-  border-top: 1px solid var(--sc-line-soft);
+  width: var(--sc-side); flex: none;
+  border-right: 1px solid var(--sc-line-soft);
   background: #0d0d0c;
-  padding: 12px 12px 14px;
+  overflow-y: auto; overscroll-behavior: contain;
+  scrollbar-width: thin; scrollbar-color: #26261f transparent;
   display: none;
 }
 .sc-cfg.on { display: block; }
-.sc-cfg-grid {
-  display: grid; gap: 12px 22px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+.sc-cfg::-webkit-scrollbar { width: 8px; }
+.sc-cfg::-webkit-scrollbar-thumb { background: #26261f; border-radius: 4px; }
+
+/* превью источника: кроп задаётся здесь, окно «Кадр» для этого не нужно */
+.sc-preview {
+  position: relative; margin: 9px 10px 2px;
+  border: 1px solid var(--sc-line); border-radius: 8px; overflow: hidden;
+  background: #060605; cursor: crosshair; touch-action: none;
 }
+.sc-preview canvas { display: block; width: 100%; height: auto; }
+
+.sc-sec { border-bottom: 1px solid var(--sc-line-soft); }
+.sc-sec > summary {
+  list-style: none; cursor: pointer;
+  padding: 9px 10px; display: flex; align-items: center; gap: 7px;
+  font: 500 10px/1 var(--font-ui); color: var(--mute);
+  letter-spacing: 0.09em; text-transform: uppercase;
+  transition: color 0.16s var(--ease);
+}
+.sc-sec > summary::-webkit-details-marker { display: none; }
+.sc-sec > summary:hover { color: var(--smoke); }
+.sc-sec > summary:focus-visible { outline: 2px solid var(--lamp); outline-offset: -2px; }
+.sc-sec > summary::after {
+  content: ""; margin-left: auto; width: 5px; height: 5px;
+  border-right: 1.2px solid currentColor; border-bottom: 1.2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.18s var(--ease);
+}
+.sc-sec[open] > summary::after { transform: rotate(-135deg) translateY(-1px); }
+.sc-sec-body { padding: 0 10px 11px; display: grid; gap: 7px; }
+
 .sc-fld { min-width: 0; }
 .sc-fld > i {
   display: block; font-style: normal; font-size: 10px; color: var(--mute);
   letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;
 }
 .sc-fld-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.sc-fld select {
+.sc-fld-row.two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.sc-cfg select {
   appearance: none; -webkit-appearance: none;
-  height: 30px; padding: 0 26px 0 9px; min-width: 0; max-width: 100%;
+  height: 32px; padding: 0 26px 0 9px; width: 100%; min-width: 0; max-width: 100%;
   border: 1px solid var(--sc-line); border-radius: 7px; background-color: #171715;
   color: var(--ink); font: 400 12.5px/1 var(--font-ui); cursor: pointer;
   background-image: linear-gradient(45deg, transparent 50%, var(--mute) 50%), linear-gradient(135deg, var(--mute) 50%, transparent 50%);
   background-position: right 12px center, right 7px center;
   background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
 }
-.sc-fld select option { background: #171715; }
-.sc-fld input[type=range] { width: 100%; max-width: 220px; accent-color: var(--lamp); }
-.sc-fld .val {
-  font: 400 12px var(--font-mono, ui-monospace, monospace); color: var(--smoke);
-  font-variant-numeric: tabular-nums; min-width: 46px;
+.sc-cfg select:hover { border-color: rgba(255, 253, 245, 0.18); }
+.sc-cfg select:focus-visible { outline: 2px solid var(--lamp); outline-offset: 1px; }
+.sc-cfg select option { background: #171715; }
+.sc-cfg input[type=range] { flex: 1 1 90px; min-width: 0; accent-color: var(--lamp); }
+.sc-cfg .val {
+  font: 400 11.5px var(--font-mono, ui-monospace, monospace); color: var(--smoke);
+  font-variant-numeric: tabular-nums; min-width: 54px; text-align: right;
 }
 .sc-sw {
-  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
-  font: 400 12.5px/1 var(--font-ui); color: var(--smoke);
-  min-height: 30px;
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  font: 400 12.5px/1.3 var(--font-ui); color: var(--smoke);
+  min-height: 28px;
 }
-.sc-sw input { accent-color: var(--lamp); width: 15px; height: 15px; }
-.sc-hint { font-size: 11.5px; color: var(--mute); margin-top: 7px; line-height: 1.5; text-wrap: pretty; }
+.sc-sw input { accent-color: var(--lamp); width: 15px; height: 15px; flex: none; }
+.sc-hint { font-size: 11px; color: var(--mute); line-height: 1.5; text-wrap: pretty; }
+.sc-keys { font-size: 11px; color: var(--mute); line-height: 1.7; }
+.sc-keys b { color: var(--smoke); font-weight: 500; font-family: var(--font-mono, ui-monospace, monospace); }
 
 /* ---------- пипетка ---------- */
 
@@ -230,45 +316,61 @@
   background: rgba(8, 8, 7, 0.92); border: 1px solid var(--sc-line);
   border-radius: 8px; padding: 8px 10px; pointer-events: none;
   font: 400 11px/1.6 var(--font-mono, ui-monospace, monospace); color: var(--smoke);
-  display: none; min-width: 138px;
+  display: none; min-width: 138px; z-index: 4;
 }
 .sc-probe.on { display: block; }
 .sc-probe b { color: var(--ink); font-weight: 500; }
 .sc-probe .sw { width: 26px; height: 10px; border-radius: 3px; display: block; margin-bottom: 6px; border: 1px solid var(--sc-line); }
 
-/* ---------- полноэкранный режим ---------- */
+/* ---------- полноэкранный режим и окно поверх ---------- */
 
-.sc-app:fullscreen { border-radius: 0; border: 0; margin: 0; height: 100%; }
-.sc-app:fullscreen .sc-grid { min-height: 0; }
-
-/* ---------- окно поверх (Document PiP) ---------- */
+.sc-app:fullscreen { border-radius: 0; border: 0; margin: 0; height: 100%; max-height: none; }
 .sc-pip-note {
-  font-size: 12px; color: var(--lamp); padding: 10px 12px;
-  border-top: 1px solid var(--sc-line-soft); display: none;
+  font-size: 12px; color: var(--lamp); padding: 8px 12px;
+  border-top: 1px solid var(--sc-line-soft); display: none; flex: none;
 }
 .sc-pip-note.on { display: block; }
 
-/* ---------- мобильная раскладка ---------- */
+/* ---------- планшет и телефон ---------- */
 
+@media (max-width: 1000px) {
+  /* панель уезжает поверх приборов выдвижным ящиком — приборам вся площадь */
+  .sc-cfg {
+    position: absolute; z-index: 6; inset: 0 auto 0 0;
+    width: min(300px, 88%); border-right: 1px solid var(--sc-line);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  }
+}
 @media (max-width: 900px) {
+  .sc-stage { padding: 0 8px; }
+  .sc-app {
+    height: clamp(480px, calc(100dvh - 128px), 900px);
+    border-radius: 10px;
+  }
   .sc-grid, .sc-grid.lay-2, .sc-grid.lay-3, .sc-grid.lay-4 {
     grid-template-columns: minmax(0, 1fr);
-    grid-auto-rows: minmax(260px, auto);
-    min-height: 0;
   }
   .sc-nums { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .sc-num { border-bottom: 1px solid var(--sc-line-soft); }
-  .sc-btn, .sc-seg button { height: 40px; }
-  .sc-slot-head { height: 36px; }
+  .sc-btn, .sc-seg button, .sc-icon { height: 40px; }
+  .sc-icon { width: 42px; }
+  .sc-slot-head { height: 34px; }
   .sc-slot-head select { font-size: 13px; padding: 6px 20px 6px 6px; }
+  /* на телефоне полоса едет вбок, а не сжимает кнопки в кашу: распорка убрана,
+     статус источника уходит вниз в паспорт, кнопки держат свою ширину */
+  .sc-bar { gap: 6px; padding: 7px 8px; overflow-x: auto; scrollbar-width: none; }
+  .sc-bar::-webkit-scrollbar { display: none; }
+  .sc-bar .sp { display: none; }
+  .sc-bar .sc-live { display: none; }
+  .sc-bar > * { flex: none; }
+  .sc-sw { min-height: 36px; }
+  .sc-cfg select { height: 38px; }
 }
 @media (max-width: 560px) {
   .sc-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .sc-bar { gap: 6px; padding: 8px; }
   .sc-btn { padding: 0 10px; font-size: 12px; }
-  .sc-app { margin-left: -8px; margin-right: -8px; border-radius: 10px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sc-btn, .sc-seg button { transition: none; }
+  .sc-btn, .sc-seg button, .sc-icon, .sc-sec > summary::after { transition: none; }
 }

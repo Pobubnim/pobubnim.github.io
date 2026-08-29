@@ -236,6 +236,13 @@
     var wfScaleX = wfW / w, laneScaleX = laneW / w;
     var hi1 = wfH - 1, invSpan = 1 / vSpan;
     var needWf = o.needWf !== false;
+    /* окно яркости: на трассу попадают только пиксели выбранной зоны (тени,
+       средние, света). Статистика и гистограмма считаются по всему кадру —
+       фильтр показывает, а не подменяет измерение (SCOPES_BASE §8в). */
+    var zLo = o.zoneLo === undefined ? -1e9 : o.zoneLo;
+    var zHi = o.zoneHi === undefined ? 1e9 : o.zoneHi;
+    var zoneAll = zLo <= -1e8 && zHi >= 1e8;
+    var invRange = 1 / span;
 
     for (var y = 0; y < h; y++) {
       var row = y * w * 4;
@@ -271,7 +278,7 @@
         if (over || under) chanOut++;
 
         /* waveform: горизонталь кадра остаётся горизонталью прибора */
-        if (needWf) {
+        if (needWf && (zoneAll || ((ly - black) * invRange >= zLo && (ly - black) * invRange <= zHi))) {
           var yy, idx;
           if (isLuma) {
             var cx = (x * wfScaleX) | 0;
@@ -379,43 +386,60 @@
      без неё одна и та же сцена в 4K и в 720p светилась бы по-разному, и человек
      крутил бы яркость трассы вместо того, чтобы смотреть на кадр. */
 
+  /* Вид на пиксели картинки как на 32-битные слова: одна запись вместо четырёх
+     байтовых. Порядок в слове — ABGR (little-endian); браузеров на big-endian
+     в природе нет, а перестановку каналов ловит приёмка (test_pribory §трасса). */
+  function pixelView(img) {
+    if (!img._u32 || img._u32.length !== img.data.length >> 2) {
+      img._u32 = new Uint32Array(img.data.buffer);
+    }
+    return img._u32;
+  }
+
   function waveformToImage(wf, W, H, img, gain, mode, frameW, frameH) {
-    var d = img.data, plane = W * H;
+    var plane = W * H;
     var perCol = Math.max(1, (frameW / W) * frameH);
     var k = (gain * H / 4) / perCol;
     var mono = mode === "luma";
-    for (var i = 0; i < plane; i++) {
-      var o = i * 4;
-      if (mono) {
-        var a = wf[i] * k * 255;
+    /* поле прибора почти всё пустое: пустая ячейка гасится одной записью в
+       32 бита вместо четырёх байтовых — на поле 1920×1080 это втрое дешевле */
+    var u32 = pixelView(img), i;
+    if (mono) {
+      for (i = 0; i < plane; i++) {
+        var c = wf[i];
+        if (c === 0) { u32[i] = 0xff000000; continue; }
+        var a = c * k * 255;
         if (a > 255) a = 255;
-        d[o] = 245 * a / 255; d[o + 1] = 239 * a / 255; d[o + 2] = 226 * a / 255;
-      } else {
-        var ar = wf[i] * k * 255, ag = wf[plane + i] * k * 255, ab = wf[plane * 2 + i] * k * 255;
-        d[o]     = ar > 255 ? 255 : ar;
-        d[o + 1] = ag > 255 ? 255 : ag;
-        d[o + 2] = ab > 255 ? 255 : ab;
+        u32[i] = 0xff000000 | (((226 * a / 255) | 0) << 16) | (((239 * a / 255) | 0) << 8) | ((245 * a / 255) | 0);
       }
-      d[o + 3] = 255;
+    } else {
+      for (i = 0; i < plane; i++) {
+        var wr = wf[i], wg = wf[plane + i], wb = wf[plane * 2 + i];
+        if ((wr | wg | wb) === 0) { u32[i] = 0xff000000; continue; }
+        var ar = wr * k * 255, ag = wg * k * 255, ab = wb * k * 255;
+        if (ar > 255) ar = 255;
+        if (ag > 255) ag = 255;
+        if (ab > 255) ab = 255;
+        u32[i] = 0xff000000 | ((ab | 0) << 16) | ((ag | 0) << 8) | (ar | 0);
+      }
     }
   }
 
   /* трасса, раскрашенная цветом самих пикселей (Luma Color у приборов):
      положение по яркости, цвет — средний цвет попавших пикселей */
   function waveformColorImage(wf, wfHue, W, H, img, gain, frameW, frameH) {
-    var d = img.data, plane = W * H;
+    var plane = W * H;
     var perCol = Math.max(1, (frameW / W) * frameH);
     var k = (gain * H / 4) / perCol;
+    var u32 = pixelView(img);
     for (var i = 0; i < plane; i++) {
-      var o = i * 4, c = wf[i];
+      var c = wf[i];
+      if (c === 0) { u32[i] = 0xff000000; continue; }
       var a = c * k * 255;
       if (a > 255) a = 255;
-      if (c) {
-        var h3 = i * 3, r = wfHue[h3] / c, g = wfHue[h3 + 1] / c, b = wfHue[h3 + 2] / c;
-        var mx = Math.max(r, g, b) || 1;
-        d[o] = r / mx * a; d[o + 1] = g / mx * a; d[o + 2] = b / mx * a;
-      } else { d[o] = d[o + 1] = d[o + 2] = 0; }
-      d[o + 3] = 255;
+      var h3 = i * 3, r = wfHue[h3] / c, g = wfHue[h3 + 1] / c, b = wfHue[h3 + 2] / c;
+      var mx = Math.max(r, g, b) || 1;
+      u32[i] = 0xff000000 | (((b / mx * a) | 0) << 16) | (((g / mx * a) | 0) << 8) | ((r / mx * a) | 0);
     }
   }
 

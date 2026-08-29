@@ -24,17 +24,40 @@
     { id: "frame",     name: "Кадр (зебра, пикинг)",   kind: "frame" }
   ];
 
-  var QUALITY = { fast: 480, work: 960, max: 1440 };
+  var QUALITY = { fast: 480, work: 960, max: 1440, ultra: 1920 };
+  var QUALITY_STEPS = [480, 960, 1440, 1920];
+  /* «авто»: кадр анализируется в том разрешении, в котором прибор его рисует —
+     тогда трасса идёт пиксель в пиксель. Меньше окно — дешевле кадр. */
+  var wantAnalysisW = 960;
+  function analysisWidth() {
+    if (st.quality !== "auto") return QUALITY[st.quality] || 960;
+    for (var i = 0; i < QUALITY_STEPS.length; i++) {
+      /* потолок «авто» — 1440: на экране с двойной плотностью поле прибора
+         просит 2–3 тысячи столбцов, а это уже 50 мс на кадр. 1920 остаётся,
+         но включается руками, когда важнее точность, а не плавность */
+      if (QUALITY_STEPS[i] >= wantAnalysisW || QUALITY_STEPS[i] >= 1440) return QUALITY_STEPS[i];
+    }
+    return 1440;
+  }
+
+  /* окно яркости для трассы (в долях сигнала): показывает нужную зону, не
+     подменяя измерение — числа и гистограмма всегда по всему кадру */
+  var ZONES = {
+    all:  null,
+    low:  { lo: -1e9, hi: 0.25 },
+    mid:  { lo: 0.25, hi: 0.75 },
+    high: { lo: 0.75, hi: 1e9 }
+  };
 
   var DEF = {
     matrix: "709", range: "full", unit: "ire", curve: "709",
-    gain: 2.2, histLog: true, histY: false,
+    gain: 2.2, histLog: true, histY: false, zone: "all",
     vecZoom: 1, vecColor: false, targets: 75, vecStep: 2,
     fcScale: "ire", fcEI: 800,
     zebra: false, zebraLevel: 0.95, zebraBand: false,
     peak: false, peakLevel: 0.35,
-    quality: "work", fps: 30,
-    layout: 4,
+    quality: "auto", fps: 30,
+    layout: 4, panel: true,
     slots: ["wf-luma", "vector", "hist", "frame"]
   };
 
@@ -44,8 +67,9 @@
   function load() {
     var s = {};
     for (var k in DEF) if (DEF.hasOwnProperty(k)) s[k] = DEF[k];
-    /* телефон: два прибора и лёгкий анализ по умолчанию — иначе окна
+    /* телефон: два прибора, лёгкий анализ и убранная панель — иначе окна
        превращаются в полоски, а батарея тает */
+    if (window.innerWidth < 1000) { s.panel = false; }
     if (window.innerWidth < 900) { s.layout = 2; s.quality = "fast"; s.slots = ["wf-luma", "frame", "vector", "hist"]; }
     try {
       var raw = localStorage.getItem("pobubnim-pribory-v1");
@@ -156,7 +180,12 @@
 
   /* транспорт для видеофайла: пауза, перемотка, шаг кадра */
   var transport = el("sc-transport");
-  function showTransport(on) { transport.style.display = on ? "" : "none"; }
+  function showTransport(on) { transport.classList.toggle("on", !!on); }
+  function clock(t) {
+    if (!isFinite(t)) return "0:00";
+    var m = (t / 60) | 0, s = (t - m * 60) | 0;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
   el("sc-play").addEventListener("click", function () {
     if (video.paused) { video.play(); this.textContent = "Пауза"; }
     else { video.pause(); this.textContent = "Играть"; }
@@ -169,6 +198,8 @@
     if (video.duration && document.activeElement !== seek) {
       seek.value = Math.round(video.currentTime / video.duration * 1000);
     }
+    var c = el("sc-clock");
+    if (c) c.textContent = clock(video.currentTime) + " / " + clock(video.duration);
   });
   el("sc-prev").addEventListener("click", function () { video.pause(); video.currentTime = Math.max(0, video.currentTime - 1 / 25); el("sc-play").textContent = "Играть"; });
   el("sc-next").addEventListener("click", function () { video.pause(); video.currentTime += 1 / 25; el("sc-play").textContent = "Играть"; });
@@ -249,7 +280,7 @@
       cx = Math.round(CROP.x * sw); cy = Math.round(CROP.y * sh);
       cw = Math.max(2, Math.round(CROP.w * sw)); ch = Math.max(2, Math.round(CROP.h * sh));
     }
-    var target = QUALITY[st.quality] || 960;
+    var target = analysisWidth();
     var ar = cw / ch;
     var w = Math.min(cw, target), h = Math.round(w / ar);
     if (h < 2) h = 2;
@@ -289,9 +320,13 @@
   /* поля анализа подгоняются под размер окна прибора: буфер пересоздаётся
      только при заметном изменении, чтобы не дёргаться на каждый пиксель */
   function ensureBuffers(wfW, wfH, vecS) {
-    wfW = Math.min(1600, Math.max(320, Math.round(wfW / 32) * 32));
-    wfH = Math.min(768, Math.max(192, Math.round(wfH / 32) * 32));
-    vecS = Math.min(768, Math.max(240, Math.round(vecS / 32) * 32));
+    /* поле прибора равно окну ПИКСЕЛЬ В ПИКСЕЛЬ: раньше размер округлялся до
+       32, и трасса всегда шла через интерполяцию — тонкие детали мылились.
+       Размер окна между кадрами постоянен, поэтому буфер пересоздаётся только
+       при настоящем изменении раскладки. */
+    wfW = Math.min(2048, Math.max(320, Math.round(wfW)));
+    wfH = Math.min(1152, Math.max(192, Math.round(wfH)));
+    vecS = Math.min(768, Math.max(240, Math.round(vecS)));
     if (wfW === WF_W && wfH === WF_H && vecS === VEC_S) return;
     WF_W = wfW; WF_H = wfH; VEC_S = vecS;
     buf = S.makeBuffers(WF_W, WF_H, VEC_S);
@@ -494,6 +529,13 @@
   var dirty = true, lastKey = null;
   function markDirty() { dirty = true; }
 
+  /* окно яркости трассы: приборы показывают только выбранную зону */
+  function zoneOpts(o) {
+    var z = ZONES[st.zone];
+    if (z) { o.zoneLo = z.lo; o.zoneHi = z.hi; }
+    return o;
+  }
+
   function render(force) {
     if (!frameReady()) return;
     /* статичный кадр не надо пересчитывать 30 раз в секунду: это греет машину
@@ -515,6 +557,8 @@
       var dpr = Math.min(2, window.devicePixelRatio || 1);
       if (kind === "wf") {
         wantWf = { w: Math.min(box.width * dpr - 34 * dpr, work.width), h: box.height * dpr };
+        /* «авто» смотрит на поле прибора: столько столбцов кадра и нужно */
+        wantAnalysisW = Math.round(box.width * dpr - 34 * dpr);
       }
       if (kind === "vector") wantVec = Math.min(box.width, box.height) * dpr;
     }
@@ -531,8 +575,8 @@
     var primary = modeList[0] || "luma";
 
     S.analyze(d.data, work.width, work.height,
-      { matrix: m, range: range, wfMode: primary, needWf: !!need.wf,
-        vecColor: st.vecColor, vecStep: need.vec ? st.vecStep : 64 }, buf);
+      zoneOpts({ matrix: m, range: range, wfMode: primary, needWf: !!need.wf,
+        vecColor: st.vecColor, vecStep: need.vec ? st.vecStep : 64 }), buf);
     lastStats = buf.stats;
 
     /* второй режим waveform в другом окне — отдельный проход (редкий случай) */
@@ -540,13 +584,14 @@
     for (var k2 = 1; k2 < modeList.length; k2++) {
       var b2 = extraBuf(modeList[k2]);
       S.analyze(d.data, work.width, work.height,
-        { matrix: m, range: range, wfMode: modeList[k2], needWf: true,
-          vecColor: false, vecStep: 64 }, b2);
+        zoneOpts({ matrix: m, range: range, wfMode: modeList[k2], needWf: true,
+          vecColor: false, vecStep: 64 }), b2);
       extra[modeList[k2]] = b2;
     }
 
     for (var s2 = 0; s2 < st.layout; s2++) drawSlot(slots[s2], d, primary, extra);
 
+    drawPreview();
     updateNumbers();
     var now = performance.now();
     fps.n++;
@@ -578,13 +623,15 @@
       ctx.fillStyle = "#060605";
       ctx.fillRect(0, 0, sz.W, sz.H);
       var gut = Math.round(34 * sz.k);
-      ctx.imageSmoothingEnabled = true;
+      /* поле прибора равно окну — рисуем один к одному: интерполяция размывает
+         тонкую трассу, а именно по её толщине читают шум и клип */
+      ctx.imageSmoothingEnabled = (sz.W - gut) !== WF_W || sz.H !== WF_H;
       ctx.drawImage(wfOff, gut, 0, sz.W - gut, sz.H);
       var lanes = (sc.wf === "parade" || sc.wf === "ycc") ? 3 : 1;
       var labels = sc.wf === "parade" ? ["R", "G", "B"] : (sc.wf === "ycc" ? ["Y′", "Cb", "Cr"] : null);
       drawScale(ctx, sz.W, sz.H, sz.k, lanes, labels, sc.wf === "ycc");
       slot.note.textContent = unitLabel() + " · " + S.RANGE[st.range].short +
-        (sc.wf === "ycc" ? " · Cb/Cr ±0,5" : "");
+        (sc.wf === "ycc" ? " · Cb/Cr ±0,5" : "") + zoneNote();
 
     } else if (sc.kind === "hist") {
       var sz2 = screenSize(slot, false);
@@ -663,14 +710,29 @@
     n.className = cls || "";
   }
 
+  var ZONE_NAME = { all: "", low: "тени", mid: "средние", high: "света" };
+  function zoneNote() {
+    return ZONE_NAME[st.zone] ? " · только " + ZONE_NAME[st.zone] : "";
+  }
+
   function updateSignature() {
     var sig = el("sc-signature");
     if (!sig) return;
     var live = !!(stream || (video.src && !video.paused)) && !frozen;
+    /* та же правда в верхней полосе: что за источник и живой ли он — видно,
+       даже когда нижняя лента ушла за край экрана */
+    var top = el("sc-live");
+    if (top) {
+      top.innerHTML = '<span class="dot' + (live ? "" : " idle") + '"></span>' +
+        "<b>" + escapeHtml(sourceName) + "</b>" +
+        (frozen ? " · заморожен" : "") + (CROP ? " · кроп" : "") +
+        (ZONE_NAME[st.zone] ? " · " + ZONE_NAME[st.zone] : "");
+    }
     sig.innerHTML =
       '<span><span class="dot' + (live ? "" : " idle") + '"></span> ' +
       (frozen ? "кадр заморожен" : live ? "живой сигнал" : "стоп-кадр") + "</span>" +
       "<span>Источник: <b>" + escapeHtml(sourceName) + "</b></span>" +
+      (ZONE_NAME[st.zone] ? "<span>Трасса: <b>только " + ZONE_NAME[st.zone] + "</b></span>" : "") +
       "<span>Матрица: <b>" + S.MATRIX[st.matrix].name + "</b></span>" +
       "<span>Диапазон: <b>" + S.RANGE[st.range].name + "</b></span>" +
       "<span>Шкала: <b>" + unitLabel() + "</b></span>" +
@@ -688,16 +750,29 @@
 
   var cropping = false, cropStart = null, cropBox = null, cropHint = null;
 
+  function setCropBtn() {
+    var b = el("sc-crop");
+    if (!b) return;
+    b.textContent = CROP ? "Снять кроп" : "Кроп";
+    b.classList.toggle("on", !!CROP || cropping);
+  }
+
   el("sc-crop").addEventListener("click", function () {
-    if (CROP) { CROP = null; this.classList.remove("on"); this.textContent = "Кроп"; removeCropUI(); note("Кроп снят — считаю весь кадр."); return; }
+    if (CROP) { CROP = null; cropping = false; removeCropUI(); paintCropFrame(); setCropBtn(); note("Кроп снят — считаю весь кадр."); render(true); return; }
     cropping = true;
-    this.classList.add("on");
+    setCropBtn();
+    /* область выделяется мышью: по превью в панели — всегда, по окну «Кадр» —
+       если оно открыто. Раньше без окна «Кадр» кроп задать было нельзя */
     var fs = frameSlot();
-    if (!fs) { note("Откройте окно «Кадр» — кроп задаётся мышью прямо по нему."); cropping = false; this.classList.remove("on"); return; }
-    cropHint = document.createElement("div");
-    cropHint.className = "sc-crop-hint";
-    cropHint.textContent = "Выделите область — прибор будет считать только её";
-    fs.wrap.appendChild(cropHint);
+    if (fs) {
+      cropHint = document.createElement("div");
+      cropHint.className = "sc-crop-hint";
+      cropHint.textContent = "Выделите область мышью";
+      fs.wrap.appendChild(cropHint);
+    }
+    setPanel(true);
+    note("Выделите область мышью по превью источника в панели слева" +
+         (fs ? " или прямо по окну «Кадр»." : "."));
   });
 
   function frameSlot() {
@@ -756,14 +831,103 @@
           var prev = CROP || { x: 0, y: 0, w: 1, h: 1 };
           CROP = { x: prev.x + x0 * prev.w, y: prev.y + y0 * prev.h,
                    w: (x1 - x0) * prev.w, h: (y1 - y0) * prev.h };
-          el("sc-crop").textContent = "Снять кроп";
+          paintCropFrame();
           note("Кроп задан: прибор считает выделенную область.");
         } else {
-          el("sc-crop").classList.remove("on");
           note("Область слишком мала — кроп не задан.");
         }
+        setCropBtn();
       });
       slot.canvas.addEventListener("pointerleave", function () { hideProbe(); });
+    });
+  }
+
+  /* ---------------- превью источника в панели ---------------- */
+  /* Кроп задаётся прямо здесь: раньше для этого приходилось держать на сетке
+     окно «Кадр», то есть тратить на служебную задачу целое окно прибора. */
+
+  var prevWrap = el("sc-preview"), prevCv = el("sc-preview-cv");
+  var prevCtx = prevCv ? prevCv.getContext("2d") : null;
+  var prevFrame = null, prevSel = null, prevStart = null;
+
+  function drawPreview() {
+    if (!prevCtx || !prevWrap.offsetParent) return;   /* панель закрыта — не тратим кадр */
+    var src = still || (video.videoWidth ? video : null);
+    if (!src) return;
+    var sw = still ? (still.naturalWidth || still.width) : video.videoWidth;
+    var sh = still ? (still.naturalHeight || still.height) : video.videoHeight;
+    if (!sw || !sh) return;
+    var W = Math.max(120, Math.round(prevWrap.clientWidth));
+    var H = Math.max(60, Math.round(W * sh / sw));
+    if (prevCv.width !== W || prevCv.height !== H) { prevCv.width = W; prevCv.height = H; }
+    prevCtx.drawImage(src, 0, 0, sw, sh, 0, 0, W, H);
+    paintCropFrame();
+  }
+
+  function paintCropFrame() {
+    if (!prevWrap) return;
+    if (!CROP) {
+      if (prevFrame && prevFrame.parentNode) prevFrame.parentNode.removeChild(prevFrame);
+      prevFrame = null;
+      return;
+    }
+    if (!prevFrame) {
+      prevFrame = document.createElement("div");
+      prevFrame.className = "sc-crop";
+      prevWrap.appendChild(prevFrame);
+    }
+    prevFrame.style.left = (CROP.x * 100).toFixed(2) + "%";
+    prevFrame.style.top = (CROP.y * 100).toFixed(2) + "%";
+    prevFrame.style.width = (CROP.w * 100).toFixed(2) + "%";
+    prevFrame.style.height = (CROP.h * 100).toFixed(2) + "%";
+  }
+
+  function prevPoint(ev) {
+    var r = prevWrap.getBoundingClientRect();
+    return { x: Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width)),
+             y: Math.min(1, Math.max(0, (ev.clientY - r.top) / r.height)) };
+  }
+
+  if (prevWrap) {
+    prevWrap.addEventListener("pointerdown", function (ev) {
+      prevStart = prevPoint(ev);
+      if (!prevSel) {
+        prevSel = document.createElement("div");
+        prevSel.className = "sc-crop";
+      }
+      prevWrap.appendChild(prevSel);
+      prevSel.style.left = (prevStart.x * 100) + "%";
+      prevSel.style.top = (prevStart.y * 100) + "%";
+      prevSel.style.width = "0%"; prevSel.style.height = "0%";
+      prevWrap.setPointerCapture(ev.pointerId);
+      ev.preventDefault();
+    });
+    prevWrap.addEventListener("pointermove", function (ev) {
+      if (!prevStart || !prevSel) return;
+      var p = prevPoint(ev);
+      prevSel.style.left = (Math.min(prevStart.x, p.x) * 100) + "%";
+      prevSel.style.top = (Math.min(prevStart.y, p.y) * 100) + "%";
+      prevSel.style.width = (Math.abs(p.x - prevStart.x) * 100) + "%";
+      prevSel.style.height = (Math.abs(p.y - prevStart.y) * 100) + "%";
+    });
+    prevWrap.addEventListener("pointerup", function (ev) {
+      if (!prevStart) return;
+      var p = prevPoint(ev);
+      var x0 = Math.min(prevStart.x, p.x), x1 = Math.max(prevStart.x, p.x);
+      var y0 = Math.min(prevStart.y, p.y), y1 = Math.max(prevStart.y, p.y);
+      prevStart = null;
+      if (prevSel && prevSel.parentNode) prevSel.parentNode.removeChild(prevSel);
+      cropping = false;
+      removeCropUI();
+      if (x1 - x0 > 0.02 && y1 - y0 > 0.02) {
+        /* превью показывает ВЕСЬ кадр, поэтому доли берутся как есть */
+        CROP = { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+        note("Кроп задан: прибор считает выделенную область.");
+      } else {
+        CROP = null;
+        note("Кроп снят — считаю весь кадр.");
+      }
+      paintCropFrame(); setCropBtn(); render(true);
     });
   }
 
@@ -874,8 +1038,14 @@
       pipWin.document.body.style.margin = "0";
       appHome = app.parentNode; appNext = app.nextSibling;
       pipWin.document.body.appendChild(app);
+      /* в отдельном окне стойка занимает его целиком: там нет ни шапки сайта,
+         ни заголовка — только приборы */
+      app.style.height = "100vh";
+      app.style.borderRadius = "0";
+      app.style.border = "0";
       el("sc-pip").classList.add("on");
       pipWin.addEventListener("pagehide", function () {
+        app.style.height = ""; app.style.borderRadius = ""; app.style.border = "";
         if (appNext) appHome.insertBefore(app, appNext); else appHome.appendChild(app);
         el("sc-pip").classList.remove("on");
         pipWin = null;
@@ -885,11 +1055,27 @@
 
   /* ---------------- настройки ---------------- */
 
-  el("sc-settings").addEventListener("click", function () {
-    var box = el("sc-cfg");
-    var on = box.classList.toggle("on");
-    this.classList.toggle("on", on);
-  });
+  /* панель управления: свернуть — значит отдать приборам всю ширину экрана */
+  function setPanel(on) {
+    st.panel = !!on; save();
+    var box = el("sc-cfg"), btn = el("sc-settings");
+    if (box) box.classList.toggle("on", st.panel);
+    if (btn) {
+      btn.classList.toggle("on", st.panel);
+      btn.setAttribute("aria-expanded", st.panel ? "true" : "false");
+    }
+    markDirty(); render(true);
+  }
+  el("sc-settings").addEventListener("click", function () { setPanel(!st.panel); });
+
+  /* на телефоне панель лежит поверх приборов: тап по прибору её убирает —
+     иначе за выдвинутым ящиком не видно того, ради чего он открыт */
+  app.addEventListener("pointerdown", function (ev) {
+    if (!st.panel || window.innerWidth > 1000) return;
+    var box = el("sc-cfg"), btn = el("sc-settings");
+    if ((box && box.contains(ev.target)) || (btn && btn.contains(ev.target))) return;
+    setPanel(false);
+  }, true);
 
   function bindSelect(id, key, cast, after) {
     var n = el(id);
@@ -931,6 +1117,7 @@
   bindSelect("cfg-curve", "curve", null, fcRebuild);
   bindSelect("cfg-quality", "quality");
   bindSelect("cfg-fps", "fps", Number);
+  bindSelect("cfg-zone", "zone");
   bindSelect("cfg-targets", "targets", Number);
   bindSelect("cfg-vzoom", "vecZoom", Number);
   bindSelect("cfg-fc", "fcScale", null, function () {
@@ -966,7 +1153,8 @@
       st.unit = order[(order.indexOf(st.unit) + 1) % 3];
       el("cfg-unit").value = st.unit; save(); render(true);
       note("Шкала: " + unitLabel());
-    } else if (k >= "1" && k <= "4") {
+    } else if (k === "b") { setPanel(!st.panel); }
+    else if (k >= "1" && k <= "4") {
       var b = document.querySelector('[data-layout="' + k + '"]');
       if (b) b.click();
     } else if (k === " " && video.src) {
@@ -1005,9 +1193,16 @@
   document.querySelectorAll("[data-layout]").forEach(function (x) {
     x.classList.toggle("on", Number(x.dataset.layout) === st.layout);
   });
+  el("sc-cfg").classList.toggle("on", st.panel);
+  el("sc-settings").classList.toggle("on", st.panel);
+  el("sc-settings").setAttribute("aria-expanded", st.panel ? "true" : "false");
+  setCropBtn();
   still = demoFrame();
   showTransport(false);
   setFreezeBtn();
+  /* окно меняет размер — меняются и поля приборов: статичный кадр иначе
+     остался бы нарисованным под старый размер */
+  window.addEventListener("resize", markDirty);
   render(true);
   requestAnimationFrame(loop);
 
