@@ -29,6 +29,7 @@ PAGES = {
     "case-monolith":     (os.path.join(SCRATCH, "monolith-shot.jpg"), "Кейс: приложение MONOLITH"),
     "case-seversvet":    (os.path.join(IMG, "case-seversvet.webp"), "Кейс: сайт СЕВЕРСВЕТ"),
     "uroki":             (os.path.join(IMG, "about-monitor.webp"), "Уроки DaVinci Resolve"),
+    "blyoklaya-kartinka":(os.path.join(IMG, "hz-field-still.webp"), "Почему картинка блёклая"),
 }
 
 W, H = 1200, 630

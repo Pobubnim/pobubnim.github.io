@@ -89,7 +89,7 @@ index_repository после крупных правок; проверка: index
 
 ## tools/ (локальные скрипты, не деплоятся)
 
-build_articles.py, build_services.py, build_og.py, **build_og_tools.py**
+build_og.py, **build_og_tools.py**
 (og-карточки инструментов: тёмный фон + мини-лист, шрифт из assets/fonts),
 make_favicon.py,
 **fetch_fonts.py** (забрать шрифты у Google к себе и пересобрать fonts.css),
