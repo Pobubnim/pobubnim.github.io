@@ -687,3 +687,65 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
   .hero-in { flex-direction: column; align-items: flex-start; }
   .about-mini { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ---------- таблица данных (готовые ответы в инструментах и статьях) ---------- */
+
+.dtable-wrap {
+  margin: 26px 0 10px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--char2) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dtable {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 560px;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dtable caption.sr-caption {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.dtable th, .dtable td {
+  padding: 9px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--line-soft);
+  white-space: nowrap;
+}
+
+.dtable thead th {
+  color: var(--mute);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+}
+
+.dtable th[scope="row"] {
+  text-align: left;
+  font-weight: 400;
+  color: var(--ink);
+  white-space: normal;
+  min-width: 168px;
+  padding-left: 0;
+}
+
+.dtable tbody tr:hover { background: var(--char); }
+.dtable tbody td { color: var(--smoke); }
+.dtable tbody td:nth-child(n+4) { color: var(--ink); }
+
+.dtable-note { margin-top: 10px; font-size: 13.5px; color: var(--mute); }
+
+@media (max-width: 640px) {
+  .dtable { font-size: 13px; }
+  .dtable th, .dtable td { padding: 8px 11px; }
+}
