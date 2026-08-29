@@ -14,6 +14,7 @@
   python tools/daily_stats.py            показать сводку за вчера в консоли
   python tools/daily_stats.py --send     собрать и отправить в ТГ
   python tools/daily_stats.py --today    период "сегодня" вместо "вчера"
+  python tools/daily_stats.py --days 7   период за последние N дней (по сегодня)
 
 Планировщик Windows: задача PobubnimDailyStats, ежедневно 09:00 (--send).
 """
@@ -271,7 +272,13 @@ def collect(d1: str, d2: str, label: str) -> str:
 
 def main() -> None:
     args = sys.argv[1:]
-    if "--today" in args:
+    if "--days" in args:
+        n = max(1, int(args[args.index("--days") + 1]))
+        end = date.today()
+        start = end - timedelta(days=n - 1)
+        d1, d2 = start.isoformat(), end.isoformat()
+        label = f"{n} дн.: {start:%d.%m} — {end:%d.%m.%Y}"
+    elif "--today" in args:
         d1 = d2 = date.today().isoformat()
         label = f"сегодня ({date.today():%d.%m})"
     else:
