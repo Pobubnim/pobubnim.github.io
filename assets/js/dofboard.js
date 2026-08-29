@@ -39,17 +39,27 @@
 
   function fmt() { return D.FORMATS[state.fmt]; }
 
+  /* Слайдер задаёт ЭКВИВАЛЕНТНОЕ фокусное (по полному кадру), а объектив под
+     формат считается так, чтобы КАДР ОСТАЛСЯ ТЕМ ЖЕ: 50 мм на полном кадре —
+     это 10,6 мм на телефоне. Иначе сравнение форматов врёт: то же самое
+     стекло 50 мм на маленьком сенсоре даёт другую крупность, кадр становится
+     кропом центра, и размытие в долях кадра растёт — на доске выходило, что
+     телефон мылит фон сильнее полного кадра (EDU_BASE §8и). */
+  var FULL_W = 36;
+  function cropFactor() { return FULL_W / fmt()[1]; }
+  function realF() { return state.f / cropFactor(); }
+
   function calc() {
     var F = fmt();
     var c = D.coc("print", F[1], F[2], 3840);
-    var d = D.dof(state.f, state.N, state.s * 1000, c);
-    return { c: c, dof: d, sensorW: F[1] };
+    var d = D.dof(realF(), state.N, state.s * 1000, c);
+    return { c: c, dof: d, sensorW: F[1], f: realF(), crop: cropFactor() };
   }
 
   /* диаметр пятна в пикселях канваса для объекта на дистанции d (метры) */
   function spotPx(d, st) {
     st = st || calc();
-    var mm = D.blur(state.f, state.N, state.s * 1000, d * 1000);
+    var mm = D.blur(realF(), state.N, state.s * 1000, d * 1000);
     return mm * (cv.width / st.sensorW);
   }
 
@@ -91,8 +101,12 @@
 
     ctx.fillStyle = "rgba(245,239,226,0.55)";
     ctx.font = "500 13px 'JetBrains Mono', monospace";
-    ctx.fillText("фокус " + state.s.toFixed(1).replace(".", ",") + " м · " +
-      state.f + " мм · f/" + String(state.N).replace(".", ","), 16, 24);
+    var real = st.f;
+    var lens = st.crop > 1.02
+      ? state.f + " мм экв. (" + real.toFixed(real < 20 ? 1 : 0).replace(".", ",") + " мм)"
+      : state.f + " мм";
+    ctx.fillText("фокус " + state.s.toFixed(1).replace(".", ",") + " м · " + lens +
+      " · f/" + String(state.N).replace(".", ","), 16, 24);
 
     stats(st);
     ruler(st);
@@ -146,11 +160,14 @@
   function stats(st) {
     var d = st.dof;
     var bgSpot = spotPx(30, st);
+    var real = st.f;
     statEl.innerHTML =
       '<span><i>РЕЗКОСТЬ</i>' + m(d.near) + " – " + m(d.far) + "</span>" +
       '<span><i>ГЛУБИНА</i>' + (isFinite(d.total) ? m(d.total) : "до ∞") + "</span>" +
       '<span><i>ГИПЕРФОКАЛ</i>' + m(d.H) + "</span>" +
-      '<span><i>ОГОНЬ НА 30 М</i>' + Math.round(bgSpot) + " px</span>";
+      '<span><i>ОГОНЬ НА 30 М</i>' + Math.round(bgSpot) + " px</span>" +
+      '<span><i>ОБЪЕКТИВ</i>' + real.toFixed(real < 20 ? 1 : 0).replace(".", ",") +
+      " мм · кроп ×" + st.crop.toFixed(1).replace(".", ",") + "</span>";
   }
 
   var RMIN = 0.3, RMAX = 60;
@@ -175,7 +192,7 @@
     /* у data-focal значение пустое, поэтому проверяем наличие атрибута, а не его */
     if (r.hasAttribute("data-focal")) {
       state.f = +r.value;
-      row.querySelector(".sv").textContent = state.f + " мм";
+      row.querySelector(".sv").textContent = state.f + " мм экв.";
     } else if (r.hasAttribute("data-ap")) {
       var APS = [1.2, 1.4, 1.8, 2, 2.8, 4, 5.6, 8, 11, 16];
       state.N = APS[Math.min(APS.length - 1, +r.value)];
@@ -196,5 +213,6 @@
   });
 
   draw();
-  window.PobubnimDofBoard = { state: state, calc: calc, spotPx: spotPx, draw: draw };
+  window.PobubnimDofBoard = { state: state, calc: calc, spotPx: spotPx, draw: draw,
+                              realF: realF, cropFactor: cropFactor };
 })();

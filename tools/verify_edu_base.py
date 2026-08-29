@@ -120,6 +120,43 @@ print("— Шум: SNR = sqrt(N) —")
 check("SNR при N=40 (тени 2% колодца 2000)", math.sqrt(2000 * 0.02), 6.3, 0.1)
 check("SNR при N=200 (середина 10%)", math.sqrt(2000 * 0.10), 14.1, 0.1)
 
+# ---------- сравнение форматов при равной крупности (§8и.7) ----------
+print("— Формат сенсора: равная крупность, дистанция и диафрагма —")
+
+
+def blur_mm(f, N, s, d):
+    """диаметр пятна на сенсоре, мм (всё в мм)"""
+    return f * f * abs(d - s) / (N * d * (s - f))
+
+
+def dof_total(f, N, s, c):
+    H = f * f / (N * c) + f
+    near = s * (H - f) / (H + s - 2 * f)
+    far = s * (H - f) / (H - s) if s < H else float("inf")
+    return far - near
+
+
+FULL_W, PHONE_W = 36.0, 7.6
+EQ_F, APERTURE, DIST, BG = 50.0, 2.8, 3000.0, 30000.0     # 50 мм экв., f/2.8, 3 м, фон 30 м
+crop = FULL_W / PHONE_W
+check("кроп-фактор телефона 1/1.7\"", crop, 4.74, 0.01)
+check("объектив телефона под кадр 50 мм", EQ_F / crop, 10.56, 0.01)
+
+# размытие в ДОЛЯХ КАДРА: пятно на сенсоре, делённое на ширину сенсора
+share_ff = blur_mm(EQ_F, APERTURE, DIST, BG) / FULL_W
+share_phone = blur_mm(EQ_F / crop, APERTURE, DIST, BG) / PHONE_W
+check("размытие фона: полный кадр против телефона, раз", share_ff / share_phone, 4.79, 0.05)
+check("полный кадр, огонь на 30 м, px кадра 880", share_ff * 880, 6.66, 0.05)
+check("телефон, огонь на 30 м, px кадра 880", share_phone * 880, 1.39, 0.05)
+
+# глубина резкости: у телефона она БОЛЬШЕ (кружок строже, но фокусное короче)
+c_ff = math.hypot(36, 24) / 1500
+c_phone = math.hypot(7.6, 5.7) / 1500
+check("глубина, полный кадр 50 мм f/2.8 с 3 м, м",
+      dof_total(EQ_F, APERTURE, DIST, c_ff) / 1000, 0.58, 0.02)
+check("глубина, телефон при той же крупности, м",
+      dof_total(EQ_F / crop, APERTURE, DIST, c_phone) / 1000, 3.69, 0.05)
+
 print()
 if FAIL:
     print("РАСХОЖДЕНИЯ:", ", ".join(FAIL))

@@ -118,7 +118,9 @@ def main():
         cw = t.js("document.getElementById('db-frame').width")
         sensor = t.js("PobubnimDofBoard.calc().sensorW")
         got = t.js("PobubnimDofBoard.spotPx(30)")
-        ref = spot_ref(st["f"], st["N"], st["s"], 30, sensor, cw)
+        # слайдер задаёт ЭКВИВАЛЕНТНОЕ фокусное — в формулу идёт реальное
+        real_f = t.js("PobubnimDofBoard.realF()")
+        ref = spot_ref(real_f, st["N"], st["s"], 30, sensor, cw)
         check("кружок на 30 м считается формулой", abs(got - ref) < 0.01, f"{got:.3f} против {ref:.3f}")
 
         # 3. физика: открыли дырку — кружок больше, зона уже
@@ -153,14 +155,33 @@ def main():
         t.slider("focal", 50)
         time.sleep(0.3)
 
-        # 6. сенсор переключается и меняет расчёт
+        # 6. сенсор переключается — крупность держится, физика формата верна
         ff = t.js("PobubnimDofBoard.calc().sensorW")
+        ff_spot = t.js("PobubnimDofBoard.spotPx(30)")
+        ff_dof = t.js("PobubnimDofBoard.calc().dof.total")
+        ff_lens = t.js("PobubnimDofBoard.realF()")
+        check("на полном кадре объектив равен эквивалентному", abs(ff_lens - 50) < 0.01, ff_lens)
         t.js("document.querySelectorAll('#db .vbtn')[4].click()")   # телефон
         time.sleep(0.5)
         phone = t.js("PobubnimDofBoard.calc().sensorW")
+        phone_spot = t.js("PobubnimDofBoard.spotPx(30)")
+        phone_dof = t.js("PobubnimDofBoard.calc().dof.total")
+        phone_lens = t.js("PobubnimDofBoard.realF()")
+        crop = t.js("PobubnimDofBoard.cropFactor()")
         check("сенсор переключился", phone < ff, f"{phone} против {ff}")
-        check("на маленьком сенсоре кружок мельче в кадре",
-              t.js("PobubnimDofBoard.spotPx(30)") is not None, "")
+        check("кроп-фактор телефона ≈ 4,7", abs(crop - 36 / 7.6) < 0.01, crop)
+        check("крупность держится: объектив пересчитан под формат (50 мм → 10,6 мм)",
+              abs(phone_lens - 50 * 7.6 / 36) < 0.01, phone_lens)
+        # главная проверка урока: при равной крупности большой сенсор мылит сильнее
+        check("телефон размывает фон СЛАБЕЕ полного кадра (примерно в кроп-фактор раз)",
+              phone_spot < ff_spot and abs(ff_spot / phone_spot - crop) < 0.3,
+              f"ФК {ff_spot:.2f} px, телефон {phone_spot:.2f} px, отношение {ff_spot / phone_spot:.2f}")
+        check("у телефона глубина резкости БОЛЬШЕ, чем у полного кадра",
+              phone_dof > ff_dof * 3, f"телефон {phone_dof:.0f} мм против {ff_dof:.0f} мм")
+        check("в подписи виден реальный объектив и кроп-фактор",
+              "ОБЪЕКТИВ" in (t.js("document.getElementById('db-stat').innerText") or "") and
+              "кроп" in (t.js("document.getElementById('db-stat').innerText") or ""),
+              t.js("document.getElementById('db-stat').innerText"))
         t.js("document.querySelectorAll('#db .vbtn')[0].click()")
         time.sleep(0.4)
 
