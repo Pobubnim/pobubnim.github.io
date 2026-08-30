@@ -52,7 +52,10 @@ index_repository после крупных правок; проверка: index
   pribory-onlajn (ПРИБОРЫ — рабочая станция на весь экран: панель управления
   слева с превью и кропом, сетка 1–4 приборов, waveform/парад, гистограмма,
   вектроскоп с мишенями и линией кожи, false color; источник — экран/файл/камера),
-  kalkulyator-stoimosti-semki (заглушка-редирект, noindex).
+  kalkulyator-stoimosti-semki (заглушка-редирект, noindex),
+  monolit-crm-dlya-videoprodakshena (страница приложения МОНОЛИТ и модуля ШТАБ —
+  единственная платная карточка раздела, отдельная группа на хабе; факты берутся
+  из репо monolith_assistant, канон — docs/TOOLS_ROADMAP.md).
 
 ## assets/
 

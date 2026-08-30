@@ -66,6 +66,18 @@ TOOLS = {
     "kalkulyator-karty-pamyati": ("Калькулятор карты памяти", "Съёмка · носители",
                                   "РАСЧЁТ КАРТЫ", ["100 Мбит/с · карта 128 ГБ",
                                                    "≈ 2 ч 50 мин видео", "Нужен класс V30"]),
+    "monolit": ("МОНОЛИТ: приложение для тех, кто снимает", "Приложение · Windows и Android",
+                "РЫНОК · ЛЕНТА", ["Telegram · оператор — 25 000 ₽", "hh.ru · видеомонтажёр",
+                                  "FL.ru · цветокор — 18 000 ₽"]),
+}
+
+# Подпись под заголовком. Дефолт — про бесплатные инструменты; у приложения
+# он был бы враньём, поэтому своя строка (единственная платная карточка раздела).
+NOTE_DEFAULT = ("Бесплатно, без регистрации",
+                "Всё считается в браузере — данные никуда не уходят")
+NOTES = {
+    "monolit": ("14 дней бесплатно, дальше подписка",
+                "Заказы, деньги и лента заявок с рынка — на ПК и телефоне"),
 }
 
 REPO_FONTS = os.path.join(REPO, "assets", "fonts")
@@ -133,9 +145,9 @@ def build():
         for line in lines:
             d.text((70, y), line, font=f_title, fill=INK)
             y += 70
-        d.text((70, max(y + 24, 470)), "Бесплатно, без регистрации", font=f_note, fill=LAMP)
-        d.text((70, max(y + 60, 506)), "Всё считается в браузере — данные никуда не уходят",
-               font=f_note, fill=MUTE)
+        note_lamp, note_mute = NOTES.get(slug, NOTE_DEFAULT)
+        d.text((70, max(y + 24, 470)), note_lamp, font=f_note, fill=LAMP)
+        d.text((70, max(y + 60, 506)), note_mute, font=f_note, fill=MUTE)
 
         out = os.path.join(OUT, "tool-" + slug + ".jpg")
         im.save(out, quality=88)
