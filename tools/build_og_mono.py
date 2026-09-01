@@ -25,7 +25,7 @@ CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 # slug: (надчерк, заголовок, подпись под ним, число в кольце, подпись числа)
 CARDS = {
-    "shtab": (
+    "zakazy-sami": (
         "Приложение МОНОЛИТ · модуль ШТАБ",
         "Заказы приходят сами.<br>Пока вы на площадке.",
         "Telegram, hh.ru, FL.ru и Авито — одной лентой",

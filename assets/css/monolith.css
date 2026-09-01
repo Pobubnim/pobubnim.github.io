@@ -298,11 +298,12 @@
    толщина (18 / 7 / 4) и радиус (зазор 14). Две одинаковые дуги в 4px друг
    от друга глаз читает как одну толстую с ореолом — так было и не читалось. */
 .mono .mo-ringrow { display: flex; gap: clamp(18px, 2.6vw, 30px); align-items: center; flex-wrap: wrap; }
-.mono .mo-ringwrap { position: relative; width: clamp(200px, 22vw, 264px); aspect-ratio: 1; flex: none; }
+.mono .mo-ringwrap { position: relative; width: clamp(248px, 22vw, 272px); aspect-ratio: 1; flex: none; }
 .mono .mo-ringwrap svg { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
 .mono .mo-ringc {
   position: absolute;
-  inset: 0;
+  /* инсет = зона внутри самого глубокого витка: число не садится на дугу */
+  inset: 27%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -319,9 +320,9 @@
   color: var(--m-mut);
 }
 /* moneyLarge 30/600/-0.03em — центр кольца, не moneyHero (52 в круг не лезет) */
-.mono .mo-ringc .v { font-size: clamp(25px, 2.6vw, 30px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
+.mono .mo-ringc .v { font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
 .mono .mo-ringc .v i { font-style: normal; font-size: 0.58em; font-weight: 500; color: var(--m-mut); margin-left: 0.16em; letter-spacing: 0; }
-.mono .mo-ringc .s { margin-top: 2px; font-size: 11.5px; font-weight: 600; color: var(--m-ember); }
+.mono .mo-ringc .s { margin-top: 2px; font-size: 11px; white-space: nowrap; font-weight: 600; color: var(--m-ember); }
 .mono .mo-legend { display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; min-width: 0; flex: 1 1 220px; }
 .mono .mo-lg { display: flex; gap: 13px; align-items: flex-start; }
 /* Жетон = ОТРЕЗОК ДУГИ, а не квадрат: та же фактура, опознание без чтения */
