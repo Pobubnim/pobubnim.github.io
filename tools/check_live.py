@@ -132,7 +132,9 @@ def urls_from_sitemap():
     sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
     out = []
     for loc in re.findall(r"<loc>(.*?)</loc>", sm):
-        out.append(re.sub(r"^https://pobubnim\.github\.io/", LOCAL, loc))
+        # после переезда на свой домен в карте живёт pobubnim.ru — если не
+        # заменить и его, проверка молча уходит на ПРОД вместо превью
+        out.append(re.sub(r"^https://(?:pobubnim\.ru|pobubnim\.github\.io)/", LOCAL, loc))
     return out
 
 
