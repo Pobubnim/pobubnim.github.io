@@ -3,4 +3,41 @@ Allow: /
 Disallow: /admin.html
 Clean-param: fbclid&diag&fresh&utm_source&utm_medium&utm_campaign&yclid&gclid
 
+# Роботы быстрых ответов Яндекса (YandexGPT и ответы Алисы) читают robots.txt
+# отдельно от индексирующего: без явного разрешения наши материалы могут не
+# попадать в нейроответы. Страницы они не индексируют, только ограничивают показ.
+User-agent: YandexAdditional
+Allow: /
+Disallow: /admin.html
+
+User-agent: YandexAdditionalBot
+Allow: /
+Disallow: /admin.html
+
+# Поисковые роботы языковых моделей: пускаем — иначе они не смогут на нас
+# сослаться. Обучающие краулеры (CCBot) не разрешаем отдельной строкой ниже.
+User-agent: GPTBot
+Allow: /
+Disallow: /admin.html
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin.html
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin.html
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin.html
+
 Sitemap: https://pobubnim.github.io/sitemap.xml
