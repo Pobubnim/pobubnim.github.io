@@ -32,7 +32,24 @@ from pathlib import Path
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 COUNTER = 111935483
-HOST_ID = "https:pobubnim.github.io:443"
+# Вебмастер грузит новый хост не сразу: пока по pobubnim.ru данных нет, читаем
+# старое зеркало. Как только Яндекс его поднимет, сводка переедет сама —
+# руками менять ничего не придётся.
+HOST_NEW = "https:pobubnim.ru:443"
+HOST_OLD = "https:pobubnim.github.io:443"
+_host_cache = []
+
+
+def host_id(uid: int) -> str:
+    """Новый хост, если он уже загружен в Вебмастер; иначе старое зеркало."""
+    if _host_cache:
+        return _host_cache[0]
+    try:
+        api(f"https://api.webmaster.yandex.net/v4/user/{uid}/hosts/{HOST_NEW}/summary/")
+        _host_cache.append(HOST_NEW)
+    except Exception:
+        _host_cache.append(HOST_OLD)
+    return _host_cache[0]
 TOKEN_FILE = Path.home() / ".pobubnim" / "yandex_oauth.txt"
 NOTIFY = Path("C:/src/monolith_assistant/scripts/notify_founder.py")
 
@@ -210,7 +227,7 @@ def collect(d1: str, d2: str, label: str) -> str:
     # --- Вебмастер: индексация и поиск ---
     try:
         uid = api("https://api.webmaster.yandex.net/v4/user")["user_id"]
-        base = f"https://api.webmaster.yandex.net/v4/user/{uid}/hosts/{HOST_ID}"
+        base = f"https://api.webmaster.yandex.net/v4/user/{uid}/hosts/{host_id(uid)}"
         s = api(base + "/summary")
         # summary пересчитывается раз в сутки и держит вчерашний ноль, когда
         # страницы в индексе уже есть: живую цифру берём из выборки (28.08)

@@ -25,8 +25,11 @@ from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
-HOST_ID = "https:pobubnim.github.io:443"
-SITE = "https://pobubnim.github.io"
+# см. daily_stats.py: пока Вебмастер не поднял новый хост, работаем со старым
+HOST_NEW = "https:pobubnim.ru:443"
+HOST_OLD = "https:pobubnim.github.io:443"
+SITE_NEW = "https://pobubnim.ru"
+SITE_OLD = "https://pobubnim.github.io"
 TOKEN_FILE = Path.home() / ".pobubnim" / "yandex_oauth.txt"
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -70,10 +73,18 @@ def main() -> None:
     elif args:
         urls = args
     else:
-        urls = [SITE + p for p in CORE]
+        urls = []  # заполнится после выбора хоста
 
     uid = api("https://api.webmaster.yandex.net/v4/user")["user_id"]
-    base = f"https://api.webmaster.yandex.net/v4/user/{uid}/hosts/{HOST_ID}"
+    try:
+        api(f"https://api.webmaster.yandex.net/v4/user/{uid}/hosts/{HOST_NEW}/summary/")
+        host, site = HOST_NEW, SITE_NEW
+    except Exception:
+        host, site = HOST_OLD, SITE_OLD
+        print("Новый хост в Вебмастере ещё не загружен — работаем по зеркалу")
+    if not args and "--sitemap" not in sys.argv:
+        urls = [site + p for p in CORE]
+    base = f"https://api.webmaster.yandex.net/v4/user/{uid}/hosts/{host}"
     quota = api(base + "/recrawl/quota")
     left = quota.get("quota_remainder", 0)
     print(f"Квота переобхода: {left} из {quota.get('daily_quota')} на сутки")
