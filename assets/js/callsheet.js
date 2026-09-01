@@ -229,7 +229,7 @@
       h.push("<tr><td>" + (i + 1) + "</td><td>" + bl(l.name) + "</td><td>" +
         bl(l.addr) + "</td><td>" + (l.time ? esc(l.time) : "—") + "</td></tr>");
     });
-    return "<h4>Локации</h4>" + h.join("") + "</table>";
+    return "<h3>Локации</h3>" + h.join("") + "</table>";
   }
 
   function crewTable() {
@@ -242,27 +242,27 @@
         "</td><td>" + (c.phone ? esc(c.phone) : "—") + "</td><td>" +
         (c.at ? esc(c.at) : "—") + "</td></tr>");
     });
-    return "<h4>Группа</h4>" + h.join("") + "</table>";
+    return "<h3>Группа</h3>" + h.join("") + "</table>";
   }
 
   function render() {
     var s = sunOfDay();
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
-    h.push("<h3>ВЫЗЫВНОЙ ЛИСТ" + (val("f-day") ? " · СМЕНА " + esc(val("f-day")) : "") +
+    h.push("<h2>ВЫЗЫВНОЙ ЛИСТ" + (val("f-day") ? " · СМЕНА " + esc(val("f-day")) : "") +
       (val("f-proj") ? " · " + esc(val("f-proj")) : ""));
-    h.push("</h3>");
+    h.push("</h2>");
     h.push('<table class="doc-meta"><tr><td>' + (val("f-city") ? esc(val("f-city")) : "Город: " + BL) +
       '</td><td style="text-align:right">' + (val("f-date") ? dateRu(val("f-date")) : "Дата: " + BL) +
       "</td></tr></table>");
     if (val("f-client")) h.push("<p>Заказчик: " + esc(val("f-client")) + ".</p>");
-    h.push("<h4>Расписание</h4>");
+    h.push("<h3>Расписание</h3>");
     h.push(schedule());
-    h.push("<h4>Свет</h4>");
+    h.push("<h3>Свет</h3>");
     h.push(sunBlock(s));
     h.push(lightNotes(s));
     h.push(locsTable());
     h.push(crewTable());
-    if (val("f-notes")) h.push("<h4>Важное</h4><p>" + esc(val("f-notes")).replace(/\n/g, "<br>") + "</p>");
+    if (val("f-notes")) h.push("<h3>Важное</h3><p>" + esc(val("f-notes")).replace(/\n/g, "<br>") + "</p>");
     h.push('<p class="doc-note">Восход, закат и золотой час посчитаны по формулам NOAA для указанных координат — точность около минуты. Собрано конструктором pobubnim.ru.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");

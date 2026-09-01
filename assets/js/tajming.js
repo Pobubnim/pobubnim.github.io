@@ -68,7 +68,7 @@
   function render() {
     var rows = schedule();
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
-    h.push("<h3>ТАЙМИНГ СВАДЕБНОГО ДНЯ</h3>");
+    h.push("<h2>ТАЙМИНГ СВАДЕБНОГО ДНЯ</h2>");
     h.push('<p style="text-align:center;font-size:12px;color:#6b675e">план по часам · собрано на pobubnim.ru</p>');
     rows.forEach(function (r) {
       h.push('<div class="line"><b>' + r.time + (r.end ? "–" + r.end : "") + "</b><span>" + r.nm + "</span></div>");

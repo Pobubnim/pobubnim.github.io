@@ -78,7 +78,7 @@
     var real = num("f-real", 0);
     if (real > 0) {
       var b = backward(real);
-      h.push("<h4>Если брать " + money(real) + " за смену</h4>");
+      h.push("<h3>Если брать " + money(real) + " за смену</h3>");
       h.push('<div class="line"><b>Выручка</b><span>' + money(b.gross) + " в месяц</span></div>");
       h.push('<div class="line"><b>Остаётся на руки</b><span>' + money(b.net) + "</span></div>");
       h.push("<p>" + (b.diff >= 0

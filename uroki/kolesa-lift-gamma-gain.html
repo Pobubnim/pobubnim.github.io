@@ -95,7 +95,7 @@
 <header class="nav solid">
   <div class="nav-in">
     <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Основная">
       <a href="/raboty.html">Работы</a>
       <div class="nav-drop">
         <button type="button">Решения<span class="caret">▾</span></button>
@@ -125,6 +125,8 @@
     <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
   </div>
 </header>
+
+<main>
 
 <div class="wrap">
   <section class="art-hero">
@@ -173,32 +175,32 @@
           <div class="wheels">
             <div class="wheel" data-wheel="lift">
               <button class="wreset" type="button" data-wreset aria-label="Сбросить Lift">⟲</button>
-              <div class="disc" data-disc role="application" aria-label="Колесо Lift: тащите для смещения теней к цвету"><span class="dot" data-dot></span></div>
-              <div class="mrail" data-rail aria-label="Мастер Lift"><span class="mthumb" data-thumb></span></div>
+              <div class="disc" data-disc tabindex="0" role="application" aria-label="Колесо Lift: тащите для смещения теней к цвету"><span class="dot" data-dot></span></div>
+              <div class="mrail" data-rail role="slider" tabindex="0" aria-label="Мастер Lift" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0"><span class="mthumb" data-thumb></span></div>
               <div class="nm">LIFT</div>
               <div class="val" data-val>0.00 0.00 0.00</div>
               <div class="role">тени</div>
             </div>
             <div class="wheel" data-wheel="gamma">
               <button class="wreset" type="button" data-wreset aria-label="Сбросить Gamma">⟲</button>
-              <div class="disc" data-disc role="application" aria-label="Колесо Gamma: тащите для смещения мид-тонов к цвету"><span class="dot" data-dot></span></div>
-              <div class="mrail" data-rail aria-label="Мастер Gamma"><span class="mthumb" data-thumb></span></div>
+              <div class="disc" data-disc tabindex="0" role="application" aria-label="Колесо Gamma: тащите для смещения мид-тонов к цвету"><span class="dot" data-dot></span></div>
+              <div class="mrail" data-rail role="slider" tabindex="0" aria-label="Мастер Gamma" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0"><span class="mthumb" data-thumb></span></div>
               <div class="nm">GAMMA</div>
               <div class="val" data-val>1.00 1.00 1.00</div>
               <div class="role">мид-тона</div>
             </div>
             <div class="wheel" data-wheel="gain">
               <button class="wreset" type="button" data-wreset aria-label="Сбросить Gain">⟲</button>
-              <div class="disc" data-disc role="application" aria-label="Колесо Gain: тащите для смещения светов к цвету"><span class="dot" data-dot></span></div>
-              <div class="mrail" data-rail aria-label="Мастер Gain"><span class="mthumb" data-thumb></span></div>
+              <div class="disc" data-disc tabindex="0" role="application" aria-label="Колесо Gain: тащите для смещения светов к цвету"><span class="dot" data-dot></span></div>
+              <div class="mrail" data-rail role="slider" tabindex="0" aria-label="Мастер Gain" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0"><span class="mthumb" data-thumb></span></div>
               <div class="nm">GAIN</div>
               <div class="val" data-val>1.00 1.00 1.00</div>
               <div class="role">света</div>
             </div>
             <div class="wheel" data-wheel="offset">
               <button class="wreset" type="button" data-wreset aria-label="Сбросить Offset">⟲</button>
-              <div class="disc" data-disc role="application" aria-label="Колесо Offset: тащите для смещения всего сигнала"><span class="dot" data-dot></span></div>
-              <div class="mrail" data-rail aria-label="Мастер Offset"><span class="mthumb" data-thumb></span></div>
+              <div class="disc" data-disc tabindex="0" role="application" aria-label="Колесо Offset: тащите для смещения всего сигнала"><span class="dot" data-dot></span></div>
+              <div class="mrail" data-rail role="slider" tabindex="0" aria-label="Мастер Offset" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0"><span class="mthumb" data-thumb></span></div>
               <div class="nm">OFFSET</div>
               <div class="val" data-val>0.00 0.00 0.00</div>
               <div class="role">весь сигнал</div>
@@ -297,11 +299,12 @@
   </div>
 </div>
 </div>
+</main>
 
 <footer class="footer">
   <div class="wrap footer-links">
     <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
-    <nav>
+    <nav aria-label="Подвал">
       <a href="/">На главную</a>
       <a href="../articles/">Статьи</a>
       <a href="../uroki/">Уроки</a>

@@ -33,6 +33,7 @@
   .hub-card:hover { background: var(--char2); }
   .hub-card b { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; text-wrap: balance; }
   .hub-card span { font-size: 13.5px; color: var(--smoke); font-weight: 300; text-wrap: pretty; }
+  .hub-card .mini span { color: inherit; font-size: inherit; font-weight: inherit; }
   .hub-card i { font-style: normal; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
   .hub-lesson { grid-column: 1 / -1; display: grid; grid-template-columns: 5fr 4fr; gap: clamp(18px, 3vw, 32px); align-items: center; padding: clamp(22px, 3.5vw, 34px); border: 1px solid var(--line); }
   .hub-lesson .tagline { display: inline-flex; align-items: center; gap: 8px; }
@@ -52,7 +53,7 @@
 <header class="nav solid">
   <div class="nav-in">
     <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Основная">
       <a href="/raboty.html">Работы</a>
       <div class="nav-drop">
         <button type="button">Решения<span class="caret">▾</span></button>
@@ -82,6 +83,8 @@
     <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
   </div>
 </header>
+
+<main>
 
 <div class="wrap">
   <section class="hub-hero">
@@ -176,11 +179,12 @@
     </div>
   </div>
 </div>
+</main>
 
 <footer class="footer">
   <div class="wrap footer-links">
     <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
-    <nav>
+    <nav aria-label="Подвал">
       <a href="/">На главную</a>
       <a href="../raboty.html">Работы</a>
       <a href="../education.html">Обучение</a>

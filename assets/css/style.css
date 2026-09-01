@@ -9,7 +9,7 @@
   --line-soft: rgba(255, 253, 245, 0.05);
   --ink: #f2efe8;           /* тёплый белый — текст */
   --smoke: #a39e93;         /* вторичный */
-  --mute: #6b675e;          /* метаданные */
+  --mute: #898478;          /* метаданные (AA на всех трёх поверхностях: 5.6 / 5.0 / 4.6) */
   --lamp: #f5efe2;          /* крем — единственный «свет» CTA */
   --r-card: 10px;
   --r-pill: 999px;
@@ -23,6 +23,9 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+
+/* единый видимый фокус: браузерное кольцо на чёрном почти не читается */
+:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; border-radius: 4px; }
 
 body {
   background: var(--void);

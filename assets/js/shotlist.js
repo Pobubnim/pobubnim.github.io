@@ -420,7 +420,7 @@
   function render() {
     var d = calc();
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
-    h.push("<h3>ШОТ-ЛИСТ · " + bl(val("f-proj")) + "</h3>");
+    h.push("<h2>ШОТ-ЛИСТ · " + bl(val("f-proj")) + "</h2>");
     h.push('<table class="doc-meta"><tr><td>' + (val("f-loc") ? "Локация: " + esc(val("f-loc")) : "Локация: " + BL) +
       '</td><td style="text-align:right">' + (val("f-date") ? "Дата: " + esc(val("f-date")) : "Дата: " + BL) + "</td></tr></table>");
     h.push("<p>Снимают: " + bl(val("f-crew")) + (val("f-cam") ? ". Камера и оптика: " + esc(val("f-cam")) : "") + ".</p>");
@@ -429,8 +429,8 @@
       var tbl = shotsTable(sc, si);
       if (!tbl) return;
       any = true;
-      h.push("<h4>Сцена " + (si + 1) + (sc.name ? " · " + esc(sc.name) : "") +
-        (sc.loc ? " · " + esc(sc.loc) : "") + " · " + esc(sc.time) + "</h4>");
+      h.push("<h3>Сцена " + (si + 1) + (sc.name ? " · " + esc(sc.name) : "") +
+        (sc.loc ? " · " + esc(sc.loc) : "") + " · " + esc(sc.time) + "</h3>");
       h.push(tbl);
     });
     if (!any) h.push("<p>Кадров пока нет: добавьте их слева — в листе появятся таблицы по сценам.</p>");

@@ -61,10 +61,10 @@
 .ptab.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
 .paper-shell { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--char); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
 .paper { background: #f7f4ec; color: #22201c; max-height: 72vh; overflow-y: auto; padding: clamp(22px, 3vw, 40px); font-family: Georgia, "Times New Roman", serif; font-size: 13.5px; line-height: 1.55; }
-.paper h3 { text-align: center; font-size: 15px; letter-spacing: 0.02em; margin-bottom: 4px; font-weight: 700; }
+.paper h2 { text-align: center; font-size: 15px; letter-spacing: 0.02em; margin-bottom: 4px; font-weight: 700; }
 /* шапка и реквизиты — таблицами: то же самое переваривает Word при выгрузке .doc */
 .paper table.doc-meta { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 14px 0 18px; }
-.paper h4 { font-size: 13.5px; margin: 16px 0 6px; font-weight: 700; }
+.paper h3 { font-size: 13.5px; margin: 16px 0 6px; font-weight: 700; }
 .paper p { margin-bottom: 8px; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 /* таблица позиций сметы/счёта */
 .paper table.items { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12.5px; }

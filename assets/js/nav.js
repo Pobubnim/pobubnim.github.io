@@ -69,3 +69,25 @@
   burger.addEventListener("click", function () { toggle(!menu.classList.contains("on")); });
   menu.addEventListener("click", function (e) { if (e.target.tagName === "A") toggle(false); });
 })();
+
+/* ---------- прокручиваемые блоки: доступ с клавиатуры ---------- */
+/* Лента кадров, лист документа, широкие таблицы листаются мышью и пальцем, но
+   без tabindex до их содержимого не добраться ни с клавиатуры, ни экранным
+   диктором (WCAG 2.1.1). Ставим уже после отрисовки: до неё размеры нулевые. */
+addEventListener("load", function () {
+  var scan = function () {
+    var nodes = document.querySelectorAll("div, section, ul, ol, table, pre, figure");
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      if (el.hasAttribute("tabindex") || el.closest("dialog")) continue;
+      var st = getComputedStyle(el);
+      var scrolls = /(auto|scroll)/.test(st.overflowX + " " + st.overflowY) &&
+        (el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2);
+      if (scrolls) el.setAttribute("tabindex", "0");
+    }
+  };
+  scan();
+  /* содержимое листа документа собирается скриптом инструмента позже */
+  var late = document.getElementById("paper");
+  if (late) new MutationObserver(scan).observe(late, { childList: true, subtree: true });
+});

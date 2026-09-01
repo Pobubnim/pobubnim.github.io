@@ -86,7 +86,7 @@
 <header class="nav solid">
   <div class="nav-in">
     <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Основная">
       <a href="/raboty.html">Работы</a>
       <div class="nav-drop">
         <button type="button">Решения<span class="caret">▾</span></button>
@@ -116,6 +116,8 @@
     <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
   </div>
 </header>
+
+<main>
 
 <section class="hero geo-hero" id="top">
   <video autoplay muted loop playsinline></video>
@@ -178,36 +180,36 @@
     <h2 class="svc-h2">Примеры работ: производство, имидж, форум</h2>
     <p class="svc-sub">Три фильма целиком — как выглядит то, что я отдаю заказчику. Наведите на кадр, чтобы он ожил; нажмите — откроется полностью.</p>
     <div class="films">
-      <article class="film" data-src="https://seversvet.github.io/assets/film/fabrik.mp4" tabindex="0" role="button" aria-label="FABRIK — имиджевый ролик, смотреть видео">
+      <div class="film" data-src="https://seversvet.github.io/assets/film/fabrik.mp4" tabindex="0" role="button" aria-label="FABRIK — имиджевый ролик, смотреть видео">
         <img loading="lazy" width="1280" height="720" src="https://seversvet.github.io/assets/film/fabrik.webp" alt="Имиджевый ролик компании — кадр фильма FABRIK">
         <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/fabrik-loop.mp4"></video>
         <span class="film-len">1:08</span>
         <div class="film-cap"><b>FABRIK</b><span>Имиджевый ролик · ГК OSTOV</span></div>
-      </article>
-      <article class="film" data-src="https://seversvet.github.io/assets/film/balabanovo.mp4" tabindex="0" role="button" aria-label="Балабаново — фильм о производстве, смотреть видео">
+      </div>
+      <div class="film" data-src="https://seversvet.github.io/assets/film/balabanovo.mp4" tabindex="0" role="button" aria-label="Балабаново — фильм о производстве, смотреть видео">
         <img loading="lazy" width="1280" height="720" src="https://seversvet.github.io/assets/film/balabanovo.webp" alt="Съёмка производства — кадр фильма о заводе">
         <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/balabanovo-loop.mp4"></video>
         <span class="film-len">2:54</span>
         <div class="film-cap"><b>Балабаново</b><span>Производство · фильм через людей</span></div>
-      </article>
-      <article class="film" data-src="https://seversvet.github.io/assets/film/konvergentum.mp4" tabindex="0" role="button" aria-label="Конвергентум — съёмка форума, смотреть видео">
+      </div>
+      <div class="film" data-src="https://seversvet.github.io/assets/film/konvergentum.mp4" tabindex="0" role="button" aria-label="Конвергентум — съёмка форума, смотреть видео">
         <img loading="lazy" width="1280" height="720" src="https://seversvet.github.io/assets/film/konvergentum.webp" alt="Съёмка форума — кадр репортажа">
         <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/konvergentum-loop.mp4"></video>
         <span class="film-len">1:08</span>
         <div class="film-cap"><b>Конвергентум</b><span>Форум · репортаж и атмосфера</span></div>
-      </article>
-      <article class="film" data-src="https://seversvet.github.io/assets/film/abilympics.mp4" tabindex="0" role="button" aria-label="Абилимпикс 2025 — отчётный ролик, смотреть видео">
+      </div>
+      <div class="film" data-src="https://seversvet.github.io/assets/film/abilympics.mp4" tabindex="0" role="button" aria-label="Абилимпикс 2025 — отчётный ролик, смотреть видео">
         <img loading="lazy" width="1280" height="720" src="https://seversvet.github.io/assets/film/abilympics.webp" alt="Съёмка мероприятия — кадр отчётного ролика">
         <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/abilympics-loop.mp4"></video>
         <span class="film-len">2:59</span>
         <div class="film-cap"><b>Абилимпикс 2025</b><span>Событие · отчётный ролик чемпионата</span></div>
-      </article>
-      <article class="film" data-src="https://seversvet.github.io/assets/film/rskg.mp4" tabindex="0" role="button" aria-label="РСКГ — кольцевые гонки, смотреть видео">
+      </div>
+      <div class="film" data-src="https://seversvet.github.io/assets/film/rskg.mp4" tabindex="0" role="button" aria-label="РСКГ — кольцевые гонки, смотреть видео">
         <img loading="lazy" width="1280" height="720" src="https://seversvet.github.io/assets/film/rskg.webp" alt="Съёмка автоспорта — кадр с этапа чемпионата">
         <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/rskg-loop.mp4"></video>
         <span class="film-len">1:06</span>
         <div class="film-cap"><b>РСКГ</b><span>Кольцевые гонки · этап чемпионата</span></div>
-      </article>
+      </div>
       <a class="film film-more" href="/raboty.html"><div class="film-more-in"><b>Все работы — 41 фильм по темам</b><span>реклама, имидж, события, клипы, свадьбы</span></div></a>
     </div>
   </section>
@@ -288,11 +290,12 @@
     </div>
   </div>
 </div>
+</main>
 
 <footer class="footer">
   <div class="wrap footer-links">
     <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
-    <nav>
+    <nav aria-label="Подвал">
       <a href="/">На главную</a>
       <a href="education.html">Обучение</a>
       <a href="privacy.html">Конфиденциальность</a>

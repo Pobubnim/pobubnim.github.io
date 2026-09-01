@@ -204,7 +204,7 @@
   function render() {
     var st = stats();
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
-    h.push("<h3>БРИФ НА СЪЁМКУ" + (val("f-proj") ? " · " + esc(val("f-proj")) : "") + "</h3>");
+    h.push("<h2>БРИФ НА СЪЁМКУ" + (val("f-proj") ? " · " + esc(val("f-proj")) : "") + "</h2>");
     if (val("f-client") || val("f-date")) {
       h.push('<table class="doc-meta"><tr><td>' + (val("f-client") ? "Заказчик: " + esc(val("f-client")) : "") +
         '</td><td style="text-align:right">' + (val("f-date") ? esc(val("f-date")) : "") + "</td></tr></table>");

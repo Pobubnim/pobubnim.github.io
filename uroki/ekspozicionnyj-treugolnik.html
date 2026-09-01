@@ -62,6 +62,8 @@
   .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
   .stat span i { font-style: normal; color: var(--mute); margin-right: 8px; }
   .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  /* метка внутри тревожной плашки: серый на красноватом даёт 4.3, мало */
+  .stat span.warn i { color: #c99a8b; }
   .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
   .task b { color: var(--ink); font-weight: 500; }
   .price-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15.5px; }
@@ -76,7 +78,7 @@
 <header class="nav solid">
   <div class="nav-in">
     <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Основная">
       <a href="/raboty.html">Работы</a>
       <div class="nav-drop">
         <button type="button">Решения<span class="caret">▾</span></button>
@@ -106,6 +108,8 @@
     <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
   </div>
 </header>
+
+<main>
 
 <div class="wrap">
   <section class="art-hero">
@@ -186,11 +190,12 @@
     <p class="cta-after">Привычнее мессенджер — <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">напишите напрямую</a>.</p>
   </div>
 </div>
+</main>
 
 <footer class="footer">
   <div class="wrap footer-links">
     <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
-    <nav>
+    <nav aria-label="Подвал">
       <a href="/">На главную</a>
       <a href="../articles/">Статьи</a>
       <a href="../instrumenty/">Инструменты</a>

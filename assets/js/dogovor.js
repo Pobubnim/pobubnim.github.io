@@ -350,7 +350,7 @@
     var priceF = moneyFull(s.price);
     var bronF = moneyFull(s.bronSum);
     var secN = 0, subN = 0, refs = {}, h = [];
-    function sec(title) { secN++; subN = 0; h.push("<h4>" + secN + ". " + title + "</h4>"); }
+    function sec(title) { secN++; subN = 0; h.push("<h3>" + secN + ". " + title + "</h3>"); }
     function p(txt, mark) {
       subN++;
       var no = secN + "." + subN;
@@ -359,7 +359,7 @@
     }
 
     h.push(MARK_TL);
-    h.push("<h3>ДОГОВОР ВОЗМЕЗДНОГО ОКАЗАНИЯ УСЛУГ № " + bl(s.num, "&nbsp;&nbsp;&nbsp;&nbsp;") + "</h3>");
+    h.push("<h2>ДОГОВОР ВОЗМЕЗДНОГО ОКАЗАНИЯ УСЛУГ № " + bl(s.num, "&nbsp;&nbsp;&nbsp;&nbsp;") + "</h2>");
     h.push('<table class="doc-meta"><tr><td>г. ' + bl(s.city, "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;") +
       '</td><td style="text-align:right">' + (s.signDate ? esc(s.signDate) + " г." : "«___» ____________ 20___ г.") + "</td></tr></table>");
     h.push("<p>" + execIntro(s) + ", именуемый(ая) в дальнейшем «Исполнитель», с одной стороны, и " + clientIntro(s) +
@@ -478,7 +478,7 @@
     var priceF = moneyFull(s.price);
     var h = [];
     h.push(MARK_TL);
-    h.push("<h3>АКТ ОБ ОКАЗАННЫХ УСЛУГАХ</h3>");
+    h.push("<h2>АКТ ОБ ОКАЗАННЫХ УСЛУГАХ</h2>");
     h.push('<p style="text-align:center">к Договору возмездного оказания услуг № ' + bl(s.num, "&nbsp;&nbsp;&nbsp;&nbsp;") +
       " от " + (s.signDate ? esc(s.signDate) + " г." : "«___» ____________ 20___ г.") + "</p>");
     h.push('<table class="doc-meta"><tr><td>г. ' + bl(s.city, "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;") +

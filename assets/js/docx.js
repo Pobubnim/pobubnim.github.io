@@ -158,9 +158,10 @@
       if (cls.contains("bmark-row")) {
         out.push(par(run(" Б ", { bold: true, italic: true, shd: "000000", color: "F5EFE2", font: "Georgia" }),
           { jc: cls.contains("br") ? "right" : "left", spaceAfter: 120 }));
-      } else if (el.tagName === "H3") {
+      } else if (el.tagName === "H2") {
+        /* заголовок документа; h3/h4 остались для старых листов, если найдутся */
         out.push(par(inlineRuns(el, { bold: true }), { jc: "center", spaceAfter: 120 }));
-      } else if (el.tagName === "H4") {
+      } else if (el.tagName === "H3" || el.tagName === "H4") {
         out.push(par(inlineRuns(el, { bold: true }), { spaceAfter: 100 }));
       } else if (el.tagName === "TABLE" && cls.contains("doc-meta")) {
         var tds = el.querySelectorAll("td");

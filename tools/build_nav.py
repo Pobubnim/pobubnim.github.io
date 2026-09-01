@@ -67,7 +67,7 @@ def drop(title: str, items: list[tuple[str, str]], page_url: str) -> str:
 
 def nav_html(page_url: str) -> str:
     return (
-        '<nav class="nav-links">'
+        '<nav class="nav-links" aria-label="Основная">'
         f'\n      {link("/raboty.html", "Работы", page_url)}'
         + drop("Решения", SOLUTIONS, page_url)
         + f'\n      {link("/#services", "Цены", page_url)}'
@@ -98,10 +98,10 @@ def main() -> None:
     changed = skipped = 0
     for p in pages:
         t = open(p, encoding="utf-8").read()
-        if '<nav class="nav-links">' not in t:
+        if '<nav class="nav-links"' not in t:
             skipped += 1
             continue
-        new = re.sub(r'<nav class="nav-links">.*?</nav>',
+        new = re.sub(r'<nav class="nav-links"[^>]*>.*?</nav>',
                      lambda _: nav_html(page_url_of(p)), t, count=1, flags=re.S)
         # кнопка «Оставить заявку» приводится к одному виду везде: /#zayavka —
         # запасной путь, data-lead открывает форму прямо на странице.

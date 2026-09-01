@@ -60,13 +60,13 @@ def card(f: dict, vert: bool, indent: str = "      ") -> str:
     alt = esc(f"{plain(f['t'])} — {f['s']}")
     src = base(f) + f["id"] + ".mp4"
     return (
-        f'{indent}<article class="film" data-src="{esc(src)}"{" data-vert" if vert else ""} '
+        f'{indent}<div class="film" data-src="{esc(src)}"{" data-vert" if vert else ""} '
         f'tabindex="0" role="button" aria-label="{alt}, смотреть видео">\n'
         f'{indent}  <img loading="lazy" width="{w}" height="{h}" src="{esc(poster(f))}" alt="{alt}">\n'
         f'{indent}  <video muted loop playsinline preload="none" src="{esc(base(f) + f["id"] + "-loop.mp4")}"></video>\n'
         f'{indent}  <span class="film-len">{f["len"]}</span>\n'
         f'{indent}  <div class="film-cap"><b>{f["t"]}</b><span>{f["s"]}</span></div>\n'
-        f"{indent}</article>"
+        f"{indent}</div>"
     )
 
 

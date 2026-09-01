@@ -207,7 +207,7 @@
   function render() {
     var st = stats();
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
-    h.push("<h3>ЧЕК-ЛИСТ СЪЁМОЧНОГО ДНЯ" + (val("f-proj") ? " · " + esc(val("f-proj")) : "") + "</h3>");
+    h.push("<h2>ЧЕК-ЛИСТ СЪЁМОЧНОГО ДНЯ" + (val("f-proj") ? " · " + esc(val("f-proj")) : "") + "</h2>");
     if (val("f-date") || val("f-loc")) {
       h.push('<table class="doc-meta"><tr><td>' + (val("f-loc") ? esc(val("f-loc")) : "") +
         '</td><td style="text-align:right">' + (val("f-date") ? esc(val("f-date")) : "") + "</td></tr></table>");
@@ -215,7 +215,7 @@
     groups.forEach(function (g) {
       var items = g.items.filter(function (it) { return it.text; });
       if (!items.length) return;
-      h.push("<h4>" + esc(g.name) + "</h4>");
+      h.push("<h3>" + esc(g.name) + "</h3>");
       h.push('<div class="ticks">' + items.map(function (it) {
         return '<div class="tick-row">' + (it.done ? "☑" : "☐") + " " + esc(it.text) + "</div>";
       }).join("") + "</div>");

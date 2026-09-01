@@ -171,6 +171,8 @@
         var R = disc.clientWidth / 2 - 10;
         dot.style.transform = "translate(" + (w.bx * R) + "px," + (w.by * R) + "px)";
         el.querySelector("[data-thumb]").style.left = ((w.t + 1) / 2 * 100) + "%";
+        var railEl = el.querySelector("[data-rail]");
+        if (railEl) railEl.setAttribute("aria-valuenow", w.t.toFixed(2));
       });
       var cdl = cdlOf(params);
       function trio(a, plus) {
@@ -252,6 +254,30 @@
       });
       disc.addEventListener("dblclick", function () { w.bx = w.by = 0; touch(); });
       rail.addEventListener("dblclick", function () { w.t = 0; touch(); });
+      /* то же самое с клавиатуры: мышь есть не у всех, а колесо — суть урока */
+      function keyed(target, move) {
+        target.addEventListener("keydown", function (e) {
+          var step = e.shiftKey ? 0.1 : 0.02;
+          var dx = e.key === "ArrowRight" ? step : e.key === "ArrowLeft" ? -step : 0;
+          var dy = e.key === "ArrowDown" ? step : e.key === "ArrowUp" ? -step : 0;
+          if (!dx && !dy && e.key !== "Home" && e.key !== "End") return;
+          e.preventDefault();
+          move(dx, dy, e.key);
+          touch();
+        });
+      }
+      keyed(disc, function (dx, dy, key) {
+        if (key === "Home" || key === "End") { w.bx = w.by = 0; return; }
+        w.bx = Math.max(-1, Math.min(1, w.bx + dx));
+        w.by = Math.max(-1, Math.min(1, w.by + dy));
+        var r = Math.hypot(w.bx, w.by);
+        if (r > 1) { w.bx /= r; w.by /= r; }
+      });
+      keyed(rail, function (dx, dy, key) {
+        if (key === "Home") { w.t = -1; return; }
+        if (key === "End") { w.t = 1; return; }
+        w.t = Math.max(-1, Math.min(1, w.t + dx));
+      });
       var rst = el.querySelector("[data-wreset]");
       if (rst) rst.addEventListener("click", function () { w.bx = w.by = 0; w.t = 0; touch(); });
     });

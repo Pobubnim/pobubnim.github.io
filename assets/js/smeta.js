@@ -124,7 +124,7 @@
   /* ---------- документы ---------- */
   function renderSmeta(d) {
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
-    h.push("<h3>СМЕТА № " + bl(val("f-num")) + " на услуги съёмки</h3>");
+    h.push("<h2>СМЕТА № " + bl(val("f-num")) + " на услуги съёмки</h2>");
     h.push('<table class="doc-meta"><tr><td>г. ' + bl(val("f-city")) + '</td><td style="text-align:right">«___» ____________ 20___ г.</td></tr></table>');
     h.push("<p>Исполнитель: " + whoIntro() + ".<br>Заказчик: " + bl(val("f-client")) + ".</p>");
     h.push(itemsTable(d));
@@ -138,11 +138,11 @@
 
   function renderSchet(d) {
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
-    h.push("<h3>СЧЁТ НА ОПЛАТУ № " + bl(val("f-num")) + "</h3>");
+    h.push("<h2>СЧЁТ НА ОПЛАТУ № " + bl(val("f-num")) + "</h2>");
     h.push('<table class="doc-meta"><tr><td>г. ' + bl(val("f-city")) + '</td><td style="text-align:right">«___» ____________ 20___ г.</td></tr></table>');
-    h.push("<h4>Получатель</h4>");
+    h.push("<h3>Получатель</h3>");
     h.push("<p>" + whoIntro() + "<br>Банк получателя: " + bl(val("f-bank")) + " · БИК " + bl(val("f-bik")) + "<br>Счёт получателя: " + bl(val("f-rs")) + "<br>Корр. счёт банка: " + bl(val("f-ks")) + "</p>");
-    h.push("<h4>Плательщик</h4>");
+    h.push("<h3>Плательщик</h3>");
     h.push("<p>" + bl(val("f-client")) + "</p>");
     h.push(itemsTable(d));
     h.push(ndsLine());
