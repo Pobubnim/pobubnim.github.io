@@ -265,6 +265,9 @@ h2 {
   min-height: 560px;
   display: flex;
   align-items: flex-end;
+  /* 240 байт вместо чёрного экрана: цвет кадра виден с первой отрисовки,
+     пока грузится постер, а следом и сама петля */
+  background: #0b0b0b url("data:image/webp;base64,UklGRuoAAABXRUJQVlA4IN4AAACQBgCdASogABIAPrVKoUunJCMhsBgIAOAWiWQAnTMy7s0/plE+jAQuQLmz8qowhzdha9jPgrUp0WhhfeHAAP5btempDQ4zTohUAt5/Z/SF47uxTJ08eYPXNLVr4ltDhiRWdAwYIKAVHyBTVlHXGEQf1u1kbSsM+pUGc+GRXKyJ8idNgF+0ynPWz/YywjTv07IR/LR1Nkk8qmJwfY+8dBbuJQIhx4sR4c7Rx27aZd8VF1ys6Sdmq1xhPMj+/cC9wBqY8X+Z1OhDPj54/UAPYO6cRQ+Cn7QeKyfaix7JNAA=") center/cover no-repeat;
 }
 
 .hero video, .hero .hero-fallback {
@@ -606,6 +609,21 @@ dialog.player {
 dialog.player[data-vert] { max-width: min(420px, 92vw); }
 dialog.player::backdrop { background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(6px); }
 dialog.player video { width: 100%; border-radius: var(--r-card); }
+/* пока плеер тянет полный ролик — крутится индикатор поверх постера */
+dialog.player[data-loading]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 253, 245, 0.22);
+  border-top-color: var(--lamp);
+  animation: player-spin 0.8s linear infinite;
+  pointer-events: none;
+}
+@keyframes player-spin { to { transform: rotate(1turn); } }
 dialog.player .close {
   position: fixed;
   top: 18px; right: 22px;

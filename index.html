@@ -83,15 +83,17 @@
 
 <!-- ЭКРАН 1: фон — «Поля», цвет перетекает из лога в грейд -->
 <section class="hero" id="top">
-  <video autoplay muted loop playsinline poster="assets/img/hero-poster.webp"></video>
+  <video autoplay muted loop playsinline></video>
   <script>
-  /* источник обложки выбирается ДО загрузки: телефон берёт лёгкую копию,
-     компьютер — HD; при включённой экономии трафика остаётся постер */
+  /* источник и постер выбираются ДО загрузки: телефон берёт лёгкие копии,
+     компьютер — HD; при экономии трафика остаётся только обложка */
   (function () {
     var v = document.currentScript.previousElementSibling;
     var c = navigator.connection || {};
-    if (c.saveData) return;
-    v.src = innerWidth >= 1024 ? "assets/video/hero-loop-hd.mp4" : "assets/video/hero-loop-m.mp4";
+    var big = innerWidth >= 1024;
+    v.poster = big ? "assets/img/hero-poster.webp" : "assets/img/hero-poster-m.webp";
+    if (c.saveData) return;                 /* экономия трафика: только обложка */
+    v.src = big ? "assets/video/hero-loop-hd.mp4" : "assets/video/hero-loop-m.mp4";
   })();
   </script>
   <div class="hero-in wrap">
@@ -241,7 +243,17 @@
         <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Прислать материал на грейд</a><a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a></div>
       </div>
       <div class="color-video">
-        <video controls muted loop playsinline preload="none" poster="assets/img/hero-poster.webp" src="assets/video/hero-loop.mp4"></video>
+        <video controls muted loop playsinline preload="none"></video>
+        <script>
+        /* тот же ролик, что в фоне: телефон получает лёгкую копию (15 МБ
+           вместо 38), обложка тоже по размеру экрана */
+        (function () {
+          var v = document.currentScript.previousElementSibling;
+          var big = innerWidth >= 1024;
+          v.poster = big ? "assets/img/hero-poster.webp" : "assets/img/hero-poster-m.webp";
+          v.src = big ? "assets/video/hero-loop.mp4" : "assets/video/hero-loop-m.mp4";
+        })();
+        </script>
       </div>
     </div>
   </div>

@@ -118,15 +118,17 @@
 </header>
 
 <section class="hero geo-hero" id="top">
-  <video autoplay muted loop playsinline poster="/assets/img/hero-poster.webp"></video>
+  <video autoplay muted loop playsinline></video>
   <script>
   /* тот же фон, что на главной: телефон берёт лёгкую копию, компьютер — HD.
      Превью-петли работ (150-300 КБ) для полного экрана не годятся — рассыпаются. */
   (function () {
     var v = document.currentScript.previousElementSibling;
     var c = navigator.connection || {};
-    if (c.saveData) return;
-    v.src = innerWidth >= 1024 ? "/assets/video/hero-loop-hd.mp4" : "/assets/video/hero-loop-m.mp4";
+    var big = innerWidth >= 1024;
+    v.poster = big ? "/assets/img/hero-poster.webp" : "/assets/img/hero-poster-m.webp";
+    if (c.saveData) return;                 /* экономия трафика: только обложка */
+    v.src = big ? "/assets/video/hero-loop-hd.mp4" : "/assets/video/hero-loop-m.mp4";
   })();
   </script>
   <div class="hero-in wrap">
