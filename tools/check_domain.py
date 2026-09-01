@@ -18,7 +18,12 @@ ok, bad = [], []
 
 
 def check(name, cond, detail=""):
-    (ok if cond else bad).append(f"{name}{' — ' + detail if detail else ''}")
+    """Пояснение печатается только у провалов: у зелёной строки оно
+    читается как жалоба и путает при приёмке."""
+    if cond:
+        ok.append(name)
+    else:
+        bad.append(f"{name}{' — ' + detail if detail else ''}")
 
 
 def doh(name, rtype="A"):
