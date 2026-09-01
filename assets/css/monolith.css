@@ -1,0 +1,600 @@
+/* monolith.css — язык приложения МОНОЛИТ на сайте ПОБУБНИМ.
+
+   ЗАЧЕМ ОТДЕЛЬНЫЙ ФАЙЛ. Сайт — «тёплый кинозал»: ахроматичный, крем вместо
+   акцента, Inter Tight + Playfair. Приложение — «Обсидиан 2.0»: холодный грунт,
+   индиго-действие, эмбер-время, Manrope+Inter. Смешивать их в style.css нельзя —
+   разъедутся оба. Поэтому язык продукта живёт в СКОУПЕ `.mono` и включается
+   только на странице продукта: шапка и подвал остаются сайтовыми (рама зала),
+   полотно внутри — приборная панель. Стык тёплого и холодного — сознательный
+   приём: «свет в зале гаснет, прибор включается».
+
+   ИСТОЧНИК ЦИФР — репозиторий приложения, не глаз:
+   грунт и кромки  → docs/DESIGN_CONCEPT_V3.md §4.1, §4.2
+   шкала чисел     → §4.3 (52 / 30 / 22 / 15 / 13, Inter + tnum)
+   роли цвета      → DESIGN_RULES.md «два огня на обсидиане»
+   движение        → MOTION_CHARTER.md (токены AppMotion) + §7 концепта
+   Здесь эти токены переведены в CSS один в один. Меняется канон — меняется файл.
+
+   ПРИБОРЫ (кольцо, лента радара, ряды) собраны РЕЗИНОВЫМИ, а не копией окна
+   1704px: та же система, но переживает 375px. Они же переезжают в вертикальные
+   ролики (videos/_kit) — один визуальный словарь на сайт и на клипы. */
+
+/* ── ШРИФТ ЗАГОЛОВКОВ ПРИЛОЖЕНИЯ ─────────────────────────────────────────
+   «Manrope говорит, Inter считает» (DESIGN_RULES). Inter на сайте уже есть
+   в виде Inter Tight — для чисел он годится (тот же скелет, tnum на месте),
+   а Manrope подключаем своим сабсетом: кириллица + латиница, 32 КБ. */
+@font-face {
+  font-display: swap;
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  src: url(../fonts/Manrope-var-cyr-lat.woff2) format('woff2');
+}
+
+.mono {
+  /* ГРУНТ — четыре слоя (§4.1). Шаг 3-5% светлоты: ступень не видна поодиночке,
+     стопкой даёт структуру и убирает нужду в разделителях. */
+  --m-bottom: #060608;
+  --m-bg: #08080B;
+  --m-layer: #0C0C13;
+  --m-card: #0E0E15;
+  --m-lift: #131320;
+  --m-alt: #191922;
+
+  /* ТЕКСТ — четыре уровня, иначе иерархия плоская */
+  --m-ink: #F5F5FA;
+  --m-mut: #9C9CAC;
+  --m-dim: #6B6B7A;
+
+  /* РОЛИ ЦВЕТА. Жёсткие, не смешивать: индиго = действие, эмбер = время,
+     зелёный = деньги-ФАКТ, красный = потеря. Пятого огня нет. */
+  --m-indigo: #6E59F0;
+  --m-indigo-br: #7B6BFF;
+  --m-indigo-alt: #9A5CF6;
+  --m-ember: #F5A623;
+  --m-ember-deep: #E8890C;
+  --m-green: #23C98C;
+  --m-red: #FF5A6A;
+
+  /* КРОМКА КАК СИГНАЛ СОСТОЯНИЯ (§4.2) */
+  --m-divider: rgba(255, 255, 255, 0.08);
+  --m-stroke: rgba(255, 255, 255, 0.13);
+  --m-edge-hover: rgba(123, 107, 255, 0.24);
+  --m-edge-active: rgba(123, 107, 255, 0.40);
+
+  --m-head: 'Manrope', 'Inter Tight', system-ui, sans-serif;
+  --m-sans: 'Inter Tight', 'Inter', system-ui, sans-serif;
+
+  /* Радиусы концентрично: чип 10-14, карта 20, герой 26 */
+  --m-r-chip: 12px;
+  --m-r-card: 20px;
+  --m-r-hero: 26px;
+
+  /* Движение — токены AppMotion один в один */
+  --m-fast: 140ms;
+  --m-base: 220ms;
+  --m-slow: 320ms;
+  --m-page: 380ms;
+  --m-reveal: 950ms;
+  --m-ease: cubic-bezier(0.23, 1, 0.32, 1);   /* signature: вход */
+  --m-exit: cubic-bezier(0.4, 0, 1, 1);       /* выход, короче входа */
+  --m-spring: cubic-bezier(0.34, 1.32, 0.36, 1);
+
+  color: var(--m-ink);
+  font-family: var(--m-sans);
+}
+
+/* Полотно продукта: холодный грунт с двумя источниками света — индиго сверху
+   справа (действие) и слабый эмбер снизу слева (время). Тот же приём, что в
+   рабочей области приложения. */
+.mono-canvas {
+  position: relative;
+  background:
+    radial-gradient(1100px 560px at 84% -8%, rgba(110, 89, 240, 0.13), transparent 62%),
+    radial-gradient(820px 480px at -8% 108%, rgba(245, 166, 35, 0.05), transparent 60%),
+    var(--m-bg);
+}
+/* Стык с тёплым залом сайта: не линия, а растворение */
+.mono-canvas::before,
+.mono-canvas::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  pointer-events: none;
+}
+.mono-canvas::before { top: 0; background: linear-gradient(180deg, #000, transparent); }
+.mono-canvas::after { bottom: 0; background: linear-gradient(0deg, #000, transparent); }
+
+.mono .num,
+.mono [data-count] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ── ТИПОГРАФИКА ─────────────────────────────────────────────────────────
+   Заголовки Manrope с минус-трекингом, числа Inter табличные.
+   Денежных размеров ровно ЧЕТЫРЕ (§4.3): 52 / 30 / 22 / 15 — плюс 13 на
+   вторичном. Пятого не заводить: 19 и 20 рядом человек не различает. */
+.mono .eyebrow {
+  font-family: var(--m-head);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--m-dim);
+}
+.mono h1.mo-h1 {
+  font-family: var(--m-head);
+  font-weight: 800;
+  font-size: clamp(38px, 6.2vw, 74px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.mono h1.mo-h1 .label {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--m-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--m-dim);
+}
+.mono h2.mo-h2 {
+  font-family: var(--m-head);
+  font-weight: 800;
+  font-size: clamp(27px, 3.4vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.mono h3.mo-h3 {
+  font-family: var(--m-head);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.015em;
+}
+.mono .mo-lead {
+  margin-top: 18px;
+  max-width: 620px;
+  font-size: clamp(16.5px, 1.5vw, 19px);
+  line-height: 1.5;
+  color: var(--m-mut);
+  text-wrap: pretty;
+}
+.mono .mo-sub {
+  margin-top: 12px;
+  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--m-mut);
+  text-wrap: pretty;
+}
+.mono p b, .mono li b { color: var(--m-ink); font-weight: 600; }
+.mono .mo-sec { padding: clamp(64px, 9vw, 116px) 0 0; }
+.mono .mo-sec-head { max-width: 720px; }
+
+/* ── ДЕЙСТВИЕ ────────────────────────────────────────────────────────────
+   Одна ЗАЛИВНАЯ индиго-поверхность на экран (правило ред. 3). Всё остальное
+   индиго — кромкой, текстом или дугой. */
+.mono .mo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--m-sans);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--m-fast) var(--m-spring), box-shadow var(--m-fast) var(--m-ease),
+              background var(--m-fast) var(--m-ease), border-color var(--m-fast) var(--m-ease);
+}
+.mono .mo-btn-primary {
+  color: #fff;
+  background: linear-gradient(160deg, var(--m-indigo-br), var(--m-indigo));
+  box-shadow: 0 0 28px -8px rgba(110, 89, 240, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+.mono .mo-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 36px -6px rgba(110, 89, 240, 0.95), inset 0 0 0 1px rgba(255, 255, 255, 0.22); }
+.mono .mo-btn-primary:active { transform: scale(0.97); }
+.mono .mo-btn-ghost {
+  color: var(--m-ink);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--m-stroke);
+}
+.mono .mo-btn-ghost:hover { background: rgba(255, 255, 255, 0.06); border-color: var(--m-edge-hover); }
+.mono .mo-btn-ghost:active { transform: scale(0.97); }
+.mono .mo-cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; align-items: center; }
+.mono .mo-cta-note { font-size: 13px; color: var(--m-dim); }
+
+/* ── КАРТА И СЛОЙ ────────────────────────────────────────────────────────
+   L1 sectionLayer держит ГРУППУ карточек и заменяет разделители. */
+.mono .mo-layer {
+  background: var(--m-layer);
+  border-radius: var(--m-r-hero);
+  padding: clamp(12px, 1.4vw, 16px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(12px, 1.4vw, 16px);
+}
+.mono .mo-card {
+  position: relative;
+  padding: clamp(16px, 2vw, 22px);
+  border: 1px solid var(--m-divider);
+  border-radius: var(--m-r-card);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 34%), var(--m-card);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: background var(--m-fast) var(--m-ease), border-color var(--m-fast) var(--m-ease),
+              transform var(--m-fast) var(--m-ease);
+}
+.mono .mo-card:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 34%), var(--m-lift);
+  border-color: var(--m-edge-hover);
+  transform: translateY(-1px);
+}
+/* Активная зона: кромка + inset-свечение (§4.2), не заливка */
+.mono .mo-card.lit {
+  border-color: var(--m-edge-active);
+  box-shadow: inset 0 0 20px rgba(110, 89, 240, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.mono .mo-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.mono .mo-card-head .t {
+  font-family: var(--m-head);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--m-mut);
+}
+.mono .mo-card-head .ln { flex: 1; height: 1px; background: var(--m-divider); }
+.mono .mo-card-head .note { font-size: 13px; font-weight: 500; color: var(--m-dim); white-space: nowrap; }
+
+/* Чип и пилюля-счётчик */
+.mono .mo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--m-mut);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--m-divider);
+  white-space: nowrap;
+}
+.mono .mo-chip.on {
+  color: #CFC8FF;
+  background: rgba(110, 89, 240, 0.16);
+  border-color: var(--m-edge-active);
+}
+.mono .mo-chip.warm { color: var(--m-ember); background: rgba(245, 166, 35, 0.09); border-color: rgba(245, 166, 35, 0.28); }
+.mono .mo-chip b { font-weight: 800; }
+.mono .mo-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ── ГЕРОЙ ───────────────────────────────────────────────────────────────*/
+.mono .mo-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+  padding-top: clamp(120px, 14vw, 176px);
+  padding-bottom: clamp(24px, 4vw, 48px);
+}
+.mono .mo-hero-facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* ── ПРИБОР 1: КОЛЬЦО МЕСЯЦА ─────────────────────────────────────────────
+   Сигнатурная форма Пульса. ТРИ ДУГИ РАЗЛИЧАЮТСЯ ТРЕМЯ ПРИЗНАКАМИ СРАЗУ
+   (урок №196): цвет (индиго признано · эмбер сверх нормы · зелёный касса),
+   толщина (18 / 7 / 4) и радиус (зазор 14). Две одинаковые дуги в 4px друг
+   от друга глаз читает как одну толстую с ореолом — так было и не читалось. */
+.mono .mo-ringrow { display: flex; gap: clamp(18px, 2.6vw, 30px); align-items: center; flex-wrap: wrap; }
+.mono .mo-ringwrap { position: relative; width: clamp(200px, 22vw, 264px); aspect-ratio: 1; flex: none; }
+.mono .mo-ringwrap svg { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+.mono .mo-ringc {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-align: center;
+}
+.mono .mo-ringc .k {
+  font-family: var(--m-head);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--m-mut);
+}
+/* moneyLarge 30/600/-0.03em — центр кольца, не moneyHero (52 в круг не лезет) */
+.mono .mo-ringc .v { font-size: clamp(25px, 2.6vw, 30px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
+.mono .mo-ringc .v i { font-style: normal; font-size: 0.58em; font-weight: 500; color: var(--m-mut); margin-left: 0.16em; letter-spacing: 0; }
+.mono .mo-ringc .s { margin-top: 2px; font-size: 11.5px; font-weight: 600; color: var(--m-ember); }
+.mono .mo-legend { display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; min-width: 0; flex: 1 1 220px; }
+.mono .mo-lg { display: flex; gap: 13px; align-items: flex-start; }
+/* Жетон = ОТРЕЗОК ДУГИ, а не квадрат: та же фактура, опознание без чтения */
+.mono .mo-lg i { width: 4px; height: 30px; border-radius: 999px; margin-top: 4px; flex: none; }
+.mono .mo-lg i.acc { background: linear-gradient(180deg, var(--m-indigo-br), var(--m-indigo-alt)); }
+.mono .mo-lg i.over { background: linear-gradient(180deg, #FFC257, var(--m-ember-deep)); box-shadow: 0 0 12px -2px rgba(245, 166, 35, 0.6); }
+.mono .mo-lg i.cash { background: rgba(35, 201, 140, 0.42); }
+.mono .mo-lg .k { font-size: 12.5px; font-weight: 500; color: var(--m-mut); }
+.mono .mo-lg .v { margin-top: 2px; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.mono .mo-lg .v i { font-style: normal; font-size: 0.66em; font-weight: 500; color: var(--m-mut); margin-left: 0.14em; }
+.mono .mo-lg .s { margin-top: 3px; font-size: 11.5px; line-height: 1.45; color: var(--m-dim); text-wrap: pretty; }
+.mono .mo-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  vertical-align: 3px;
+  background: rgba(35, 201, 140, 0.12);
+  color: var(--m-green);
+}
+.mono .mo-delta.warm { background: rgba(245, 166, 35, 0.12); color: var(--m-ember); }
+.mono .mo-delta.down { background: rgba(255, 90, 106, 0.12); color: var(--m-red); }
+
+/* ── ПРИБОР 2: ЛЕНТА РАДАРА ──────────────────────────────────────────────
+   Строка = площадка + текст + время + деньги. Новая строка ПРИЕЗЖАЕТ сверху
+   (высотой, не проявлением — правило №167), остальные съезжают вниз. */
+.mono .mo-feed { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.mono .mo-feed-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: var(--m-r-chip);
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.022);
+  transition: background var(--m-fast) var(--m-ease), border-color var(--m-fast) var(--m-ease);
+}
+.mono .mo-feed-row:hover { background: rgba(255, 255, 255, 0.045); border-color: var(--m-edge-hover); }
+.mono .mo-feed-row.fresh { border-color: var(--m-edge-active); background: rgba(110, 89, 240, 0.10); }
+/* Глиф площадки — сигнатура ШТАБа. Без кода даём первую букву: пустая
+   плитка читается как сломанный элемент (урок №185). */
+.mono .mo-glyph {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  font-family: var(--m-head);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #CFC8FF;
+  background: linear-gradient(160deg, #2A2545, #1A1830);
+  box-shadow: inset 0 0 0 1px rgba(123, 107, 255, 0.22);
+}
+.mono .mo-glyph.hh { color: #9FD8FF; background: linear-gradient(160deg, #17293A, #101C29); box-shadow: inset 0 0 0 1px rgba(120, 190, 255, 0.20); }
+.mono .mo-glyph.fl { color: #FFD59B; background: linear-gradient(160deg, #33280F, #221B0C); box-shadow: inset 0 0 0 1px rgba(245, 166, 35, 0.24); }
+.mono .mo-glyph.av { color: #9FF3CE; background: linear-gradient(160deg, #10301F, #0B2016); box-shadow: inset 0 0 0 1px rgba(35, 201, 140, 0.22); }
+.mono .mo-feed-row .txt { flex: 1; min-width: 0; overflow: hidden; }
+.mono .mo-feed-row .txt b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mono .mo-feed-row .txt span { font-size: 11.5px; color: var(--m-dim); }
+.mono .mo-feed-row .when { flex: none; font-size: 12px; font-weight: 600; color: var(--m-dim); }
+.mono .mo-feed-row .money { flex: none; font-size: 15px; font-weight: 600; }
+
+/* ── ПРИБОР 3: РЯД УЧЁТА ─────────────────────────────────────────────────*/
+.mono .mo-rows { display: grid; grid-template-columns: minmax(0, 1fr); }
+.mono .mo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  transition: background var(--m-fast) var(--m-ease);
+}
+.mono .mo-row:last-child { border-bottom: none; }
+.mono .mo-row:hover { background: rgba(255, 255, 255, 0.035); }
+.mono .mo-row .who { flex: 1; min-width: 0; overflow: hidden; }
+.mono .mo-row .who b { display: block; font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mono .mo-row .who span { font-size: 11.5px; color: var(--m-dim); }
+.mono .mo-row .who span.late { color: var(--m-red); }
+.mono .mo-row .m { flex: none; font-size: 15px; font-weight: 600; }
+.mono .mo-row .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+
+/* Река статусов — доли одной выборки в одной полосе */
+.mono .mo-river { display: flex; gap: 3px; height: 12px; border-radius: 999px; overflow: hidden; margin: 4px 0 14px; }
+.mono .mo-river i { display: block; }
+.mono .mo-rk { display: flex; gap: 18px; flex-wrap: wrap; }
+.mono .mo-rk b { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 500; color: var(--m-mut); }
+.mono .mo-rk b i { width: 8px; height: 8px; border-radius: 50%; }
+.mono .mo-rk b u { text-decoration: none; color: var(--m-ink); font-size: 13px; font-weight: 600; }
+
+/* Полоса-мера (у нуля нет роли: пустая полоса честно вырождается) */
+.mono .mo-track { height: 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); overflow: hidden; }
+.mono .mo-track i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(35, 201, 140, 0.72), var(--m-green)); }
+
+/* ── БОЛИ: плитки ────────────────────────────────────────────────────────*/
+.mono .mo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 34px; }
+.mono .mo-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.mono .mo-pain b { display: block; margin-bottom: 8px; font-family: var(--m-head); font-size: 16.5px; font-weight: 700; letter-spacing: -0.015em; }
+.mono .mo-pain span { font-size: 14.5px; line-height: 1.5; color: var(--m-mut); text-wrap: pretty; }
+.mono .mo-pain .fix {
+  display: block;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--m-divider);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: #BFB6FF;
+}
+
+/* ── ШАГИ ────────────────────────────────────────────────────────────────*/
+.mono .mo-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 30px; counter-reset: step; }
+.mono .mo-step { position: relative; }
+.mono .mo-step .n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-bottom: 12px;
+  border-radius: 9px;
+  font-family: var(--m-head);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #CFC8FF;
+  background: rgba(110, 89, 240, 0.16);
+  box-shadow: inset 0 0 0 1px var(--m-edge-active);
+}
+.mono .mo-step b { display: block; margin-bottom: 6px; font-family: var(--m-head); font-size: 16px; font-weight: 700; }
+.mono .mo-step span { font-size: 14.5px; line-height: 1.5; color: var(--m-mut); text-wrap: pretty; }
+
+/* ── ЦЕНА ────────────────────────────────────────────────────────────────*/
+.mono .mo-price { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 30px; }
+.mono .mo-price .mo-card { display: flex; flex-direction: column; }
+.mono .mo-price .tag { font-family: var(--m-head); font-size: 11px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--m-dim); }
+/* moneyHero 52/700/-0.04em — РОВНО ОДИН на экран, живёт здесь */
+.mono .mo-price .val { margin-top: 10px; font-size: clamp(38px, 4.4vw, 52px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+.mono .mo-price .val i { font-style: normal; font-size: 0.42em; font-weight: 500; color: var(--m-mut); margin-left: 0.2em; letter-spacing: 0; }
+.mono .mo-price .txt { margin-top: 14px; font-size: 14.5px; line-height: 1.55; color: var(--m-mut); text-wrap: pretty; }
+.mono .mo-price ul { margin-top: 14px; display: grid; gap: 9px; list-style: none; }
+.mono .mo-price li { position: relative; padding-left: 20px; font-size: 14.5px; line-height: 1.45; color: var(--m-mut); }
+.mono .mo-price li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--m-indigo-br);
+  box-shadow: 0 0 10px -1px rgba(123, 107, 255, 0.8);
+}
+.mono .mo-price li.warm::before { background: var(--m-ember); box-shadow: 0 0 10px -1px rgba(245, 166, 35, 0.8); }
+
+/* ── ЧЕСТНО / FAQ ────────────────────────────────────────────────────────*/
+.mono .mo-honest { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 30px; }
+.mono .mo-honest .mo-card b { display: block; margin-bottom: 8px; font-family: var(--m-head); font-size: 16px; font-weight: 700; }
+.mono .mo-honest .mo-card span { font-size: 14.5px; line-height: 1.5; color: var(--m-mut); text-wrap: pretty; }
+.mono .mo-honest .yes b { color: var(--m-green); }
+.mono .mo-honest .no b { color: var(--m-ember); }
+
+.mono .mo-faq { margin-top: 30px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.mono .mo-faq details {
+  padding: 16px 18px;
+  border: 1px solid var(--m-divider);
+  border-radius: var(--m-r-card);
+  background: var(--m-card);
+  transition: border-color var(--m-fast) var(--m-ease), background var(--m-fast) var(--m-ease);
+}
+.mono .mo-faq details[open] { border-color: var(--m-edge-hover); background: var(--m-lift); }
+.mono .mo-faq summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--m-head);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.mono .mo-faq summary::-webkit-details-marker { display: none; }
+.mono .mo-faq summary::after {
+  content: "+";
+  margin-left: auto;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--m-dim);
+  transition: transform var(--m-base) var(--m-ease), color var(--m-base) var(--m-ease);
+}
+.mono .mo-faq details[open] summary::after { transform: rotate(45deg); color: #CFC8FF; }
+.mono .mo-faq p { margin-top: 12px; font-size: 15px; line-height: 1.6; color: var(--m-mut); text-wrap: pretty; }
+.mono .mo-faq a { color: #BFB6FF; text-decoration: underline; }
+
+/* ── ФИНАЛЬНЫЙ ПРИЗЫВ ────────────────────────────────────────────────────*/
+.mono .mo-final {
+  margin-top: clamp(64px, 9vw, 116px);
+  padding: clamp(30px, 5vw, 56px);
+  border-radius: var(--m-r-hero);
+  border: 1px solid var(--m-edge-hover);
+  background:
+    radial-gradient(600px 300px at 82% -30%, rgba(110, 89, 240, 0.20), transparent 62%),
+    linear-gradient(180deg, var(--m-lift), var(--m-card));
+  box-shadow: inset 0 0 34px rgba(110, 89, 240, 0.10);
+  text-align: center;
+}
+.mono .mo-final .mo-lead { margin-left: auto; margin-right: auto; }
+.mono .mo-final .mo-cta-row { justify-content: center; }
+
+/* ── АДАПТИВ ─────────────────────────────────────────────────────────────
+   Мобильный порядок: сначала обещание словами, прибор следом. */
+@media (max-width: 1000px) {
+  .mono .mo-hero { grid-template-columns: minmax(0, 1fr); padding-top: clamp(104px, 18vw, 132px); }
+  .mono .mo-grid,
+  .mono .mo-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  .mono .mo-grid,
+  .mono .mo-grid.two,
+  .mono .mo-steps,
+  .mono .mo-price,
+  .mono .mo-honest { grid-template-columns: minmax(0, 1fr); }
+  .mono .mo-ringrow { gap: 20px; }
+  .mono .mo-card-head { flex-wrap: wrap; }
+  .mono .mo-card-head .note { white-space: normal; }
+  .mono .mo-feed-row .when { display: none; }   /* время уступает деньгам, а не режется многоточием */
+}
+
+/* ── ДВИЖЕНИЕ ────────────────────────────────────────────────────────────
+   Вход: opacity + translateY 8px, стаггер 45мс, ведёт герой (§7).
+   Анимируются только transform и opacity. */
+.mono [data-rise] {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--m-slow) var(--m-ease), transform var(--m-slow) var(--m-ease);
+}
+.mono [data-rise].in { opacity: 1; transform: none; }
+
+/* Дуга кольца рисуется 950мс (reveal) — единственное «медленное» движение */
+.mono .mo-arc { stroke-dashoffset: var(--len); transition: stroke-dashoffset var(--m-reveal) var(--m-ease); }
+.mono .mo-arc.in { stroke-dashoffset: var(--off); }
+
+/* Приезд новой строки в ленту: высотой, а не проявлением — иначе на месте
+   строки заранее висит пустота (правило №167). */
+@keyframes mo-slide-in {
+  from { opacity: 0; transform: translateY(-10px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+.mono .mo-feed-row.arriving { animation: mo-slide-in var(--m-base) var(--m-ease) both; }
+
+/* Единственная живая точка покоя на странице — метка «радар слушает» */
+@keyframes mo-pulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+.mono .mo-live { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--m-mut); }
+.mono .mo-live i { width: 8px; height: 8px; border-radius: 50%; background: var(--m-green); box-shadow: 0 0 12px -1px rgba(35, 201, 140, 0.9); animation: mo-pulse 2s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mono [data-rise] { opacity: 1; transform: none; transition: none; }
+  .mono .mo-arc { transition: none; }
+  .mono .mo-feed-row.arriving { animation: none; }
+  .mono .mo-live i { animation: none; opacity: 1; }
+  .mono .mo-btn { transition: none; }
+}

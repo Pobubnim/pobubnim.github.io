@@ -78,6 +78,7 @@
 
 ## Продукты
 
+- [ШТАБ: заказы приходят сами](https://pobubnim.github.io/shtab.html): модуль ШТАБ и приложение МОНОЛИТ показом — лента заказов с Telegram, hh.ru, FL.ru и Авито, кольцо месяца, цены
 - [МОНОЛИТ — приложение для видеопродакшена](https://pobubnim.github.io/instrumenty/monolit-crm-dlya-videoprodakshena.html): заказы, сметы, документы и учёт; 14 дней бесплатно, дальше 1 499 ₽/мес
 - [Кейс: МОНОЛИТ](https://pobubnim.github.io/cases/monolith.html)
 - [Кейс: СЕВЕРСВЕТ](https://pobubnim.github.io/cases/seversvet.html): сайт кинорентала
