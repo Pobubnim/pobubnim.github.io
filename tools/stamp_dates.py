@@ -76,12 +76,20 @@ def process(path: Path, fix: bool, today: str) -> int:
 
     out = src
     changes = []
+    touched = content_changed(path)
 
     if '"dateModified"' not in out:
-        stamp = f'"datePublished": "{published}", "dateModified": "{modified}", '
+        # datePublished мог уже стоять в разметке — второй такой же ключ не нужен
+        stamp = f'"dateModified": "{modified}", '
+        if '"datePublished"' not in out:
+            stamp = f'"datePublished": "{published}", ' + stamp
+            changes.append(f"datePublished {published}")
         out = ARTICLE_RE.sub(lambda m: m.group(1) + stamp + m.group(2), out, count=1)
-        changes.append(f"проставлены datePublished {published} и dateModified {modified}")
-    else:
+        changes.append(f"dateModified {modified}")
+    elif touched:
+        # Дату правки двигает только настоящая правка контента. Иначе она поползёт
+        # от собственного коммита: скрипт закоммитил штамп — и на следующем прогоне
+        # «последний коммит файла» уже сегодняшний.
         cur = re.search(r'"dateModified":\s*"([^"]+)"', out)
         if cur and cur.group(1) != modified:
             out = re.sub(r'("dateModified":\s*")[^"]+(")', rf"\g<1>{modified}\g<2>", out, count=1)
@@ -89,7 +97,7 @@ def process(path: Path, fix: bool, today: str) -> int:
 
     # видимая строка «Обновлено …» должна совпадать с датой правки
     m = TIME_RE.search(out)
-    if m and m.group(2) != modified:
+    if m and m.group(2) != modified and (touched or '"dateModified"' not in src):
         human = ".".join(reversed(modified.split("-")))
         out = TIME_RE.sub(
             lambda mm: mm.group(1) + modified + mm.group(3) + f"Обновлено {human}" + mm.group(5),

@@ -52,6 +52,19 @@ def strip_tags(s: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", s))).strip()
 
 
+def twins(a: dict, b: dict) -> bool:
+    """Один ли это вопрос, просто в разных словах.
+
+    Сверять только ответы мало: «Какие настройки выставить?» и «Какие настройки
+    камеры выставить для видео на телефоне?» написаны разными словами, и их
+    ответы совпадают лишь наполовину. Поэтому смотрим на пару вопрос+ответ —
+    иначе на странице появляются близнецы (так и вышло при первом прогоне).
+    """
+    q = SequenceMatcher(None, a["q"], b["q"]).ratio()
+    ans = SequenceMatcher(None, a["a"][:200], b["a"][:200]).ratio()
+    return (q > 0.5 and ans > 0.4) or ans > 0.7
+
+
 def page_kind(src: str) -> str:
     if 'class="lesson-body"' in src:
         return "lesson"
@@ -96,6 +109,14 @@ def process(path: Path, fix: bool) -> tuple[int, int]:
     ]
     shown_q = {i["q"] for i in shown}
 
+    rel = path.relative_to(ROOT).as_posix()
+    for i in range(len(shown)):
+        for j in range(i + 1, len(shown)):
+            if twins(shown[i], shown[j]):
+                print(f"  {rel}: похоже, дубль вопроса —")
+                print(f"      {shown[i]['q']}")
+                print(f"      {shown[j]['q']}")
+
     marked_q = {it["name"] for it in marked}
     absent = [
         {
@@ -118,7 +139,7 @@ def process(path: Path, fix: bool) -> tuple[int, int]:
     for cand in absent:
         twin = None
         for sh in free:
-            if SequenceMatcher(None, cand["a"][:160], sh["a"][:160]).ratio() > 0.75:
+            if twins(cand, sh):
                 twin = sh
                 break
         if twin:
@@ -133,7 +154,6 @@ def process(path: Path, fix: bool) -> tuple[int, int]:
     if not missing and not extra and not renames:
         return (0, 0)
 
-    rel = path.relative_to(ROOT).as_posix()
     print(
         f"  {rel}: на экран +{len(missing)}, в разметку +{len(extra)},"
         f" формулировок сведено {len(renames)}"
