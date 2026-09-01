@@ -37,7 +37,9 @@ def plain(s: str) -> str:
 
 
 def poster(f: dict) -> str:
-    return f"/assets/img/{f['id']}-poster.webp" if f.get("local") else f"{LIB}{f['id']}.webp"
+    # обложки держим у себя: видео остаётся хотлинком на соседнюю площадку,
+    # но её падение больше не превращает портфолио в пустые плашки
+    return f"/assets/img/{f['id']}-poster.webp" if f.get("local") else f"/assets/img/film/{f['id']}.webp"
 
 
 def base(f: dict) -> str:

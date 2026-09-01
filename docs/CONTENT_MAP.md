@@ -4,8 +4,11 @@
 - Фото: C:\Users\User\Pictures\Материалы для Побубним → tools/prepare_media.py → assets/img/*.webp
   Слаги и исходники — в PHOTOS внутри скрипта. Тройники tri-* НЕ РЕЗАТЬ — коллажи 3 кадров, только целиком.
 - Hero-видео: «Цвет ДО-ПОСЛЕ … LOOP видео.mp4» (4K 118с) → assets/video/hero-loop.mp4 (1080p x264 CRF28, без звука).
-- Видеоработы: ХОТЛИНК на https://seversvet.github.io/assets/film/<id>[-loop].mp4 + <id>.webp
-  (репо seversvet, обе площадки наши; каталог работ — seversvet site/assets/portfolio.js).
+- Видеоработы: ВИДЕО хотлинком на https://seversvet.github.io/assets/film/<id>[-loop].mp4,
+  а ОБЛОЖКИ с 02.09 свои — assets/img/film/<id>.webp (40 файлов, 1,6 МБ). Проверено
+  блокировкой домена: раньше падение соседней площадки оставляло сетку битых
+  картинок, теперь портфолио выглядит целым, теряется только оживление и плеер.
+  Каталог работ на той стороне — seversvet site/assets/portfolio.js.
 - Скрины приложения MONOLITH: хотлинк https://monolithapp.github.io/assets/desktop-*.jpg, mobile-*.jpg.
 - Свои фильмы витрины: FTX13 → assets/video/ftx.mp4 (мотофристайл), «Поля инста» →
   polya.mp4 (fashion) + лупы и постеры; конвейер `python tools/prepare_media.py films`.
