@@ -45,6 +45,7 @@
       '<p class="lead-alt" id="lf-status">Заявка придёт мне мгновенно — отвечаю в тот же день. Привычнее мессенджер? Пишите напрямую: ' +
       '<a href="' + TG + '" target="_blank" rel="noopener">@sbphotoshoter</a> или ' +
       '<a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a></p>' +
+      '<a class="btn btn-lamp" id="lf-tg" hidden target="_blank" rel="noopener" href="' + TG + '">Открыть телеграм с готовым текстом</a>' +
       '<p class="lead-alt" style="font-size:12.5px;color:var(--mute)">Отправляя заявку, вы соглашаетесь на обработку указанных данных — только чтобы я мог вам ответить. Подробности в ' +
       '<a href="/privacy.html">политике конфиденциальности</a>.</p>' +
       '</form>';
@@ -52,6 +53,7 @@
   }
 
   var elWhat = dlg.querySelector("#lf-what");
+  var elTg = dlg.querySelector("#lf-tg");
   var elSend = dlg.querySelector("#lf-send");
   var elStatus = dlg.querySelector("#lf-status");
 
@@ -60,6 +62,12 @@
       for (var i = 0; i < elWhat.options.length; i++) {
         if (elWhat.options[i].text === topic) { elWhat.selectedIndex = i; break; }
       }
+    }
+    if (elTg) elTg.hidden = true;
+    if (elSend) {
+      elSend.disabled = false;
+      elSend.textContent = "Отправить заявку";
+      elSend.className = "btn btn-lamp";
     }
     if (!dlg.open) dlg.showModal();
   }
@@ -106,13 +114,23 @@
         elSend.textContent = "Отправить заявку";
       }, 2600);
     } catch (_) {
-      /* сеть или бэкенд легли: не теряем человека, открываем чат с готовым текстом */
+      /* Сеть или бэкенд легли. Раньше здесь вызывался window.open — но после
+         await это уже не жест человека, и браузер такое окно БЛОКИРУЕТ
+         (проверено измерением: возвращает null). Окно заявки при этом
+         закрывалось, и человек оставался ни с чем, считая, что отправил.
+         Теперь показываем честный отказ и даём ссылку, по которой он щёлкнет
+         сам — по клику браузер откроет её без вопросов. */
       var text = "Привет! Заявка с сайта ПОБУБНИМ.\n\nИмя: " + (name || "—") +
         "\nКонтакт: " + contact + "\nНужно: " + what + "\nЗадача: " + (desc || "—");
-      open(TG + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+      if (elTg) {
+        elTg.href = TG + "?text=" + encodeURIComponent(text);
+        elTg.hidden = false;
+      }
+      elStatus.textContent = "Не смог отправить — связь подвела. Текст заявки уже собран: " +
+        "откройте телеграм кнопкой ниже или попробуйте ещё раз.";
       elSend.disabled = false;
-      elSend.textContent = "Отправить заявку";
-      dlg.close();
+      elSend.textContent = "Отправить ещё раз";
+      elSend.className = "btn btn-ghost";
     }
   });
 })();

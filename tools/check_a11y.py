@@ -86,12 +86,18 @@ class Tab:
         self.cmd("Emulation.setDeviceMetricsOverride", width=w, height=h,
                  deviceScaleFactor=2 if mobile else 1, mobile=mobile)
 
-    def scan(self, url):
+    def scan(self, url, open_js=None):
+        """open_js — как открыть состояние (окно заявки, плеер, бургер) перед проверкой."""
         self.cmd("Page.navigate", url=url)
         for _ in range(60):
             time.sleep(0.3)
             if self.js("document.readyState === 'complete'"):
                 break
+        if open_js:
+            time.sleep(1.0)
+            if not self.js(open_js):
+                return None
+            time.sleep(0.6)
         self.js(self.axe)
         return json.loads(self.js(RUN, wait=True))
 
@@ -102,6 +108,18 @@ class Tab:
             self.proc.terminate()
 
 
+STATES = [
+    ("окно заявки", "(() => { const b = document.querySelector('[data-lead]');"
+                    " if (!b) return false; b.click();"
+                    " return !!(document.getElementById('lead') || {}).open; })()"),
+    ("плеер работ", "(() => { const c = document.querySelector('.film[data-src]');"
+                    " if (!c) return false; c.dispatchEvent(new MouseEvent('click', {bubbles: true}));"
+                    " return !!(document.getElementById('player') || {}).open; })()"),
+    ("бургер-меню", "(() => { const b = document.querySelector('.burger');"
+                    " if (!b) return false; b.click(); return true; })()"),
+]
+
+
 def urls_from_sitemap():
     sm = open(os.path.join(ROOT, "sitemap.xml"), encoding="utf-8").read()
     return [re.sub(r"^https://(?:pobubnim\.ru|pobubnim\.github\.io)/", LOCAL, loc)
@@ -109,7 +127,10 @@ def urls_from_sitemap():
 
 
 def main():
-    urls = sys.argv[1:] or urls_from_sitemap()
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    if "--states" in sys.argv:
+        return states(args[0] if args else LOCAL)
+    urls = args or urls_from_sitemap()
     tab = Tab()
     found = {}
     try:
@@ -139,6 +160,29 @@ def main():
             print(f"    {n['t']}  {n['m'][:150]}")
         print()
     sys.exit(1)
+
+
+def states(url):
+    """Диалоги и меню: axe их не видит, пока они закрыты."""
+    tab = Tab()
+    found = 0
+    try:
+        for name, opener in STATES:
+            res = tab.scan(url, opener)
+            if res is None:
+                print(f"[{name}] на этой странице нет — пропуск")
+                continue
+            print(f"[{name}] нарушений: {len(res)}")
+            found += len(res)
+            for v in res:
+                print(f"    [{v['impact']}] {v['id']} — {v['help']}")
+                for n in v["nodes"]:
+                    print(f"      {n['t']}  {n['m'][:130]}")
+    finally:
+        tab.close()
+    if found:
+        sys.exit(1)
+    print("\nВ открытых состояниях чисто.")
 
 
 if __name__ == "__main__":
