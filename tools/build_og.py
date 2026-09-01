@@ -30,6 +30,9 @@ PAGES = {
     "case-seversvet":    (os.path.join(IMG, "case-seversvet.webp"), "Кейс: сайт СЕВЕРСВЕТ"),
     "uroki":             (os.path.join(IMG, "about-monitor.webp"), "Уроки DaVinci Resolve"),
     "blyoklaya-kartinka":(os.path.join(IMG, "hz-field-still.webp"), "Почему картинка блёклая"),
+    "videograf-naro-fominsk": (os.path.join(IMG, "hz-wedding.webp"), "Видеограф в Наро-Фоминске"),
+    "videograf-aprelevka":    (os.path.join(IMG, "tri-wedding-1.webp"), "Видеограф в Апрелевке"),
+    "videograf-obninsk":      (os.path.join(IMG, "tri-factory-1.webp"), "Видеограф в Обнинске"),
 }
 
 W, H = 1200, 630

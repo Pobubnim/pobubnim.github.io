@@ -177,7 +177,7 @@ function render() {
     const href = contactHref(l.contact);
     const contact = href
       ? `<a class="adm-contact" href="${esc(href)}" target="_blank" rel="noopener">${esc(l.contact)}</a>`
-      : `<span class="adm-contact" style="text-decoration:none">${esc(l.contact)}</span>`;
+      : `<span class="adm-contact" style="text-decoration:none">${esc(l.contact)}</span> `;
     return `<article class="adm-card${l.status === "new" ? " is-new" : ""}" data-id="${l.id}">
       <div class="adm-top">
         ${l.status === "new" ? '<span class="dot"></span>' : ""}
