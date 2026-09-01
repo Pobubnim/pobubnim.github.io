@@ -55,6 +55,13 @@
     const v = el.querySelector("video");
     const img = el.querySelector("img");
     const vert = el.hasAttribute("data-vert");
+    if (img) {
+      /* обложки работ живут на соседней площадке: если она недоступна, карточка
+         должна остаться плашкой с названием, а не битой картинкой с alt-текстом */
+      const noimg = () => el.classList.add("noimg");
+      img.addEventListener("error", noimg);
+      if (img.complete && img.naturalWidth === 0) noimg();
+    }
     if (v) {
       let want = false;
       const show = () => { if (want) el.classList.add("playing"); };

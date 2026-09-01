@@ -381,6 +381,15 @@ section:last-of-type { padding-bottom: var(--gap-sec); }
 .film.playing video { opacity: 1; }
 .film:hover img { transform: scale(1.04); }
 
+/* обложка не пришла (площадка с медиа недоступна) — мягкая плашка вместо
+   битой картинки: название и хронометраж остаются на месте */
+.film.noimg img { display: none; }
+.film.noimg {
+  background:
+    radial-gradient(120% 100% at 30% 0%, rgba(255, 253, 245, 0.07), transparent 60%),
+    var(--char);
+}
+
 .film-cap {
   position: absolute;
   z-index: 2;
