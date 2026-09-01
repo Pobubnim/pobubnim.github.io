@@ -7,12 +7,12 @@
 <title>Скоупы в DaVinci: Waveform, Parade, Vectorscope | ПОБУБНИМ</title>
 <meta name="description" content="Как читать скоупы в цветокоррекции: Waveform и шкала IRE, Parade и баланс белого, Vectorscope и линия скин-тона. Интерактивный урок с настоящими скоупами — крутите ползунки и смотрите на приборы.">
 <meta name="author" content="Савелий Бубнов">
-<link rel="canonical" href="https://pobubnim.github.io/uroki/skoupy-kak-videt.html">
+<link rel="canonical" href="https://pobubnim.ru/uroki/skoupy-kak-videt.html">
 <meta property="og:title" content="Как читать скоупы в DaVinci Resolve — интерактивный урок | ПОБУБНИМ">
 <meta property="og:description" content="Waveform, Parade, Vectorscope и гистограмма считаются здесь из настоящих пикселей кадра: двигайте экспозицию и баланс — приборы отвечают вживую.">
-<meta property="og:image" content="https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg">
+<meta property="og:image" content="https://pobubnim.ru/assets/og/cvetokorrekciya.jpg">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://pobubnim.github.io/uroki/skoupy-kak-videt.html">
+<meta property="og:url" content="https://pobubnim.ru/uroki/skoupy-kak-videt.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -20,14 +20,14 @@
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/lesson.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-08-25", "dateModified": "2026-09-01", "headline": "Как читать скоупы в DaVinci Resolve: Waveform, Parade, Vectorscope", "description": "Как читать Waveform, Parade, Vectorscope и гистограмму в цветокоррекции. Интерактивный урок с настоящими скоупами, которые считаются из пикселей кадра.", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/skoupy-kak-videt.html", "image": "https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-08-25", "dateModified": "2026-09-01", "headline": "Как читать скоупы в DaVinci Resolve: Waveform, Parade, Vectorscope", "description": "Как читать Waveform, Parade, Vectorscope и гистограмму в цветокоррекции. Интерактивный урок с настоящими скоупами, которые считаются из пикселей кадра.", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/uroki/skoupy-kak-videt.html", "image": "https://pobubnim.ru/assets/og/cvetokorrekciya.jpg"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Что такое IRE на скоупе?", "acceptedAnswer": {"@type": "Answer", "text": "IRE — единицы шкалы яркости видеосигнала: 0 — чёрное, 100 — белое. В Rec.709 средне-серая карта 18% ложится примерно на 40–45 IRE, светлая кожа — на 60–75 IRE, диффузный белый — около 100. Эти ориентиры и делают waveform точнее глаза."}},
 {"@type": "Question", "name": "Почему log-материал на скоупе прижат к середине?", "acceptedAnswer": {"@type": "Answer", "text": "Так и должно быть: у log своя разметка. Серая карта 18% в S-Log3 сидит примерно на 41 IRE, в ARRI LogC4 — около 40, а белое не доходит до верха шкалы. Log сжимает широкий диапазон сцены в файл, поэтому картинка выглядит плоской до конверсии в Rec.709."}},
 {"@type": "Question", "name": "Как по скоупу проверить баланс белого?", "acceptedAnswer": {"@type": "Answer", "text": "По Parade: он показывает каналы R, G и B рядом. Найдите в кадре белый или серый объект — на нейтральном балансе следы трёх каналов на его уровне совпадают по высоте. Красный выше — картинка тёплая, синий выше — холодная."}},
 {"@type": "Question", "name": "Зачем нужна линия скин-тона на вектороскопе?", "acceptedAnswer": {"@type": "Answer", "text": "Это ориентир для кожи: здоровая кожа любого оттенка ложится вдоль неё, а расстояние от центра показывает насыщенность. Отклонение следа кожи от линии означает паразитный оттенок на лице — самый заметный для зрителя дефект грейда."}}
 ]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.github.io/uroki/"}, {"@type": "ListItem", "position": 3, "name": "Как читать скоупы в DaVinci Resolve: Waveform, Parade, Vectorscope", "item": "https://pobubnim.github.io/uroki/skoupy-kak-videt.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.ru/uroki/"}, {"@type": "ListItem", "position": 3, "name": "Как читать скоупы в DaVinci Resolve: Waveform, Parade, Vectorscope", "item": "https://pobubnim.ru/uroki/skoupy-kak-videt.html"}]}</script>
 <style>
   .art-hero { padding-top: 150px; max-width: 820px; }
   .art-hero .label { margin-bottom: 14px; display: block; }

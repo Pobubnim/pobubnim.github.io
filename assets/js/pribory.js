@@ -1078,7 +1078,7 @@
     var s = lastStats || { minSig: 0, avgSig: 0, maxSig: 0, clipHigh: 0 };
     c.fillText(sourceName + " · " + S.MATRIX[st.matrix].name + " · " + S.RANGE[st.range].name +
       " · " + unitLabel() + " " + fmtUnit(s.minSig) + "/" + fmtUnit(s.avgSig) + "/" + fmtUnit(s.maxSig) +
-      " · клип " + s.clipHigh.toFixed(2) + "% · pobubnim.github.io",
+      " · клип " + s.clipHigh.toFixed(2) + "% · pobubnim.ru",
       pad, out.height - 20);
     var a = document.createElement("a");
     a.download = "pribory-" + Date.now() + ".png";

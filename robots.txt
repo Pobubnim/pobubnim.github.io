@@ -40,4 +40,4 @@ User-agent: Google-Extended
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://pobubnim.github.io/sitemap.xml
+Sitemap: https://pobubnim.ru/sitemap.xml

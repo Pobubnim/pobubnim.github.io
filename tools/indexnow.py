@@ -18,7 +18,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-HOST = "pobubnim.github.io"
+HOST = "pobubnim.ru"
 ENDPOINT = "https://yandex.com/indexnow"
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")

@@ -200,7 +200,7 @@
     var r = data();
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
     h.push("<h3>РАСЧЁТ КАРТЫ ПАМЯТИ</h3>");
-    h.push('<p style="text-align:center;font-size:12px;color:#6b675e">видео и фото · pobubnim.github.io</p>');
+    h.push('<p style="text-align:center;font-size:12px;color:#6b675e">видео и фото · pobubnim.ru</p>');
     h.push('<p class="big">' + r.big + "</p>");
     h.push('<p class="big-sub">' + r.sub + "</p>");
     r.lines.forEach(function (l) {
@@ -224,7 +224,7 @@
   document.getElementById("btn-copy").addEventListener("click", function () {
     var btn = this;
     var r = data();
-    var txt = "Расчёт карты памяти — pobubnim.github.io\n" +
+    var txt = "Расчёт карты памяти — pobubnim.ru\n" +
       r.big + " — " + r.sub + "\n" +
       r.lines.map(function (l) { return l[0] + ": " + l[1]; }).join("\n") +
       "\n" + r.note;

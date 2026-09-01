@@ -263,7 +263,7 @@
     h.push(locsTable());
     h.push(crewTable());
     if (val("f-notes")) h.push("<h4>Важное</h4><p>" + esc(val("f-notes")).replace(/\n/g, "<br>") + "</p>");
-    h.push('<p class="doc-note">Восход, закат и золотой час посчитаны по формулам NOAA для указанных координат — точность около минуты. Собрано конструктором pobubnim.github.io.</p>');
+    h.push('<p class="doc-note">Восход, закат и золотой час посчитаны по формулам NOAA для указанных координат — точность около минуты. Собрано конструктором pobubnim.ru.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");
     drawSunBar(s);

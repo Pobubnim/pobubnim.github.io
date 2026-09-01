@@ -17,7 +17,7 @@ from collections import defaultdict
 from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE = "https://pobubnim.github.io/"
+SITE = "https://pobubnim.ru/"
 SKIP_DIRS = {".git", "docs", "tools", "promo", "videos", "assets"}
 # служебные страницы вне выдачи
 NOINDEX_OK = {"404.html", "admin.html", "instrumenty/kalkulyator-stoimosti-semki.html"}

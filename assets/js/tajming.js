@@ -69,7 +69,7 @@
     var rows = schedule();
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
     h.push("<h3>ТАЙМИНГ СВАДЕБНОГО ДНЯ</h3>");
-    h.push('<p style="text-align:center;font-size:12px;color:#6b675e">план по часам · собрано на pobubnim.github.io</p>');
+    h.push('<p style="text-align:center;font-size:12px;color:#6b675e">план по часам · собрано на pobubnim.ru</p>');
     rows.forEach(function (r) {
       h.push('<div class="line"><b>' + r.time + (r.end ? "–" + r.end : "") + "</b><span>" + r.nm + "</span></div>");
     });
@@ -83,7 +83,7 @@
 
   document.getElementById("btn-copy").addEventListener("click", function () {
     var btn = this;
-    var txt = "Тайминг свадебного дня — pobubnim.github.io\n" +
+    var txt = "Тайминг свадебного дня — pobubnim.ru\n" +
       schedule().map(function (r) { return r.time + (r.end ? "–" + r.end : "") + "  " + r.nm; }).join("\n");
     function done() {
       var old = btn.textContent;

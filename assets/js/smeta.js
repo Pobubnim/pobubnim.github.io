@@ -131,7 +131,7 @@
     h.push(ndsLine());
     h.push("<p>Смета действительна 14 (четырнадцать) календарных дней с даты составления. Позиции «по смете» и объёмы сверх указанных согласовываются дополнительно.</p>");
     h.push('<table class="req"><tr><td><b>Исполнитель</b>' + bl(val("f-exec")) + '<div class="sig">Подпись: ' + BL + "</div></td><td><b>Заказчик</b>" + bl(val("f-client")) + '<div class="sig">Подпись: ' + BL + "</div></td></tr></table>");
-    h.push('<p class="doc-note">Собрано конструктором pobubnim.github.io.</p>');
+    h.push('<p class="doc-note">Собрано конструктором pobubnim.ru.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     return h.join("");
   }
@@ -148,7 +148,7 @@
     h.push(ndsLine());
     h.push("<p>Назначение платежа: оплата услуг съёмки" + (val("f-dog") ? " по договору № " + esc(val("f-dog")) : "") + " по счёту № " + (val("f-num") ? esc(val("f-num")) : "___") + ". Счёт действителен для оплаты 5 (пяти) банковских дней.</p>");
     h.push('<table class="req"><tr><td><b>Исполнитель</b>' + bl(val("f-exec")) + '<div class="sig">Подпись: ' + BL + "</div></td><td></td></tr></table>");
-    h.push('<p class="doc-note">Собрано конструктором pobubnim.github.io.</p>');
+    h.push('<p class="doc-note">Собрано конструктором pobubnim.ru.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     return h.join("");
   }

@@ -7,12 +7,12 @@
 <title>Log-кривая в числах: S-Log3, LogC и Rec.709 на графике | ПОБУБНИМ</title>
 <meta name="description" content="Настоящие кривые S-Log3, ARRI LogC и Rec.709 по опубликованным формулам: двигайте экспозицию по стопам и смотрите, куда встаёт серая карта, кожа и белое, сколько стопов в запасе и кому достаются коды.">
 <meta name="author" content="Савелий Бубнов">
-<link rel="canonical" href="https://pobubnim.github.io/uroki/log-krivaya.html">
+<link rel="canonical" href="https://pobubnim.ru/uroki/log-krivaya.html">
 <meta property="og:title" content="Log-кривая в числах: S-Log3, LogC и Rec.709 — живой график | ПОБУБНИМ">
 <meta property="og:description" content="Кривые построены по формулам Sony и ARRI, а не срисованы: двигайте экспозицию и смотрите, куда каждая кривая кладёт серую карту и где у неё обрез.">
-<meta property="og:image" content="https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg">
+<meta property="og:image" content="https://pobubnim.ru/assets/og/cvetokorrekciya.jpg">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://pobubnim.github.io/uroki/log-krivaya.html">
+<meta property="og:url" content="https://pobubnim.ru/uroki/log-krivaya.html">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -20,14 +20,14 @@
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/lesson.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-08-26", "dateModified": "2026-09-01", "headline": "Log-кривая в числах: S-Log3, LogC и Rec.709 на одном графике", "description": "Интерактивный график настоящих кривых S-Log3, ARRI LogC3 и Rec.709 по опубликованным формулам: якоря серой карты, запас в стопах и распределение кодов по стопам.", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/log-krivaya.html", "image": "https://pobubnim.github.io/assets/og/cvetokorrekciya.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-08-26", "dateModified": "2026-09-01", "headline": "Log-кривая в числах: S-Log3, LogC и Rec.709 на одном графике", "description": "Интерактивный график настоящих кривых S-Log3, ARRI LogC3 и Rec.709 по опубликованным формулам: якоря серой карты, запас в стопах и распределение кодов по стопам.", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/uroki/log-krivaya.html", "image": "https://pobubnim.ru/assets/og/cvetokorrekciya.jpg"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Почему log-картинка выглядит серой и блёклой?", "acceptedAnswer": {"@type": "Answer", "text": "Log-кривая нарочно сжимает широкий диапазон яркостей сцены в файл: серая карта 18% встаёт в S-Log3 на 41% сигнала, а до отметки 100% остаётся почти восемь стопов запаса под света. Когда такой сигнал показывают на обычном мониторе без конверсии, он и выглядит плоским — это нормальное техническое состояние, а не ошибка."}},
 {"@type": "Question", "name": "Сколько стопов запаса у S-Log3, LogC и Rec.709?", "acceptedAnswer": {"@type": "Answer", "text": "Считается прямо по формулам кривых: у Sony S-Log3 от серой карты до обреза около +7.7 стопа, у ARRI LogC3 (EI800) — около +8.3, а у обычной видеогаммы Rec.709 — всего около +2.5 стопа. Поэтому яркое окно или небо, которые log спокойно удерживает, в Rec.709 выгорают в белую полку."}},
 {"@type": "Question", "name": "Можно ли LUT для S-Log3 применять к материалу LogC?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. У каждой кривой своя формула: одна и та же серая карта лежит в S-Log3 на 41% сигнала, а в LogC3 — на 39%, и дальше кривые расходятся сильнее. LUT, собранный под одну кривую, на другой даст перекошенный контраст и цвет. Сначала конверсия из пространства конкретной камеры (CST или технический LUT), потом творчество."}},
 {"@type": "Question", "name": "Зачем вообще снимать в log, если потом всё равно конвертировать?", "acceptedAnswer": {"@type": "Answer", "text": "Из-за распределения кодов. Линейная запись тратит половину всех значений на один верхний стоп, а тени получают крохи — их растяжка в грейде даёт полосы и шум. Log раздаёт коды по стопам почти поровну: у S-Log3 каждому стопу достаётся около 79 кодов, поэтому материал терпит серьёзную коррекцию без развала."}}
 ]}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.github.io/uroki/"}, {"@type": "ListItem", "position": 3, "name": "Log-кривая в числах: S-Log3, LogC и Rec.709", "item": "https://pobubnim.github.io/uroki/log-krivaya.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.ru/uroki/"}, {"@type": "ListItem", "position": 3, "name": "Log-кривая в числах: S-Log3, LogC и Rec.709", "item": "https://pobubnim.ru/uroki/log-krivaya.html"}]}</script>
 <style>
   .art-hero { padding-top: 150px; max-width: 820px; }
   .art-hero .label { margin-bottom: 14px; display: block; }

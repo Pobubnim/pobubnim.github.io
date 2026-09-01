@@ -109,9 +109,9 @@ def jsonld_items() -> str:
                 "description": f"{f['s']}. Тема: {plain(th['t'])}.",
                 "duration": iso_duration(f["len"]),
                 "thumbnailUrl": poster(f) if poster(f).startswith("http")
-                                else "https://pobubnim.github.io" + poster(f),
+                                else "https://pobubnim.ru" + poster(f),
                 "contentUrl": (base(f) + f["id"] + ".mp4") if base(f).startswith("http")
-                              else "https://pobubnim.github.io" + base(f) + f["id"] + ".mp4",
+                              else "https://pobubnim.ru" + base(f) + f["id"] + ".mp4",
             }, ensure_ascii=False))
     return ",\n".join(items)
 
