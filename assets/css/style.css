@@ -749,3 +749,12 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
   .dtable { font-size: 13px; }
   .dtable th, .dtable td { padding: 8px 11px; }
 }
+
+/* FAQ-гармошка. Раньше жила инлайном в 24 файлах — уроки её не получали,
+   и вставленный туда блок вопросов остался бы без стиля. */
+.svc-faq { border-top: 1px solid var(--line-soft); padding: 18px 4px; }
+.svc-faq:last-of-type { border-bottom: 1px solid var(--line-soft); }
+.svc-faq summary { font-size: 16.5px; font-weight: 500; cursor: pointer; list-style: none; position: relative; padding-right: 30px; }
+.svc-faq summary::after { content: "+"; position: absolute; right: 4px; top: 0; color: var(--mute); font-weight: 300; font-size: 20px; }
+.svc-faq[open] summary::after { content: "–"; }
+.svc-faq p { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
