@@ -17,9 +17,12 @@
   var RPC = "https://jkdrnaagjplpyhlsmxii.supabase.co/rest/v1/rpc/site_lead_create";
   var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprZHJuYWFnanBscHlobHNteGlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMDM1NzksImV4cCI6MjA5ODU3OTU3OX0.LP0aO74dEjIYr5oGFXCRz4js-GxZTx2jrCZxVqrTWAo";
   var TG = "https://t.me/sbphotoshoter";
-  var WHAT = ["Рекламный ролик", "Имиджевый фильм", "Свадебное кино", "Музыкальный клип",
-    "Съёмка мероприятия", "Цветокоррекция", "Сайт", "Приложение", "Бот / автоматизация",
-    "Обучение", "Другое"];
+  /* первым идёт нейтральный пункт: кнопка без темы (шапка, гео-страницы) не
+     должна подсовывать «Рекламный ролик» тому, кто пришёл за свадьбой —
+     ложная тема в заявке хуже пустой */
+  var WHAT = ["Другое — опишу ниже", "Рекламный ролик", "Имиджевый фильм", "Свадебное кино",
+    "Музыкальный клип", "Съёмка мероприятия", "Цветокоррекция", "Сайт", "Приложение",
+    "Бот / автоматизация", "Обучение"];
 
   var dlg = document.getElementById("lead");
   if (!dlg) {
