@@ -511,10 +511,11 @@
   <div class="wrap">
     <div class="footer-cta rv">
       <h2 class="display">Есть задача?<br><em>Побубним.</em></h2>
-      <div style="display:flex;gap:14px;flex-wrap:wrap">
-        <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
-        <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
-      </div>
+      <p class="cta-note">Понравилось что-то из работ — напишите, разберём вашу задачу. Отвечаю в тот же день. Или во <a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>.</p>
+    <div class="cta-row">
+      <button class="btn btn-lamp" data-lead>Оставить заявку</button>
+      <a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+    </div>
     </div>
     <div class="footer-links">
       <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
@@ -548,6 +549,7 @@ const io = new IntersectionObserver(entries => {
 document.querySelectorAll(".rv").forEach(el => io.observe(el));
 </script>
 <script src="/assets/js/films.js" defer></script>
+<script src="/assets/js/lead.js" defer></script>
 <script src="assets/js/nav.js" defer></script>
 </body>
 </html>

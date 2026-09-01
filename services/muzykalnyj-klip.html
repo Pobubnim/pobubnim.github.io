@@ -92,7 +92,7 @@
       <a href="/articles/">Статьи</a>
       <a href="/instrumenty/">Инструменты</a>
     </nav>
-    <a class="btn btn-lamp" href="/#zayavka">Оставить заявку</a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
   </div>
 </header>
 
@@ -102,7 +102,7 @@
     <h1 class="display">Музыкальный <em>клип</em></h1>
     <p class="lead">Постановка, свет и монтаж под бит — клип, который не стыдно закрепить в профиле.</p>
     <div class="hero-cta">
-      <a class="btn btn-lamp" href="/#zayavka">Оставить заявку</a>
+      <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
       <a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
       <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>
     </div>
@@ -176,9 +176,10 @@
 
   <div class="footer-cta" style="padding-top:70px">
     <h2 class="display">Обсудим <em>задачу</em>?</h2>
-    <div style="display:flex;gap:14px;flex-wrap:wrap">
-      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
-      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
+    <p class="cta-note">Напишите задачу — отвечу в тот же день. Или во <a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>.</p>
+    <div class="cta-row">
+      <button class="btn btn-lamp" data-lead="Музыкальный клип">Оставить заявку</button>
+      <a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
     </div>
   </div>
 </div>
@@ -195,6 +196,7 @@
   </div>
 </footer>
 
+<script src="/assets/js/lead.js" defer></script>
 <script src="../assets/js/nav.js" defer></script>
 </body>
 </html>

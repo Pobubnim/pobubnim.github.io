@@ -92,7 +92,7 @@
       <a href="/articles/">Статьи</a>
       <a href="/instrumenty/">Инструменты</a>
     </nav>
-    <a class="btn btn-lamp" href="/#zayavka">Оставить заявку</a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
   </div>
 </header>
 
@@ -191,13 +191,13 @@
   <details class="svc-faq"><summary>Как включить скоупы в DaVinci Resolve?</summary><p>Меню Workspace — Video Scopes. Четыре вида: Waveform (яркость по кадру), Parade (каналы R, G, B отдельно), Vectorscope (оттенок и насыщенность, с линией скин-тона) и Histogram.</p></details>
   <details class="svc-faq"><summary>С какого урока начать новичку?</summary><p>С порядка цветокоррекции: баланс белого, экспозиция и контраст, насыщенность, look. Дальше — скоупы, чтобы судить кадр по приборам, а не на глаз, и колёса Lift/Gamma/Gain. Log-кривые и ISO имеет смысл смотреть, когда база уже лежит.</p></details>
   <div class="footer-cta" style="padding-top:80px">
-    <h2 class="display">Разберём <em>ваш</em> материал?</h2>
+    <h2 class="display">Разберём на <em>вашем материале</em>?</h2>
     <p class="cta-note">Занятие 90 минут — от 3 000 ₽, работаем на вашем кадре. Новые уроки и разборы выходят в канале.</p>
-    <div style="display:flex;gap:14px;flex-wrap:wrap">
-      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+    <div class="cta-row">
+      <button class="btn btn-lamp" data-lead="Обучение">Оставить заявку</button>
       <a class="btn btn-ghost" href="../education.html">Программы обучения</a>
-      <a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео»</a>
     </div>
+    <p class="cta-after">Привычнее мессенджер — <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">напишите напрямую</a>.</p>
   </div>
 </div>
 
@@ -216,5 +216,6 @@
 </footer>
 
 <script src="../assets/js/nav.js" defer></script>
+<script src="/assets/js/lead.js" defer></script>
 </body>
 </html>

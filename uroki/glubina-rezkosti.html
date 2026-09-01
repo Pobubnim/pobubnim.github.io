@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/lesson.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-08-27", "dateModified": "2026-08-29", "headline": "Глубина резкости: почему размывается фон", "description": "Интерактивная доска: кружки боке рисуются по формуле кружка нерезкости, зона резкости и гиперфокал считаются для выбранного формата сенсора, фокусного и диафрагмы.", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/glubina-rezkosti.html", "image": "https://pobubnim.github.io/assets/og/tool-kalkulyator-grip.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-08-27", "dateModified": "2026-09-01", "headline": "Глубина резкости: почему размывается фон", "description": "Интерактивная доска: кружки боке рисуются по формуле кружка нерезкости, зона резкости и гиперфокал считаются для выбранного формата сенсора, фокусного и диафрагмы.", "inLanguage": "ru", "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.github.io/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.github.io/uroki/glubina-rezkosti.html", "image": "https://pobubnim.github.io/assets/og/tool-kalkulyator-grip.jpg"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Почему огни на фоне превращаются в круги?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что точка, которая не в фокусе, проецируется на сенсор не точкой, а диском — кружком нерезкости. Его диаметр растёт с открытием диафрагмы, с удалением объекта от плоскости фокуса и с длиной объектива. Форма круга повторяет форму отверстия диафрагмы: у объективов с семью лепестками боке будет семиугольным."}},
 {"@type": "Question", "name": "Что сильнее размывает фон — открытая диафрагма или длинный объектив?", "acceptedAnswer": {"@type": "Answer", "text": "Дистанция. Подойдите к герою вдвое ближе — размытие фона вырастет примерно вчетверо, это самый мощный рычаг. Диафрагма даёт предсказуемый, но линейный выигрыш: с f/4 до f/2 размытие удваивается. Длинный объектив помогает не столько сам по себе, сколько тем, что заставляет отойти и «сжать» фон."}},
@@ -105,7 +105,7 @@
       <a href="/articles/">Статьи</a>
       <a href="/instrumenty/">Инструменты</a>
     </nav>
-    <a class="btn btn-lamp" href="/#zayavka">Оставить заявку</a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
   </div>
 </header>
 
@@ -186,12 +186,13 @@
     <a class="art-svc" href="../education.html"><b>Разобрать свою съёмку на занятии</b><span>Обучение · Москва и онлайн →</span></a>
   </div>
   <div class="footer-cta" style="padding-top:70px">
-    <h2 class="display">Обсудим <em>задачу</em>?</h2>
+    <h2 class="display">Разберём на <em>вашем материале</em>?</h2>
     <p class="cta-note">Урок объясняет, руку ставит практика. Занятие 90 минут — от 3 000 ₽, и разбираем ваш материал, а не абстрактный. Новые уроки и разборы — в канале <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">«Побубним за видео»</a>.</p>
     <div class="cta-row">
-      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
+      <button class="btn btn-lamp" data-lead="Обучение">Оставить заявку</button>
       <a class="btn btn-ghost" href="../education.html">Программы обучения</a>
     </div>
+    <p class="cta-after">Привычнее мессенджер — <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">напишите напрямую</a>.</p>
   </div>
 </div>
 
@@ -212,5 +213,6 @@
 <script src="../assets/js/dofboard.js?v=2" defer></script>
 <script src="../assets/js/lesson.js" defer></script>
 <script src="../assets/js/nav.js" defer></script>
+<script src="/assets/js/lead.js" defer></script>
 </body>
 </html>

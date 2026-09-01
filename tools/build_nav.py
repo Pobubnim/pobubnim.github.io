@@ -10,7 +10,13 @@
 
 Правило набора: в шапке живут РАЗДЕЛЫ сайта, а не якоря главной. Якоря
 («Цвет», «Кадры», «Продукты», «Обо мне») остаются в бургер-меню — nav.js.
-CTA-кнопка у каждой страницы своя, скрипт её не трогает.
+CTA-кнопка в подвале у каждой страницы своя, скрипт её не трогает.
+
+Заодно скрипт держит рабочей кнопку заявки в ШАПКЕ: раньше она вела на
+/#zayavka, то есть уносила человека с текущей страницы на главную. Теперь у
+неё есть data-lead — assets/js/lead.js перехватывает клик и открывает форму
+на месте, а href остаётся запасным путём, если скрипт не загрузился. Файл
+lead.js подключается на каждой странице, где есть хоть одна кнопка заявки.
 """
 from __future__ import annotations
 
@@ -94,6 +100,15 @@ def main() -> None:
             continue
         new = re.sub(r'<nav class="nav-links">.*?</nav>',
                      lambda _: nav_html(page_url_of(p)), t, count=1, flags=re.S)
+        # кнопка «Оставить заявку» приводится к одному виду везде: /#zayavka —
+        # запасной путь, data-lead открывает форму прямо на странице.
+        # (на статье про блёклую картинку она вела на /#contact — якоря с таким
+        # именем на сайте нет, кнопка молча не работала)
+        new = re.sub(r'<a class="btn btn-lamp[^"]*" href="/#(?:zayavka|contact)">Оставить заявку</a>',
+                     '<a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>', new)
+        if "data-lead" in new and "assets/js/lead.js" not in new:
+            new = new.replace("</body>",
+                              '<script src="/assets/js/lead.js" defer></script>\n</body>', 1)
         if new != t:
             open(p, "w", encoding="utf-8").write(new)
             changed += 1

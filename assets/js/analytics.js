@@ -110,14 +110,6 @@ ym(YM_ID, "init", {
     lessonOnce("lesson_board", kind + (w ? w.dataset.wheel : "?"));
   }, true);
 
-  /* заявка ушла успешно — статус меняется скриптом формы */
-  var st = document.getElementById("lf-status");
-  if (st && window.MutationObserver) {
-    new MutationObserver(function () {
-      if (/отправл|принят|спасибо/i.test(st.textContent)) goal("lead_send");
-    }).observe(st, { childList: true, subtree: true, characterData: true });
-  }
-
   /* ползунки уроков и инструментов — раз за страницу на КАЖДЫЙ ползунок */
   document.addEventListener("input", function (e) {
     if (e.target.type === "range") lessonOnce("lesson_slider", rangeControl(e.target));
