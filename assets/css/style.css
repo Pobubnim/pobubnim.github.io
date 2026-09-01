@@ -158,6 +158,24 @@ h2 {
 .nav-links > a[aria-current],
 .nav-links .nav-drop[data-here] > button { color: var(--ink); }
 
+/* Пункт «Заказы сами» — вход в шоурум продукта. Точка-маркер вместо слова
+   «новое»: интерфейс сайта ахроматичен, второй акцент ему заводить нельзя,
+   поэтому маркер берёт --lamp — единственный свет интерфейса. */
+.nav-links > a.hot,
+.menu-col a.hot { position: relative; }
+.nav-links > a.hot::after,
+.menu-col a.hot::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: -8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--lamp);
+  box-shadow: 0 0 8px rgba(245, 239, 226, 0.55);
+}
+
 .nav .btn { height: 38px; padding: 0 20px; font-size: 14px; }
 
 /* --- бургер --- */

@@ -46,6 +46,7 @@
     '<a href="' + root + 'articles/">Статьи</a>' +
     '<a href="' + root + 'uroki/">Уроки DaVinci</a>' +
     '<a href="' + root + 'instrumenty/">Инструменты</a>' +
+    '<a class="hot" href="' + root + 'zakazy-sami.html">Заказы сами</a>' +
     '<a href="' + root + 'education.html">Обучение</a>' +
     "</div>" +
     '<div class="menu-col"><span class="label">Решения</span>' +

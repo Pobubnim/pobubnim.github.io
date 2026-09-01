@@ -174,6 +174,15 @@
   text-wrap: pretty;
 }
 .mono p b, .mono li b { color: var(--m-ink); font-weight: 600; }
+
+/* Ссылка в тексте разбора обязана быть видимой: пять перелинковок в SEO-блоке
+   вели на инструменты и не отличались от обычного текста — то есть их не
+   кликали. Цвет светло-индиговый (не заливка — правило одного акцента). */
+.mono .mo-text a,
+.mono .mo-sub a { color: #BFB6FF; text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-color: rgba(191, 182, 255, 0.45); transition: text-decoration-color var(--m-fast) var(--m-ease); }
+.mono .mo-text a:hover,
+.mono .mo-sub a:hover { text-decoration-color: #BFB6FF; }
 .mono .mo-sec { padding: clamp(64px, 9vw, 116px) 0 0; }
 .mono .mo-sec-head { max-width: 720px; }
 
@@ -435,7 +444,7 @@
 /* ── БОЛИ: плитки ────────────────────────────────────────────────────────*/
 .mono .mo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 34px; }
 .mono .mo-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.mono .mo-pain b { display: block; margin-bottom: 8px; font-family: var(--m-head); font-size: 16.5px; font-weight: 700; letter-spacing: -0.015em; }
+.mono .mo-pain h3 { display: block; margin-bottom: 8px; font-family: var(--m-head); font-size: 16.5px; font-weight: 700; letter-spacing: -0.015em; }
 .mono .mo-pain span { font-size: 14.5px; line-height: 1.5; color: var(--m-mut); text-wrap: pretty; }
 .mono .mo-pain .fix {
   display: block;
@@ -465,7 +474,7 @@
   background: rgba(110, 89, 240, 0.16);
   box-shadow: inset 0 0 0 1px var(--m-edge-active);
 }
-.mono .mo-step b { display: block; margin-bottom: 6px; font-family: var(--m-head); font-size: 16px; font-weight: 700; }
+.mono .mo-step h3 { display: block; margin-bottom: 6px; font-family: var(--m-head); font-size: 16px; font-weight: 700; }
 .mono .mo-step span { font-size: 14.5px; line-height: 1.5; color: var(--m-mut); text-wrap: pretty; }
 
 /* ── ЦЕНА ────────────────────────────────────────────────────────────────*/

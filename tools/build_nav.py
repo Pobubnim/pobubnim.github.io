@@ -74,6 +74,9 @@ def nav_html(page_url: str) -> str:
         + drop("Обучение", LEARN, page_url)
         + f'\n      {link("/articles/", "Статьи", page_url)}'
         f'\n      {link("/instrumenty/", "Инструменты", page_url)}'
+        # ВХОД В ШОУРУМ ПРОДУКТА. Без него страница живёт только по прямой ссылке:
+        # человек, попавший на любую другую страницу, о ней не узнаёт.
+        f'\n      {link("/zakazy-sami.html", "Заказы сами", page_url, cls="hot")}'
         "\n    </nav>"
     )
 
