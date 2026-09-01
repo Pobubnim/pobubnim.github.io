@@ -30,6 +30,9 @@
   .svc-sec { margin-top: clamp(52px, 7vw, 80px); }
   .svc-h2 { font-size: clamp(24px, 2.6vw, 32px); margin-bottom: 22px; }
   .svc-body p { color: var(--smoke); font-weight: 300; font-size: 17px; max-width: 680px; text-wrap: pretty; margin-bottom: 14px; }
+  /* короткий ответ: цена и суть в первых сорока словах — это то, что
+     вырезают в сниппет и в быстрые ответы поиска */
+  .svc-body p.svc-short { color: var(--ink); font-weight: 400; border-left: 2px solid var(--line-soft); padding-left: 16px; margin-bottom: 22px; }
   .svc-grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
   .svc-inc { background: var(--char); border-radius: var(--r-card); padding: 24px; }
   .svc-inc b { font-size: 15px; font-weight: 500; display: block; margin-bottom: 12px; }
@@ -110,6 +113,7 @@
 
   <section class="svc-sec svc-grid">
     <div class="svc-body">
+      <p class="svc-short"><b>Короткий ответ:</b> лендинг — <b>от 50 000 ₽</b>, многостраничный сайт — <b>от 90 000 ₽</b>. Делаю статические сайты без конструкторов: дизайн, тексты, вёрстка, запуск и домен. Сайт, который вы читаете, — пример того, как это выглядит и как быстро открывается.</p>
       <p>Сайт на конструкторе выглядит как сайт на конструкторе и требует платить каждый месяц. Я собираю сайты кодом: они быстрее, выглядят своими и принадлежат вам целиком — хостинг обходится в ноль.</p><p>Делаю лендинги услуг, сайты-портфолио, сайты компаний. Дизайн — с планкой продуктовых студий: типографика, ритм, тёмные и светлые темы, аккуратный моушен. Тексты пишу сам — продающие, без канцелярита.</p><p>Этот сайт — pobubnim.github.io — собран так же, как я сделаю ваш: посмотрите скорость загрузки и работу на телефоне. Кейс сайта кинорентала СЕВЕРСВЕТ — в портфолио.</p>
     </div>
     <div>

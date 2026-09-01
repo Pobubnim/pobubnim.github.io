@@ -30,6 +30,9 @@
   .svc-sec { margin-top: clamp(52px, 7vw, 80px); }
   .svc-h2 { font-size: clamp(24px, 2.6vw, 32px); margin-bottom: 22px; }
   .svc-body p { color: var(--smoke); font-weight: 300; font-size: 17px; max-width: 680px; text-wrap: pretty; margin-bottom: 14px; }
+  /* короткий ответ: цена и суть в первых сорока словах — это то, что
+     вырезают в сниппет и в быстрые ответы поиска */
+  .svc-body p.svc-short { color: var(--ink); font-weight: 400; border-left: 2px solid var(--line-soft); padding-left: 16px; margin-bottom: 22px; }
   .svc-grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
   .svc-inc { background: var(--char); border-radius: var(--r-card); padding: 24px; }
   .svc-inc b { font-size: 15px; font-weight: 500; display: block; margin-bottom: 12px; }
@@ -110,6 +113,7 @@
 
   <section class="svc-sec svc-grid">
     <div class="svc-body">
+      <p class="svc-short"><b>Короткий ответ:</b> сценарий автоматизации — <b>от 30 000 ₽</b>, сложные системы считаются по смете. Телеграм-боты, отчёты, контент-конвейеры, ИИ в рабочих процессах. Начинаем с того, какую рутину надо снять с людей, а не с выбора технологии.</p>
       <p>Автоматизация — это когда задача, съедавшая час в день, происходит сама. Телеграм-бот принимает заявки и складывает их в таблицу. Контент публикуется по расписанию. Отчёт собирается и приходит утром сам.</p><p>Собираю ботов и связки сервисов под конкретный процесс: приём заявок и оплат, доставка файлов клиентам, автопубликация в каналы, уведомления команде, ИИ-обработка текстов и медиа.</p><p>Свои процессы я автоматизировал этими же руками: доставка сборок приложения через бота, публикации в канал, отчёты. Работает месяцами без присмотра — так же настрою вам.</p>
     </div>
     <div>

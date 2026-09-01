@@ -30,6 +30,9 @@
   .svc-sec { margin-top: clamp(52px, 7vw, 80px); }
   .svc-h2 { font-size: clamp(24px, 2.6vw, 32px); margin-bottom: 22px; }
   .svc-body p { color: var(--smoke); font-weight: 300; font-size: 17px; max-width: 680px; text-wrap: pretty; margin-bottom: 14px; }
+  /* короткий ответ: цена и суть в первых сорока словах — это то, что
+     вырезают в сниппет и в быстрые ответы поиска */
+  .svc-body p.svc-short { color: var(--ink); font-weight: 400; border-left: 2px solid var(--line-soft); padding-left: 16px; margin-bottom: 22px; }
   .svc-grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
   .svc-inc { background: var(--char); border-radius: var(--r-card); padding: 24px; }
   .svc-inc b { font-size: 15px; font-weight: 500; display: block; margin-bottom: 12px; }
@@ -110,6 +113,7 @@
 
   <section class="svc-sec svc-grid">
     <div class="svc-body">
+      <p class="svc-short"><b>Короткий ответ:</b> имиджевый фильм о компании — <b>от 60 000 ₽</b>, многодневные съёмки считаются по смете. Это фильм про людей, производство и продукт: сценарий, съёмка, интервью, монтаж, цвет и звук. Снимаю на площадке заказчика по Москве и Московской области.</p>
       <p>Имиджевый фильм показывает компанию так, как её видит основатель: масштаб, людей, отношение к делу. Это видео для главной страницы сайта, презентаций, выставок и переговоров — оно работает годами.</p><p>Снимал заводы и производственные площадки, девелоперские проекты, форумы и события. Люблю показывать производство через людей: мастер ведёт по цеху и рассказывает своё — такой фильм смотрят до конца.</p><p>Работаю в широком кинокадре, со светом и постановкой. Интервью, репортажная часть, продуктовые вставки — всё собирается в одну историю с музыкой и ритмом.</p>
     </div>
     <div>

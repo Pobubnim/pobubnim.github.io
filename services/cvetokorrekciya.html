@@ -30,6 +30,9 @@
   .svc-sec { margin-top: clamp(52px, 7vw, 80px); }
   .svc-h2 { font-size: clamp(24px, 2.6vw, 32px); margin-bottom: 22px; }
   .svc-body p { color: var(--smoke); font-weight: 300; font-size: 17px; max-width: 680px; text-wrap: pretty; margin-bottom: 14px; }
+  /* короткий ответ: цена и суть в первых сорока словах — это то, что
+     вырезают в сниппет и в быстрые ответы поиска */
+  .svc-body p.svc-short { color: var(--ink); font-weight: 400; border-left: 2px solid var(--line-soft); padding-left: 16px; margin-bottom: 22px; }
   .svc-grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
   .svc-inc { background: var(--char); border-radius: var(--r-card); padding: 24px; }
   .svc-inc b { font-size: 15px; font-weight: 500; display: block; margin-bottom: 12px; }
@@ -110,6 +113,7 @@
 
   <section class="svc-sec svc-grid">
     <div class="svc-body">
+      <p class="svc-short"><b>Короткий ответ:</b> цветокоррекция — <b>от 15 000 ₽</b> за ролик или <b>от 2 500 ₽</b> за минуту хронометража. Крашу в DaVinci Resolve, работаю с log и RAW, со своим и чужим материалом. Ролик до трёх минут — 2–4 рабочих дня с кругом правок. Работаю удалённо по всей России.</p>
       <p>Камера намеренно пишет блёклую, плоскую картинку — весь вид кадру даёт цветокоррекция. Это отдельное ремесло: техническая коррекция, согласование камер между собой, look-дизайн под настроение проекта.</p><p>Работаю в DaVinci Resolve с log-материалом и RAW любых камер. Крашу свои съёмки и материал других видеографов: рекламу, клипы, свадьбы, короткий метр. Референсы читаю точно — «как в этом фильме» превращается в конкретные ноды, а не в пресет из интернета.</p><p>Формат удалённый: вы присылаете материал или проект, я возвращаю грейд с раундами правок. На главной странице сайта — ролик, где каждый кадр показан до и после цвета: разница и есть работа.</p>
     </div>
     <div>
