@@ -52,12 +52,15 @@ class Page(HTMLParser):
         self.labels = []        # значения for=
         self.buttons = []       # (атрибуты, текст)
         self.ids = []
+        self.mains = 0
         self._btn = None
         self._btntext = ""
         self._label_depth = 0
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        if tag == "main":
+            self.mains += 1
         if tag == "title":
             self._in_title = True
         elif tag == "meta":
@@ -144,6 +147,7 @@ def main():
     files = html_files()
     titles, descs = defaultdict(list), defaultdict(list)
     analytics_versions = defaultdict(list)
+    page_ids, page_links = {}, {}
 
     for rel in files:
         raw = open(os.path.join(ROOT, rel), encoding="utf-8").read()
@@ -230,6 +234,13 @@ def main():
                 err(rel, f"повтор id={i}")
             seen_ids.add(i)
 
+        # экранный диктор прыгает к содержимому по <main>; на служебных
+        # страницах он не нужен
+        if not service and p.mains != 1:
+            err(rel, f"<main> на странице: {p.mains} (нужен ровно один)")
+        page_ids[rel] = set(p.ids)
+        page_links[rel] = list(p.links)
+
         base = os.path.dirname(os.path.join(ROOT, rel))
         for attr, href in p.links:
             if re.match(r"^(https?:|mailto:|tel:|data:|#|//)", href):
@@ -243,6 +254,29 @@ def main():
                 target = os.path.join(target, "index.html")
             if not os.path.exists(target):
                 err(rel, f"битая ссылка {attr}={href}")
+
+    # якорь без цели уводит человека на пустое место — так «Оставить заявку»
+    # с внутренних страниц полгода вела на верх главной вместо контактов
+    for rel, links in page_links.items():
+        base = os.path.dirname(rel)
+        for attr, href in links:
+            if re.match(r"^(https?:|mailto:|tel:|data:|//)", href) or "#" not in href:
+                continue
+            path, _, frag = href.partition("#")
+            if not frag:
+                continue
+            if not path:
+                target = rel
+            elif path.startswith("/"):
+                target = path.lstrip("/") or "index.html"
+            else:
+                target = os.path.normpath(os.path.join(base, path)).replace(os.sep, "/")
+            if target.endswith("/"):
+                target += "index.html"
+            if not target.endswith(".html"):
+                target = target.rstrip("/") + "/index.html"
+            if target in page_ids and frag not in page_ids[target]:
+                err(rel, f"якорь {href} — на целевой странице нет id={frag}")
 
     for t, pages in titles.items():
         if len(pages) > 1:
