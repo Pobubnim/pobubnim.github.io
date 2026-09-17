@@ -244,6 +244,8 @@ h2 {
   border-radius: 7px;
 }
 .drop-panel a:hover { color: var(--ink); background: var(--char2); }
+/* первый пункт «Решений» — хаб «Видео для бизнеса»: вход по задаче, а не по названию услуги */
+.drop-panel a.drop-lead { color: var(--ink); margin-bottom: 6px; box-shadow: 0 1px 0 var(--line-soft); border-radius: 7px 7px 0 0; white-space: nowrap; }
 
 /* --- полноэкранное меню --- */
 .menu {

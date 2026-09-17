@@ -50,6 +50,7 @@
     '<a href="' + root + 'education.html">Обучение</a>' +
     "</div>" +
     '<div class="menu-col"><span class="label">Решения</span>' +
+    '<a href="' + root + 'video-dlya-biznesa.html">Видео для бизнеса</a>' +
     SOLUTIONS.map(function (s) {
       return '<a href="' + root + "services/" + s[0] + '.html">' + s[1] + "</a>";
     }).join("") +

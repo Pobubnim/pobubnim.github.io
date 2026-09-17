@@ -78,12 +78,37 @@ def main():
         asks = json.loads(tab.js("JSON.stringify([].map.call(document.querySelectorAll('.biz-ask'), function (a) { return decodeURIComponent(a.href); }))"))
         check("хаб: у каждой из 6 задач своя кнопка с задачей в тексте",
               len(asks) == 6 and all("Задача: " in a for a in asks), len(asks))
+
+        # доступность из меню (вопрос владельца 17.09: «на эти страницы есть доступ с меню?»)
+        tab.goto(base + "/services/cvetokorrekciya.html")
+        tab.js("document.querySelector('.nav-links .nav-drop > button').focus()")
+        time.sleep(0.4)
+        vis = tab.js("(function (a) { var r = a.getBoundingClientRect(); return !!a && getComputedStyle(a.closest('.drop-panel')).visibility === 'visible' && r.width > 0; })"
+                     "(document.querySelector('.nav-links .drop-lead[href=\"/video-dlya-biznesa.html\"]'))")
+        check("меню ПК: «Решения» открывается и первым пунктом ведёт в «Видео для бизнеса»", vis is True, vis)
+        tab.cmd("Emulation.setDeviceMetricsOverride", width=375, height=812, deviceScaleFactor=2, mobile=True)
+        tab.goto(base + "/services/cvetokorrekciya.html")
+        tab.js("document.querySelector('.burger').click()")
+        time.sleep(0.5)
+        mob = json.loads(tab.js("JSON.stringify([].map.call(document.querySelectorAll('.menu.on a'), function (a) { return a.getAttribute('href'); }))"))
+        check("мобильное меню: есть «Цены» и «Видео для бизнеса»",
+              any(h.endswith("ceny.html") for h in mob) and any(h.endswith("video-dlya-biznesa.html") for h in mob), mob[:14])
+        tab.cmd("Emulation.clearDeviceMetricsOverride")
     finally:
         tab.close()
 
     stale = [os.path.relpath(p, ROOT) for p in glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True)
              if '/#services">Цены' in open(p, encoding="utf-8").read()]
     check("шапка: «Цены» везде ведут на страницу прайса", not stale, stale[:3])
+    headers = {os.path.relpath(p, ROOT): open(p, encoding="utf-8").read().split("</header>")[0]
+               for p in glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True)}
+    menus = [k for k, h in headers.items() if 'class="drop-panel"' in h]
+    lost = [k for k in menus if 'class="drop-lead" href="/video-dlya-biznesa.html"' not in headers[k]
+            or 'href="/ceny.html"' not in headers[k]]
+    check(f"шапка: на всех {len(menus)} страницах с меню есть «Цены» и «Видео для бизнеса»", menus and not lost, lost[:3])
+    related = [p for p in glob.glob(os.path.join(ROOT, "services", "*.html"))
+               if 'href="/video-dlya-biznesa.html"' not in open(p, encoding="utf-8").read().split("</header>", 1)[1]]
+    check("услуги: в «Других решениях» есть «Видео для бизнеса»", not related, related[:3])
 
     print()
     if fails:
