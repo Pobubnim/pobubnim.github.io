@@ -21,8 +21,14 @@
      должна подсовывать «Рекламный ролик» тому, кто пришёл за свадьбой —
      ложная тема в заявке хуже пустой */
   var WHAT = ["Другое — опишу ниже", "Рекламный ролик", "Имиджевый фильм", "Свадебное кино",
-    "Музыкальный клип", "Съёмка мероприятия", "Цветокоррекция", "Сайт", "Приложение",
-    "Бот / автоматизация", "Обучение"];
+    "Музыкальный клип", "Съёмка мероприятия", "Цветокоррекция", "Монтаж", "Фотосъёмка",
+    "Вертикальные ролики для соцсетей", "ИИ-ролик", "Сайт", "Приложение", "Бот / автоматизация",
+    "Обучение", "Обучение: съёмка", "Обучение: DaVinci Resolve", "Обучение: цветокоррекция",
+    "Обучение: свет и площадка", "Разбор материала / консультация"];
+  /* подсказка в «Пара слов о задаче» под выбранную тему: «хочу на обучение» без
+     направления и уровня — это ещё не заявка, а первый вопрос переписки (17.09) */
+  var HINT_EDU = "Направление, что снимаете и на что, к чему хотите прийти";
+  var HINT = "Что снимаем или строим, сроки, ориентир бюджета";
 
   /* ---------- откуда человек пришёл ----------
      Заявка редко уходит со страницы входа: пришёл по рекламе на услугу, посмотрел
@@ -80,7 +86,7 @@
       '<label>Что нужно<select id="lf-what">' +
       WHAT.map(function (w) { return '<option>' + w + '</option>'; }).join("") +
       '</select></label>' +
-      '<label>Пара слов о задаче<textarea id="lf-desc" rows="3" placeholder="Что снимаем или строим, сроки, ориентир бюджета"></textarea></label>' +
+      '<label>Пара слов о задаче<textarea id="lf-desc" rows="3" placeholder="' + HINT + '"></textarea></label>' +
       /* согласие — отдельной строкой и отдельным действием (решение владельца 17.09;
          с 01.09.2025 согласие на обработку данных оформляется отдельно от прочих
          документов). Галочка не стоит заранее: поставленная за человека — не согласие */
@@ -102,12 +108,19 @@
   var elSend = dlg.querySelector("#lf-send");
   var elStatus = dlg.querySelector("#lf-status");
 
+  function hintFor() {
+    var d = dlg.querySelector("#lf-desc");
+    if (d && elWhat) d.placeholder = /^(Обучение|Разбор)/.test(elWhat.value) ? HINT_EDU : HINT;
+  }
+  if (elWhat) elWhat.addEventListener("change", hintFor);
+
   function openWith(topic) {
     if (topic && elWhat) {
       for (var i = 0; i < elWhat.options.length; i++) {
         if (elWhat.options[i].text === topic) { elWhat.selectedIndex = i; break; }
       }
     }
+    hintFor();
     if (elTg) elTg.hidden = true;
     if (elSend) {
       elSend.disabled = false;
@@ -211,4 +224,32 @@
       elSend.className = "btn btn-ghost";
     }
   });
+
+  /* ---------- контекст в личку ----------
+     «Написать в телеграм» открывал пустой чат, а со страницы обучения — одно и то же
+     «Хочу на обучение»: владелец не знал ни направления, ни страницы (живой случай
+     17.09). Теперь ссылка несёт готовый текст: тема страницы и вопросы, на которые
+     проще ответить сразу. Ссылку с текстом в разметке (?text=) не трогаем — там он
+     точнее. Переписываем и при загрузке (долгое нажатие «скопировать» на телефоне),
+     и при клике (ссылки, которые дорисовал другой скрипт). */
+  function tgText() {
+    var p = location.pathname, h1 = document.querySelector("h1"), topic = "";
+    if (h1) topic = (h1.querySelector(".label") || h1).textContent.replace(/\s+/g, " ").trim().slice(0, 80);
+    var hi = "Здравствуйте! ";
+    if (/^\/(education\.html|uroki\/(index\.html)?)$/.test(p))
+      return hi + "Хочу на обучение.\nНаправление (съёмка, монтаж в DaVinci, цвет, свет, разбор материала): \nЧто снимаю и на что: ";
+    if (/^\/uroki\//.test(p)) return hi + "Пишу из урока «" + topic + "».\nХочу разобраться: ";
+    if (/^\/(services\/|videograf-|videosemka-)/.test(p)) return hi + "Пишу с сайта, тема: " + topic + ".\nЗадача: \nСроки: ";
+    if (topic && !/^\/(index\.html)?$/.test(p)) return hi + "Пишу со страницы «" + topic + "».\nВопрос или задача: ";
+    return hi + "Пишу с сайта pobubnim.ru.\nЗадача: \nСроки: ";
+  }
+  function withContext(a) {
+    if (a.href.indexOf("t.me/sbphotoshoter") < 0 || a.href.indexOf("?") > -1) return;
+    a.href = TG + "?text=" + encodeURIComponent(tgText());
+  }
+  document.querySelectorAll('a[href*="t.me/sbphotoshoter"]').forEach(withContext);
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="t.me/sbphotoshoter"]');
+    if (a) withContext(a);
+  }, true);
 })();

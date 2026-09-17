@@ -78,6 +78,17 @@
   .svc-faq[open] summary::after { content: "–"; }
   .svc-faq p { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
 
+  .edu-pick { margin-top: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .edu-pick-q { font-size: 14px; color: var(--smoke); font-weight: 300; }
+  .edu-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .edu-chip { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: var(--r-pill); background: var(--lamp); color: #000; font-size: 15px; font-weight: 500; transition: transform 0.16s var(--ease); }
+  .edu-chip:active { transform: scale(0.97); }
+  .edu-chip-soft { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .edu-pick-alt { font-size: 14px; color: var(--mute); font-weight: 300; }
+  .edu-pick-alt a, .edu-pick-alt .linklike { color: var(--smoke); text-decoration: underline; text-underline-offset: 3px; }
+  .linklike { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+  .prog-go { margin-top: 4px; font-size: 14.5px; font-weight: 500; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line); }
+  .prog-go:hover { text-decoration-color: var(--ink); }
   .tools-3 { grid-template-columns: repeat(3, 1fr); }
   a.tool { transition: background 0.2s var(--ease); }
   a.tool:hover { background: var(--char2); }
@@ -130,7 +141,7 @@
       <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
     </nav>
     <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
-    <a class="btn btn-lamp" href="https://t.me/sbphotoshoter?text=Привет!%20Хочу%20на%20обучение" target="_blank" rel="noopener">Записаться</a>
+    <a class="btn btn-lamp" href="#napravlenie">Записаться</a>
   </div>
 </header>
 
@@ -140,10 +151,17 @@
   <div>
     <h1 class="display"><span class="label">Обучение видеосъёмке и монтажу · индивидуально · Москва и онлайн</span> Научу видеть <em>кадр</em></h1>
     <p class="lead">Индивидуальные занятия по видеосъёмке, свету, монтажу и цветокоррекции в DaVinci Resolve — без воды и теории ради теории. Разбираем на настоящих проектах: моих и ваших. Онлайн или очно на площадке.</p>
-    <div class="hero-cta">
-      <a class="btn btn-lamp" href="https://t.me/sbphotoshoter?text=Привет!%20Хочу%20на%20обучение" target="_blank" rel="noopener">Записаться</a>
-      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>
-      <a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Бесплатное — в канале</a>
+    <div class="edu-pick" id="napravlenie">
+      <span class="edu-pick-q">На что записаться? Нажмите — откроется телеграм с готовым сообщением</span>
+      <div class="edu-chips">
+        <a class="edu-chip" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%B1%D0%B0%D0%B7%D0%B0%20%D1%81%D1%8A%D1%91%D0%BC%D0%BA%D0%B8.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Съёмка с нуля</a>
+        <a class="edu-chip" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%3A%20DaVinci%20Resolve.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">DaVinci Resolve</a>
+        <a class="edu-chip" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%BA%D0%BE%D1%80%D1%80%D0%B5%D0%BA%D1%86%D0%B8%D1%8F.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Цветокоррекция</a>
+        <a class="edu-chip" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D1%81%D0%B2%D0%B5%D1%82%20%D0%B8%20%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D0%BA%D0%B0%20%28%D0%BE%D1%87%D0%BD%D0%BE%29.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Свет и площадка</a>
+        <a class="edu-chip" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%80%D0%B0%D0%B7%D0%B1%D0%BE%D1%80%20%D0%B8%D0%BB%D0%B8%20%D0%BA%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%86%D0%B8%D1%8E.%0A%D0%A7%D1%82%D0%BE%20%D0%B7%D0%B0%20%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%20%D0%B8%D0%BB%D0%B8%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%3A%20%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BC%D1%83%D1%89%D0%B0%D0%B5%D1%82%3A%20" target="_blank" rel="noopener">Разбор материала</a>
+        <a class="edu-chip edu-chip-soft" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%2C%20%D0%BD%D0%BE%20%D0%BD%D0%B5%20%D0%B7%D0%BD%D0%B0%D1%8E%2C%20%D1%81%20%D1%87%D0%B5%D0%B3%D0%BE%20%D0%BD%D0%B0%D1%87%D0%B0%D1%82%D1%8C.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Не знаю, с чего начать</a>
+      </div>
+      <p class="edu-pick-alt">Удобнее без мессенджера — <button type="button" class="linklike" data-lead="Обучение">оставьте заявку</button>, или пишите во <a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>. Бесплатные разборы — <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">в канале</a>.</p>
     </div>
   </div>
   <img src="assets/img/about-camera.webp" alt="Савелий с камерой на площадке" width="1200" height="900">
@@ -182,6 +200,7 @@
           <li>Движение камеры: когда штатив, когда рука, когда гимбал</li>
         </ul>
         <div class="prog-price">от 3 000 ₽ <span>/ занятие 90 минут</span></div>
+        <a class="prog-go" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D0%B1%D0%B0%D0%B7%D0%B0%20%D1%81%D1%8A%D1%91%D0%BC%D0%BA%D0%B8.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Записаться на это направление →</a>
       </div>
       <div class="prog">
         <i>02</i><b>DaVinci Resolve</b>
@@ -192,6 +211,7 @@
           <li>Прокси, форматы, доставка без сюрпризов</li>
         </ul>
         <div class="prog-price">от 3 000 ₽ <span>/ занятие 90 минут</span></div>
+        <a class="prog-go" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%3A%20DaVinci%20Resolve.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Записаться на это направление →</a>
       </div>
       <div class="prog">
         <i>03</i><b>Колористика</b>
@@ -202,6 +222,7 @@
           <li>Кожа, небо, зелень — что чинить в первую очередь</li>
         </ul>
         <div class="prog-price">от 3 500 ₽ <span>/ занятие 90 минут</span></div>
+        <a class="prog-go" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%BA%D0%BE%D1%80%D1%80%D0%B5%D0%BA%D1%86%D0%B8%D1%8F.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Записаться на это направление →</a>
       </div>
       <div class="prog">
         <i>04</i><b>Приборы и площадка</b>
@@ -212,6 +233,7 @@
           <li>Хромакей: как снять, чтобы потом не мучиться</li>
         </ul>
         <div class="prog-price">от 4 000 ₽ <span>/ занятие · очно</span></div>
+        <a class="prog-go" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%3A%20%D1%81%D0%B2%D0%B5%D1%82%20%D0%B8%20%D0%BF%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D0%BA%D0%B0%20%28%D0%BE%D1%87%D0%BD%D0%BE%29.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Записаться на это направление →</a>
       </div>
       <div class="prog">
         <i>05</i><b>Консультации и разборы</b>
@@ -222,6 +244,7 @@
           <li>Смета и продакшн-план вашей съёмки</li>
         </ul>
         <div class="prog-price">от 2 000 ₽ <span>/ консультация</span></div>
+        <a class="prog-go" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D1%80%D0%B0%D0%B7%D0%B1%D0%BE%D1%80%20%D0%B8%D0%BB%D0%B8%20%D0%BA%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%86%D0%B8%D1%8E.%0A%D0%A7%D1%82%D0%BE%20%D0%B7%D0%B0%20%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%20%D0%B8%D0%BB%D0%B8%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%3A%20%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BC%D1%83%D1%89%D0%B0%D0%B5%D1%82%3A%20" target="_blank" rel="noopener">Записаться на это направление →</a>
       </div>
       <div class="prog">
         <i>06</i><b>Индивидуальный план</b>
@@ -232,6 +255,7 @@
           <li>Наставничество на вашем реальном проекте</li>
         </ul>
         <div class="prog-price">обсуждается <span>/ после созвона</span></div>
+        <a class="prog-go" href="https://t.me/sbphotoshoter?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%2C%20%D0%BD%D0%BE%20%D0%BD%D0%B5%20%D0%B7%D0%BD%D0%B0%D1%8E%2C%20%D1%81%20%D1%87%D0%B5%D0%B3%D0%BE%20%D0%BD%D0%B0%D1%87%D0%B0%D1%82%D1%8C.%0A%D0%A7%D1%82%D0%BE%20%D1%81%D0%BD%D0%B8%D0%BC%D0%B0%D1%8E%20%D0%B8%20%D0%BD%D0%B0%20%D1%87%D1%82%D0%BE%3A%20%0A%D0%9A%20%D1%87%D0%B5%D0%BC%D1%83%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BF%D1%80%D0%B8%D0%B9%D1%82%D0%B8%3A%20" target="_blank" rel="noopener">Обсудить свою цель →</a>
       </div>
     </div>
   </div>

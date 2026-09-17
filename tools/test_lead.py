@@ -242,6 +242,41 @@ def main():
         s = json.loads(tab.js(STATE))
         check("учёт: испорченный источник не мешает отправить заявку",
               s["sent"] and "готово" in s["status"].lower(), s["status"][:80])
+
+        # 7. контекст в личку. Живой случай 17.09: человек написал «Хочу на обучение», и
+        #    было не понять ни направления, ни страницы — со всех остальных страниц ссылка
+        #    открывала пустой чат.
+        links = ("JSON.stringify([].map.call(document.querySelectorAll('%s'), "
+                 "function (a) { return decodeURIComponent(a.href); }))")
+        tab.goto(base + "/services/reklamnyj-rolik.html")
+        hrefs = json.loads(tab.js(links % 'a[href*="t.me/sbphotoshoter"]'))
+        check("личка: на услуге каждая ссылка в телеграм несёт тему страницы",
+              hrefs and all("тема: Рекламный ролик под ключ" in h for h in hrefs), hrefs[:2])
+
+        tab.goto(base + "/education.html")
+        edu = json.loads(tab.js(links % 'a[href*="t.me/sbphotoshoter"]'))
+        marks = ("Направление (", "обучение: ", "разбор или консультацию", "не знаю, с чего начать")
+        check("обучение: ни одна ссылка не шлёт «хочу на обучение» без направления",
+              edu and all(any(m in h for m in marks) for h in edu),
+              [h for h in edu if not any(m in h for m in marks)][:2])
+        chips = json.loads(tab.js(links % ".edu-chip"))
+        goes = tab.js("document.querySelectorAll('.prog-go').length")
+        check("обучение: у каждой из 6 программ своя кнопка, чип шлёт направление",
+              goes == 6 and any("обучение: цветокоррекция" in h for h in chips), [goes, chips[:2]])
+        tab.js("document.querySelector('.edu-pick [data-lead]').click();")
+        ph = tab.js("document.getElementById('lf-desc').placeholder")
+        check("форма: для обучения подсказка спрашивает направление", "Направление" in (ph or ""), ph)
+
+        # ссылку, которую дорисовал другой скрипт после загрузки, чиним в момент клика
+        tab.goto(base + "/articles/skolko-stoit-klip.html")
+        tab.js("var a = document.createElement('a'); a.id = 'probe-tg'; a.href = 'https://t.me/sbphotoshoter';"
+               "a.textContent = 'x'; document.body.appendChild(a); window.__href = null;"
+               "addEventListener('click', function (e) { if (e.target.id === 'probe-tg') {"
+               " e.preventDefault(); window.__href = decodeURIComponent(e.target.href); } });"
+               "a.click();")
+        got = tab.js("window.__href") or ""
+        check("личка: ссылка, добавленная после загрузки, получает тему при клике",
+              "Пишу со страницы «Сколько стоит съёмка клипа" in got, got[:90])
     finally:
         tab.close()
 
