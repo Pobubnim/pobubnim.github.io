@@ -181,6 +181,20 @@ h2 {
 
 .nav .btn { height: 38px; padding: 0 20px; font-size: 14px; }
 
+/* телефон в шапке: номер на широкой шапке, значок на узкой, кнопка у бургера на телефоне */
+.nav-tel {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 38px; flex: none;
+  font: 500 14px/1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--smoke);
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.nav-tel:hover { color: var(--ink); }
+.nav-tel svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
+@media (max-width: 1199px) { .nav-tel span { display: none; } }  /* замер: номер влезает с 1200 */
+
 /* --- бургер --- */
 .burger {
   display: none;
@@ -727,10 +741,17 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
   .channel { flex-direction: column; align-items: flex-start; }
 }
 
-@media (max-width: 700px) {
+/* Шапка уходит в бургер до 1040 px, а не до 700: строка разделов занимает ~940 px,
+   и на планшете (768–1000) она вылезала за край ещё до телефона (замер 17.09). */
+@media (max-width: 1040px) {
   .nav-links { display: none; }
   .burger { display: flex; }
-  .nav .btn { display: none; }   /* CTA уезжает в меню — в шапке логотип и бургер */
+  .nav .btn { display: none; }   /* CTA уезжает в меню — в шапке логотип, телефон и бургер */
+  .nav-tel { margin-left: auto; width: 44px; height: 44px; justify-content: center; color: var(--ink); }
+  .nav-tel svg { width: 20px; height: 20px; }
+}
+
+@media (max-width: 700px) {
   .films { grid-template-columns: 1fr; }
   .films-vert { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: 1fr; }

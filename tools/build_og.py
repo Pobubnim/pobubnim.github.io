@@ -33,6 +33,7 @@ PAGES = {
     "videograf-naro-fominsk": (os.path.join(IMG, "hz-wedding.webp"), "Видеограф в Наро-Фоминске"),
     "videograf-aprelevka":    (os.path.join(IMG, "tri-wedding-1.webp"), "Видеограф в Апрелевке"),
     "videograf-obninsk":      (os.path.join(IMG, "tri-factory-1.webp"), "Видеограф в Обнинске"),
+    "videosemka-moskva":      (os.path.join(IMG, "hz-watch-2.webp"), "Видеосъёмка в Москве"),
 }
 
 W, H = 1200, 630

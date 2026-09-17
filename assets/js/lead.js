@@ -81,6 +81,24 @@
   if (location.hash === "#zayavka") openWith(null);
   addEventListener("hashchange", function () { if (location.hash === "#zayavka") openWith(null); });
 
+  /* Откуда пришёл человек — в поле page (база хранит 200 символов и показывает их
+     в админке). Полный объект уходит ключом source: база его пока пропускает,
+     после миграции начнёт хранить и присылать в телеграм.
+     Вид: «/services/x.html ← yandex/cpc/123 «видеосъёмка москва» · вход /x.html 20.09 · cid 17…» */
+  function pageWithSource() {
+    var here = location.pathname + location.hash;
+    var s = window.pbSource ? window.pbSource() : null;
+    var l = s && s.last;
+    if (!l) return (here + " ← прямой заход" + (s && s.cid ? " · cid " + s.cid : "")).slice(0, 200);
+    var from = l.utm_source ? [l.utm_source, l.utm_medium, l.utm_campaign].filter(Boolean).join("/")
+      : l.yclid ? "yandex/cpc" : l.ref || "?";
+    var parts = [from];
+    if (l.utm_term) parts.push("«" + l.utm_term.slice(0, 40) + "»");
+    parts.push("вход " + l.land + " " + (l.date || "").slice(5).split("-").reverse().join("."));
+    if (s.cid) parts.push("cid " + s.cid);
+    return (here + " ← " + parts.join(" · ")).slice(0, 200);
+  }
+
   elSend.addEventListener("click", async function () {
     var name = dlg.querySelector("#lf-name").value.trim();
     var contact = dlg.querySelector("#lf-contact").value.trim();
@@ -99,7 +117,8 @@
         headers: { apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json" },
         body: JSON.stringify({ p: {
           name: name, contact: contact, service: what, message: desc,
-          page: location.pathname + location.hash,
+          page: pageWithSource(),
+          source: window.pbSource ? window.pbSource() : null,
           website: dlg.querySelector("#lf-website").value,
         } }),
       });

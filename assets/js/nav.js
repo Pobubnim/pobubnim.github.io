@@ -55,7 +55,10 @@
     }).join("") +
     "</div>" +
     '<div class="menu-cta">' +
-    '<a class="btn btn-lamp" href="' + home("#zayavka") + '">Оставить заявку</a>' +
+    /* data-lead: форма открывается на месте. Без него кнопка меню уводила человека
+       с посадочной на главную — на телефоне это единственная кнопка заявки в шапке */
+    '<a class="btn btn-lamp" href="' + home("#zayavka") + '" data-lead>Оставить заявку</a>' +
+    '<a class="btn btn-ghost" href="tel:+79829054454">Позвонить: +7 982 905-44-54</a>' +
     '<a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>' +
     '<a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал ПОБУБНИМ</a>' +
     "</div></div>";

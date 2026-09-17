@@ -166,6 +166,38 @@ def main():
         check("отказ: человеку сказали правду и предложили повтор",
               "не смог отправить" in s["status"].lower() and "ещё раз" in s["button"].lower(),
               s["button"] + " | " + s["status"][:80])
+
+        # 4. источник: пришёл по рекламе на услугу, заявку оставил с другой страницы.
+        #    Без этого расход на Директ не с чем сопоставить (17.09.2026).
+        base = URL.rstrip("/")
+        tab.goto(base + "/services/semka-meropriyatij.html?utm_source=yandex&utm_medium=cpc"
+                 "&utm_campaign=777&utm_term=%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%D1%81%D1%8A%D1%91%D0%BC%D0%BA%D0%B0"
+                 "&yclid=123456789")
+        tab.goto(base + "/raboty.html")
+        tab.js(MOCK % OK)
+        tab.js(FILL)
+        tab.js("document.getElementById('lf-send').click()")
+        time.sleep(1.2)
+        s = json.loads(tab.js(STATE))
+        body = s["body"] or {}
+        page = body.get("page") or ""
+        last = ((body.get("source") or {}).get("last") or {})
+        check("источник: в поле page видно рекламу, ключ и страницу входа",
+              "yandex/cpc/777" in page and "«видеосъёмка»" in page
+              and "вход /services/semka-meropriyatij.html" in page and len(page) <= 200, page)
+        check("источник: полный объект с yclid ушёл ключом source",
+              last.get("yclid") == "123456789" and last.get("utm_campaign") == "777", body.get("source"))
+        check("источник: внутренний переход не перетёр рекламный",
+              page.startswith("/raboty.html ← yandex"), page)
+
+        # 5. звонок из шапки считается целью phone_click
+        tab.goto(base + "/services/reklamnyj-rolik.html")
+        tab.js("window.__goals = []; window.ym = function () { window.__goals.push([].slice.call(arguments)); };"
+               "addEventListener('click', function (e) { e.preventDefault(); }, true);"
+               "document.querySelector('.nav-tel').click();")
+        goals = tab.js("JSON.stringify(window.__goals.filter(function (g) { return g[1] === 'reachGoal'; }))")
+        check("телефон: клик по номеру в шапке шлёт цель phone_click",
+              "phone_click" in (goals or ""), goals)
     finally:
         tab.close()
 

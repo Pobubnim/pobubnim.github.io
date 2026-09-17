@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#000000">
-<title>Видеограф в Наро-Фоминске — съёмка и фото | ПОБУБНИМ</title>
+<title>Фотограф и видеограф в Наро-Фоминске — съёмка | ПОБУБНИМ</title>
 <meta name="description" content="Видеограф и фотограф в Наро-Фоминске: свадьбы и ЗАГС, события, реклама для местного бизнеса, клипы. Живу в округе — без наценки за выезд. Съёмочный день от 30 000 ₽, цвет от 15 000 ₽.">
 <meta name="author" content="Савелий Бубнов">
 <link rel="canonical" href="https://pobubnim.ru/videograf-naro-fominsk.html">
-<meta property="og:title" content="Видеограф в Наро-Фоминске — съёмка свадеб, событий и рекламы">
+<meta property="og:title" content="Фотограф и видеограф в Наро-Фоминске — свадьбы, события, реклама">
 <meta property="og:description" content="Свадьбы, события, реклама и клипы в Наро-Фоминске без наценки за выезд. Снимаю и крашу как кино.">
 <meta property="og:image" content="https://pobubnim.ru/assets/og/videograf-naro-fominsk.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -41,6 +41,9 @@
 <style>
   /* гео-герой: как на главной, но ниже — под кадром сразу идёт дело */
   .geo-hero { height: clamp(480px, 74vh, 700px); min-height: 480px; }
+  /* на телефоне герой растёт по содержимому: при фиксированной высоте длинный
+     заголовок города выдавливал надпись над ним под шапку (замер 17.09) */
+  @media (max-width: 700px) { .geo-hero { height: auto; min-height: clamp(480px, 74vh, 700px); padding-top: 96px; } }
   /* заголовок города длиннее, чем на главной: базовые 108px не влезают в
      укороченный герой и обрезаются сверху — своя шкала */
   .geo-hero .hero-copy h1.display { font-size: clamp(32px, 4.6vw, 68px); max-width: 15ch; }
@@ -81,7 +84,7 @@
   .geo-towns span.here { color: var(--ink); border-color: var(--line); }
   @media (max-width: 800px) { .svc-grid { grid-template-columns: 1fr; } }
 </style>
-<script src="assets/js/analytics.js?v=3" defer></script>
+<script src="assets/js/analytics.js?v=4" defer></script>
 </head>
 <body>
 
@@ -115,6 +118,7 @@
       <a href="/instrumenty/">Инструменты</a>
       <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
     </nav>
+    <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
     <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
   </div>
 </header>
@@ -137,7 +141,7 @@
   </script>
   <div class="hero-in wrap">
     <div class="hero-copy">
-      <h1 class="display"><span class="label">Съёмка · Наро-Фоминск и округ</span> Видеограф в <em>Наро-Фоминске</em></h1>
+      <h1 class="display"><span class="label">Съёмка · Наро-Фоминск и округ</span> Фотограф и видеограф в <em>Наро-Фоминске</em></h1>
       <p>Свадьбы и ЗАГС, семейные события, реклама для местного бизнеса, клипы. Живу в Наро-Фоминском округе — приезжаю без наценки за выезд и знаю локации города не по карте. Фото и видео — одной командой.</p>
       <div class="hero-cta">
         <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>

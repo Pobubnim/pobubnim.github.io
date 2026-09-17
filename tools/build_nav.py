@@ -40,6 +40,12 @@ SOLUTIONS = [
     ("/services/boty-avtomatizaciya.html", "Боты и автоматизация"),
 ]
 
+TEL = ('<a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54">'
+       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 '
+       '19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1'
+       '-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>'
+       '<span>+7 982 905-44-54</span></a>')
+
 LEARN = [
     ("/education.html", "Программы обучения"),
     ("/uroki/", "Уроки DaVinci Resolve"),
@@ -109,6 +115,16 @@ def main() -> None:
         # именем на сайте нет, кнопка молча не работала)
         new = re.sub(r'<a class="btn btn-lamp[^"]*" href="/#(?:zayavka|contact)">Оставить заявку</a>',
                      '<a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>', new)
+        # телефон в шапке (слово владельца 17.09: «да, везде»). Трафик Директа —
+        # телефоны, а номера на сайте не было нигде, кроме JSON-LD для роботов.
+        # На узкой шапке остаётся значок, на телефоне — кнопка рядом с бургером.
+        # Кнопка шапки на разных страницах своя (<a>/<button>, заявка/запись/обсудить),
+        # поэтому якорь — «последняя крем-кнопка перед </header>».
+        if p != "admin.html":
+            new = re.sub(r'(?:<a class="nav-tel"[^>]*>.*?</a>\s*)?'
+                         r'(<(a|button) class="btn btn-lamp[^"]*"[^>]*>[^<]*</\2>\s*'
+                         r'(?:<button class="burger"[^>]*>.*?</button>\s*)?</div>\s*</header>)',
+                         lambda m: TEL + "\n    " + m.group(1), new, count=1, flags=re.S)
         if "data-lead" in new and "assets/js/lead.js" not in new:
             new = new.replace("</body>",
                               '<script src="/assets/js/lead.js" defer></script>\n</body>', 1)
