@@ -99,19 +99,32 @@ def themes_html() -> str:
 
 
 def jsonld_items() -> str:
-    """ItemList из тем — описания совпадают с тем, что видит человек."""
+    """ItemList из тем — описания совпадают с тем, что видит человек.
+
+    Набор полей — по справке Яндекса (yandex.ru/support/video/ru/partners/schema-org.html):
+    url, name, description, duration, isFamilyFriendly, thumbnail и uploadDate обязательны,
+    без них ролик не индексируется. uploadDate — дата появления работы на сайте: поле "up"
+    в data/films.json, снято из истории репозитория (самый ранний коммит, где встречается id
+    работы, по data/films.json, assets/js/films.js, raboty.html и index.html). Дата не выдумана;
+    если берёте её только по одному файлу — промахнётесь: данные films.json создавались позже
+    самих работ (грабля поймана дознанием 17.09).
+    """
     items, pos = [], 0
     for th in DATA["themes"]:
         for f in th["films"]:
             pos += 1
+            thumb = poster(f) if poster(f).startswith("http") else "https://pobubnim.ru" + poster(f)
             items.append(json.dumps({
                 "@type": "VideoObject",
                 "position": pos,
+                "url": f"https://pobubnim.ru/raboty.html#{th['id']}",
                 "name": f"{plain(f['t'])} — {f['s']}",
                 "description": f"{f['s']}. Тема: {plain(th['t'])}.",
                 "duration": iso_duration(f["len"]),
-                "thumbnailUrl": poster(f) if poster(f).startswith("http")
-                                else "https://pobubnim.ru" + poster(f),
+                "uploadDate": f["up"],
+                "isFamilyFriendly": True,
+                "thumbnailUrl": thumb,
+                "thumbnail": {"@type": "ImageObject", "url": thumb},
                 "contentUrl": (base(f) + f["id"] + ".mp4") if base(f).startswith("http")
                               else "https://pobubnim.ru" + base(f) + f["id"] + ".mp4",
             }, ensure_ascii=False))

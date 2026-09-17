@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="../assets/css/lesson.css">
 <link rel="stylesheet" href="../assets/css/paper.css">
 <link rel="stylesheet" href="../assets/css/scopes.css?v=3">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Приборы онлайн: waveform, вектроскоп, false color", "url": "https://pobubnim.ru/instrumenty/pribory-onlajn.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/"}, "featureList": "Waveform (яркость, цветная трасса, RGB, парад RGB, парад Y'CbCr); гистограмма; вектроскоп с мишенями цветных полос и линией кожи; false color по IRE, по стопам и по спецификации ARRI LogC3; зебра; фокус-пикинг; пипетка; кроп области измерения; загрузка 3D-LUT .cube с тетраэдральной и трилинейной интерполяцией, сравнение до и после, пересчёт сетки и выгрузка; захват экрана, файл, камера", "description": "Бесплатные видеоприборы в браузере: waveform и парады, гистограмма, вектроскоп с мишенями и линией кожи, false color по трём шкалам, зебра и фокус-пикинг. Источник кадра — захват экрана, файл или камера, всё считается локально."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Приборы онлайн: waveform, вектроскоп, false color", "url": "https://pobubnim.ru/instrumenty/pribory-onlajn.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/"}, "featureList": "Waveform (яркость, цветная трасса, RGB, парад RGB, парад Y'CbCr); гистограмма; вектроскоп с мишенями цветных полос и линией кожи; false color по IRE, по стопам и по спецификации ARRI LogC3; зебра; фокус-пикинг; пипетка; кроп области измерения; загрузка 3D-LUT .cube с тетраэдральной и трилинейной интерполяцией, сравнение до и после, пересчёт сетки и выгрузка; захват экрана, файл, камера", "description": "Бесплатные видеоприборы в браузере: waveform и парады, гистограмма, вектроскоп с мишенями и линией кожи, false color по трём шкалам, зебра и фокус-пикинг. Источник кадра — захват экрана, файл или камера, всё считается локально."}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Как посмотреть, что делает LUT с картинкой?", "acceptedAnswer": {"@type": "Answer", "text": "Загрузите файл .cube в панели слева — приборы начнут считать кадр после LUT. Waveform покажет, куда уехали тени и света, парад RGB — какой канал уходит в упор, вектроскоп — что стало с насыщенностью. Галочка сравнения делит окно «Кадр» пополам: слева исходный кадр, справа результат. Ползунок силы смешивает LUT с оригиналом от 0 до 100%."}},
 {"@type": "Question", "name": "Чем тетраэдральная интерполяция отличается от трилинейной?", "acceptedAnswer": {"@type": "Answer", "text": "Трилинейная достраивает цвет по восьми углам ячейки сетки, тетраэдральная делит ячейку на шесть тетраэдров и работает по четырём узлам. Так считает DaVinci Resolve, и на плавных градиентах у неё меньше «ступенек». На сетке 17³ методы расходятся примерно на 0,003 сигнала, на 65³ разница почти исчезает. Оба метода в приборах реализованы и сверены с независимым расчётом."}},
@@ -359,7 +359,7 @@
       <a class="btn btn-lamp" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал с инструментами</a>
       <a class="btn btn-ghost" href="/zakazy-sami.html">Заказы приходят сами</a>
     </div>
-    <p class="cta-after">Нужен не расчёт, а съёмка или цвет — вот <a href="/#services">услуги и цены</a>: съёмочный день от 30 000 ₽, проект под ключ от 60 000 ₽, цветокоррекция от 15 000 ₽.</p>
+    <p class="cta-after">Нужен не прибор, а готовый цвет — <a href="/services/cvetokorrekciya.html">цветокоррекция под ключ</a> от 15 000 ₽ за ролик. Хотите разобраться сами — <a href="/education.html">занятия по колористике</a> от 3 500 ₽.</p>
   </div>
 </div>
 </main>
@@ -369,6 +369,7 @@
     <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
     <nav aria-label="Подвал">
       <a href="/">На главную</a>
+      <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
       <a href="../instrumenty/">Инструменты</a>
       <a href="../uroki/">Уроки</a>
       <a href="../privacy.html">Конфиденциальность</a>

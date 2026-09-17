@@ -56,6 +56,19 @@ def main():
             n = int(re.sub(r"\D", "", m.group(1)))
             if n not in ok:
                 bad.append(f"{rel}: «{m.group(0)}» нет в прайсе")
+    # Строка-переход под кнопками («нужен не расчёт, а съёмка — съёмочный день от 30 000 ₽»)
+    # живёт на инструментах и уроках, то есть вне страниц предложений: цены оттуда гард
+    # не видел (находка дознания 17.09), а врать они могут так же.
+    for p in sorted(glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True)):
+        rel = os.path.relpath(p, ROOT).replace("\\", "/")
+        if rel in PRODUCT_PAGES:
+            continue
+        for cta in re.findall(r'<p class="cta-after">(.*?)</p>', open(p, encoding="utf-8").read(), re.S):
+            for m in re.finditer(r"(\d{1,3}(?:[  ]\d{3})+|\d+)\s?₽", visible(cta)):
+                n = int(re.sub(r"\D", "", m.group(1)))
+                if n not in ok:
+                    bad.append(f"{rel}: в строке под кнопками «{m.group(0)}» нет в прайсе")
+
     for p in sorted(glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True)):
         rel = os.path.relpath(p, ROOT).replace("\\", "/")
         if rel in PRODUCT_PAGES:

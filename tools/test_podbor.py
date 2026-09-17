@@ -13,6 +13,7 @@
 """
 import glob
 import json
+import re
 import os
 import sys
 import time
@@ -109,6 +110,20 @@ def main():
     related = [p for p in glob.glob(os.path.join(ROOT, "services", "*.html"))
                if 'href="/video-dlya-biznesa.html"' not in open(p, encoding="utf-8").read().split("</header>", 1)[1]]
     check("услуги: в «Других решениях» есть «Видео для бизнеса»", not related, related[:3])
+
+    # Генератор шапки отставал от файлов: он ещё писал «Цены» на /#services и не знал хаба,
+    # то есть любой его прогон молча откатывал меню (найдено 17.09). Сверяем, что он даёт ровно то,
+    # что лежит в страницах, — тогда прогон build_nav.py безопасен.
+    import build_nav  # noqa: E402  лежит рядом, путь добавлен выше
+    stale_nav = []
+    for p in glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True):
+        rel = os.path.relpath(p, ROOT).replace("\\", "/")
+        if rel.startswith("videos/"):
+            continue
+        m = re.search(r'<nav class="nav-links"[^>]*>.*?</nav>', open(p, encoding="utf-8").read(), re.S)
+        if m and m.group(0) != build_nav.nav_html(build_nav.page_url_of(rel)):
+            stale_nav.append(rel)
+    check("шапка: генератор build_nav.py даёт ровно то, что лежит в файлах", not stale_nav, stale_nav[:3])
 
     print()
     if fails:

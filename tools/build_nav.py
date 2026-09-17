@@ -59,8 +59,8 @@ def link(href: str, text: str, page_url: str, cls: str = "") -> str:
     return f'<a{c} href="{href}"{cur}>{text}</a>'
 
 
-def drop(title: str, items: list[tuple[str, str]], page_url: str) -> str:
-    inner = "".join(
+def drop(title: str, items: list[tuple[str, str]], page_url: str, lead: tuple[str, str] | None = None) -> str:
+    inner = (f'\n        {link(*lead, page_url, cls="drop-lead")}' if lead else "") + "".join(
         f'\n        {link(h, t, page_url)}' for h, t in items)
     here = ' data-here' if any(h == page_url for h, _ in items) else ""
     return (
@@ -75,8 +75,9 @@ def nav_html(page_url: str) -> str:
     return (
         '<nav class="nav-links" aria-label="Основная">'
         f'\n      {link("/raboty.html", "Работы", page_url)}'
-        + drop("Решения", SOLUTIONS, page_url)
-        + f'\n      {link("/#services", "Цены", page_url)}'
+        # хаб «под задачу» первым пунктом (17.09): без него страница жила только по ссылке с прайса
+        + drop("Решения", SOLUTIONS, page_url, lead=("/video-dlya-biznesa.html", "Видео для бизнеса: подбор под задачу"))
+        + f'\n      {link("/ceny.html", "Цены", page_url)}'
         + drop("Обучение", LEARN, page_url)
         + f'\n      {link("/articles/", "Статьи", page_url)}'
         f'\n      {link("/instrumenty/", "Инструменты", page_url)}'

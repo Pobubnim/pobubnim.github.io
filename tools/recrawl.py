@@ -37,6 +37,8 @@ ROOT = Path(__file__).resolve().parent.parent
 # инструменты в поиск вошли сами — им переобход не нужен.
 CORE = [
     "/", "/raboty.html", "/education.html",
+    # 17.09: этих трёх в списке не было, и робот НИ РАЗУ их не обошёл (index_status.py)
+    "/videosemka-moskva.html", "/ceny.html", "/video-dlya-biznesa.html", "/articles/",
     "/services/reklamnyj-rolik.html", "/services/imidzhevyj-film.html",
     "/services/svadebnoe-kino.html", "/services/muzykalnyj-klip.html",
     "/services/cvetokorrekciya.html", "/services/semka-meropriyatij.html",
