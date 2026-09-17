@@ -13,6 +13,19 @@
 
   const ready = () => player.removeAttribute("data-loading");
   ["loadeddata", "playing", "error"].forEach(n => pVideo.addEventListener(n, ready));
+  /* видео работ лежат на соседнем домене (seversvet.github.io). Если он недоступен,
+     плеер раньше просто висел с постером: показываем причину и путь написать. */
+  pVideo.addEventListener("error", () => {
+    let note = player.querySelector(".player-err");
+    if (!note) {
+      note = document.createElement("p");
+      note.className = "player-err";
+      note.innerHTML = 'Видео сейчас не открывается — файл лежит на соседней площадке, бывает, что она недоступна. '
+        + '<a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Напишите мне</a>, пришлю ссылку на работу.';
+      player.appendChild(note);
+    }
+    note.hidden = false;
+  });
 
   function openPlayer(src, vert, poster) {
     if (vert) player.setAttribute("data-vert", ""); else player.removeAttribute("data-vert");
@@ -27,6 +40,8 @@
   /* выход один на все способы закрытия — крестик, фон и Esc: иначе ролик
      остаётся присоединённым к плееру и продолжает висеть в памяти и в сети */
   player.addEventListener("close", () => {
+    const note = player.querySelector(".player-err");
+    if (note) note.hidden = true;
     pVideo.pause();
     pVideo.removeAttribute("src");
     pVideo.removeAttribute("poster");

@@ -170,6 +170,23 @@ PLAYER_PROBE = """
 """
 
 
+
+# Отказ соседнего домена: подсовываем плееру несуществующий файл и ждём объяснение вместо
+# вечной загрузки (все ролики работ хотлинком с seversvet.github.io — единая точка отказа).
+ERR_PROBE = """(() => {
+  const card = document.querySelector('.film[data-src]');
+  card.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+  const p = document.getElementById('player'), v = p.querySelector('video');
+  v.src = location.origin + '/assets/video/net-takogo-fajla.mp4';
+  v.load();
+  return new Promise(r => setTimeout(() => {
+    const n = p.querySelector('.player-err');
+    r(JSON.stringify({shown: !!n && !n.hidden, link: !!(n && n.querySelector('a')),
+                      loading: p.hasAttribute('data-loading'),
+                      text: n ? n.textContent.slice(0, 40) : ''}));
+  }, 1500));
+})()"""
+
 def main():
     tab = Tab()
     try:
@@ -197,6 +214,11 @@ def main():
               and pl["spin"] == "player-spin" and pl["h"] > 200, pl)
         check("закрытие отцепляет ролик от плеера",
               pl["closed"] and not pl["src"] and not pl["posterAfter"], pl)
+        tab.slow_net(False)
+        tab.goto(URL)
+        er = json.loads(tab.js(ERR_PROBE, wait=True))
+        check("плеер объясняет отказ вместо вечной загрузки",
+              er["shown"] and er["link"] and not er["loading"], er)
     finally:
         tab.close()
 

@@ -82,13 +82,13 @@
       '<button type="button" class="lead-close" aria-label="Закрыть">&times;</button>' +
       '<span class="label">Заявка</span>' +
       '<h3>Опишите задачу — отвечу в тот же день</h3>' +
-      '<label>Как вас зовут<input type="text" id="lf-name" autocomplete="name" placeholder="Имя"></label>' +
-      '<label>Телефон или телеграм<input type="text" id="lf-contact" autocomplete="tel" placeholder="+7… или @ник" aria-required="true"></label>' +
+      '<label>Как вас зовут<input type="text" id="lf-name" class="ym-disable-keys" autocomplete="name" placeholder="Имя"></label>' +
+      '<label>Телефон или телеграм<input type="text" id="lf-contact" class="ym-disable-keys" autocomplete="tel" placeholder="+7… или @ник" aria-required="true"></label>' +
       '<input type="text" id="lf-website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">' +
       '<label>Что нужно<select id="lf-what">' +
       WHAT.map(function (w) { return '<option>' + w + '</option>'; }).join("") +
       '</select></label>' +
-      '<label>Пара слов о задаче<textarea id="lf-desc" rows="3" placeholder="' + HINT + '"></textarea></label>' +
+      '<label>Пара слов о задаче<textarea id="lf-desc" class="ym-disable-keys" rows="3" placeholder="' + HINT + '"></textarea></label>' +
       /* согласие — отдельной строкой и отдельным действием (решение владельца 17.09;
          с 01.09.2025 согласие на обработку данных оформляется отдельно от прочих
          документов). Галочка не стоит заранее: поставленная за человека — не согласие */

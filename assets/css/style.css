@@ -904,3 +904,18 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 .rev figcaption span { font-size: 12.5px; color: var(--mute); }
 .rev-note { margin-top: 14px; font-size: 13.5px; color: var(--mute); font-weight: 300; max-width: 720px; text-wrap: pretty; }
 @media (max-width: 700px) { .revs { grid-auto-columns: 86%; } }
+
+/* Отказ плеера: ролики работ лежат на соседнем домене, он может быть недоступен.
+   Показываем причину вместо вечной загрузки. Появление короткое и снизу вверх —
+   человек уже смотрит в центр окна, резкий подскок не нужен. */
+.player-err {
+  margin: 14px 0 0; padding: 14px 16px; border-radius: var(--r-card);
+  background: var(--char); border: 1px solid var(--line-soft);
+  color: var(--smoke); font-size: 14.5px; font-weight: 300; line-height: 1.5; text-wrap: pretty;
+  opacity: 1; transform: translateY(0);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.player-err a { color: var(--ink); box-shadow: 0 1px 0 var(--line); }
+.player-err a:hover { box-shadow: 0 1px 0 var(--ink); }
+@starting-style { .player-err { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .player-err { transition: opacity 0.2s var(--ease); transform: none; } }
