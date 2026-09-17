@@ -741,6 +741,9 @@ skolko-stoit-cvetokorrekciya (БЕЗ гео — удалённая услуга,
   ведут на профильные услуги и прайс, а не на якорь главной `/#services`.
 - Разметка: у `VideoObject` обязательны url, uploadDate, isFamilyFriendly, thumbnail (справка Яндекса);
   `author` статей и уроков ссылается по `@id` на Person главной.
-- Служебные папки репозитория не публикуются: `_config.yml` (docs, tools, videos, promo, data).
+- Служебные папки репозитория не публикуются: `_config.yml` (docs/, tools/, videos/, promo/, data/).
+  ЗАПИСИ ТОЛЬКО С КОСОЙ ЧЕРТОЙ: Jekyll исключает всё, что НАЧИНАЕТСЯ с записи, и строка `videos`
+  уносит с прода `videosemka-moskva.html`. После любой правки `_config.yml` проверять прод:
+  все адреса из sitemap должны отдавать 200, служебные пути — 404.
 - Генератор шапки `tools/build_nav.py` обязан давать ровно то, что лежит в файлах — проверка в
   `tools/test_podbor.py` (иначе его прогон молча откатывает меню).
