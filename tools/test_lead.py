@@ -108,6 +108,7 @@ document.getElementById('lf-name').value = 'Проверка';
 document.getElementById('lf-contact').value = '@probe_bot';
 document.getElementById('lf-desc').value = 'автопроверка формы, не заявка';
 document.getElementById('lf-what').selectedIndex = 2;
+document.getElementById('lf-consent').checked = true;
 """
 
 STATE = """JSON.stringify({
@@ -135,6 +136,20 @@ def main():
         s = json.loads(tab.js(STATE))
         check("без контакта заявка не уходит и окно остаётся",
               not s["sent"] and s["open"] and "телефон" in s["status"].lower(), s["status"][:80])
+
+        # 1б. без согласия — отдельной строкой, галочка не стоит заранее (решение владельца 17.09)
+        tab.goto(URL)
+        tab.js(MOCK % OK)
+        consent = json.loads(tab.js("JSON.stringify({checked: document.getElementById('lf-consent').checked, "
+                                    "href: document.querySelector('.lead-consent a').getAttribute('href')})"))
+        check("согласие: галочка по умолчанию снята и ведёт на текст согласия",
+              consent["checked"] is False and consent["href"] == "/soglasie.html", consent)
+        tab.js(FILL + "document.getElementById('lf-consent').checked = false;")
+        tab.js("document.getElementById('lf-send').click()")
+        time.sleep(0.6)
+        s = json.loads(tab.js(STATE))
+        check("без согласия заявка не уходит и человеку сказали почему",
+              not s["sent"] and s["open"] and "согласие" in s["status"].lower(), s["status"][:80])
 
         # 2. успех
         tab.goto(URL)

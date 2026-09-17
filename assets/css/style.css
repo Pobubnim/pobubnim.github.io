@@ -696,6 +696,14 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 .lead-in input:focus, .lead-in select:focus, .lead-in textarea:focus { border-color: rgba(255,253,245,0.28); }
 .lead-in select { appearance: none; }
 .lead-in .btn { justify-content: center; margin-top: 4px; }
+/* строка согласия: не подпись поля, а отдельное действие — обычный регистр и чекбокс слева */
+.lead-in label.lead-consent {
+  flex-direction: row; align-items: flex-start; gap: 10px;
+  font-size: 13.5px; color: var(--smoke); letter-spacing: 0; text-transform: none; line-height: 1.4;
+  cursor: pointer;
+}
+.lead-in .lead-consent input { width: 18px; height: 18px; padding: 0; margin: 1px 0 0; flex: none; accent-color: #f5efe2; cursor: pointer; }
+.lead-in .lead-consent a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .lead-alt { font-size: 13px; color: var(--mute); font-weight: 300; text-wrap: pretty; }
 .lead-alt a { text-decoration: underline; color: var(--smoke); }
 .lead-close {

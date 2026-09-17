@@ -81,12 +81,17 @@
       WHAT.map(function (w) { return '<option>' + w + '</option>'; }).join("") +
       '</select></label>' +
       '<label>Пара слов о задаче<textarea id="lf-desc" rows="3" placeholder="Что снимаем или строим, сроки, ориентир бюджета"></textarea></label>' +
+      /* согласие — отдельной строкой и отдельным действием (решение владельца 17.09;
+         с 01.09.2025 согласие на обработку данных оформляется отдельно от прочих
+         документов). Галочка не стоит заранее: поставленная за человека — не согласие */
+      '<label class="lead-consent"><input type="checkbox" id="lf-consent">' +
+      '<span>Даю <a href="/soglasie.html" target="_blank" rel="noopener">согласие на обработку персональных данных</a></span></label>' +
       '<button type="button" class="btn btn-lamp" id="lf-send">Отправить заявку</button>' +
       '<p class="lead-alt" id="lf-status">Заявка придёт мне мгновенно — отвечаю в тот же день. Привычнее мессенджер? Пишите напрямую: ' +
       '<a href="' + TG + '" target="_blank" rel="noopener">@sbphotoshoter</a> или ' +
       '<a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a></p>' +
       '<a class="btn btn-lamp" id="lf-tg" hidden target="_blank" rel="noopener" href="' + TG + '">Открыть телеграм с готовым текстом</a>' +
-      '<p class="lead-alt" style="font-size:12.5px;color:var(--mute)">Отправляя заявку, вы соглашаетесь на обработку указанных данных, чтобы я мог ответить на заявку и понимать, какая реклама работает. Подробности в ' +
+      '<p class="lead-alt" style="font-size:12.5px;color:var(--mute)">Как я храню и использую данные из заявки — в ' +
       '<a href="/privacy.html">политике конфиденциальности</a>.</p>' +
       '</form>';
     document.body.appendChild(dlg);
@@ -155,6 +160,12 @@
     if (!contact) {
       dlg.querySelector("#lf-contact").focus();
       elStatus.textContent = "Оставьте телефон или телеграм — иначе мне некуда ответить.";
+      return;
+    }
+    var consent = dlg.querySelector("#lf-consent");
+    if (consent && !consent.checked) {
+      consent.focus();
+      elStatus.textContent = "Отметьте согласие на обработку данных — без него я не могу принять заявку.";
       return;
     }
     elSend.disabled = true;
