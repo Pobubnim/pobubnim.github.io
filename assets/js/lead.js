@@ -331,6 +331,8 @@
     });
   }
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && tipEl) { quiet(7); hideTip(); } });
+  /* ручной показ — для приборов доступности (check_a11y --states), правила частоты не трогает */
+  window.pbTip = function () { hideTip(); showTip(tipFor()); };
 
   var WAIT = +window.PB_TIP_WAIT || 45000, t0 = Date.now(), depth = 0, pageTip = tipFor();
   function allowed(key) { return !ssHas(key) && lsNum("pb_tip_off") < Date.now(); }

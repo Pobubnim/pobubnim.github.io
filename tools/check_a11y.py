@@ -117,6 +117,11 @@ STATES = [
                     " return !!(document.getElementById('player') || {}).open; })()"),
     ("бургер-меню", "(() => { const b = document.querySelector('.burger');"
                     " if (!b) return false; b.click(); return true; })()"),
+    # 17.09: результат подбора и подсказка рисуются скриптом — закрытыми их не проверить
+    ("подбор формата", "(() => { const i = document.querySelector('input[name=pb-task]');"
+                       " if (!i) return false; i.click(); return !!document.querySelector('.pb-item'); })()"),
+    ("подсказка", "(() => { if (!window.pbTip) return false; window.pbTip();"
+                  " return !!document.querySelector('.pb-tip'); })()"),
 ]
 
 
