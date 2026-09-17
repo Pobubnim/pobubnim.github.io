@@ -173,7 +173,15 @@ def main():
         tab.goto(base + "/services/semka-meropriyatij.html?utm_source=yandex&utm_medium=cpc"
                  "&utm_campaign=777&utm_term=%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%D1%81%D1%8A%D1%91%D0%BC%D0%BA%D0%B0"
                  "&yclid=123456789")
+        # вернулся из своего телеграма — свежий рекламный источник не перетирается.
+        # Реферер подменяется до загрузки страницы: Page.navigate(referrer=https://…)
+        # на http://localhost браузер срезает по политике, и проверка была бы пустой.
+        fake = tab.cmd("Page.addScriptToEvaluateOnNewDocument",
+                       source="Object.defineProperty(document, 'referrer', {get: function () { return 'https://t.me/sbphotoshoter'; }});")
         tab.goto(base + "/raboty.html")
+        tab.cmd("Page.removeScriptToEvaluateOnNewDocument", identifier=fake["result"]["identifier"])
+        check("проверка реферера: подмена сработала",
+              tab.js("document.referrer") == "https://t.me/sbphotoshoter", tab.js("document.referrer"))
         tab.js(MOCK % OK)
         tab.js(FILL)
         tab.js("document.getElementById('lf-send').click()")
@@ -190,14 +198,35 @@ def main():
         check("источник: внутренний переход не перетёр рекламный",
               page.startswith("/raboty.html ← yandex"), page)
 
-        # 5. звонок из шапки считается целью phone_click
+        check("источник: возврат из своего телеграма не перетёр рекламу",
+              "t.me" not in page, page)
+
+        # 5. звонок из шапки считается целью phone_click — только на тач-экране:
+        #    на ПК клик по tel: ничего не набирает, а цель учила бы Директ кликам
         tab.goto(base + "/services/reklamnyj-rolik.html")
-        tab.js("window.__goals = []; window.ym = function () { window.__goals.push([].slice.call(arguments)); };"
-               "addEventListener('click', function (e) { e.preventDefault(); }, true);"
+        spy = ("window.__goals = []; window.ym = function () { window.__goals.push([].slice.call(arguments)); };"
+               "addEventListener('click', function (e) { e.preventDefault(); }, true);")
+        got = "JSON.stringify(window.__goals.filter(function (g) { return g[1] === 'reachGoal'; }))"
+        tab.js(spy + "document.querySelector('.nav-tel').click();")
+        goals_pc = tab.js(got)
+        tab.js("window.__goals = []; window.matchMedia = function () { return { matches: true }; };"
                "document.querySelector('.nav-tel').click();")
-        goals = tab.js("JSON.stringify(window.__goals.filter(function (g) { return g[1] === 'reachGoal'; }))")
-        check("телефон: клик по номеру в шапке шлёт цель phone_click",
-              "phone_click" in (goals or ""), goals)
+        goals_touch = tab.js(got)
+        check("телефон: на тач-экране клик по номеру шлёт phone_click",
+              "phone_click" in (goals_touch or ""), goals_touch)
+        check("телефон: на ПК клик по номеру цель не шлёт",
+              "phone_click" not in (goals_pc or ""), goals_pc)
+
+        # 6. учёт не роняет заявку: модуль источника бросает исключение
+        tab.goto(base + "/services/svadebnoe-kino.html")
+        tab.js("window.pbSource = function () { throw new Error('сломан учёт'); };")
+        tab.js(MOCK % OK)
+        tab.js(FILL)
+        tab.js("document.getElementById('lf-send').click()")
+        time.sleep(1.2)
+        s = json.loads(tab.js(STATE))
+        check("учёт: испорченный источник не мешает отправить заявку",
+              s["sent"] and "готово" in s["status"].lower(), s["status"][:80])
     finally:
         tab.close()
 

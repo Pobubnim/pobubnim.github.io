@@ -24,6 +24,46 @@
     "Музыкальный клип", "Съёмка мероприятия", "Цветокоррекция", "Сайт", "Приложение",
     "Бот / автоматизация", "Обучение"];
 
+  /* ---------- откуда человек пришёл ----------
+     Заявка редко уходит со страницы входа: пришёл по рекламе на услугу, посмотрел
+     работы, написал с третьей страницы. Источник снимается при заходе с метками или
+     с чужого сайта и живёт в localStorage: pb_src_first — первый (90 дней),
+     pb_src_last — последний. Живёт здесь, а не в analytics.js: файл с таким именем
+     режут блокировщики. Внутренние переходы источник не перетирают, возврат из
+     своего телеграма или ВК не перетирает свежий рекламный (30 дней). */
+  var DAY = 864e5;
+  function readSrc(k) {
+    try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v && typeof v === "object" ? v : null; }
+    catch (_) { return null; }
+  }
+  try {
+    var q = new URLSearchParams(location.search), src = {};
+    ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "yclid"].forEach(function (k) {
+      var v = q.get(k); if (v) src[k] = String(v).slice(0, 80);
+    });
+    var host = (document.referrer || "").replace(/^https?:\/\//, "").split("/")[0];
+    if (host && !/(^|\.)pobubnim\.(ru|github\.io)$/.test(host)) src.ref = host;
+    if (Object.keys(src).length) {
+      src.land = location.pathname;
+      src.date = new Date().toISOString().slice(0, 10);
+      var age = function (s) { return s && s.date ? (Date.now() - Date.parse(s.date)) / DAY : 1e9; };
+      var first = readSrc("pb_src_first"), last = readSrc("pb_src_last");
+      var paid = last && (last.utm_source || last.yclid) && age(last) < 30;
+      var ownChat = !src.utm_source && !src.yclid && /(^|\.)(t\.me|telegram\.org|vk\.com|vk\.ru)$/.test(src.ref || "");
+      if (!first || age(first) > 90) localStorage.setItem("pb_src_first", JSON.stringify(src));
+      if (!(paid && ownChat)) localStorage.setItem("pb_src_last", JSON.stringify(src));
+    }
+  } catch (_) { /* приватный режим без localStorage: заявка уйдёт без источника */ }
+
+  /* ClientID Метрики: заявку по нему можно вернуть в Метрику офлайн-конверсией */
+  var cid = "";
+  try {
+    if (typeof ym === "function") ym(window.YM_ID || 111935483, "getClientID", function (id) { cid = String(id || ""); });
+  } catch (_) {}
+  window.pbSource = function () {
+    return { first: readSrc("pb_src_first"), last: readSrc("pb_src_last"), cid: cid };
+  };
+
   var dlg = document.getElementById("lead");
   if (!dlg) {
     dlg = document.createElement("dialog");
@@ -46,7 +86,7 @@
       '<a href="' + TG + '" target="_blank" rel="noopener">@sbphotoshoter</a> или ' +
       '<a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a></p>' +
       '<a class="btn btn-lamp" id="lf-tg" hidden target="_blank" rel="noopener" href="' + TG + '">Открыть телеграм с готовым текстом</a>' +
-      '<p class="lead-alt" style="font-size:12.5px;color:var(--mute)">Отправляя заявку, вы соглашаетесь на обработку указанных данных — только чтобы я мог вам ответить. Подробности в ' +
+      '<p class="lead-alt" style="font-size:12.5px;color:var(--mute)">Отправляя заявку, вы соглашаетесь на обработку указанных данных, чтобы я мог ответить на заявку и понимать, какая реклама работает. Подробности в ' +
       '<a href="/privacy.html">политике конфиденциальности</a>.</p>' +
       '</form>';
     document.body.appendChild(dlg);
@@ -87,16 +127,24 @@
      Вид: «/services/x.html ← yandex/cpc/123 «видеосъёмка москва» · вход /x.html 20.09 · cid 17…» */
   function pageWithSource() {
     var here = location.pathname + location.hash;
-    var s = window.pbSource ? window.pbSource() : null;
-    var l = s && s.last;
-    if (!l) return (here + " ← прямой заход" + (s && s.cid ? " · cid " + s.cid : "")).slice(0, 200);
-    var from = l.utm_source ? [l.utm_source, l.utm_medium, l.utm_campaign].filter(Boolean).join("/")
-      : l.yclid ? "yandex/cpc" : l.ref || "?";
-    var parts = [from];
-    if (l.utm_term) parts.push("«" + l.utm_term.slice(0, 40) + "»");
-    parts.push("вход " + l.land + " " + (l.date || "").slice(5).split("-").reverse().join("."));
-    if (s.cid) parts.push("cid " + s.cid);
-    return (here + " ← " + parts.join(" · ")).slice(0, 200);
+    /* ошибка учёта не должна ронять заявку: иначе человек увидит «связь подвела» */
+    try {
+      var s = window.pbSource();
+      var l = s.last;
+      if (!l) return (here + " ← прямой заход" + (s.cid ? " · cid " + s.cid : "")).slice(0, 200);
+      var from = l.utm_source ? [l.utm_source, l.utm_medium, l.utm_campaign].filter(Boolean).join("/")
+        : l.yclid ? "yandex/cpc" : l.ref || "?";
+      var parts = [from];
+      if (l.utm_term) parts.push("«" + String(l.utm_term).slice(0, 40) + "»");
+      parts.push("вход " + l.land + " " + String(l.date || "").slice(5).split("-").reverse().join("."));
+      if (s.cid) parts.push("cid " + s.cid);
+      return (here + " ← " + parts.join(" · ")).slice(0, 200);
+    } catch (_) {
+      return here.slice(0, 200);
+    }
+  }
+  function sourceObj() {
+    try { return window.pbSource(); } catch (_) { return null; }
   }
 
   elSend.addEventListener("click", async function () {
@@ -118,7 +166,7 @@
         body: JSON.stringify({ p: {
           name: name, contact: contact, service: what, message: desc,
           page: pageWithSource(),
-          source: window.pbSource ? window.pbSource() : null,
+          source: sourceObj(),
           website: dlg.querySelector("#lf-website").value,
         } }),
       });

@@ -27,41 +27,9 @@ ym(YM_ID, "init", {
   trackHash: true          /* якорные разделы главной как отдельные просмотры */
 });
 
-/* ---------- откуда человек пришёл (для заявки) ----------
-   Заявка редко уходит со страницы входа: пришёл по рекламе на услугу, посмотрел
-   работы, написал с третьей страницы. Поэтому источник снимается при заходе с
-   метками или с чужого сайта и живёт в localStorage: pb_src_first — самый первый,
-   pb_src_last — последний. lead.js кладёт его в заявку (window.pbSource).
-   Переходы внутри сайта источник не перетирают. */
-(function () {
-  var KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "yclid"];
-  function read(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (_) { return null; } }
-  try {
-    var q = new URLSearchParams(location.search), src = {};
-    KEYS.forEach(function (k) { var v = q.get(k); if (v) src[k] = v.slice(0, 80); });
-    var ref = document.referrer || "";
-    var host = ref.replace(/^https?:\/\//, "").split("/")[0];
-    var own = /(^|\.)pobubnim\.(ru|github\.io)$/.test(host);
-    if (ref && !own) src.ref = host;
-    if (Object.keys(src).length) {
-      src.land = location.pathname;
-      src.date = new Date().toISOString().slice(0, 10);
-      var s = JSON.stringify(src);
-      if (!localStorage.getItem("pb_src_first")) localStorage.setItem("pb_src_first", s);
-      localStorage.setItem("pb_src_last", s);
-    }
-  } catch (_) { /* приватный режим без localStorage: заявка уйдёт без источника */ }
-
-  /* ClientID Метрики — по нему заявку потом можно вернуть в Метрику офлайн-конверсией */
-  var cid = "";
-  if (typeof ym === "function") ym(YM_ID, "getClientID", function (id) { cid = String(id || ""); });
-
-  window.pbSource = function () {
-    return { first: read("pb_src_first"), last: read("pb_src_last"), cid: cid };
-  };
-})();
-
 /* ---------- цели ---------- */
+/* Источник визита для заявки снимается в lead.js, а не здесь: файл с именем
+   analytics.js режут блокировщики, и рекламный клик записался бы «прямым заходом». */
 (function () {
   function goal(name, params) {
     if (typeof ym === "function") ym(YM_ID, "reachGoal", name, params || {});
@@ -120,7 +88,10 @@ ym(YM_ID, "init", {
     if (href.indexOf("t.me/sbphotoshoter") > -1) goal("tg_click");
     else if (href.indexOf("vk.ru/sbphotoshoter") > -1 || href.indexOf("vk.com/sbphotoshoter") > -1) goal("vk_click");
     else if (href.indexOf("t.me/pobubnimzavideo") > -1) goal("channel_click");
-    else if (href.indexOf("tel:") === 0) goal("phone_click", { page: location.pathname });
+    /* звонок считается только там, где клик по номеру правда звонит — на тач-экране.
+       На ПК клик по tel: ничего не набирает, а цель научила бы Директ приводить кликающих */
+    else if (href.indexOf("tel:") === 0 && window.matchMedia && matchMedia("(pointer: coarse)").matches)
+      goal("phone_click", { page: location.pathname });
 
     /* заявка */
     if (a.hasAttribute && a.hasAttribute("data-lead")) goal("lead_open");

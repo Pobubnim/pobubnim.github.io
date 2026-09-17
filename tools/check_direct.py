@@ -127,7 +127,7 @@ def main():
             for k in g["keys"]:
                 if len(words(k)) > LIM["key_words"]:
                     err(gw, f"в ключе больше {LIM['key_words']} слов: «{k}»")
-                for n in c["negatives"]:
+                for n in c["negatives"] + g.get("negatives", []):
                     if neg_hits(n, k):
                         err(gw, f"минус-слово «{n}» режет свой ключ «{k}»")
                 all_keys.append(norm(k))
@@ -151,6 +151,8 @@ def main():
             md += [f"### Группа «{g['name']}»", "",
                    f"Ссылка: `{final_url(data['site'], g['url'], data['utm'], c['name'])}`", "",
                    "Ключевые фразы:", "", "```", *g["keys"], "```", "",
+                   *(["Минус-фразы группы (разводят запросы с соседними группами и отсекают хвосты):", "",
+                      "```", *g["negatives"], "```", ""] if g.get("negatives") else []),
                    "| # | Заголовок | Доп. заголовок | Текст |", "|---|---|---|---|"]
             md += [f"| {i + 1} | {a['title']} ({len(a['title'])}) | {a['title2']} ({len(a['title2'])}) | "
                    f"{a['text']} ({len(a['text'])}) |" for i, a in enumerate(g["ads"])]
