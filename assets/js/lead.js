@@ -21,7 +21,7 @@
      должна подсовывать «Рекламный ролик» тому, кто пришёл за свадьбой —
      ложная тема в заявке хуже пустой */
   var WHAT = ["Другое — опишу ниже", "Рекламный ролик", "Имиджевый фильм", "Свадебное кино",
-    "Музыкальный клип", "Съёмка мероприятия", "Цветокоррекция", "Монтаж", "Фотосъёмка",
+    "Музыкальный клип", "Съёмка мероприятия", "Съёмочный день (материал на руки)", "Цветокоррекция", "Монтаж", "Фотосъёмка",
     "Вертикальные ролики для соцсетей", "ИИ-ролик", "Сайт", "Приложение", "Бот / автоматизация",
     "Обучение", "Обучение: съёмка", "Обучение: DaVinci Resolve", "Обучение: цветокоррекция",
     "Обучение: свет и площадка", "Разбор материала / консультация"];
@@ -77,11 +77,13 @@
     dlg.id = "lead";
     dlg.innerHTML =
       '<form method="dialog" class="lead-in">' +
-      '<button class="lead-close" value="cancel" aria-label="Закрыть">&times;</button>' +
+      /* type=button: крестик внутри формы иначе «отправлял» её, браузер проверял
+         обязательное поле и не выпускал из окна (жалоба владельца 17.09) */
+      '<button type="button" class="lead-close" aria-label="Закрыть">&times;</button>' +
       '<span class="label">Заявка</span>' +
       '<h3>Опишите задачу — отвечу в тот же день</h3>' +
       '<label>Как вас зовут<input type="text" id="lf-name" autocomplete="name" placeholder="Имя"></label>' +
-      '<label>Телефон или телеграм<input type="text" id="lf-contact" autocomplete="tel" placeholder="+7… или @ник" required></label>' +
+      '<label>Телефон или телеграм<input type="text" id="lf-contact" autocomplete="tel" placeholder="+7… или @ник" aria-required="true"></label>' +
       '<input type="text" id="lf-website" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">' +
       '<label>Что нужно<select id="lf-what">' +
       WHAT.map(function (w) { return '<option>' + w + '</option>'; }).join("") +
@@ -107,6 +109,16 @@
   var elTg = dlg.querySelector("#lf-tg");
   var elSend = dlg.querySelector("#lf-send");
   var elStatus = dlg.querySelector("#lf-status");
+
+  /* выйти можно всегда: крестик, Esc (родное поведение dialog) и клик по затемнению.
+     Enter в поле — это «отправить», а не молчаливое закрытие: форма method=dialog
+     закрывала окно, и заявка с заполненным телефоном не уходила никуда */
+  dlg.querySelector(".lead-close").addEventListener("click", function () { dlg.close(); });
+  dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  dlg.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!elSend.disabled) elSend.click();
+  });
 
   function hintFor() {
     var d = dlg.querySelector("#lf-desc");
@@ -136,6 +148,13 @@
     e.preventDefault();
     openWith(b.getAttribute("data-lead"));
   });
+  /* открыть окно с темой и готовым описанием — так подборщик формата (podbor.js)
+     передаёт в заявку то, что человек уже выбрал, а не заставляет писать заново */
+  window.pbLead = function (topic, desc) {
+    openWith(topic);
+    var d = dlg.querySelector("#lf-desc");
+    if (d && desc) d.value = desc;
+  };
   if (location.hash === "#zayavka") openWith(null);
   addEventListener("hashchange", function () { if (location.hash === "#zayavka") openWith(null); });
 
@@ -197,6 +216,8 @@
       var res = await r.json();
       if (!res.ok) throw new Error(res.error || "fail");
       if (window.pbGoal) pbGoal("lead_send", { page: location.pathname });
+      dlg.dataset.sent = "1";
+      quiet(30);  /* заявка у меня — подсказки месяц не нужны */
       elSend.textContent = "Заявка у меня — отвечу в тот же день";
       elStatus.textContent = "Готово. Если удобнее мессенджер — я и там на связи: @sbphotoshoter.";
       setTimeout(function () {
@@ -250,6 +271,103 @@
   document.querySelectorAll('a[href*="t.me/sbphotoshoter"]').forEach(withContext);
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest('a[href*="t.me/sbphotoshoter"]');
-    if (a) withContext(a);
+    if (!a) return;
+    withContext(a);
+    ssSet("pb_tip");  /* уже пишет — подсказка в этот визит не нужна */
   }, true);
+
+  /* ---------- подсказки ----------
+     Слово владельца 17.09: «всплывающие предложения и подсказки, чтобы переключать
+     внимание». Подсказка помогает, пока не мешает (скил popups), поэтому правила:
+     — не раньше вовлечения: 45 с на странице и 40 % прокрутки, на ПК ещё уход курсора
+       к закрытию вкладки (не раньше 15 с);
+     — одна за визит; закрыл — неделя тишины; оставил заявку — месяц;
+     — карточка сбоку, не модальное окно: контент не закрывает, фокус не крадёт,
+       закрывается крестиком и Esc; на страницах с подбором и служебных её нет;
+     — закрыл форму, не отправив, — одна мягкая альтернатива: написать одним сообщением.
+     PB_TIP_WAIT (мс) переопределяет ожидание только для автотеста. */
+  function lsNum(k) { try { return +localStorage.getItem(k) || 0; } catch (_) { return 0; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, String(v)); } catch (_) {} }
+  function ssHas(k) { try { return sessionStorage.getItem(k) !== null; } catch (_) { return true; } }
+  function ssSet(k) { try { sessionStorage.setItem(k, "1"); } catch (_) {} }
+  function quiet(days) { lsSet("pb_tip_off", Date.now() + days * DAY); }
+  function goal(name, kind) { if (window.pbGoal) window.pbGoal(name, { kind: kind, page: location.pathname }); }
+
+  var TEL = "+7 982 905-44-54";
+  function tipFor() {
+    var p = location.pathname;
+    if (/^\/(admin|soglasie|privacy|404)\.html$/.test(p) || document.querySelector("[data-podbor]")) return null;
+    var tg = TG + "?text=" + encodeURIComponent(tgText());
+    if (/^\/(education\.html|uroki\/|articles\/(obuchenie|kak-snimat))/.test(p))
+      return { k: "edu", h: "Не знаете, с чего начать?", t: "Напишите, что снимаете и на что, — соберу план под вашу цель. Первый разговор бесплатный.",
+        href: p === "/education.html" ? "#napravlenie" : "/education.html#napravlenie", cta: "Выбрать направление", tg: tg };
+    if (/^\/(instrumenty\/|konstruktor-dogovora)/.test(p))
+      return { k: "shtab", h: "Ищете заказы на съёмку?", t: "Заказы с hh.ru, бирж и телеграм-чатов одной лентой — модуль ШТАБ в приложении МОНОЛИТ.",
+        href: "/zakazy-sami.html", cta: "Как это работает" };
+    if (/^\/articles\/.*(cvet|blyoklaya)/.test(p))
+      return { k: "cvet", h: "Материал уже снят?", t: "Покрашу за вас в DaVinci Resolve, удалённо. Или разберём ваш материал на консультации.",
+        href: "/services/cvetokorrekciya.html", cta: "Цветокоррекция", tg: tg };
+    return { k: "podbor", h: "Прикинуть цену под вашу задачу?", t: "Три вопроса — и видно формат, что входит и цену «от». Подбор можно отправить мне одной кнопкой.",
+      href: "/ceny.html#podbor", cta: "Подобрать за минуту", tg: tg };
+  }
+
+  var tipEl = null;
+  function hideTip() { if (tipEl) { tipEl.remove(); tipEl = null; } }
+  function showTip(tip) {
+    if (!tip || tipEl || dlg.open) return;
+    tipEl = document.createElement("aside");
+    tipEl.className = "pb-tip";
+    tipEl.setAttribute("aria-label", "Подсказка");
+    tipEl.innerHTML = '<button type="button" class="pb-tip-x" aria-label="Закрыть подсказку">&times;</button>' +
+      "<b>" + tip.h + "</b><p>" + tip.t + '</p><div class="pb-tip-act">' +
+      '<a class="btn btn-lamp" href="' + tip.href + '"' + (/^https:/.test(tip.href) ? ' target="_blank" rel="noopener"' : "") + ">" + tip.cta + "</a>" +
+      (tip.tg ? '<a class="pb-tip-tg" href="' + tip.tg + '" target="_blank" rel="noopener">Написать в телеграм</a>' : "") + "</div>";
+    document.body.appendChild(tipEl);
+    requestAnimationFrame(function () { if (tipEl) tipEl.classList.add("on"); });
+    goal("tip_show", tip.k);
+    tipEl.addEventListener("click", function (e) {
+      if (e.target.closest(".pb-tip-x")) { quiet(7); goal("tip_close", tip.k); hideTip(); }
+      else if (e.target.closest("a")) { quiet(7); goal("tip_click", tip.k); hideTip(); }
+    });
+  }
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && tipEl) { quiet(7); hideTip(); } });
+
+  var WAIT = +window.PB_TIP_WAIT || 45000, t0 = Date.now(), depth = 0, pageTip = tipFor();
+  function allowed(key) { return !ssHas(key) && lsNum("pb_tip_off") < Date.now(); }
+  function fire() {
+    if (!pageTip || !allowed("pb_tip") || dlg.open) return;
+    ssSet("pb_tip");
+    showTip(pageTip);
+  }
+  if (pageTip && allowed("pb_tip")) {
+    var measure = function () {
+      var h = document.documentElement;
+      depth = Math.max(depth, (h.scrollTop + innerHeight) / Math.max(h.scrollHeight, 1));
+    };
+    measure();  /* короткая страница без прокрутки тоже считается прочитанной */
+    addEventListener("scroll", measure, { passive: true });
+    var timer = setInterval(function () {
+      if (tipEl || ssHas("pb_tip")) return clearInterval(timer);
+      if (Date.now() - t0 >= WAIT && depth >= 0.4) { clearInterval(timer); fire(); }
+    }, 1000);
+    if (window.matchMedia && matchMedia("(pointer: fine)").matches) {
+      document.addEventListener("mouseout", function (e) {
+        if (!e.relatedTarget && e.clientY <= 0 && Date.now() - t0 >= WAIT / 3) fire();
+      });
+    }
+  }
+
+  /* закрыл форму, не отправив: одна альтернатива без полей */
+  var openedAt = 0;
+  dlg.addEventListener("close", function () {
+    if (dlg.dataset.sent || Date.now() - openedAt < 3000 || !allowed("pb_tip_form")) return;
+    ssSet("pb_tip_form");
+    ssSet("pb_tip");
+    setTimeout(function () {
+      showTip({ k: "form", h: "Передумали заполнять?", t: "Можно одним сообщением в телеграм — тема страницы уже подставлена. Или позвоните: " + TEL + ".",
+        href: TG + "?text=" + encodeURIComponent(tgText()), cta: "Написать в телеграм" });
+    }, 600);
+  });
+  new MutationObserver(function () { if (dlg.open) { openedAt = Date.now(); delete dlg.dataset.sent; hideTip(); } })
+    .observe(dlg, { attributes: true, attributeFilter: ["open"] });
 })();

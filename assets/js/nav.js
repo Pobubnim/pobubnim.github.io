@@ -41,7 +41,7 @@
     '<a href="' + home("#color") + '">Цвет</a>' +
     '<a href="' + home("#frames") + '">Кадры</a>' +
     '<a href="' + home("#digital") + '">Продукты</a>' +
-    '<a href="' + home("#services") + '">Цены</a>' +
+    '<a href="' + root + 'ceny.html">Цены</a>' +
     '<a href="' + home("#about") + '">Обо мне</a>' +
     '<a href="' + root + 'articles/">Статьи</a>' +
     '<a href="' + root + 'uroki/">Уроки DaVinci</a>' +

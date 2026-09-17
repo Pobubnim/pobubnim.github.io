@@ -267,6 +267,78 @@ def main():
         ph = tab.js("document.getElementById('lf-desc').placeholder")
         check("форма: для обучения подсказка спрашивает направление", "Направление" in (ph or ""), ph)
 
+        # 8. выход из формы. Жалоба владельца 17.09: крестик внутри формы «отправлял» её,
+        #    браузер требовал заполнить телефон и не выпускал; Enter закрывал окно молча,
+        #    и заявка с заполненным телефоном не уходила; запасная кнопка телеграма висела всегда.
+        tab.goto(base + "/services/cvetokorrekciya.html")
+        tab.js(MOCK % OK)
+        tg_shown = tab.js("getComputedStyle(document.getElementById('lf-tg')).display !== 'none'")
+        check("форма: запасная кнопка телеграма скрыта, пока отправка не сорвалась", tg_shown is False, tg_shown)
+        tab.js("document.querySelector('#lead .lead-close').click()")
+        check("форма: крестик закрывает пустую форму", tab.js("document.getElementById('lead').open") is False,
+              tab.js("document.getElementById('lead').open"))
+        tab.js("document.querySelector('[data-lead]').click();"
+               "document.getElementById('lead').dispatchEvent(new MouseEvent('click', {bubbles: true}));")
+        check("форма: клик по затемнению закрывает окно", tab.js("document.getElementById('lead').open") is False,
+              tab.js("document.getElementById('lead').open"))
+        tab.js("document.querySelector('[data-lead]').click();" + FILL +
+               "document.querySelector('#lead form').requestSubmit();")
+        time.sleep(1.2)
+        s = json.loads(tab.js(STATE))
+        check("форма: Enter в поле отправляет заявку, а не закрывает окно молча",
+              s["sent"] and "готово" in s["status"].lower(), [s["sent"], s["open"], s["status"][:60]])
+
+        # 9. подсказки (слово владельца 17.09). Ожидание 45 с в тесте сжато до 1,5 с через
+        #    PB_TIP_WAIT, всё остальное — боевые правила.
+        fast = tab.cmd("Page.addScriptToEvaluateOnNewDocument", source="window.PB_TIP_WAIT = 1500;")
+        tab.goto(base + "/services/reklamnyj-rolik.html")
+        tab.js("localStorage.clear(); sessionStorage.clear();")
+        tab.goto(base + "/services/reklamnyj-rolik.html")
+        time.sleep(2.5)
+        check("подсказка: без прокрутки не появляется", tab.js("!document.querySelector('.pb-tip')"), "появилась сразу")
+        tab.js("window.scrollTo(0, document.documentElement.scrollHeight * 0.6)")
+        time.sleep(2.2)
+        tip = json.loads(tab.js("JSON.stringify((function (t) { return t && {h: t.querySelector('b').textContent,"
+                                " cta: t.querySelector('.btn').getAttribute('href'), tg: decodeURIComponent((t.querySelector('.pb-tip-tg') || {}).href || '')}; })"
+                                "(document.querySelector('.pb-tip')))"))
+        check("подсказка: после вовлечения на услуге ведёт в подбор, телеграм с темой",
+              tip and tip["cta"] == "/ceny.html#podbor" and "тема: Рекламный ролик под ключ" in tip["tg"], tip)
+        tab.js("document.querySelector('.pb-tip-x').click()")
+        off = tab.js("(+localStorage.getItem('pb_tip_off') - Date.now()) / 864e5")
+        check("подсказка: закрыл — неделя тишины", tab.js("!document.querySelector('.pb-tip')") and 6.9 < (off or 0) < 7.1, off)
+        tab.js("sessionStorage.clear();")
+        tab.goto(base + "/services/imidzhevyj-film.html")
+        tab.js("window.scrollTo(0, document.documentElement.scrollHeight * 0.6)")
+        time.sleep(2.5)
+        check("подсказка: в неделю тишины не возвращается на другой странице",
+              tab.js("!document.querySelector('.pb-tip')"), "вернулась")
+
+        tab.js("localStorage.clear(); sessionStorage.clear();")
+        tab.goto(base + "/ceny.html")
+        tab.js("window.scrollTo(0, document.documentElement.scrollHeight * 0.6)")
+        time.sleep(2.5)
+        check("подсказка: на странице с подбором не показывается", tab.js("!document.querySelector('.pb-tip')"), "показалась")
+
+        tab.js("localStorage.clear(); sessionStorage.clear();")
+        tab.goto(base + "/education.html")
+        tab.js(MOCK % OK)
+        time.sleep(3.2)
+        tab.js("document.querySelector('#lead .lead-close').click()")
+        time.sleep(1.0)
+        ftip = json.loads(tab.js("JSON.stringify((function (t) { return t && {h: t.querySelector('b').textContent,"
+                                 " href: decodeURIComponent(t.querySelector('.btn').href)}; })(document.querySelector('.pb-tip')))"))
+        check("подсказка: закрыл форму не отправив — предлагает одно сообщение в телеграм с темой",
+              ftip and ftip["h"].startswith("Передумали") and "Хочу на обучение" in ftip["href"], ftip)
+
+        tab.js("localStorage.clear(); sessionStorage.clear();")
+        tab.goto(base + "/services/svadebnoe-kino.html")
+        tab.js(MOCK % OK)
+        tab.js(FILL + "document.getElementById('lf-send').click()")
+        time.sleep(1.2)
+        off = tab.js("(+localStorage.getItem('pb_tip_off') - Date.now()) / 864e5")
+        check("подсказка: после заявки месяц тишины", 29.9 < (off or 0) < 30.1, off)
+        tab.cmd("Page.removeScriptToEvaluateOnNewDocument", identifier=fast["result"]["identifier"])
+
         # ссылку, которую дорисовал другой скрипт после загрузки, чиним в момент клика
         tab.goto(base + "/articles/skolko-stoit-klip.html")
         tab.js("var a = document.createElement('a'); a.id = 'probe-tg'; a.href = 'https://t.me/sbphotoshoter';"

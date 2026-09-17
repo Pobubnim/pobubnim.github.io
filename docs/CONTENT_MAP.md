@@ -49,6 +49,9 @@
   `/uroki/` не существовало — GitHub Pages отдавал 404, а восемь сильных страниц
   висели без узла.
 - `instrumenty/index.html` — тринадцать инструментов тремя группами.
+- `ceny.html` (17.09) — прайс всех услуг из `assets/data/prices.json` + подбор формата;
+  `video-dlya-biznesa.html` (17.09) — задачи компаний → форматы; обложки работ из
+  `assets/img/film/` (evergo, balabanovo, finopolis, ai-premium) и `polya-poster.webp`.
 
 Хабы связаны крест-накрест, пункт «Уроки» добавлен в обе навигации через
 `assets/js/nav.js` (шапки статические в 50 файлах — правится одним местом).

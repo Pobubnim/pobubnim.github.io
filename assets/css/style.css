@@ -568,6 +568,34 @@ a.product:hover .product-shot img { transform: scale(1.03); }
 
 .services-note { margin-top: 18px; font-size: 13.5px; color: var(--mute); max-width: 560px; text-wrap: pretty; }
 
+/* ---------- подбор формата (assets/js/podbor.js) ---------- */
+
+.podbor { display: flex; flex-direction: column; gap: 22px; }
+.pb-q { border: 0; padding: 0; margin: 0; min-width: 0; }
+.pb-q legend { font-size: 15px; font-weight: 500; margin-bottom: 12px; padding: 0; }
+.pb-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.pb-opt { position: relative; cursor: pointer; }
+.pb-opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pb-opt span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: var(--r-pill); border: 1px solid var(--line); color: var(--smoke); font-size: 14.5px; transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease); }
+.pb-opt:hover span { color: var(--ink); border-color: var(--smoke); }
+.pb-opt input:checked + span { background: var(--lamp); border-color: var(--lamp); color: #000; font-weight: 500; }
+.pb-opt input:focus-visible + span { outline: 2px solid var(--lamp); outline-offset: 2px; }
+.pb-res:empty { display: none; }
+.pb-res { border-top: 1px solid var(--line-soft); padding-top: 22px; display: flex; flex-direction: column; gap: 16px; }
+.pb-res-h { font-size: 17px; font-weight: 500; }
+.pb-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.pb-item { background: var(--char); border-radius: var(--r-card); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.pb-item-head { display: flex; flex-direction: column; gap: 4px; }
+.pb-item-head b { font-size: 16px; font-weight: 500; }
+.pb-item-head span { font-size: 15px; font-variant-numeric: tabular-nums; color: var(--ink); }
+.pb-item ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.pb-item li { font-size: 14px; color: var(--smoke); font-weight: 300; padding-left: 14px; position: relative; }
+.pb-item li::before { content: "·"; position: absolute; left: 2px; color: var(--mute); }
+.pb-over { font-size: 13.5px; color: var(--smoke); }
+.pb-more { margin-top: auto; font-size: 14px; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line); }
+.pb-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.pb-note { font-size: 13.5px; color: var(--mute); max-width: 640px; }
+
 /* ---------- процесс ---------- */
 
 .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
@@ -668,7 +696,30 @@ dialog.lead {
   background: transparent;
   width: min(440px, 92vw);
   margin: auto;            /* глобальный ресет убивает родное центрирование dialog */
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;        /* форма выше короткого экрана телефона — окно прокручивается */
 }
+/* подсказка (lead.js): карточка сбоку, не модалка — ниже меню (60) и шапки (70) */
+.pb-tip {
+  position: fixed; z-index: 50; right: 20px; bottom: 20px; width: min(360px, calc(100vw - 24px));
+  background: var(--char); border: 1px solid var(--line); border-radius: 14px; padding: 20px 20px 18px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55); display: flex; flex-direction: column; gap: 8px;
+  opacity: 0; transform: translateY(16px); transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.pb-tip.on { opacity: 1; transform: none; }
+.pb-tip b { font-size: 16.5px; font-weight: 500; padding-right: 36px; }
+.pb-tip p { font-size: 14.5px; color: var(--smoke); font-weight: 300; text-wrap: pretty; }
+.pb-tip-act { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.pb-tip .btn { height: 42px; padding: 0 20px; font-size: 14.5px; }
+.pb-tip-tg { font-size: 14px; color: var(--smoke); text-decoration: underline; text-underline-offset: 3px; }
+.pb-tip-x { position: absolute; top: 4px; right: 4px; width: 44px; height: 44px; background: none; border: 0; color: var(--mute); font-size: 24px; line-height: 1; cursor: pointer; }
+.pb-tip-x:hover { color: var(--ink); }
+@media (max-width: 700px) { .pb-tip { left: 12px; right: 12px; bottom: 12px; width: auto; } }
+@media (prefers-reduced-motion: reduce) { .pb-tip { transition: none; transform: none; } }
+
+/* .btn задаёт display и перебивал атрибут hidden: запасная кнопка «телеграм с готовым
+   текстом» висела в окне всегда, хотя нужна только при сбое отправки (скрин 17.09) */
+.lead-in [hidden] { display: none !important; }
 dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6px); }
 
 .lead-in {

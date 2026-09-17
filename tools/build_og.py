@@ -34,6 +34,8 @@ PAGES = {
     "videograf-aprelevka":    (os.path.join(IMG, "tri-wedding-1.webp"), "Видеограф в Апрелевке"),
     "videograf-obninsk":      (os.path.join(IMG, "tri-factory-1.webp"), "Видеограф в Обнинске"),
     "videosemka-moskva":      (os.path.join(IMG, "hz-watch-2.webp"), "Видеосъёмка в Москве"),
+    "ceny":                   (os.path.join(IMG, "about-monitor.webp"), "Цены и подбор формата"),
+    "video-dlya-biznesa":     (os.path.join(IMG, "tri-factory-1.webp"), "Видео для бизнеса"),
 }
 
 W, H = 1200, 630

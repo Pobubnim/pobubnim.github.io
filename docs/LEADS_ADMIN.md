@@ -16,7 +16,8 @@ Disallow). Вход по ключу, ключ хранится в браузер
     p_status, p_note)` — только с ключом админки (сверка в базе).
 - Уведомления из БД: pg_net (асинхронный HTTP) → Telegram-бот МОНОЛИТА в
   личку владельца. Ошибка уведомления заявку НЕ роняет.
-- Миграции и откаты: `monolith_assistant/supabase/migrations/0021–0023` +
+- Миграции и откаты: `monolith_assistant/supabase/migrations/0021–0023`, `0027` (колонка `source`,
+  строка «Откуда» в уведомлении, ссылка на админку pobubnim.ru; применена 17.09) +
   `rollbacks/`. Секреты заливает `monolith_assistant/scripts/site_leads_admin.py seed`
   (admin_key из `supabase/.siteadminkey.local`, токен бота из
   `scripts/telegram_config.local.json`).
