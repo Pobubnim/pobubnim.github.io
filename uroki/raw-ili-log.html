@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>RAW или log: что выбрать и в чём разница | ПОБУБНИМ</title>
+<meta name="description" content="Живая доска считает, сколько кодов файл тратит на каждую ступень. Почему log держит тени лучше линейного RAW, где кончается Rec.709 и в чём настоящее преимущество RAW.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.ru/uroki/raw-ili-log.html">
+<meta property="og:title" content="RAW или log: что выбрать и в чём разница | ПОБУБНИМ">
+<meta property="og:description" content="Интерактивная доска: коды на ступень в RAW, S-Log3 и Rec.709, потолок сенсора и баланс белого.">
+<meta property="og:image" content="https://pobubnim.ru/assets/og/urok-raw-ili-log.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.ru/uroki/raw-ili-log.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/InterTight-300-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/PlayfairDisplay-500i-cyrillic.woff2">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-09-21", "dateModified": "2026-09-21", "headline": "RAW или log: что выбрать для съёмки, в чём настоящая разница и где кончается Rec.709", "description": "Интерактивная доска: сколько разных кодов тратит на ступень экспозиции линейный RAW, Sony S-Log3 и Rec.709, где наступает обрез светов и почему баланс белого в RAW возвращается без потерь, а в log — уже нет.", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/uroki/raw-ili-log.html", "image": "https://pobubnim.ru/assets/og/urok-raw-ili-log.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Что лучше снимать — в RAW или в log?", "acceptedAnswer": {"@type": "Answer", "text": "Зависит от того, чего вы боитесь. RAW страхует от промаха по балансу белого и даёт огромный запас в светах, но стоит объёма и времени. Log держит широкий диапазон, живёт на обычных картах и в тенях ведёт себя даже лучше линейного RAW. Для ролика с цветокоррекцией log почти всегда достаточно; RAW берут, когда свет непредсказуем, а пересъёмка дорогая."}}, {"@type": "Question", "name": "Правда ли, что из RAW можно вытянуть тени лучше, чем из log?", "acceptedAnswer": {"@type": "Answer", "text": "Обычно наоборот. Линейный RAW тратит половину всех кодов на верхнюю ступень, и до глубоких теней доходят единицы: на пять ступеней ниже серой карты четырнадцатибитный RAW даёт шесть разных кодов, а десятибитный S-Log3 — тридцать восемь. Преимущество RAW не в тенях, а в светах и в том, что баланс белого там метаданные."}}, {"@type": "Question", "name": "Можно ли вернуть выбитые света из RAW?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. Если свет упёрся в потолок сенсора, в файле записано максимальное число, и фактуры за ним не существует ни в одном формате. Иногда удаётся восстановить цвет по соседним каналам, если упёрся не весь пиксель, но это реконструкция, а не данные. Единственное лечение — правильная экспозиция на площадке."}}, {"@type": "Question", "name": "Почему в Rec.709 так быстро выбиваются окна?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что сигнал Rec.709 упирается в максимум, когда яркость сцены доходит до диффузного белого — это всего 2,47 ступени над серой картой. Небо за окном ярче в разы, и всё, что выше потолка, записывается одним числом. S-Log3 в тех же десяти битах доходит до 7,74 ступени над серым."}}, {"@type": "Question", "name": "Сколько кодов приходится на одну ступень в S-Log3?", "acceptedAnswer": {"@type": "Answer", "text": "В пределе 261,5 × lg2 = 78,7 кода из 1023 — это наклон логарифмического участка кривой. У самой серой карты фактически получается 75,7, потому что смещение +0,01 внутри логарифма там ещё заметно влияет. Писать «78,7 у серого» неверно, хотя такая цифра часто попадается."}}, {"@type": "Question", "name": "Если камера пишет только в 709, всё плохо?", "acceptedAnswer": {"@type": "Answer", "text": "Нет, просто требований к площадке больше. Нужно точно выставить экспозицию, не оставлять в кадре источников ярче лица, следить за балансом белого при съёмке и не рассчитывать на серьёзную правку в посте. Это ровно тот режим работы, в котором десятилетиями снимали телевидение, и картинка там была нормальная."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.ru/uroki/"}, {"@type": "ListItem", "position": 3, "name": "RAW или log", "item": "https://pobubnim.ru/uroki/raw-ili-log.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 820px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 820px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 820px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .board { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(14px, 2.4vw, 22px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .board canvas { width: 100%; display: block; border-radius: 8px; background: #0b0a09; }
+  .board .cap { margin: 6px 0 0; font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); font-family: var(--font-mono); display: flex; justify-content: space-between; gap: 10px; }
+  .views { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 10px; }
+  .views .vlabel { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); align-self: center; margin-right: 4px; }
+  .vbtn { padding: 7px 13px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
+  .vbtn:hover { background: rgba(245,239,226,0.06); }
+  .vbtn.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+  .lab { display: flex; flex-direction: column; gap: 10px; }
+  .stat { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
+  .stat span i { font-style: normal; color: var(--mute); margin-right: 8px; }
+  .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  /* метка внутри тревожной плашки: серый на красноватом даёт 4.3, мало */
+  .stat span.warn i { color: #c99a8b; }
+  .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
+  .task b { color: var(--ink); font-weight: 500; }
+  .price-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15.5px; }
+  .price-table th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+  .price-table td { color: var(--smoke); font-weight: 300; padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .price-table td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  /* на телефоне запрет переноса в первой колонке рвал страницу: таблица уезжала
+     на 434 px при экране 375 (замер check_live 21.09) */
+  @media (max-width: 640px) { .price-table { font-size: 14.5px; }
+    .price-table td:first-child { white-space: normal; } }
+</style>
+<script src="../assets/js/analytics.js?v=4" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links" aria-label="Основная">
+      <a href="/raboty.html">Работы</a>
+      <div class="nav-drop">
+        <button type="button">Решения<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a class="drop-lead" href="/video-dlya-biznesa.html">Видео для бизнеса: подбор под задачу</a>
+        <a href="/services/reklamnyj-rolik.html">Рекламный ролик</a>
+        <a href="/services/imidzhevyj-film.html">Имиджевый фильм</a>
+        <a href="/services/svadebnoe-kino.html">Свадебное кино</a>
+        <a href="/services/muzykalnyj-klip.html">Музыкальный клип</a>
+        <a href="/services/cvetokorrekciya.html">Цветокоррекция</a>
+        <a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a>
+        <a href="/services/sozdanie-sajtov.html">Создание сайтов</a>
+        <a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a>
+        </div>
+      </div>
+      <a href="/ceny.html">Цены</a>
+      <div class="nav-drop">
+        <button type="button">Обучение<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a href="/education.html">Программы обучения</a>
+        <a href="/uroki/">Уроки DaVinci Resolve</a>
+        </div>
+      </div>
+      <a href="/articles/">Статьи</a>
+      <a href="/instrumenty/">Инструменты</a>
+      <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+    </nav>
+    <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 15 · Цвет · Живая доска</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">RAW или log: что выбрать для съёмки и в чём разница</span> Считаем <em>по кодам</em></h1>
+    <p class="lead">Спор «RAW против log» обычно ведут на словах, хотя он решается арифметикой: у файла конечный запас чисел, и весь вопрос в том, как этот запас размазан по яркостям сцены. Доска ниже считает его по опубликованным кривым — и один из выводов окажется противоположным тому, что принято говорить.</p>
+    <time datetime="2026-09-21">Опубликовано 21.09.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="board" id="rb">
+        <canvas id="rb-frame" width="880" height="420" aria-label="Серая шкала сцены по ступеням, поднятая тень крупно, кривая сцена-код и столбики: сколько разных кодов файл тратит на каждую ступень"></canvas>
+        <div class="cap"><span>КОДЫ ФАЙЛА ПО СТУПЕНЯМ СЦЕНЫ</span><span>потолок сенсора +6,5 ст. — модель</span></div>
+
+        <div class="views" role="group" aria-label="Чем пишет камера">
+          <span class="vlabel">ЗАПИСЬ</span>
+          <button class="vbtn" type="button" data-fmt="0">RAW 12 бит</button>
+          <button class="vbtn" type="button" data-fmt="1">RAW 14 бит</button>
+          <button class="vbtn on" type="button" data-fmt="2">S-Log3 10 бит</button>
+          <button class="vbtn" type="button" data-fmt="3">Rec.709 10 бит</button>
+        </div>
+
+        <div class="lab">
+          <div class="lab-row"><span class="snm">ЭКСПОЗИЦИЯ В ПОСТЕ</span><input class="lab-range" type="range" data-exp min="-30" max="30" step="5" value="0" aria-label="Правка экспозиции в посте"><span class="sv">0 ст.</span></div>
+          <div class="lab-row"><span class="snm">ББ ПРОМАХНУЛИ</span><input class="lab-range" type="range" data-wb min="-100" max="100" step="10" value="40" aria-label="Насколько промахнулись с балансом белого на камере"><span class="sv">теплее на 40 %</span></div>
+        </div>
+
+        <div class="stat" id="rb-stat" aria-live="polite"></div>
+        <div class="task"><b>Попробуйте.</b> Переключите запись на Rec.709 и посмотрите на серую шкалу: три верхние ступени обведены красным — их в файле уже нет, хотя сенсор их видел. Теперь сравните S-Log3 и RAW 14 бит по столбикам внизу: у серой карты RAW тратит кодов вдвое больше, а на пять ступеней ниже — в шесть раз меньше. И отдельно покрутите «ББ промахнули»: в RAW цвет возвращается точно при любом промахе, в log и 709 — уже нет.</div>
+      </div>
+      <div class="viz-cap">Честная математика: коды считаются по опубликованным кривым — Sony S-Log3 и Rec.709 OETF, — а линейный RAW квантуется равномерно по свету. Ступень S-Log3 в пределе равна 261,5·lg2 = 78,7 кода из 1023; у серой карты фактически 75,7, потому что смещение +0,01 внутри логарифма там ещё влияет. Модели, подписанные честно: потолок сенсора взят +6,5 ступени над серой картой — это около тринадцати ступеней полного диапазона, у конкретной камеры он свой; правка в посте считается в плавающей точке, то есть в самом выгодном для файла случае, и единственная потеря, которую показывает доска, — квантование при съёмке.</div>
+    </div>
+
+    <div class="step-head" id="chem-ne-otlichayutsya"><i>ШАГ 1 / 4</i><h2>Чем RAW и log <em>не отличаются</em></h2></div>
+    <p>Начать честнее с общего. <b>Ни RAW, ни log не возвращают выбитые света.</b> Если свет на сенсоре упёрся в потолок, там записано максимальное число — и не важно, в каком формате оно лежит. Никакая «вытяжка» не достанет фактуру, которой нет: на месте окна будет ровная белая заливка.</p>
+    <p>Поставьте на доске экспозицию в пост и подвигайте её вверх: верхние ступени не появляются ни в одном формате. Разница между форматами начинается ниже потолка сенсора, и она совсем не там, где её обычно ищут.</p>
+    <p>Второе общее: и RAW, и log — это упаковка, а не картинка. Смотреть на них без конверсии бессмысленно, а класть поверх творческий LUT — прямая ошибка, разобранная в <a href="tri-oshibki-cveta.html">уроке про три ошибки цвета</a>.</p>
+
+    <div class="step-head" id="kody"><i>ШАГ 2 / 4</i><h2>Куда файл <em>тратит коды</em></h2></div>
+    <p>Файл — это конечный запас чисел. Вопрос только в том, как он размазан по яркостям сцены. Линейный RAW делит свет поровну по свету: верхняя ступень получает половину всех кодов, следующая — четверть, и так вниз. Логарифмическая кривая делит поровну по ступеням: каждая получает примерно одинаково.</p>
+    <table class="price-table">
+      <tr><th>Ступень от серой карты</th><th>RAW 12 бит</th><th>RAW 14 бит</th><th>S-Log3 10 бит</th><th>Rec.709 10 бит</th></tr>
+      <tr><td>−5 (глубокая тень)</td><td>1</td><td>6</td><td>38</td><td>26</td></tr>
+      <tr><td>−3</td><td>6</td><td>23</td><td>60</td><td>75</td></tr>
+      <tr><td>0 (серая карта)</td><td>45</td><td>181</td><td>76</td><td>190</td></tr>
+      <tr><td>+3</td><td>362</td><td>1448</td><td>78</td><td>нет</td></tr>
+      <tr><td>+5</td><td>1448</td><td>5792</td><td>79</td><td>нет</td></tr>
+    </table>
+    <p>Из таблицы следует вывод, который обычно говорят наоборот: <b>в тенях log держит лучше, чем линейный RAW</b>. На пять ступеней ниже серой карты десятибитный S-Log3 даёт 38 разных кодов, а четырнадцатибитный RAW — шесть. Двенадцатибитный — один. Посмотрите на полосу «тень, поднятая на +3» на доске: на RAW 12 бит она разваливается на ступеньки, на log остаётся гладкой.</p>
+    <p>И обратное тоже верно: выше серой карты RAW не догнать ничем. На три ступени вверх у него полторы тысячи кодов против семидесяти восьми у log. Поэтому в RAW и правят света, а «вытягивать тени из RAW» — занятие более рискованное, чем принято думать.</p>
+
+    <div class="step-head" id="sem-desyat-devyat"><i>ШАГ 3 / 4</i><h2>Почему 709 <em>кончается на +2,5</em></h2></div>
+    <p>Обычная видеогамма Rec.709 устроена так, что сигнал упирается в единицу, когда яркость сцены доходит до единицы — то есть до диффузного белого. От серой карты это <b>всего 2,47 ступени</b>. Всё, что ярче: небо в окне, блик на лбу, лампа в кадре — записано одним и тем же максимальным числом.</p>
+    <p>S-Log3 в тех же десяти битах доходит до яркости сцены 38,4 — это 7,74 ступени над серой картой, и каждая из них получает свои семьдесят восемь кодов. Разница между форматами не в «красивости картинки», а вот в этих пяти лишних ступенях сверху.</p>
+    <p>У реальных камер в режиме 709 есть «колено»: света не обрезаются в ноль, а поджимаются. Это смягчает переход, но запас всё равно кончается на несколько ступеней раньше log. Как устроены сами кривые, разобрано в <a href="log-krivaya.html">уроке про log-кривую</a>, а что делать с плоской картинкой — в <a href="log-i-grade.html">уроке «Почему видео из камеры блёклое»</a>.</p>
+
+    <div class="step-head" id="metadannye"><i>ШАГ 4 / 4</i><h2>Настоящее преимущество RAW — <em>метаданные</em></h2></div>
+    <p>Главное отличие RAW вообще не про диапазон. В RAW <b>баланс белого и ISO — это метаданные</b>: они не применены к данным, а лежат рядом записочкой. Поставить их в посте — то же самое, что поставить их на площадке, потерь нет вообще.</p>
+    <p>В log и в 709 баланс белого запечён: камера умножила каналы ещё до кривой. Вернуть его в посте можно только делением того, что уже записано, а канал, который при этом упёрся в потолок, делением не воскресишь — в светах останется цветной сдвиг.</p>
+    <p>Покрутите на доске ползунок «ББ промахнули». На RAW показание «вернулся точно» при любом промахе. На S-Log3 и особенно на 709 появляется процент промаха, и растёт он именно там, где ярко. Это и есть та самая страховка, за которую платят объёмом карт памяти.</p>
+    <div class="why">
+      <span class="label">Что из этого выбрать на съёмке</span>
+      <p><b>Rec.709</b> — когда свет под контролем и правок почти не будет: репортаж, вебинар, многокамерное мероприятие. Экономит время и место, но не прощает промаха по экспозиции. <b>Log</b> — рабочая лошадь для ролика с грейдом: держит света, живёт на обычных картах, тени переносит лучше, чем ждут. <b>RAW</b> — когда нужен запас на бардак: сложный свет, непредсказуемый баланс, дорогая пересъёмка. Платите за это объёмом и временем на пост. Практический совет один и тот же для всех трёх: <b>экспозиция на площадке важнее формата</b>. Ни один из них не чинит то, что выбито.</p>
+    </div>
+    <p>Сколько места займёт материал в каждом варианте, посчитает <a href="../instrumenty/kalkulyator-karty-pamyati.html">калькулятор карты памяти</a>, а порядок работы с отснятым — в <a href="poryadok-cvetokorrekcii.html">уроке про четыре шага цветокоррекции</a>.</p>
+
+
+    <div class="step-head"><i>ВОПРОСЫ</i><h2>Частые вопросы</h2></div>
+    <details class="svc-faq"><summary>Что лучше снимать — в RAW или в log?</summary><p>Зависит от того, чего вы боитесь. RAW страхует от промаха по балансу белого и даёт огромный запас в светах, но стоит объёма и времени. Log держит широкий диапазон, живёт на обычных картах и в тенях ведёт себя даже лучше линейного RAW. Для ролика с цветокоррекцией log почти всегда достаточно; RAW берут, когда свет непредсказуем, а пересъёмка дорогая.</p></details>
+    <details class="svc-faq"><summary>Правда ли, что из RAW можно вытянуть тени лучше, чем из log?</summary><p>Обычно наоборот. Линейный RAW тратит половину всех кодов на верхнюю ступень, и до глубоких теней доходят единицы: на пять ступеней ниже серой карты четырнадцатибитный RAW даёт шесть разных кодов, а десятибитный S-Log3 — тридцать восемь. Преимущество RAW не в тенях, а в светах и в том, что баланс белого там метаданные.</p></details>
+    <details class="svc-faq"><summary>Можно ли вернуть выбитые света из RAW?</summary><p>Нет. Если свет упёрся в потолок сенсора, в файле записано максимальное число, и фактуры за ним не существует ни в одном формате. Иногда удаётся восстановить цвет по соседним каналам, если упёрся не весь пиксель, но это реконструкция, а не данные. Единственное лечение — правильная экспозиция на площадке.</p></details>
+    <details class="svc-faq"><summary>Почему в Rec.709 так быстро выбиваются окна?</summary><p>Потому что сигнал Rec.709 упирается в максимум, когда яркость сцены доходит до диффузного белого — это всего 2,47 ступени над серой картой. Небо за окном ярче в разы, и всё, что выше потолка, записывается одним числом. S-Log3 в тех же десяти битах доходит до 7,74 ступени над серым.</p></details>
+    <details class="svc-faq"><summary>Сколько кодов приходится на одну ступень в S-Log3?</summary><p>В пределе 261,5 × lg2 = 78,7 кода из 1023 — это наклон логарифмического участка кривой. У самой серой карты фактически получается 75,7, потому что смещение +0,01 внутри логарифма там ещё заметно влияет. Писать «78,7 у серого» неверно, хотя такая цифра часто попадается.</p></details>
+    <details class="svc-faq"><summary>Если камера пишет только в 709, всё плохо?</summary><p>Нет, просто требований к площадке больше. Нужно точно выставить экспозицию, не оставлять в кадре источников ярче лица, следить за балансом белого при съёмке и не рассчитывать на серьёзную правку в посте. Это ровно тот режим работы, в котором десятилетиями снимали телевидение, и картинка там была нормальная.</p></details>
+
+    <a class="art-svc" href="../education.html"><b>Разобрать свой материал на занятии</b><span>Обучение · Москва и онлайн →</span></a>
+  </div>
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Разберём на <em>вашем материале</em>?</h2>
+    <p class="cta-note">Урок объясняет, руку ставит практика. Занятие 90 минут — от 3 000 ₽, и разбираем ваш материал, а не абстрактный. Новые уроки и разборы — в канале <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">«Побубним за видео»</a>.</p>
+    <div class="cta-row">
+      <button class="btn btn-lamp" data-lead="Обучение">Оставить заявку</button>
+      <a class="btn btn-ghost" href="../education.html">Программы обучения</a>
+    </div>
+    <p class="cta-after">Привычнее мессенджер — <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">напишите напрямую</a>. Нужна не теория, а готовая съёмка — <a href="/videosemka-moskva.html">съёмочный день в Москве</a> от 30 000 ₽.</p>
+  </div>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav aria-label="Подвал">
+      <a href="/">На главную</a>
+      <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/rawlogboard.js" defer></script>
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+<script src="/assets/js/lead.js" defer></script>
+</body>
+</html>

@@ -63,11 +63,16 @@ index_repository после крупных правок; проверка: index
   расстояние и импульсный отклик, движок soundboard.js) · 10 myagkij-svet
   (полутень S·L/D и угловой размер, softboard.js) · 11 balans-belogo
   (планковский локус → sRGB, смешанный свет, wbboard.js) · 12 mercanie-na-video
-  (интеграл пульсации по строкам, flickerboard.js).
+  (интеграл пульсации по строкам, flickerboard.js) · 13 tri-oshibki-cveta
+  (кадр считается из света, приборы scopes-core читают его пиксели, errboard.js) ·
+  14 svet-iz-okna (окно как ПЛОЩАДНОЙ источник R²/(R²+d²), windowboard.js) ·
+  15 raw-ili-log (кодов на ступень в RAW 12/14, S-Log3 и 709, rawlogboard.js).
   Хаб с 21.09 (вечер) разложен на ТРИ категории с чипами: цвет · камера и
-  оптика · свет и звук. Математика досок 09–12 — EDU_BASE §8о, приёмка —
-  tools/test_soundboard.py, test_softboard.py, test_wbboard.py,
-  test_flickerboard.py (значение со страницы сверяется с пересчётом на питоне).
+  оптика · свет и звук. Математика досок 09–12 — EDU_BASE §8о, досок 13–15 —
+  §8п; приёмка — tools/test_soundboard.py, test_softboard.py, test_wbboard.py,
+  test_flickerboard.py, test_errboard.py, test_windowboard.py,
+  test_rawlogboard.py (значение со страницы сверяется с пересчётом на питоне).
+  Серия уроков ЗАКРЫТА 21.09: строк «план» в EDU_BASE §8 и §8в не осталось.
 - `instrumenty/` — хаб + smeta-i-schet, modelnyj-reliz,
   **soglasie-na-semku-rebenka** (21.09: согласие законного представителя на
   съёмку ребёнка — 152-ФЗ плюс ст. 152.1 ГК РФ; ОТДЕЛЬНЫЙ лист на публикацию

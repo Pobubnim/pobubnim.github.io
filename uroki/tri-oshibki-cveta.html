@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Три ошибки цвета, которые выдают новичка | ПОБУБНИМ</title>
+<meta name="description" content="Живая доска с настоящими приборами: включайте ошибку и смотрите, как кожа уходит с линии 123°, а серая карта врёт, что всё в порядке. Три разбора и способ починить каждый.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.ru/uroki/tri-oshibki-cveta.html">
+<meta property="og:title" content="Три ошибки цвета, которые выдают новичка | ПОБУБНИМ">
+<meta property="og:description" content="Интерактивная доска: LUT поверх log, кожа под общим грейдом и правка на глаз — в показаниях приборов.">
+<meta property="og:image" content="https://pobubnim.ru/assets/og/urok-tri-oshibki-cveta.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.ru/uroki/tri-oshibki-cveta.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/InterTight-300-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/PlayfairDisplay-500i-cyrillic.woff2">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-09-21", "dateModified": "2026-09-21", "headline": "Три ошибки цветокоррекции, которые выдают новичка, и как их увидеть на приборах", "description": "Интерактивная доска: творческий LUT поверх сырого log, кожа под общим грейдом и правка на глаз по некалиброванному экрану — каждая ошибка в показаниях waveform и вектроскопа, с линией скин-тона 123°.", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/uroki/tri-oshibki-cveta.html", "image": "https://pobubnim.ru/assets/og/urok-tri-oshibki-cveta.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Почему нельзя положить красивый LUT прямо на log?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что творческие LUT рассчитаны на нормальный контраст на входе, а log-файл нарочно плоский: он упаковывает широкий диапазон яркостей сцены. Сперва нужна техническая конверсия — Color Space Transform или официальный LUT камеры, — и только потом творчество. Иначе кожа садится ниже своего коридора, а цвета ведут себя непредсказуемо."}}, {"@type": "Question", "name": "Почему серая карта показывает, что всё в порядке, когда всё не в порядке?", "acceptedAnswer": {"@type": "Answer", "text": "Совпадение чисел: серая карта 18 % встаёт на 40,8 IRE в Rec.709 и на 41,2 IRE в S-Log3. Разница меньше одного кода, поэтому карта выглядит правильной и в конвертированном кадре, и в сыром log. Ошибку ловят по коже — её коридор 60–75 IRE — и по общему контрасту кадра."}}, {"@type": "Question", "name": "Что такое линия скин-тона и почему она одна для всех?", "acceptedAnswer": {"@type": "Answer", "text": "Это направление на вектроскопе, около 123° от горизонтальной оси, вдоль которого лежит кожа любого человека. Проверка на эталонных тонах даёт 127° для светлой кожи, 125° для средней и 123° для тёмной: отличается не оттенок, а насыщенность — насколько далеко точка от центра. Поэтому линия и работает эталоном независимо от цвета кожи героя."}}, {"@type": "Question", "name": "Как сделать красивый грейд и не испортить лицо?", "acceptedAnswer": {"@type": "Answer", "text": "Отделить лицо от остального кадра. В Resolve это квалификатор по коже: грейд применяется ко всему, кроме пикселей, попавших в сектор кожи. Доска в этом уроке показывает оба состояния — грейд на весь кадр и грейд мимо лица, — и разницу видно по углу и насыщенности точки кожи на вектроскопе."}}, {"@type": "Question", "name": "У меня обычный ноутбук. Цветокоррекция на нём вообще возможна?", "acceptedAnswer": {"@type": "Answer", "text": "Возможна, если не доверять глазам. Экран врёт почти наверняка, и правка «на глаз» уходит в файл поправкой того же размера, что и ошибка экрана. Работайте по приборам — waveform и вектроскоп показывают правду независимо от монитора, — и проверяйте готовый ролик хотя бы на телефоне. Это дешевле калиброванного монитора и ловит ошибку сразу."}}, {"@type": "Question", "name": "Можно ли исправить эти ошибки после экспорта?", "acceptedAnswer": {"@type": "Answer", "text": "Частично. Сдвиг баланса и общий грейд откатываются, если исходник цел: возвращаетесь на таймлайн и правите узел. Необратимо только то, что обрезано — выбитые в белое света и провалившиеся в чёрное тени: там нет данных, и вытягивать нечего. Поэтому проверка по приборам делается до экспорта, а не после."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.ru/uroki/"}, {"@type": "ListItem", "position": 3, "name": "Три ошибки цвета", "item": "https://pobubnim.ru/uroki/tri-oshibki-cveta.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 820px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 820px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 820px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .board { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(14px, 2.4vw, 22px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .board canvas { width: 100%; display: block; border-radius: 8px; background: #0b0a09; }
+  .board .cap { margin: 6px 0 0; font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); font-family: var(--font-mono); display: flex; justify-content: space-between; gap: 10px; }
+  .views { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 10px; }
+  .views .vlabel { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); align-self: center; margin-right: 4px; }
+  .vbtn { padding: 7px 13px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
+  .vbtn:hover { background: rgba(245,239,226,0.06); }
+  .vbtn.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+  .lab { display: flex; flex-direction: column; gap: 10px; }
+  .stat { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
+  .stat span i { font-style: normal; color: var(--mute); margin-right: 8px; }
+  .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  /* метка внутри тревожной плашки: серый на красноватом даёт 4.3, мало */
+  .stat span.warn i { color: #c99a8b; }
+  .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
+  .task b { color: var(--ink); font-weight: 500; }
+  .price-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15.5px; }
+  .price-table th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+  .price-table td { color: var(--smoke); font-weight: 300; padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .price-table td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  /* на телефоне запрет переноса в первой колонке рвал страницу: таблица уезжала
+     на 434 px при экране 375 (замер check_live 21.09) */
+  @media (max-width: 640px) { .price-table { font-size: 14.5px; }
+    .price-table td:first-child { white-space: normal; } }
+</style>
+<script src="../assets/js/analytics.js?v=4" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links" aria-label="Основная">
+      <a href="/raboty.html">Работы</a>
+      <div class="nav-drop">
+        <button type="button">Решения<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a class="drop-lead" href="/video-dlya-biznesa.html">Видео для бизнеса: подбор под задачу</a>
+        <a href="/services/reklamnyj-rolik.html">Рекламный ролик</a>
+        <a href="/services/imidzhevyj-film.html">Имиджевый фильм</a>
+        <a href="/services/svadebnoe-kino.html">Свадебное кино</a>
+        <a href="/services/muzykalnyj-klip.html">Музыкальный клип</a>
+        <a href="/services/cvetokorrekciya.html">Цветокоррекция</a>
+        <a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a>
+        <a href="/services/sozdanie-sajtov.html">Создание сайтов</a>
+        <a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a>
+        </div>
+      </div>
+      <a href="/ceny.html">Цены</a>
+      <div class="nav-drop">
+        <button type="button">Обучение<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a href="/education.html">Программы обучения</a>
+        <a href="/uroki/">Уроки DaVinci Resolve</a>
+        </div>
+      </div>
+      <a href="/articles/">Статьи</a>
+      <a href="/instrumenty/">Инструменты</a>
+      <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+    </nav>
+    <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 13 · Цвет · Живая доска</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Три ошибки цветокоррекции, которые выдают новичка</span> Смотрим <em>на приборы</em></h1>
+    <p class="lead">Три ошибки встречаются чаще всех остальных вместе взятых, и все три не видно на глаз — зато их сразу видно на приборах. Доска ниже считает кадр из света, применяет ошибку как настоящее преобразование и показывает, что при этом происходит с кожей, серой картой и вектроскопом.</p>
+    <time datetime="2026-09-21">Опубликовано 21.09.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="board" id="eb">
+        <canvas id="eb-frame" width="880" height="420" aria-label="Кадр с героем, серой картой и белой бумагой, рядом парад RGB и вектроскоп с линией кожи: включение каждой из трёх ошибок меняет показания приборов"></canvas>
+        <div class="cap"><span>КАДР СЧИТАЕТСЯ ИЗ СВЕТА · ПРИБОРЫ ЧИТАЮТ ЕГО ПИКСЕЛИ</span><span>линия кожи 123°, коридоры IRE — канон</span></div>
+
+        <div class="views" role="group" aria-label="Какая ошибка включена">
+          <span class="vlabel">ОШИБКА</span>
+          <button class="vbtn on" type="button" data-err="0">Нет</button>
+          <button class="vbtn" type="button" data-err="1">LUT поверх log</button>
+          <button class="vbtn" type="button" data-err="2">Кожа под общим грейдом</button>
+          <button class="vbtn" type="button" data-err="3">Грейд на глаз</button>
+        </div>
+
+        <div class="views" role="group" aria-label="Что показать">
+          <span class="vlabel">ПОКАЗАТЬ</span>
+          <button class="vbtn on" type="button" data-view="0">Как получилось</button>
+          <button class="vbtn" type="button" data-view="1">Как надо</button>
+          <button class="vbtn" type="button" data-view="2">Глазами колориста</button>
+        </div>
+
+        <div class="lab">
+          <div class="lab-row"><span class="snm">СИЛА ОШИБКИ</span><input class="lab-range" type="range" data-strength min="0" max="100" step="5" value="60" aria-label="Сила ошибки"><span class="sv">60 %</span></div>
+          <div class="lab-row"><span class="snm">ЭКРАН КОЛОРИСТА</span><input class="lab-range" type="range" data-screen min="-20" max="20" step="2" value="12" aria-label="Насколько врёт экран колориста"><span class="sv">теплит 12 %</span></div>
+        </div>
+
+        <div class="stat" id="eb-stat" aria-live="polite"></div>
+        <div class="task"><b>Попробуйте.</b> Включите «LUT поверх log» и посмотрите на серую карту: она стоит там же, где стояла, — около 41 IRE. Именно поэтому по ней ошибку не поймать. А кожа при этом упала к 52 IRE при коридоре 60–75. Потом включите «Кожа под общим грейдом» и следите за жёлтым кружком на вектроскопе: он уезжает с розовой линии, хотя картинка «вроде красивая».</div>
+      </div>
+      <div class="viz-cap">Честная математика: сцена задана в линейном свете (серая карта 0,18, белая бумага 0,82, окно ярче белого), кодируется настоящей кривой камеры — Rec.709 OETF или Sony S-Log3 по опубликованным формулам, — а ошибка применяется как настоящее преобразование кодов. Приборы справа — то же ядро, что в <a href="skoupy-kak-videt.html">уроке про скоупы</a>: они читают пиксели кадра, а не рисуются под ответ. Модели, и это важно: творческий LUT заменён своей S-кривой с подъёмом насыщенности (форма та же, коэффициенты наши), «общий грейд» — ASC CDL с уходом в зелень, ошибка экрана — усиление по каналам R и B.</div>
+    </div>
+
+    <div class="step-head" id="lut-na-log"><i>ОШИБКА 1 / 3</i><h2>Творческий LUT поверх <em>сырого log</em></h2></div>
+    <p>Камера в log-профиле пишет нарочно плоскую картинку: она сжимает широкий диапазон яркостей сцены в файл. Это не «неудачный кадр», это упаковка. Перед творчеством упаковку надо развернуть — технической конверсией в Rec.709 или официальным LUT камеры.</p>
+    <p>Новичок пропускает этот шаг: качает красивый «киношный LUT» и кладёт прямо на log. Творческие LUT рассчитаны на нормальный контраст на входе, а получают плоский. Результат на доске видно в числах: кожа съезжает ниже своего коридора, картинка теряет объём, а цвета ведут себя непредсказуемо — где-то бледно, где-то кислотно.</p>
+    <div class="why">
+      <span class="label">Почему серая карта не спасает</span>
+      <p>Здесь прячется ловушка, из-за которой ошибку не замечают неделями. Серая карта 18 % в Rec.709 встаёт на 40,8 IRE, а в S-Log3 — на 41,2 IRE. Разница меньше кода: карта выглядит одинаково правильной и в правильном, и в неправильном кадре. Проверять надо по коже и по контрасту, а не по карте. Переключите на доске «Как надо» — там тот же LUT ложится после конверсии, и кожа возвращается в коридор.</p>
+    </div>
+
+    <div class="step-head" id="kozha-pod-greydom"><i>ОШИБКА 2 / 3</i><h2>Кожа под <em>общим грейдом</em></h2></div>
+    <p>Вторая ошибка выглядит безобиднее: человек находит красивое сочетание — холодные тени, тёплые света — и накатывает его одним движением на весь кадр. Небо стало глубже, стены интереснее, а лицо поехало вместе со всем остальным.</p>
+    <p>Зритель не разбирается в цвете, но фальшь считывает мгновенно, потому что лицо — единственный объект в кадре, у которого у него есть эталон в голове. Небо может быть бирюзовым, трава — сиреневой, это стиль. Лицо цвета апельсина — брак.</p>
+    <p>На вектроскопе кожа всех людей лежит примерно на одной линии — около 123° от горизонтальной оси. Это не мнение колористов, а арифметика: светлая кожа даёт 127°, средняя 125°, тёмная 123°, очень тёмная 123°. Отличается не оттенок, а насыщенность — насколько далеко точка ушла от центра. Поэтому линия скин-тона и работает как эталон для любой кожи.</p>
+    <p>Доска меряет две вещи: угол и насыщенность. Общий грейд на полной силе уводит кожу с линии почти на пятнадцать градусов и поднимает насыщенность в 1,8 раза. Первое читается как «лицо позеленело», второе — как «лицо пластмассовое». Лечится ключом по коже: в режиме «Как надо» грейд применён ко всему кадру, кроме пикселей, попавших в сектор кожи, — ровно то, что делает квалификатор в Resolve.</p>
+
+    <div class="step-head" id="na-glaz"><i>ОШИБКА 3 / 3</i><h2>Грейд на глаз <em>по своему экрану</em></h2></div>
+    <p>Третья ошибка самая обидная, потому что человек всё делает аккуратно — и получает брак. Экран почти наверняка врёт: ноутбук теплит, дешёвый монитор холодит, «игровой режим» задирает насыщенность. Колорист видит на своём экране тёплый кадр и честно убирает теплоту. Тёплый был экран — а поправка ушла в файл.</p>
+    <p>Переключите на доске «Глазами колориста»: серая карта идеально нейтральна, R и B сходятся код в код, картинка выглядит отлично. Теперь верните «Как получилось» — тот же файл, но без вранья экрана: серая карта уехала в синеву на двадцать пять кодов. Именно это увидит заказчик.</p>
+    <p>Лечится не покупкой дорогого монитора, а порядком работы: правим по приборам, а не по ощущению, и проверяем результат хотя бы на втором устройстве — телефоне, планшете, чужом ноутбуке. Как читать приборы, разобрано в <a href="skoupy-kak-videt.html">уроке про скоупы</a>; почему кадр из камеры блёклый — в <a href="log-i-grade.html">уроке про log</a>.</p>
+
+    <table class="price-table">
+      <tr><th>Ошибка</th><th>Что показывает прибор</th><th>Как чинится</th></tr>
+      <tr><td>LUT поверх log</td><td>кожа ниже 60 IRE, контраст не тот, карта врёт «всё хорошо»</td><td>сперва конверсия CST, потом творчество</td></tr>
+      <tr><td>Кожа под общим грейдом</td><td>точка кожи ушла с линии 123°, насыщенность выросла в 1,8 раза</td><td>ключ по коже, грейд мимо лица</td></tr>
+      <tr><td>Грейд на глаз</td><td>серая карта не нейтральна: R и B разошлись на 25 кодов</td><td>править по приборам, проверять на втором экране</td></tr>
+    </table>
+
+    <div class="step-head" id="telefon"><i>ШАГ 4 / 4</i><h2>Если вы правите цвет <em>на телефоне</em></h2></div>
+    <p>Базовая коррекция в CapCut или VN возможна, и порядок шагов там тот же: сперва экспозиция и баланс, потом контраст и насыщенность, фильтр приложения — последним, поверх выправленной базы. Фильтр — это чужой look, и он точно так же ломается, если лечь на неподготовленную картинку.</p>
+    <p>Потолок телефона честный: нет масок по областям, нет точной работы с кожей, нет приборов. Ошибку номер два там нечем даже заметить. Для сторис этого хватает; клиентский ролик всё равно проходит через Resolve.</p>
+    <p>И главная проверка, которая занимает минуту и ловит все три ошибки разом: посмотреть готовый кадр на другом устройстве. Если лицо там выглядит иначе, чем на вашем экране, — дело не в устройстве. Разбор всего порядка работы — в <a href="poryadok-cvetokorrekcii.html">уроке про четыре шага цветокоррекции</a> и в статье <a href="../articles/cvetokorrekciya-video-kak-sdelat.html">«Цветокоррекция видео: как сделать самому»</a>.</p>
+
+
+    <div class="step-head"><i>ВОПРОСЫ</i><h2>Частые вопросы</h2></div>
+    <details class="svc-faq"><summary>Почему нельзя положить красивый LUT прямо на log?</summary><p>Потому что творческие LUT рассчитаны на нормальный контраст на входе, а log-файл нарочно плоский: он упаковывает широкий диапазон яркостей сцены. Сперва нужна техническая конверсия — Color Space Transform или официальный LUT камеры, — и только потом творчество. Иначе кожа садится ниже своего коридора, а цвета ведут себя непредсказуемо.</p></details>
+    <details class="svc-faq"><summary>Почему серая карта показывает, что всё в порядке, когда всё не в порядке?</summary><p>Совпадение чисел: серая карта 18 % встаёт на 40,8 IRE в Rec.709 и на 41,2 IRE в S-Log3. Разница меньше одного кода, поэтому карта выглядит правильной и в конвертированном кадре, и в сыром log. Ошибку ловят по коже — её коридор 60–75 IRE — и по общему контрасту кадра.</p></details>
+    <details class="svc-faq"><summary>Что такое линия скин-тона и почему она одна для всех?</summary><p>Это направление на вектроскопе, около 123° от горизонтальной оси, вдоль которого лежит кожа любого человека. Проверка на эталонных тонах даёт 127° для светлой кожи, 125° для средней и 123° для тёмной: отличается не оттенок, а насыщенность — насколько далеко точка от центра. Поэтому линия и работает эталоном независимо от цвета кожи героя.</p></details>
+    <details class="svc-faq"><summary>Как сделать красивый грейд и не испортить лицо?</summary><p>Отделить лицо от остального кадра. В Resolve это квалификатор по коже: грейд применяется ко всему, кроме пикселей, попавших в сектор кожи. Доска в этом уроке показывает оба состояния — грейд на весь кадр и грейд мимо лица, — и разницу видно по углу и насыщенности точки кожи на вектроскопе.</p></details>
+    <details class="svc-faq"><summary>У меня обычный ноутбук. Цветокоррекция на нём вообще возможна?</summary><p>Возможна, если не доверять глазам. Экран врёт почти наверняка, и правка «на глаз» уходит в файл поправкой того же размера, что и ошибка экрана. Работайте по приборам — waveform и вектроскоп показывают правду независимо от монитора, — и проверяйте готовый ролик хотя бы на телефоне. Это дешевле калиброванного монитора и ловит ошибку сразу.</p></details>
+    <details class="svc-faq"><summary>Можно ли исправить эти ошибки после экспорта?</summary><p>Частично. Сдвиг баланса и общий грейд откатываются, если исходник цел: возвращаетесь на таймлайн и правите узел. Необратимо только то, что обрезано — выбитые в белое света и провалившиеся в чёрное тени: там нет данных, и вытягивать нечего. Поэтому проверка по приборам делается до экспорта, а не после.</p></details>
+
+    <a class="art-svc" href="../education.html"><b>Разобрать свой материал на занятии</b><span>Обучение · Москва и онлайн →</span></a>
+  </div>
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Разберём на <em>вашем материале</em>?</h2>
+    <p class="cta-note">Урок объясняет, руку ставит практика. Занятие 90 минут — от 3 000 ₽, и разбираем ваш материал, а не абстрактный. Новые уроки и разборы — в канале <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">«Побубним за видео»</a>.</p>
+    <div class="cta-row">
+      <button class="btn btn-lamp" data-lead="Обучение">Оставить заявку</button>
+      <a class="btn btn-ghost" href="../education.html">Программы обучения</a>
+    </div>
+    <p class="cta-after">Привычнее мессенджер — <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">напишите напрямую</a>. Нужна не теория, а готовая съёмка — <a href="/videosemka-moskva.html">съёмочный день в Москве</a> от 30 000 ₽.</p>
+  </div>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav aria-label="Подвал">
+      <a href="/">На главную</a>
+      <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/scopes-core.js" defer></script>
+<script src="../assets/js/errboard.js" defer></script>
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+<script src="/assets/js/lead.js" defer></script>
+</body>
+</html>
