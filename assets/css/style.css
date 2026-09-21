@@ -1002,5 +1002,6 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 
 /* когда выбрана одна категория, её заголовок остаётся — по нему видно, где ты */
 [data-sec][hidden] { display: none; }
-/* под чипами разделы стоят теснее: длинной паузы там уже не нужно */
-.hub-nav ~ .hub-sec { margin-top: clamp(32px, 4vw, 52px); }
+/* Под чипами разделы стоят теснее. Общее правило section даёт padding-top 140px —
+   это ритм длинной страницы, а после нажатия на чип он читается как пустой экран. */
+.hub-nav ~ .hub-sec { padding-top: 0; margin-top: clamp(44px, 5vw, 72px); }
