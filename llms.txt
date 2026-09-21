@@ -41,6 +41,14 @@
 
 - [Сколько стоит снять рекламный ролик](https://pobubnim.ru/articles/skolko-stoit-reklamnyj-rolik.html): из чего складывается смета, где деньги уходят зря
 - [Сколько стоит клип](https://pobubnim.ru/articles/skolko-stoit-klip.html): три уровня бюджета и что реально снимается за каждый
+- [Звук на видеосъёмке: какой микрофон нужен](https://pobubnim.ru/articles/zvuk-na-videosemke.html): расстояние решает больше цены микрофона, эхо комнаты, уровни, что не чинится на монтаже
+- [Свет для видеосъёмки: почему лица зелёные](https://pobubnim.ru/articles/svet-dlya-videosemki.html): цветовая температура, смешанный свет, мерцание 100 Гц, CRI против TLCI
+- [Вертикальное видео: как снимать](https://pobubnim.ru/articles/vertikalnoe-video-kak-snimat.html): арифметика кропа 9:16, безопасные зоны, композиция под узкий кадр
+- [Как проходит видеосъёмка](https://pobubnim.ru/articles/kak-prohodit-videosemka.html): этапы от брифа до сдачи, что делает заказчик и где срываются сроки
+- [Что спросить у видеографа](https://pobubnim.ru/articles/chto-sprosit-u-videografa.html): 12 вопросов до предоплаты и что означают ответы
+- [Сколько времени занимает монтаж](https://pobubnim.ru/articles/skolko-zanimaet-montazh.html): куда уходит время и что его реально ускоряет
+- [Как подготовиться к съёмке](https://pobubnim.ru/articles/kak-podgotovitsya-k-semke.html): гайд для тех, кого снимают: одежда, муар, речь в кадре
+- [Монтаж видео с нуля: с чего начать](https://pobubnim.ru/articles/montazh-video-s-chego-nachat.html): порядок на первый месяц, бесплатный DaVinci Resolve, ошибки новичка
 - [Сколько стоит имиджевый фильм](https://pobubnim.ru/articles/skolko-stoit-imidzhevyj-film.html): смета фильма о компании по частям — дни, площадки, интервью, перекрытие
 - [Видео с мероприятия: что делать после](https://pobubnim.ru/articles/video-s-meropriyatiya-chto-dalshe.html): один съёмочный день в план публикаций на квартал
 - [Сколько стоит свадебный видеограф](https://pobubnim.ru/articles/skolko-stoit-svadebnyj-videograf.html)
