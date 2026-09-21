@@ -919,3 +919,53 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 .player-err a:hover { box-shadow: 0 1px 0 var(--ink); }
 @starting-style { .player-err { opacity: 0; transform: translateY(6px); } }
 @media (prefers-reduced-motion: reduce) { .player-err { transition: opacity 0.2s var(--ease); transform: none; } }
+
+/* ── Глубина страниц решений (21.09.2026) ─────────────────────────────────
+   Раньше каждая страница услуги несла свой инлайновый блок стилей, и новый
+   тип раздела означал восемь одинаковых правок. Разделы «как считается цена»,
+   «что входит», «как подготовиться» живут на всех восьми — их стили здесь.
+   Страницы, где эти же классы объявлены инлайном (хаб «Видео для бизнеса»),
+   продолжают работать: значения совпадают, инлайн просто побеждает позже. */
+
+/* Подзаголовок раздела: одна фраза после H2, до содержимого. */
+.svc-sub { color: var(--smoke); font-weight: 300; font-size: 17px; max-width: 680px; margin-bottom: 24px; text-wrap: pretty; }
+
+/* Таблица фактов: «от чего зависит цена», сравнение форматов, состав пакета.
+   Нейропоиск охотно забирает таблицы, а человеку они отвечают быстрее абзаца.
+   Обёртку листаем и с клавиатуры — role+tabindex обязательны (axe: scrollable-region-focusable). */
+.cmp-wrap { overflow-x: auto; scrollbar-width: thin; }
+.cmp-wrap:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; border-radius: 4px; }
+.cmp { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 15px; }
+.cmp th, .cmp td { text-align: left; padding: 14px 12px; border-top: 1px solid var(--line-soft); vertical-align: top; }
+.cmp thead th { font-size: 12.5px; font-weight: 500; color: var(--mute); letter-spacing: 0.06em; text-transform: uppercase; border-top: 0; }
+.cmp tbody th { font-weight: 500; color: var(--ink); }
+.cmp td { color: var(--smoke); font-weight: 300; text-wrap: pretty; }
+.cmp td.num { color: var(--ink); font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cmp-note { margin-top: 12px; font-size: 13.5px; color: var(--mute); font-weight: 300; max-width: 720px; text-wrap: pretty; }
+
+/* Пара «что именно» → «сколько/когда». Для состава сдачи и сроков: человек
+   ищет глазами конкретику, а не читает абзац. */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); border-radius: var(--r-card); overflow: hidden; }
+.facts > div { background: var(--void); padding: 20px 22px; display: flex; flex-direction: column; gap: 6px; }
+.facts b { font-size: 15px; font-weight: 500; color: var(--ink); }
+.facts span { font-size: 14px; color: var(--smoke); font-weight: 300; line-height: 1.5; text-wrap: pretty; }
+
+/* Честная граница: что в цену НЕ входит и считается отдельно. Блок намеренно
+   спокойный — это не предупреждение, а разговор до сделки. */
+.honest { margin-top: 18px; padding: 20px 22px; background: var(--char); border-radius: var(--r-card); border-left: 2px solid var(--line); }
+.honest b { display: block; font-size: 15px; font-weight: 500; margin-bottom: 10px; }
+.honest ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.honest li { font-size: 14.5px; color: var(--smoke); font-weight: 300; padding-left: 16px; position: relative; text-wrap: pretty; }
+.honest li::before { content: "·"; position: absolute; left: 2px; color: var(--mute); }
+
+/* Врезка «посчитайте сами»: ссылка со страницы услуги в свой же инструмент.
+   Ни у одного конкурента этого нет, и человеку правда полезно. */
+.tool-hint { margin-top: 20px; padding: 18px 20px; background: var(--char); border-radius: var(--r-card); display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; }
+.tool-hint p { margin: 0; font-size: 14.5px; color: var(--smoke); font-weight: 300; flex: 1 1 260px; text-wrap: pretty; }
+.tool-hint a { font-size: 14.5px; color: var(--ink); white-space: nowrap; box-shadow: 0 1px 0 var(--line); }
+.tool-hint a:hover { box-shadow: 0 1px 0 var(--ink); }
+
+@media (max-width: 640px) {
+  .cmp { font-size: 14px; min-width: 520px; }
+  .cmp th, .cmp td { padding: 12px 10px; }
+}
