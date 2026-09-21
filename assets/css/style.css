@@ -933,7 +933,13 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 /* Таблица фактов: «от чего зависит цена», сравнение форматов, состав пакета.
    Нейропоиск охотно забирает таблицы, а человеку они отвечают быстрее абзаца.
    Обёртку листаем и с клавиатуры — role+tabindex обязательны (axe: scrollable-region-focusable). */
-.cmp-wrap { overflow-x: auto; scrollbar-width: thin; }
+/* min-width:0 обязателен: внутри flex- и grid-колонки элемент по умолчанию
+   не сжимается ниже содержимого, и таблица шириной 620 px рвёт страницу
+   на 375 px вместо того, чтобы листаться (поймано на кейсе СЕВЕРСВЕТ).
+   Одной обёртки мало: не сжимается ВСЯ цепочка предков, поэтому то же
+   правило нужно колонке кейса, внутри которой обёртка живёт. */
+.cmp-wrap { overflow-x: auto; scrollbar-width: thin; min-width: 0; max-width: 100%; }
+.case-block .body { min-width: 0; }
 .cmp-wrap:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; border-radius: 4px; }
 .cmp { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 15px; }
 .cmp th, .cmp td { text-align: left; padding: 14px 12px; border-top: 1px solid var(--line-soft); vertical-align: top; }
