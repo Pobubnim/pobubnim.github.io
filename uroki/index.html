@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#000000">
-<title>Уроки DaVinci Resolve на русском — бесплатно | ПОБУБНИМ</title>
-<meta name="description" content="Восемь бесплатных уроков DaVinci Resolve на русском: колёса Lift/Gamma/Gain, скоупы, log-кривые, ISO, глубина резкости. Обучение на живых досках — крутите ползунки прямо в браузере.">
+<title>Уроки видеосъёмки и DaVinci Resolve бесплатно | ПОБУБНИМ</title>
+<meta name="description" content="Двенадцать бесплатных интерактивных уроков: свет и звук по физике, цвет в DaVinci Resolve, скоупы, log-кривые, ISO, глубина резкости и мерцание. Крутите ползунки прямо в браузере.">
 <meta name="author" content="Савелий Бубнов">
 <link rel="canonical" href="https://pobubnim.ru/uroki/">
 <meta property="og:title" content="Уроки DaVinci Resolve на русском — бесплатно">
@@ -106,8 +106,54 @@
 <div class="wrap">
   <section class="hub-hero">
     <span class="label">Уроки · бесплатно · без регистрации</span>
-    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Уроки DaVinci Resolve и видеосъёмки</span> Не читать, а <em>крутить</em></h1>
-    <p class="lead">Восемь уроков с живыми досками: колёса и скоупы считаются из настоящих пикселей кадра, log-кривые нарисованы по формулам Sony и ARRI, шум в колодцах пикселей — фотонный. Двигаете ползунок — картинка и приборы отвечают, как в программе.</p>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Уроки видеосъёмки и DaVinci Resolve</span> Не читать, а <em>крутить</em></h1>
+    <p class="lead">Двенадцать уроков с живыми досками: скоупы считаются из настоящих пикселей, log-кривые нарисованы по формулам Sony и ARRI, полосы мерцания — интегралом пульсации, граница звука — формулой критического расстояния. Двигаете ползунок — приборы отвечают, как в программе.</p>
+    <nav class="base-nav" aria-label="База знаний">
+      <a href="/articles/">Статьи <span>21</span></a>
+      <a href="/uroki/" aria-current="page">Уроки с живыми досками <span>12</span></a>
+      <a href="/instrumenty/">Инструменты <span>16</span></a>
+      <a href="/education.html">Занятия с преподавателем</a>
+    </nav>
+  </section>
+
+  <nav class="hub-nav" aria-label="Категории уроков">
+    <button type="button" data-cat="all" class="on" aria-pressed="true">Все уроки</button>
+    <button type="button" data-cat="cvet" aria-pressed="false">Цвет</button>
+    <button type="button" data-cat="kamera" aria-pressed="false">Камера и оптика</button>
+    <button type="button" data-cat="svet-zvuk" aria-pressed="false">Свет и звук</button>
+  </nav>
+
+  <section class="hub-sec" data-sec="cvet">
+    <h2>Цвет</h2>
+    <p class="lead" style="max-width:720px;margin:-6px 0 20px;font-size:15.5px">Как программа считает цвет и как судить кадр по приборам, а не на глаз.</p>
+    <div class="hub-grid">
+      <a class="hub-card" href="poryadok-cvetokorrekcii.html"><i>Урок 01 · Начните отсюда</i><b>Порядок цветокоррекции: четыре шага</b><span>Баланс белого, экспозиция по скоупу, насыщенность, look. Панель «как в DaVinci», вайпы до и после, лаборатории, где кадр правите вы</span></a>
+      <a class="hub-card" href="log-i-grade.html"><i>Урок 02 · Интерактив</i><b>Почему видео из камеры блёклое</b><span>Log — цифровой негатив. Проявите кадр ползунками и увидите, откуда берётся «кислота» после LUT</span></a>
+      <a class="hub-card" href="skoupy-kak-videt.html"><i>Урок 03 · Живая доска</i><b>Как читать скоупы: Waveform, Parade, Vectorscope</b><span>Приборы считаются из настоящих пикселей: крутите экспозицию и баланс — шкалы отвечают вживую</span></a>
+      <a class="hub-card" href="kolesa-lift-gamma-gain.html"><i>Урок 04 · Прототип</i><b>Lift, Gamma, Gain: колёса цветокоррекции</b><span>Каноническая математика LGG, кривая переноса, скоупы, перевод в ASC CDL и задания «почини кадр»</span></a>
+      <a class="hub-card" href="log-krivaya.html"><i>Урок 05 · Живая доска</i><b>Log-кривая в числах: S-Log3, LogC и Rec.709</b><span>Кривые по опубликованным формулам Sony и ARRI: куда каждая кладёт серую карту, кожу и света</span></a>
+    </div>
+  </section>
+
+  <section class="hub-sec" data-sec="kamera">
+    <h2>Камера и оптика</h2>
+    <p class="lead" style="max-width:720px;margin:-6px 0 20px;font-size:15.5px">Что происходит внутри камеры и почему за каждую ручку приходится чем-то платить.</p>
+    <div class="hub-grid">
+      <a class="hub-card" href="kak-rabotaet-iso.html"><i>Урок 06 · Три стенда</i><b>Как работает ISO: матрица, Байер и пост</b><span>Колодцы пикселей с фотонным шумом, живая дебайеризация и ответ с числами, чем поднимать экспозицию на посте</span></a>
+      <a class="hub-card" href="glubina-rezkosti.html"><i>Урок 07 · Живая доска</i><b>Глубина резкости: почему размывается фон</b><span>Кружки боке — это кружки нерезкости, и диаметр каждого считается формулой. Смотрите, где кончается резкость</span></a>
+      <a class="hub-card" href="ekspozicionnyj-treugolnik.html"><i>Урок 08 · Живая доска</i><b>Экспозиционный треугольник: чем платишь за свет</b><span>Диафрагма, выдержка и ISO поднимают яркость одинаково, а платите разным: резкостью, смазом и шумом</span></a>
+    </div>
+  </section>
+
+  <section class="hub-sec" data-sec="svet-zvuk">
+    <h2>Свет и звук</h2>
+    <p class="lead" style="max-width:720px;margin:-6px 0 20px;font-size:15.5px">Физика площадки: что решается за десять секунд на съёмке и уже никогда — на монтаже.</p>
+    <div class="hub-grid">
+      <a class="hub-card" href="petlichka-ili-pushka.html"><i>Урок 09 · Живая доска</i><b>Петличка или пушка: решает расстояние</b><span>Граница, за которой микрофон слышит комнату громче человека, хвост реверберации и 23,5 децибела разницы</span></a>
+      <a class="hub-card" href="myagkij-svet.html"><i>Урок 10 · Живая доска</i><b>Мягкий свет: размер, а не мощность</b><span>Угловой размер источника, ширина полутени на фоне в сантиметрах и цена мягкости в ступенях</span></a>
+      <a class="hub-card" href="balans-belogo.html"><i>Урок 11 · Живая доска</i><b>Баланс белого и смешанный свет</b><span>Окно и лампа на одном лице: почему нет такого баланса, при котором обе половины нейтральны</span></a>
+      <a class="hub-card" href="mercanie-na-video.html"><i>Урок 12 · Живая доска</i><b>Мерцание: откуда в кадре полосы</b><span>Пульсация 100 Гц, построчное считывание кадра и выдержки, при которых полос нет совсем</span></a>
+    </div>
   </section>
 
   <section class="hub-sec">
@@ -119,7 +165,7 @@
       </div>
       <div>
         <h3>Баланс белого</h3>
-        <p>Страница Color, панель <code>Color Wheels → Primaries</code>: ползунки Temp и Tint рядом с колёсами; для RAW честнее вкладка Camera RAW. Судить не на глаз, а по Parade — перекос R, G, B на белом предмете и есть сбитый баланс. <a href="poryadok-cvetokorrekcii.html">Урок про порядок коррекции</a>.</p>
+        <p>Страница Color, панель <code>Color Wheels → Primaries</code>: ползунки Temp и Tint рядом с колёсами; для RAW честнее вкладка Camera RAW. Судить не на глаз, а по Parade — перекос R, G, B на белом предмете и есть сбитый баланс. <a href="balans-belogo.html">Урок про баланс белого и смешанный свет</a>.</p>
       </div>
       <div>
         <h3>Скоупы</h3>
@@ -130,43 +176,6 @@
         <p>Четыре колеса <code>Lift · Gamma · Gain · Offset</code>, под каждым мастер-колёсико яркости; двойной клик сбрасывает. Каждое решение — своя нода (<code>Alt+S</code>), тогда «чуть теплее» правится одной нодой, а не всем грейдом. <a href="kolesa-lift-gamma-gain.html">Урок-прототип колёс</a>.</p>
       </div>
     </div>
-  </section>
-
-  <section class="hub-sec">
-    <h2>Уроки по цвету</h2>
-    <div class="hub-grid">
-      <a class="hub-card hub-lesson lv on" href="poryadok-cvetokorrekcii.html">
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <i class="tagline"><span class="pulse"></span>Начните отсюда</i>
-          <b>Порядок цветокоррекции: четыре шага, строго по порядку</b>
-          <span>Баланс белого, экспозиция по скоупу, насыщенность, look. Панель «как в DaVinci», вайпы до и после, лаборатории, где кадр правите вы.</span>
-          <span style="color:var(--mute);font-size:12.5px;letter-spacing:0.05em">УРОК 01 · ЦВЕТ · ~7 МИНУТ</span>
-        </div>
-        <div class="mini davinci" aria-hidden="true">
-          <div class="wheels">
-            <div class="wheel"><div class="disc"><div class="dot"></div></div><div class="nm">LIFT</div></div>
-            <div class="wheel"><div class="disc"><div class="dot"></div></div><div class="nm">GAMMA</div></div>
-            <div class="wheel"><div class="disc"><div class="dot"></div></div><div class="nm">GAIN</div></div>
-          </div>
-        </div>
-      </a>
-    </div>
-    <div class="hub-grid two">
-      <a class="hub-card" href="log-i-grade.html"><i>Урок 02 · Интерактив</i><b>Почему видео из камеры блёклое</b><span>Log — цифровой негатив. Проявите кадр ползунками и увидите, откуда берётся «кислота» после LUT</span></a>
-      <a class="hub-card" href="skoupy-kak-videt.html"><i>Урок 03 · Живая доска</i><b>Как читать скоупы: Waveform, Parade, Vectorscope</b><span>Приборы считаются из настоящих пикселей: крутите экспозицию и баланс — шкалы отвечают вживую</span></a>
-      <a class="hub-card" href="kolesa-lift-gamma-gain.html"><i>Урок 04 · Прототип</i><b>Lift, Gamma, Gain: колёса цветокоррекции</b><span>Каноническая математика LGG, кривая переноса, скоупы, перевод в ASC CDL и задания «почини кадр»</span></a>
-      <a class="hub-card" href="log-krivaya.html"><i>Урок 05 · Живая доска</i><b>Log-кривая в числах: S-Log3, LogC и Rec.709</b><span>Кривые по опубликованным формулам Sony и ARRI: куда каждая кладёт серую карту, кожу и света</span></a>
-    </div>
-  </section>
-
-  <section class="hub-sec">
-    <h2>Уроки по камере и оптике</h2>
-    <div class="hub-grid">
-      <a class="hub-card" href="kak-rabotaet-iso.html"><i>Урок 06 · Три стенда</i><b>Как работает ISO: матрица, Байер и пост</b><span>Колодцы пикселей с фотонным шумом, живая дебайеризация и ответ с числами, чем поднимать экспозицию на посте</span></a>
-      <a class="hub-card" href="glubina-rezkosti.html"><i>Урок 07 · Живая доска</i><b>Глубина резкости: почему размывается фон</b><span>Кружки боке — это кружки нерезкости, и диаметр каждого считается формулой. Смотрите, где кончается резкость</span></a>
-      <a class="hub-card" href="ekspozicionnyj-treugolnik.html"><i>Урок 08 · Живая доска</i><b>Экспозиционный треугольник: чем платишь за свет</b><span>Диафрагма, выдержка и ISO поднимают яркость одинаково, а платите разным: резкостью, смазом и шумом</span></a>
-    </div>
-    <p style="margin-top:14px;font-size:13px;color:var(--mute)">Серия пополняется: следующие уроки — три ошибки новичка в цвете и свет из окна.</p>
   </section>
 
   <section class="hub-sec">
@@ -224,6 +233,7 @@
   </div>
 </footer>
 
+<script src="../assets/js/hub.js" defer></script>
 <script src="../assets/js/nav.js" defer></script>
 <script src="/assets/js/lead.js" defer></script>
 </body>

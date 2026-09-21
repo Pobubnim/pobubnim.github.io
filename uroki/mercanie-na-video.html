@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Мерцание на видео: откуда полосы в кадре | ПОБУБНИМ</title>
+<meta name="description" content="Живая доска: крутите выдержку и смотрите, как по кадру идут полосы. Яркость каждой строки считается интегралом пульсации — отсюда правило, почему в России снимают на 1/50, а не на 1/60.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.ru/uroki/mercanie-na-video.html">
+<meta property="og:title" content="Мерцание на видео: откуда полосы в кадре | ПОБУБНИМ">
+<meta property="og:description" content="Интерактивная доска: пульсация 100 Гц, роллинг-шаттер и выдержки, при которых полос нет.">
+<meta property="og:image" content="https://pobubnim.ru/assets/og/urok-mercanie-na-video.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.ru/uroki/mercanie-na-video.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/InterTight-300-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/PlayfairDisplay-500i-cyrillic.woff2">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-09-21", "dateModified": "2026-09-21", "headline": "Мерцание света на видео: откуда в кадре полосы и какая выдержка их убирает", "description": "Интерактивная доска: пульсация света 100 Гц от сети 50 Гц, построчное считывание кадра, точный интеграл экспозиции строки и таблица безопасных выдержек для сетей 50 и 60 Гц.", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/uroki/mercanie-na-video.html", "image": "https://pobubnim.ru/assets/og/urok-mercanie-na-video.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Почему на видео появляются горизонтальные полосы?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что лампа на переменном токе пульсирует с удвоенной частотой сети — сто раз в секунду при сети 50 Гц, — а матрица камеры считывает кадр построчно. Каждая строка ловит свой участок пульсации: одна попала на пик, другая на провал. Если выдержка вмещает целое число периодов пульсации, все строки получают одинаковый свет и полос нет."}}, {"@type": "Question", "name": "Какая выдержка не даёт мерцания в России?", "acceptedAnswer": {"@type": "Answer", "text": "Кратная 1/100 секунды: 1/100, 1/50, 1/25. Сеть в России 50 Гц, пульсация света — 100 Гц. Выдержка 1/60 при этой сети даёт около трети размаха по яркости, то есть отчётливые полосы. Стандартная связка «25 кадров в секунду, выдержка 1/50» закрывает и правило 180 градусов, и мерцание."}}, {"@type": "Question", "name": "Почему в Америке снимают на 1/60?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что там сеть 60 Гц и пульсация света 120 Гц. Там целое число периодов вмещают 1/60 и 1/120, а наши 1/50 и 1/100 дают полосы. Поэтому материал, снятый по привычке с российскими настройками под американскими лампами, приходит с браком."}}, {"@type": "Question", "name": "Светодиодный свет не мерцает, это же постоянный ток?", "acceptedAnswer": {"@type": "Answer", "text": "Качественный светодиодный прибор со стабилизированным питанием действительно почти не мерцает. Но дешёвые лампы и ленты регулируют яркость широтно-импульсной модуляцией — частым включением и выключением. Частота у неё своя, и правило кратных выдержек от неё не защищает: приходится подбирать выдержку на месте."}}, {"@type": "Question", "name": "Можно ли убрать полосы на монтаже?", "acceptedAnswer": {"@type": "Answer", "text": "Не полностью. Полоса — это разная экспозиция строк, а не наложенный узор: в тёмных полосах меньше информации. Плагины выравнивают яркость и сглаживают переходы, но взамен дают шум и мыло. На площадке проблема решается сменой выдержки за десять секунд."}}, {"@type": "Question", "name": "Как проверить мерцание прямо на съёмке?", "acceptedAnswer": {"@type": "Answer", "text": "Снять пробу секунд на пять и посмотреть её на стопроцентном увеличении, а не на экранчике камеры. Смотреть надо на ровную светлую поверхность — стену, белую карту, лист бумаги: на фактуре полосы теряются. Если есть диммер, обязательно проверьте кадр на убавленной яркости — именно там ШИМ и вылезает."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.ru/uroki/"}, {"@type": "ListItem", "position": 3, "name": "Мерцание на видео", "item": "https://pobubnim.ru/uroki/mercanie-na-video.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 820px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 820px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 820px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .board { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(14px, 2.4vw, 22px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .board canvas { width: 100%; display: block; border-radius: 8px; background: #0b0a09; }
+  .board .cap { margin: 6px 0 0; font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); font-family: var(--font-mono); display: flex; justify-content: space-between; gap: 10px; }
+  .views { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 10px; }
+  .views .vlabel { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); align-self: center; margin-right: 4px; }
+  .vbtn { padding: 7px 13px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
+  .vbtn:hover { background: rgba(245,239,226,0.06); }
+  .vbtn.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+  .lab { display: flex; flex-direction: column; gap: 10px; }
+  .stat { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
+  .stat span i { font-style: normal; color: var(--mute); margin-right: 8px; }
+  .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  /* метка внутри тревожной плашки: серый на красноватом даёт 4.3, мало */
+  .stat span.warn i { color: #c99a8b; }
+  .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
+  .task b { color: var(--ink); font-weight: 500; }
+  .price-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15.5px; }
+  .price-table th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+  .price-table td { color: var(--smoke); font-weight: 300; padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .price-table td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  /* на телефоне запрет переноса в первой колонке рвал страницу: таблица уезжала
+     на 434 px при экране 375 (замер check_live 21.09) */
+  @media (max-width: 640px) { .price-table { font-size: 14.5px; }
+    .price-table td:first-child { white-space: normal; } }
+</style>
+<script src="../assets/js/analytics.js?v=4" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links" aria-label="Основная">
+      <a href="/raboty.html">Работы</a>
+      <div class="nav-drop">
+        <button type="button">Решения<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a class="drop-lead" href="/video-dlya-biznesa.html">Видео для бизнеса: подбор под задачу</a>
+        <a href="/services/reklamnyj-rolik.html">Рекламный ролик</a>
+        <a href="/services/imidzhevyj-film.html">Имиджевый фильм</a>
+        <a href="/services/svadebnoe-kino.html">Свадебное кино</a>
+        <a href="/services/muzykalnyj-klip.html">Музыкальный клип</a>
+        <a href="/services/cvetokorrekciya.html">Цветокоррекция</a>
+        <a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a>
+        <a href="/services/sozdanie-sajtov.html">Создание сайтов</a>
+        <a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a>
+        </div>
+      </div>
+      <a href="/ceny.html">Цены</a>
+      <div class="nav-drop">
+        <button type="button">Обучение<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a href="/education.html">Программы обучения</a>
+        <a href="/uroki/">Уроки DaVinci Resolve</a>
+        </div>
+      </div>
+      <a href="/articles/">Статьи</a>
+      <a href="/instrumenty/">Инструменты</a>
+      <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+    </nav>
+    <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 12 · Свет · Живая доска</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Мерцание света на видео: откуда в кадре полосы</span> Считаем <em>по строкам</em></h1>
+    <p class="lead">Свет в комнате кажется ровным, а в кадре по нему ползут полосы. Дело не в камере и не в лампе по отдельности: лампа пульсирует сто раз в секунду, а матрица считывает кадр построчно. Доска ниже считает яркость каждой строки и показывает, какие выдержки убирают полосы полностью.</p>
+    <time datetime="2026-09-21">Опубликовано 21.09.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="board" id="fb">
+        <canvas id="fb-frame" width="880" height="420" aria-label="Кадр под лампой: горизонтальные полосы появляются и исчезают в зависимости от выдержки, частоты сети и типа источника"></canvas>
+        <div class="cap"><span>КАДР ПОД ЛАМПОЙ · ПОЛОСЫ СЧИТАЮТСЯ ПО СТРОКАМ</span><span>яркость строки — интеграл пульсации</span></div>
+
+        <div class="views" role="group" aria-label="Сеть">
+          <span class="vlabel">СЕТЬ</span>
+          <button class="vbtn on" type="button" data-mains="50">50 Гц · Россия</button>
+          <button class="vbtn" type="button" data-mains="60">60 Гц · США, Япония</button>
+        </div>
+
+        <div class="views" role="group" aria-label="Источник света">
+          <span class="vlabel">ИСТОЧНИК</span>
+          <button class="vbtn on" type="button" data-lamp="0">Светодиод с ШИМ</button>
+          <button class="vbtn" type="button" data-lamp="1">Люминесцентная</button>
+          <button class="vbtn" type="button" data-lamp="2">Накаливания</button>
+          <button class="vbtn" type="button" data-lamp="3">Окно</button>
+        </div>
+
+        <div class="lab">
+          <div class="lab-row"><span class="snm">ВЫДЕРЖКА</span><input class="lab-range" type="range" data-shut min="0" max="8" step="1" value="3" aria-label="Выдержка"><span class="sv">1/60</span></div>
+          <div class="lab-row"><span class="snm">СЧИТЫВАНИЕ</span><input class="lab-range" type="range" data-read min="0" max="3" step="1" value="2" aria-label="Время считывания кадра сенсором"><span class="sv">1/30</span></div>
+        </div>
+
+        <div class="stat" id="fb-stat" aria-live="polite"></div>
+        <div class="task"><b>Попробуйте.</b> На сети 50 Гц поставьте выдержку 1/60 — по кадру пойдут полосы. Теперь 1/50 или 1/100 — полосы исчезнут полностью. Разница между ними не в «длиннее-короче», а в том, целое ли число периодов пульсации попадает в выдержку. Потом переключите сеть на 60 Гц и посмотрите, как те же выдержки меняются местами.</div>
+      </div>
+      <div class="viz-cap">Честная математика: яркость лампы на переменном токе L(t) = (1−m) + m·sin²(2πft), экспозиция каждой строки — точный интеграл этой функции за время выдержки, размах полос считается как (максимум − минимум) ÷ среднее по строкам кадра. Проверено численным интегрированием: при 50 Гц выдержка 1/60 даёт 32,6 % размаха, а 1/50 и 1/100 — ноль. Модель: глубина пульсации лампы накаливания взята 0,3, у конкретной лампы своя тепловая инерция спирали.</div>
+    </div>
+
+    <div class="step-head" id="sto-gerc"><i>ШАГ 1 / 4</i><h2>Свет, который мигает <em>сто раз в секунду</em></h2></div>
+    <p>В розетке переменный ток: напряжение пятьдесят раз в секунду меняет знак. Лампе всё равно, в какую сторону течёт ток, — она светит на каждом полупериоде. Значит, яркость пульсирует <b>не 50, а 100 раз в секунду</b>.</p>
+    <p>Глаз этого не видит: он слишком медленный и усредняет. Камера — не усредняет. Она открывает затвор на конкретный отрезок времени и собирает ровно тот свет, который попал в этот отрезок. Если отрезок пришёлся на пик пульсации, строка светлая. Если на провал — тёмная.</p>
+
+    <div class="step-head" id="stroki"><i>ШАГ 2 / 4</i><h2>Почему полоса, а не просто <em>тёмный кадр</em></h2></div>
+    <p>Матрица большинства камер считывает кадр не целиком, а построчно, сверху вниз. Это называется роллинг-шаттер. Верхняя строка начинает экспозицию раньше нижней на всё время считывания кадра — от тысячных долей секунды до полутора сотых.</p>
+    <p>Получается, что каждая строка ловит свой участок синусоиды. Одна попала на пик, другая на провал — и по кадру идёт светлая и тёмная полоса. Чем медленнее сенсор считывает кадр, тем больше полос помещается по высоте: подвигайте ползунок «считывание» и посмотрите.</p>
+    <p>Если бы затвор был глобальным — весь кадр экспонировался бы одновременно, и вместо полос кадры просто мигали бы по яркости от кадра к кадру. Это тоже брак, просто другой.</p>
+
+    <div class="why">
+      <span class="label">Почему это не чинится на монтаже</span>
+      <p>Полоса — не наложенный поверх кадра узор, а разная экспозиция разных строк. В тёмной полосе меньше света, значит меньше информации: вытягивая её, вы поднимаете шум, а не картинку. Плагины-дефликеры выравнивают яркость по кадрам и слегка сглаживают полосы, но фактуру в провалах они не вернут. Чинится на площадке, за десять секунд, выдержкой.</p>
+    </div>
+
+    <div class="step-head" id="vyderzhki"><i>ШАГ 3 / 4</i><h2>Какие выдержки <em>безопасны</em></h2></div>
+    <p>Правило одно: <b>выдержка должна вмещать целое число периодов пульсации</b>. Пульсация — удвоенная частота сети. В России сеть 50 Гц, пульсация 100 Гц, период 1/100 секунды. Значит безопасны 1/100, 1/50, 1/25 — и не безопасны 1/60, 1/120, 1/200.</p>
+    <table class="price-table">
+      <tr><th>Выдержка</th><th>Сеть 50 Гц</th><th>Сеть 60 Гц</th></tr>
+      <tr><td>1/50</td><td>чисто</td><td>полосы 25 %</td></tr>
+      <tr><td>1/60</td><td>полосы 33 %</td><td>чисто</td></tr>
+      <tr><td>1/100</td><td>чисто</td><td>полосы 31 %</td></tr>
+      <tr><td>1/120</td><td>полосы 38 %</td><td>чисто</td></tr>
+      <tr><td>1/500</td><td>полосы 186 %</td><td>полосы 182 %</td></tr>
+    </table>
+    <p>Числа в таблице — не оценка на глаз, а размах, посчитанный интегралом; доска считает то же самое вживую. Отсюда и практический вывод для России: <b>25 кадров в секунду и выдержка 1/50</b> — это и правило 180 градусов, и защита от мерцания одновременно. Не совпадение: система PAL была построена под сеть 50 Гц.</p>
+    <p>Если по свету не хватает запаса и хочется укоротить выдержку — не надо. Лишний свет гасят <a href="../instrumenty/kalkulyator-nd-filtra.html">ND-фильтром</a>: сколько ступеней нужно, посчитает калькулятор. Что вы отдаёте, меняя выдержку, разобрано в <a href="ekspozicionnyj-treugolnik.html">уроке про экспозиционный треугольник</a>.</p>
+
+    <div class="step-head" id="isklyucheniya"><i>ШАГ 4 / 4</i><h2>Когда правило <em>не спасает</em></h2></div>
+    <p><b>Светодиоды с ШИМ.</b> Дешёвая лента или лампа с диммером регулирует яркость не напряжением, а частыми включениями — широтно-импульсной модуляцией. Частота у неё своя, к сети отношения не имеет, и кратная выдержка от неё не защищает. Лечится подбором выдержки на месте или другим источником.</p>
+    <p><b>Экраны и вывески.</b> Монитор, телефон в кадре, светодиодный экран на сцене обновляются со своей частотой. Тот же эффект, то же лечение: подбирать выдержку под конкретный экран, глядя в монитор.</p>
+    <p><b>Смешанные источники.</b> Окно плюс люминесцентные лампы: дневной свет ровный, лампы пульсируют. Полосы будут только в той части кадра, куда лампы дотягиваются, и по этой же причине их особенно хорошо видно на светлых стенах.</p>
+    <p><b>Проверка одна, и она занимает минуту:</b> снять пробу, открыть на стопроцентном увеличении и посмотреть на ровную светлую поверхность. На экранчике камеры полосы почти не видны, а на большом экране их видно всегда. Пункт «снять и посмотреть пробу» стоит в <a href="../instrumenty/chek-list-semki.html">чек-листе съёмочного дня</a>, а разбор остального света — в статье <a href="../articles/svet-dlya-videosemki.html">«Свет для видеосъёмки»</a>.</p>
+
+
+    <div class="step-head"><i>ВОПРОСЫ</i><h2>Частые вопросы</h2></div>
+    <details class="svc-faq"><summary>Почему на видео появляются горизонтальные полосы?</summary><p>Потому что лампа на переменном токе пульсирует с удвоенной частотой сети — сто раз в секунду при сети 50 Гц, — а матрица камеры считывает кадр построчно. Каждая строка ловит свой участок пульсации: одна попала на пик, другая на провал. Если выдержка вмещает целое число периодов пульсации, все строки получают одинаковый свет и полос нет.</p></details>
+    <details class="svc-faq"><summary>Какая выдержка не даёт мерцания в России?</summary><p>Кратная 1/100 секунды: 1/100, 1/50, 1/25. Сеть в России 50 Гц, пульсация света — 100 Гц. Выдержка 1/60 при этой сети даёт около трети размаха по яркости, то есть отчётливые полосы. Стандартная связка «25 кадров в секунду, выдержка 1/50» закрывает и правило 180 градусов, и мерцание.</p></details>
+    <details class="svc-faq"><summary>Почему в Америке снимают на 1/60?</summary><p>Потому что там сеть 60 Гц и пульсация света 120 Гц. Там целое число периодов вмещают 1/60 и 1/120, а наши 1/50 и 1/100 дают полосы. Поэтому материал, снятый по привычке с российскими настройками под американскими лампами, приходит с браком.</p></details>
+    <details class="svc-faq"><summary>Светодиодный свет не мерцает, это же постоянный ток?</summary><p>Качественный светодиодный прибор со стабилизированным питанием действительно почти не мерцает. Но дешёвые лампы и ленты регулируют яркость широтно-импульсной модуляцией — частым включением и выключением. Частота у неё своя, и правило кратных выдержек от неё не защищает: приходится подбирать выдержку на месте.</p></details>
+    <details class="svc-faq"><summary>Можно ли убрать полосы на монтаже?</summary><p>Не полностью. Полоса — это разная экспозиция строк, а не наложенный узор: в тёмных полосах меньше информации. Плагины выравнивают яркость и сглаживают переходы, но взамен дают шум и мыло. На площадке проблема решается сменой выдержки за десять секунд.</p></details>
+    <details class="svc-faq"><summary>Как проверить мерцание прямо на съёмке?</summary><p>Снять пробу секунд на пять и посмотреть её на стопроцентном увеличении, а не на экранчике камеры. Смотреть надо на ровную светлую поверхность — стену, белую карту, лист бумаги: на фактуре полосы теряются. Если есть диммер, обязательно проверьте кадр на убавленной яркости — именно там ШИМ и вылезает.</p></details>
+
+    <a class="art-svc" href="../education.html"><b>Разобрать свой материал на занятии</b><span>Обучение · Москва и онлайн →</span></a>
+  </div>
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Разберём на <em>вашем материале</em>?</h2>
+    <p class="cta-note">Урок объясняет, руку ставит практика. Занятие 90 минут — от 3 000 ₽, и разбираем ваш материал, а не абстрактный. Новые уроки и разборы — в канале <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">«Побубним за видео»</a>.</p>
+    <div class="cta-row">
+      <button class="btn btn-lamp" data-lead="Обучение">Оставить заявку</button>
+      <a class="btn btn-ghost" href="../education.html">Программы обучения</a>
+    </div>
+    <p class="cta-after">Привычнее мессенджер — <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">напишите напрямую</a>. Нужна не теория, а готовая съёмка — <a href="/videosemka-moskva.html">съёмочный день в Москве</a> от 30 000 ₽.</p>
+  </div>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav aria-label="Подвал">
+      <a href="/">На главную</a>
+      <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/flickerboard.js" defer></script>
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+<script src="/assets/js/lead.js" defer></script>
+</body>
+</html>

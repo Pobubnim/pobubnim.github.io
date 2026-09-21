@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/lesson.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-08-27", "dateModified": "2026-09-01", "headline": "Экспозиционный треугольник: чем платишь за свет", "description": "Интерактивная доска: диафрагма, выдержка и ISO дают одинаковую прибавку света, но разную цену — глубину резкости, смаз движения и шум. Экспозиция считается по EV, глубина резкости — по формулам ГРИП.", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/uroki/ekspozicionnyj-treugolnik.html", "image": "https://pobubnim.ru/assets/og/tool-kalkulyator-nd-filtra.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-08-27", "dateModified": "2026-09-21", "headline": "Экспозиционный треугольник: чем платишь за свет", "description": "Интерактивная доска: диафрагма, выдержка и ISO дают одинаковую прибавку света, но разную цену — глубину резкости, смаз движения и шум. Экспозиция считается по EV, глубина резкости — по формулам ГРИП.", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/uroki/ekspozicionnyj-treugolnik.html", "image": "https://pobubnim.ru/assets/og/tool-kalkulyator-nd-filtra.jpg"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Что такое стоп в экспозиции?", "acceptedAnswer": {"@type": "Answer", "text": "Один стоп — это вдвое больше или вдвое меньше света. Открыли диафрагму на стоп (например, с f/4 до f/2,8), удлинили выдержку вдвое или подняли ISO вдвое — света стало вдвое больше. Поэтому три параметра взаимозаменяемы по яркости: минус стоп у одного компенсируется плюс стопом у другого."}},
 {"@type": "Question", "name": "Почему на видео нельзя просто укоротить выдержку?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что выдержка на видео отвечает за смаз движения. Правило 180 градусов держит её примерно вдвое короче кадра — 1/50 при 25 кадрах в секунду. Уйдёте в 1/500 — движение станет рваным, как в хронике боевых действий; уйдёте в 1/25 — картинка поплывёт. Лишний свет на видео убирают ND-фильтром, а не выдержкой."}},
@@ -72,6 +72,10 @@
   .price-table th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
   .price-table td { color: var(--smoke); font-weight: 300; padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
   .price-table td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  /* на телефоне запрет переноса в первой колонке рвал страницу: таблица уезжала
+     на 434 px при экране 375 (замер check_live 21.09) */
+  @media (max-width: 640px) { .price-table { font-size: 14.5px; }
+    .price-table td:first-child { white-space: normal; } }
 </style>
 <script src="../assets/js/analytics.js?v=4" defer></script>
 </head>
@@ -174,7 +178,7 @@
     <p><b>Ночь.</b> Здесь треугольник упирается в стену: диафрагма открыта до предела, выдержка держится правилом, остаётся только ISO — и вместе с ним зерно. Единственный честный выход — добавить свет, хоть маленький прибор на стойке.</p>
 
     <div class="step-head" id="dalshe"><i>ШАГ 4 / 4</i><h2>Что дальше <em>изучать</em></h2></div>
-    <p>Глубина резкости и боке — в <a href="glubina-rezkosti.html">уроке 07</a>, там кружки считаются той же формулой, что здесь. Как устроено ISO и почему оно не «чувствительность» — в <a href="kak-rabotaet-iso.html">уроке 06</a> с моделью матрицы. Как убрать лишний свет и удержать выдержку — в <a href="../instrumenty/kalkulyator-nd-filtra.html">ND-калькуляторе</a>, а посчитать зону резкости под свою камеру — в <a href="../instrumenty/kalkulyator-grip.html">калькуляторе ГРИП</a>.</p>
+    <p>Глубина резкости и боке — в <a href="glubina-rezkosti.html">уроке 07</a>, там кружки считаются той же формулой, что здесь. Как устроено ISO и почему оно не «чувствительность» — в <a href="kak-rabotaet-iso.html">уроке 06</a> с моделью матрицы. Как убрать лишний свет и удержать выдержку — в <a href="../instrumenty/kalkulyator-nd-filtra.html">ND-калькуляторе</a>, а посчитать зону резкости под свою камеру — в <a href="../instrumenty/kalkulyator-grip.html">калькуляторе ГРИП</a>. И отдельная ловушка выдержки: под лампами она же отвечает за полосы по кадру — это разобрано в <a href="mercanie-na-video.html">уроке про мерцание</a>.</p>
 
     <div class="step-head"><i>ВОПРОСЫ</i><h2>Частые вопросы <em>про экспозицию</em></h2></div>
     <details class="svc-faq"><summary>Что такое стоп в экспозиции?</summary><p>Один стоп — это вдвое больше или вдвое меньше света. Открыли диафрагму на стоп (например, с f/4 до f/2,8), удлинили выдержку вдвое или подняли ISO вдвое — света стало вдвое больше. Поэтому три параметра взаимозаменяемы по яркости: минус стоп у одного компенсируется плюс стопом у другого.</p></details>

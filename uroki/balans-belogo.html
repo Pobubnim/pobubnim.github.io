@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Баланс белого и смешанный свет на видео | ПОБУБНИМ</title>
+<meta name="description" content="Живая доска: окно слева, лампа справа — и ни одного положения баланса белого, при котором обе половины лица нейтральны. Цвет источников считается по планковскому локусу.">
+<meta name="author" content="Савелий Бубнов">
+<link rel="canonical" href="https://pobubnim.ru/uroki/balans-belogo.html">
+<meta property="og:title" content="Баланс белого и смешанный свет | ПОБУБНИМ">
+<meta property="og:description" content="Интерактивная доска: кельвины, смешанный свет, зелень люминесцентных ламп и ось Tint.">
+<meta property="og:image" content="https://pobubnim.ru/assets/og/urok-balans-belogo.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pobubnim.ru/uroki/balans-belogo.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/InterTight-300-600-cyrillic.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/PlayfairDisplay-500i-cyrillic.woff2">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/lesson.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-09-21", "dateModified": "2026-09-21", "headline": "Баланс белого и смешанный свет: почему половина лица всегда чужая", "description": "Интерактивная доска: цветовая температура по планковскому локусу, смешанный свет окна и лампы, зелень люминесцентных ламп, ось Tint и метрики CRI и TLCI.", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/uroki/balans-belogo.html", "image": "https://pobubnim.ru/assets/og/urok-balans-belogo.jpg"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Какой баланс белого ставить, если в комнате окно и лампы?", "acceptedAnswer": {"@type": "Answer", "text": "Правильный ответ — не ставить, а убрать один из источников: выключить лампы и снимать у окна либо закрыть штору и снимать под лампами. Баланс белого один на кадр, поэтому при двух разных источниках одна половина лица всегда будет мимо. Если выбора нет, ставьте баланс по тому источнику, который освещает лицо сильнее."}}, {"@type": "Question", "name": "Почему нельзя исправить смешанный свет на цветокоррекции?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что коррекция баланса действует на весь кадр сразу: подняв температуру, вы двигаете обе половины лица одновременно. Вытянуть одну щёку можно маской с отслеживанием, но на движущемся лице это работа покадрово, и стоит она дороже, чем выключить лампу на съёмке."}}, {"@type": "Question", "name": "Что такое Tint и чем он отличается от температуры?", "acceptedAnswer": {"@type": "Answer", "text": "Температура двигает картинку по оси «оранжевый — синий», Tint — по оси «зелёный — пурпурный». Это разные оси, и одна другую не заменяет. Зелень от люминесцентных ламп лечится только Tint или пурпурным гелем на источник: кельвинами её не убрать, сколько ни крути."}}, {"@type": "Question", "name": "Что значит CRI 95 и можно ли по нему выбирать свет?", "acceptedAnswer": {"@type": "Answer", "text": "CRI (Ra) — индекс цветопередачи по шкале до 100, считается по восьми пастельным образцам. Насыщенный красный R9, который отвечает за цвет кожи, в среднее значение не входит — поэтому лампа с CRI 95 может давать зелёные лица. Для видео честнее метрика TLCI из стандарта EBU Tech 3355: она считает ошибку по 24 полям таблицы ColorChecker, включая кожу."}}, {"@type": "Question", "name": "Ставить автоматический баланс белого или ручной?", "acceptedAnswer": {"@type": "Answer", "text": "Ручной. Автоматический пересчитывает значение от кадра к кадру: герой повернулся, в кадр вошла красная стена — и цвет поехал прямо посреди дубля. На монтаже это выглядит как плавающий оттенок, и чинится хуже, чем один изначально неверный баланс."}}, {"@type": "Question", "name": "Спасает ли RAW от неверного баланса белого?", "acceptedAnswer": {"@type": "Answer", "text": "В RAW баланс белого ещё не вшит в изображение, поэтому его меняют на посте без потерь. Но RAW не спасает от смешанного света: две разные температуры в одном кадре останутся двумя температурами, как их ни проявляй."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.ru/uroki/"}, {"@type": "ListItem", "position": 3, "name": "Баланс белого", "item": "https://pobubnim.ru/uroki/balans-belogo.html"}]}</script>
+<style>
+  .art-hero { padding-top: 150px; max-width: 820px; }
+  .art-hero .label { margin-bottom: 14px; display: block; }
+  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .lesson-body { max-width: 820px; }
+  .lesson-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+  .lesson-body p b { color: var(--ink); font-weight: 500; }
+  .lesson-body a { text-decoration: underline; }
+  .step-head { display: flex; align-items: baseline; gap: 16px; margin: clamp(48px, 7vw, 76px) 0 18px; }
+  .step-head i { font-style: normal; font-family: var(--font-mono); font-size: 13px; color: var(--mute); flex: none; }
+  .step-head h2 { font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; }
+  .why { border-left: 2px solid var(--line); padding: 4px 0 4px 18px; margin: 18px 0; }
+  .why p { margin-bottom: 0; font-size: 15.5px; }
+  .why .label { display: block; margin-bottom: 6px; }
+  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 820px; }
+  .art-svc b { font-size: 17px; font-weight: 500; }
+  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .board { background: var(--dv-panel); border: 1px solid var(--line); border-radius: 14px; padding: clamp(14px, 2.4vw, 22px); box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+  .board canvas { width: 100%; display: block; border-radius: 8px; background: #0b0a09; }
+  .board .cap { margin: 6px 0 0; font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); font-family: var(--font-mono); display: flex; justify-content: space-between; gap: 10px; }
+  .views { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 10px; }
+  .views .vlabel { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--mute); align-self: center; margin-right: 4px; }
+  .vbtn { padding: 7px 13px; min-height: 36px; border-radius: var(--r-pill); border: 1px solid var(--line); background: none; color: var(--smoke); font: 400 12.5px var(--font-ui); cursor: pointer; transition: background 0.2s var(--ease); }
+  .vbtn:hover { background: rgba(245,239,226,0.06); }
+  .vbtn.on { background: var(--lamp); color: #000; border-color: var(--lamp); font-weight: 500; }
+  .lab { display: flex; flex-direction: column; gap: 10px; }
+  .stat { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink); background: rgba(245,239,226,0.05); border-radius: 6px; padding: 7px 11px; font-variant-numeric: tabular-nums; }
+  .stat span i { font-style: normal; color: var(--mute); margin-right: 8px; }
+  .stat span.warn { color: #f0a08c; background: rgba(224,73,47,0.16); }
+  /* метка внутри тревожной плашки: серый на красноватом даёт 4.3, мало */
+  .stat span.warn i { color: #c99a8b; }
+  .task { margin-top: 14px; font-size: 13.5px; color: var(--smoke); font-weight: 300; border-left: 2px solid var(--lamp); padding-left: 14px; text-wrap: pretty; }
+  .task b { color: var(--ink); font-weight: 500; }
+  .price-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15.5px; }
+  .price-table th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
+  .price-table td { color: var(--smoke); font-weight: 300; padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .price-table td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+  /* на телефоне запрет переноса в первой колонке рвал страницу: таблица уезжала
+     на 434 px при экране 375 (замер check_live 21.09) */
+  @media (max-width: 640px) { .price-table { font-size: 14.5px; }
+    .price-table td:first-child { white-space: normal; } }
+</style>
+<script src="../assets/js/analytics.js?v=4" defer></script>
+</head>
+<body>
+
+<header class="nav solid">
+  <div class="nav-in">
+    <a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>
+    <nav class="nav-links" aria-label="Основная">
+      <a href="/raboty.html">Работы</a>
+      <div class="nav-drop">
+        <button type="button">Решения<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a class="drop-lead" href="/video-dlya-biznesa.html">Видео для бизнеса: подбор под задачу</a>
+        <a href="/services/reklamnyj-rolik.html">Рекламный ролик</a>
+        <a href="/services/imidzhevyj-film.html">Имиджевый фильм</a>
+        <a href="/services/svadebnoe-kino.html">Свадебное кино</a>
+        <a href="/services/muzykalnyj-klip.html">Музыкальный клип</a>
+        <a href="/services/cvetokorrekciya.html">Цветокоррекция</a>
+        <a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a>
+        <a href="/services/sozdanie-sajtov.html">Создание сайтов</a>
+        <a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a>
+        </div>
+      </div>
+      <a href="/ceny.html">Цены</a>
+      <div class="nav-drop">
+        <button type="button">Обучение<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a href="/education.html">Программы обучения</a>
+        <a href="/uroki/">Уроки DaVinci Resolve</a>
+        </div>
+      </div>
+      <a href="/articles/">Статьи</a>
+      <a href="/instrumenty/">Инструменты</a>
+      <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+    </nav>
+    <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap">
+  <section class="art-hero">
+    <span class="label">Урок 11 · Свет · Живая доска</span>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Баланс белого и смешанный свет на съёмке</span> Одно число <em>на весь кадр</em></h1>
+    <p class="lead">Баланс белого — одно значение на кадр. Пока источник один, любую ошибку можно исправить. Как только источников два и они разной температуры, исправить уже нельзя: что ни поставь, половина лица окажется чужой. Доска ниже считает цвет источников по физике и показывает это за пять секунд.</p>
+    <time datetime="2026-09-21">Опубликовано 21.09.2026</time>
+  </section>
+
+  <div class="lesson-body">
+    <div class="viz lv">
+      <div class="board" id="wb">
+        <canvas id="wb-frame" width="880" height="420" aria-label="Лицо, освещённое двумя источниками разной температуры, и две белые карты под каждым источником при выбранном балансе белого камеры"></canvas>
+        <div class="cap"><span>ДВА ИСТОЧНИКА · ОДИН БАЛАНС БЕЛОГО НА КАДР</span><span>цвет считается по планковскому локусу</span></div>
+
+        <div class="views" role="group" aria-label="Источник слева">
+          <span class="vlabel">СЛЕВА</span>
+          <button class="vbtn on" type="button" data-left="0">Окно 5600 K</button>
+          <button class="vbtn" type="button" data-left="1">Пасмурно 7000 K</button>
+          <button class="vbtn" type="button" data-left="2">Лампа 3000 K</button>
+          <button class="vbtn" type="button" data-left="3">Свеча 1900 K</button>
+        </div>
+
+        <div class="views" role="group" aria-label="Источник справа">
+          <span class="vlabel">СПРАВА</span>
+          <button class="vbtn on" type="button" data-right="0">Лампа 3000 K</button>
+          <button class="vbtn" type="button" data-right="1">Галоген 3200 K</button>
+          <button class="vbtn" type="button" data-right="2">Люминесцент</button>
+          <button class="vbtn" type="button" data-right="3">Выключен</button>
+        </div>
+
+        <div class="lab">
+          <div class="lab-row"><span class="snm">БАЛАНС БЕЛОГО</span><input class="lab-range" type="range" data-wb min="0" max="11" step="1" value="8" aria-label="Баланс белого камеры в кельвинах"><span class="sv">5600 K</span></div>
+          <div class="lab-row"><span class="snm">ОТТЕНОК</span><input class="lab-range" type="range" data-tint min="-40" max="40" step="10" value="0" aria-label="Оттенок: зелёный — пурпурный"><span class="sv">0</span></div>
+        </div>
+
+        <div class="stat" id="wb-stat" aria-live="polite"></div>
+        <div class="task"><b>Попробуйте.</b> Окно слева, лампа справа — и подвигайте баланс белого по всему диапазону. Вы увидите главное: <b>нет такого положения, при котором обе половины лица станут нейтральными</b>. Выставили по окну — правая щека оранжевая. Выставили по лампе — левая синяя. Теперь выключите правый источник: одним нажатием кадр чинится полностью.</div>
+      </div>
+      <div class="viz-cap">Честная математика: цвет каждого источника считается по планковскому локусу (кубическое приближение Kim et al., применимость 1667–25000 K) и переводится в sRGB матрицей IEC 61966-2-1. Приближение сверено независимо — интегралом закона Планка с функциями сложения цвета CIE 1931: худшее расхождение 0,003, а на стандартном источнике A (2856 K) — 0,0005. Модель: баланс белого камеры считается делением каналов на белый выбранной температуры (фон Криз в sRGB), у конкретной камеры своя матрица; зелень люминесцентной лампы задана отдельным множителем по зелёному каналу.</div>
+    </div>
+
+    <div class="step-head" id="kelviny"><i>ШАГ 1 / 4</i><h2>Кельвины — это про цвет, <em>а не про яркость</em></h2></div>
+    <p>Цветовая температура измеряет, какого цвета светит источник, и ничего не говорит о том, насколько ярко. Свеча — около 1900 K, лампа накаливания 2700–3000 K, галоген 3200 K, дневной свет 5500–5600 K, пасмурное небо 6500–7500 K, открытая тень под синим небом — 9000 K и выше.</p>
+    <p>Глаз этой разницы почти не замечает, потому что адаптируется за секунды: белый лист кажется белым и под лампой, и на улице. Камера так не умеет. Она держит одно заданное значение, и всё, что от него отличается, уезжает в синеву или в оранжевый.</p>
+    <p>Баланс белого — это и есть заданное значение: «считай белым свет вот такой температуры». Поставили 5600 под лампой 3000 — получили оранжевый кадр. Не ошибка камеры, а честный ответ на неверный вопрос.</p>
+
+    <div class="step-head" id="smes"><i>ШАГ 2 / 4</i><h2>Смешанный свет: почему <em>одна половина лица чужая</em></h2></div>
+    <p>Баланс белого — <b>одно число на весь кадр</b>. Пока источник один, любое расхождение лечится этим числом. Как только источников два и они разной температуры, лечения не существует: что ни поставь, один из них окажется мимо.</p>
+    <p>Именно это и показывает доска. Окно 5600 слева, лампа 3000 справа, разбег 2600 кельвинов. Выставили баланс по окну — правая щека уходит в оранжевый. Выставили по лампе — левая уходит в синеву. Поставили посередине — обе половины мимо, просто поровну.</p>
+    <p>На посте это тоже не разводится. Цвет правится целиком по кадру: подняв температуру, вы двигаете обе половины лица сразу. Вытащить одну щёку маской можно, но это работа покадрово и по движущемуся лицу — за час такой работы делают целую сцену.</p>
+
+    <div class="why">
+      <span class="label">Что делать прямо на съёмке</span>
+      <p>Привести источники к одной температуре — единственное настоящее решение, и оно почти всегда бесплатное. Выключить верхний свет и снимать у окна. Закрыть штору и снимать под лампами. Поставить на прибор гель CTO или CTB, чтобы подогнать его под окно. Или просто отойти туда, где источник остался один.</p>
+    </div>
+
+    <div class="step-head" id="zelen"><i>ШАГ 3 / 4</i><h2>Зелень, которая не лечится <em>кельвинами</em></h2></div>
+    <p>У кельвинов есть только одна ось: от оранжевого к синему. А у люминесцентных ламп и дешёвых светодиодов спектр неравномерный, с выбросом в зелёной области. Зелёное лицо невозможно исправить температурой — вы будете гонять кадр между тёплым и холодным, а зелень останется.</p>
+    <p>Для этого есть вторая ось — оттенок, он же Tint: от зелёного к пурпурному. Переключите правый источник на люминесцент и попробуйте сперва починить кадр балансом, а потом оттенком. Разница очевидна сразу.</p>
+    <p>На площадке ту же роль играет пурпурный гель на прибор, а при выборе приборов — метрика. Индекс цветопередачи CRI (Ra) считается по восьми пастельным образцам и не включает насыщенный красный R9, который отвечает за кровь под кожей: отсюда и знаменитое «CRI 95, а лица зелёные». Для видео честнее TLCI — метрика, описанная в стандарте EBU Tech 3355: она моделирует тракт «камера — дисплей» и считает ошибку по 24 полям таблицы ColorChecker, включая светлую и тёмную кожу.</p>
+
+    <div class="step-head" id="kak-stavit"><i>ШАГ 4 / 4</i><h2>Как ставить баланс, <em>чтобы не гадать</em></h2></div>
+    <p><b>По белой карте, а не на глаз.</b> Снимите две секунды листа бумаги или серой карты в том свете, где стоит герой. Это ваш эталон и на площадке, и на посте.</p>
+    <p><b>Судить по прибору, а не по монитору.</b> Перекос по каналам виден на Parade: на нейтральном предмете вершины R, G и B должны стоять вровень. Как читать приборы — в <a href="skoupy-kak-videt.html">уроке про скоупы</a>, где Waveform и Parade считаются из настоящих пикселей.</p>
+    <p><b>Снимать в log или RAW, если предстоит правка.</b> В RAW баланс белого меняется без потерь, потому что он ещё не вшит в картинку. Что такое log и почему он выглядит блёклым — в <a href="log-i-grade.html">уроке про log</a>.</p>
+    <p><b>Правильный порядок на посте — баланс первым.</b> Сначала нейтраль, потом экспозиция, потом насыщенность и look: если сделать наоборот, каждый следующий шаг придётся переделывать. Разобрано по шагам в <a href="poryadok-cvetokorrekcii.html">уроке про порядок цветокоррекции</a>, а размер и мягкость источников — в <a href="myagkij-svet.html">уроке про мягкий свет</a>.</p>
+
+
+    <div class="step-head"><i>ВОПРОСЫ</i><h2>Частые вопросы</h2></div>
+    <details class="svc-faq"><summary>Какой баланс белого ставить, если в комнате окно и лампы?</summary><p>Правильный ответ — не ставить, а убрать один из источников: выключить лампы и снимать у окна либо закрыть штору и снимать под лампами. Баланс белого один на кадр, поэтому при двух разных источниках одна половина лица всегда будет мимо. Если выбора нет, ставьте баланс по тому источнику, который освещает лицо сильнее.</p></details>
+    <details class="svc-faq"><summary>Почему нельзя исправить смешанный свет на цветокоррекции?</summary><p>Потому что коррекция баланса действует на весь кадр сразу: подняв температуру, вы двигаете обе половины лица одновременно. Вытянуть одну щёку можно маской с отслеживанием, но на движущемся лице это работа покадрово, и стоит она дороже, чем выключить лампу на съёмке.</p></details>
+    <details class="svc-faq"><summary>Что такое Tint и чем он отличается от температуры?</summary><p>Температура двигает картинку по оси «оранжевый — синий», Tint — по оси «зелёный — пурпурный». Это разные оси, и одна другую не заменяет. Зелень от люминесцентных ламп лечится только Tint или пурпурным гелем на источник: кельвинами её не убрать, сколько ни крути.</p></details>
+    <details class="svc-faq"><summary>Что значит CRI 95 и можно ли по нему выбирать свет?</summary><p>CRI (Ra) — индекс цветопередачи по шкале до 100, считается по восьми пастельным образцам. Насыщенный красный R9, который отвечает за цвет кожи, в среднее значение не входит — поэтому лампа с CRI 95 может давать зелёные лица. Для видео честнее метрика TLCI из стандарта EBU Tech 3355: она считает ошибку по 24 полям таблицы ColorChecker, включая кожу.</p></details>
+    <details class="svc-faq"><summary>Ставить автоматический баланс белого или ручной?</summary><p>Ручной. Автоматический пересчитывает значение от кадра к кадру: герой повернулся, в кадр вошла красная стена — и цвет поехал прямо посреди дубля. На монтаже это выглядит как плавающий оттенок, и чинится хуже, чем один изначально неверный баланс.</p></details>
+    <details class="svc-faq"><summary>Спасает ли RAW от неверного баланса белого?</summary><p>В RAW баланс белого ещё не вшит в изображение, поэтому его меняют на посте без потерь. Но RAW не спасает от смешанного света: две разные температуры в одном кадре останутся двумя температурами, как их ни проявляй.</p></details>
+
+    <a class="art-svc" href="../education.html"><b>Разобрать свой материал на занятии</b><span>Обучение · Москва и онлайн →</span></a>
+  </div>
+  <div class="footer-cta" style="padding-top:70px">
+    <h2 class="display">Разберём на <em>вашем материале</em>?</h2>
+    <p class="cta-note">Урок объясняет, руку ставит практика. Занятие 90 минут — от 3 000 ₽, и разбираем ваш материал, а не абстрактный. Новые уроки и разборы — в канале <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">«Побубним за видео»</a>.</p>
+    <div class="cta-row">
+      <button class="btn btn-lamp" data-lead="Обучение">Оставить заявку</button>
+      <a class="btn btn-ghost" href="../education.html">Программы обучения</a>
+    </div>
+    <p class="cta-after">Привычнее мессенджер — <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">напишите напрямую</a>. Нужна не теория, а готовая съёмка — <a href="/videosemka-moskva.html">съёмочный день в Москве</a> от 30 000 ₽.</p>
+  </div>
+</div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-links">
+    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+    <nav aria-label="Подвал">
+      <a href="/">На главную</a>
+      <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
+      <a href="../articles/">Статьи</a>
+      <a href="../instrumenty/">Инструменты</a>
+      <a href="../education.html">Обучение</a>
+      <a href="../privacy.html">Конфиденциальность</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/js/wbboard.js" defer></script>
+<script src="../assets/js/lesson.js" defer></script>
+<script src="../assets/js/nav.js" defer></script>
+<script src="/assets/js/lead.js" defer></script>
+</body>
+</html>

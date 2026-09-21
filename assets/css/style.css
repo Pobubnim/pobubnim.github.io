@@ -975,3 +975,32 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
   .cmp { font-size: 14px; min-width: 520px; }
   .cmp th, .cmp td { padding: 12px 10px; }
 }
+
+/* ХАБЫ: полоса «База знаний» и чипы категорий (21.09.2026, слово владельца:
+   «открывая блок статей и обучения, открывай то, что интересно, а не листай
+   список»). Блок лежит здесь ОДИН раз и используется тремя хабами. */
+
+.base-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(26px, 4vw, 38px);
+  padding-top: 22px; border-top: 1px solid var(--line-soft); }
+.base-nav a { display: inline-flex; align-items: baseline; gap: 8px; padding: 10px 16px;
+  min-height: 42px; border-radius: var(--r-pill); border: 1px solid var(--line);
+  font-size: 13.5px; color: var(--smoke); transition: background 0.2s var(--ease), color 0.2s var(--ease); }
+.base-nav a span { font-size: 11px; color: var(--mute); font-family: var(--font-mono); }
+.base-nav a:hover { background: rgba(245,239,226,0.06); color: var(--ink); }
+.base-nav a[aria-current="page"] { background: var(--char2); color: var(--ink); border-color: var(--line); }
+
+.hub-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(30px, 4vw, 44px); }
+.hub-nav button { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px;
+  min-height: 42px; border-radius: var(--r-pill); border: 1px solid var(--line);
+  background: none; color: var(--smoke); font: 400 13.5px var(--font-ui); cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease); }
+.hub-nav button b { font-weight: 400; font-size: 11px; font-family: var(--font-mono); color: var(--mute); }
+.hub-nav button:hover { background: rgba(245,239,226,0.06); color: var(--ink); }
+.hub-nav button.on { background: var(--lamp); color: #000; border-color: var(--lamp); }
+.hub-nav button.on b { color: rgba(0,0,0,0.55); }
+.hub-nav button:focus-visible { outline: 2px solid var(--lamp); outline-offset: 3px; }
+
+/* когда выбрана одна категория, её заголовок остаётся — по нему видно, где ты */
+[data-sec][hidden] { display: none; }
+/* под чипами разделы стоят теснее: длинной паузы там уже не нужно */
+.hub-nav ~ .hub-sec { margin-top: clamp(32px, 4vw, 52px); }

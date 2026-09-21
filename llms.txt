@@ -64,7 +64,7 @@
 - [Как снять рекламный ролик](https://pobubnim.ru/articles/kak-snyat-reklamnyj-rolik.html): от задачи бизнеса до сдачи
 - [Обучение видеосъёмке с нуля](https://pobubnim.ru/articles/obuchenie-videosemke-s-nulya.html)
 
-## Уроки с живыми досками (считают по формулам в браузере)
+## Уроки с живыми досками (двенадцать штук, считают по формулам в браузере)
 
 - [Уроки DaVinci Resolve](https://pobubnim.ru/uroki/): карта интерфейса и разбор инструментов
 - [Порядок цветокоррекции](https://pobubnim.ru/uroki/poryadok-cvetokorrekcii.html)
@@ -75,6 +75,10 @@
 - [Как работает ISO](https://pobubnim.ru/uroki/kak-rabotaet-iso.html): матрица, шум, дебайер
 - [Глубина резкости](https://pobubnim.ru/uroki/glubina-rezkosti.html): боке через кружок нерезкости
 - [Экспозиционный треугольник](https://pobubnim.ru/uroki/ekspozicionnyj-treugolnik.html)
+- [Петличка или пушка](https://pobubnim.ru/uroki/petlichka-ili-pushka.html): критическое расстояние, реверберация комнаты, 23,5 дБ разницы
+- [Мягкий свет](https://pobubnim.ru/uroki/myagkij-svet.html): угловой размер источника, полутень S·L/D, падение света в ступенях
+- [Баланс белого и смешанный свет](https://pobubnim.ru/uroki/balans-belogo.html): планковский локус в числах, зелень люминесцентных ламп, CRI против TLCI
+- [Мерцание и полосы в кадре](https://pobubnim.ru/uroki/mercanie-na-video.html): пульсация 100 Гц, роллинг-шаттер, безопасные выдержки
 
 ## Бесплатные инструменты для съёмочной группы
 
