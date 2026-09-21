@@ -5,3 +5,4 @@ videos/**/*.wav
 videos/**/*.mp3
 videos/**/frames/
 tools/__pycache__/
+assets/post/*.jpg
