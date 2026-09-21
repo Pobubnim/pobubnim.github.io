@@ -54,5 +54,11 @@
     show(chip.dataset.cat, true);
   });
 
+  /* ссылка на категорию с той же страницы меняет только хэш, и документ не
+     перезагружается — без этого слушателя переход по #remeslo ничего бы не сделал */
+  window.addEventListener("hashchange", function () {
+    show((location.hash || "").replace("#", "") || "all", false);
+  });
+
   show((location.hash || "").replace("#", "") || "all", false);
 })();
