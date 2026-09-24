@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#000000">
 <title>Видеограф в Москве — заказать видеосъёмку | Савелий Бубнов</title>
-<meta name="description" content="Видеограф и колорист Савелий Бубнов — съёмка в Москве, Наро-Фоминске и области: рекламные ролики, имиджевые фильмы, клипы, свадебное кино, цветокоррекция в DaVinci Resolve. Цены и работы.">
+<meta name="description" content="Видеограф в Москве и области Савелий Бубнов: рекламные ролики, имиджевые фильмы, клипы и свадебное кино под ключ, цветокоррекция в DaVinci Resolve. Съёмочный день — от 30 000 ₽.">
 <meta name="author" content="Савелий Бубнов">
 <link rel="canonical" href="https://pobubnim.ru/">
 <meta property="og:title" content="Видеограф в Москве и МО — Савелий Бубнов | ПОБУБНИМ">
@@ -21,6 +21,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/PlayfairDisplay-500i-cyrillic.woff2">
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/scenes.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","@id":"https://pobubnim.ru/#savelij","name":"Савелий Бубнов","url":"https://pobubnim.ru/",
  "image":"https://pobubnim.ru/assets/og/home.jpg",
@@ -44,6 +45,9 @@
   {"@type":"Offer","itemOffered":{"@type":"Service","name":"Съёмка мероприятий","url":"https://pobubnim.ru/services/semka-meropriyatij.html"}},
   {"@type":"Offer","itemOffered":{"@type":"Service","name":"Создание сайтов","url":"https://pobubnim.ru/services/sozdanie-sajtov.html"}},
   {"@type":"Offer","itemOffered":{"@type":"Service","name":"Боты и автоматизация","url":"https://pobubnim.ru/services/boty-avtomatizaciya.html"}}]}}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Сколько стоит видеосъёмка в Москве?", "acceptedAnswer": {"@type": "Answer", "text": "Съёмочный день с техникой и светом — от 30 000 ₽, рекламный ролик или имиджевый фильм под ключ — от 60 000 ₽, свадебное кино — от 60 000 ₽ за полный день. Точная цена — в смете после брифа, все услуги — в прайсе."}}, {"@type": "Question", "name": "Работаете по договору?", "acceptedAnswer": {"@type": "Answer", "text": "Да. Договор фиксирует состав работ, сроки и цену. Предоплата — часть сметы, финал — после сдачи."}}, {"@type": "Question", "name": "Сколько времени занимает рекламный ролик?", "acceptedAnswer": {"@type": "Answer", "text": "Обычно 2–3 недели от брифа до мастера. Экспресс-ролик в день мероприятия возможен, если договориться до съёмки."}}, {"@type": "Question", "name": "Выезжаете за пределы Москвы?", "acceptedAnswer": {"@type": "Answer", "text": "Да: вся Московская область, Обнинск и Калужская область. В Наро-Фоминском округе, Апрелевке и Обнинске — без наценки за выезд."}}, {"@type": "Question", "name": "Отдаёте исходники?", "acceptedAnswer": {"@type": "Answer", "text": "Да. На сдаче передаю мастера и исходники — всё ваше."}}, {"@type": "Question", "name": "Как быстро ответите?", "acceptedAnswer": {"@type": "Answer", "text": "В тот же день. Если телеграм недоступен — пишите во ВКонтакте или звоните: +7 982 905-44-54."}}]}
 </script>
 <script src="assets/js/analytics.js?v=4" defer></script>
 </head>
@@ -87,8 +91,10 @@
 
 <main>
 
-<!-- ЭКРАН 1: фон — «Поля», цвет перетекает из лога в грейд -->
-<section class="hero" id="top">
+<!-- СЦЕНА 01 · ЗНАКОМСТВО. Дизайн-система v2 «Режиссёрский сценарий» (docs/design/):
+     главная — фильм из семи сцен; реплика автора в каждой, склейка к следующей в конце,
+     таймлайн под шапкой (scenes.js). Фон — «Поля», цвет перетекает из лога в грейд -->
+<section class="hero hero-v2" id="top" data-scene="Знакомство" data-next="что вам нужно">
   <video autoplay muted loop playsinline></video>
   <script>
   /* источник и постер выбираются ДО загрузки: телефон берёт лёгкие копии,
@@ -102,17 +108,30 @@
     v.src = big ? "assets/video/hero-loop-hd.mp4" : "assets/video/hero-loop-m.mp4";
   })();
   </script>
-  <div class="hero-in wrap">
-    <div class="hero-copy">
-      <h1 class="display"><span class="label">Савелий Бубнов · видеограф · колорист · Москва и область</span> Снимаю. Крашу.<br>И <em>строю</em> цифровое.</h1>
-      <p>Кино для бизнеса и людей: реклама, имиджевые фильмы, клипы, свадьбы. А ещё — сайты, приложения и автоматизация, собранные той же рукой.</p>
-      <div class="hero-cta">
-        <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Обсудить проект</a>
-        <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>
-        <a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео»</a>
+  <div class="hero-in hero-v2 wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 class="display"><span class="label">Видеограф в Москве и Московской области · Савелий Бубнов</span> Снимаю. Крашу.<br>И <em>строю</em> цифровое.</h1>
+        <p>Рекламные ролики, имиджевые фильмы, клипы и свадебное кино под ключ. Идея, съёмка, монтаж и цвет — в одних руках, без студийной наценки и испорченного телефона. Съёмочный день — от 30 000 ₽.</p>
+        <div class="hero-cta">
+          <a class="btn btn-lamp btn-l" href="#zadacha">Подобрать формат и цену <span class="arrow down">↓</span></a>
+          <button class="btn btn-ghost btn-l" type="button" data-lead>Оставить заявку</button>
+        </div>
+      </div>
+      <div class="say glass">
+        <img src="assets/img/about-fisheye.webp" alt="" width="960" height="1280">
+        <p><b>Савелий</b>Привет! За пару минут покажу работы, цены и как мы начнём. Выберите задачу — дальше поведу сам.</p>
       </div>
     </div>
-    <div class="hero-note">В фоне: «Поля» — цвет до и после</div>
+    <nav class="plan" aria-label="План страницы">
+      <span class="kicker">План разговора</span>
+      <a href="#zadacha"><span class="kicker">02</span>Какое видео нужно</a>
+      <a href="#films"><span class="kicker">03</span>Работы</a>
+      <a href="#color"><span class="kicker">04</span>Цвет</a>
+      <a href="#services"><span class="kicker">05</span>Как и сколько</a>
+      <a href="#about"><span class="kicker">06</span>Кто снимает</a>
+      <a href="#hod"><span class="kicker">07</span>Ваш ход</a>
+    </nav>
   </div>
 </section>
 
@@ -124,155 +143,260 @@
   </div>
 </div>
 
-<!-- РАБОТЫ -->
-<section id="films">
+<!-- СЦЕНА 02 · ЗАДАЧА: развилка. Выбор ставит работы жанра первыми и подставляет тему в заявку -->
+<section id="zadacha" data-scene="Задача" data-next="работы">
   <div class="wrap">
-    <div class="sec-head rv">
-      <span class="label">01 · Работы</span>
-      <h2>Смотреть — быстрее, чем <em>читать</em></h2>
-      <p class="sub">Избранное из портфолио: наведите — оживёт, нажмите — откроется целиком. Полное портфолио по темам — <a href="raboty.html" style="text-decoration:underline">на отдельной странице</a>.</p>
+    <div class="scene-head split rv">
+      <span class="kicker"><b>02</b> Задача</span>
+      <h2>Какое видео <em>нужно</em> вам?</h2>
+      <p class="sub">Выберите формат: покажу работы этого жанра, назову стартовую цену и подставлю задачу в заявку. Знаете проблему, но не формат — <a href="/video-dlya-biznesa.html" style="color:var(--ink);text-decoration:underline;text-underline-offset:3px">подберём по задаче бизнеса</a>.</p>
+      <div class="say">
+        <img src="assets/img/about-fisheye.webp" alt="" width="960" height="1280">
+        <p><b>Савелий</b>Нажмите на карточку. Цены стартовые — точную смету считаю после короткого брифа.</p>
+      </div>
     </div>
-    <div class="films rv" id="films-grid">
+
+    <div class="picks rv">
+      <div class="pick" data-pick="Рекламный ролик" data-g="reklama">
+        <button class="pick-hit" type="button" aria-pressed="false" aria-label="Выбрать: рекламный ролик"></button>
+        <div class="pick-top"><span class="kicker">01 · для бизнеса</span><span class="pick-go" aria-hidden="true">→</span></div>
+        <div><h3>Рекламный ролик</h3><p>Продаёт товар или услугу на сайте, в соцсетях и на маркетплейсах. Горизонталь и вертикаль 9:16 в одном заказе.</p></div>
+        <div class="pick-price"><span class="mono">от 60 000 ₽</span><a href="/services/reklamnyj-rolik.html">что входит</a></div>
+      </div>
+      <div class="pick" data-pick="Имиджевый фильм" data-g="imidzh">
+        <button class="pick-hit" type="button" aria-pressed="false" aria-label="Выбрать: имиджевый фильм"></button>
+        <div class="pick-top"><span class="kicker">02 · для бизнеса</span><span class="pick-go" aria-hidden="true">→</span></div>
+        <div><h3>Имиджевый фильм</h3><p>Кино о компании, производстве и команде — чтобы вам доверяли до первой встречи.</p></div>
+        <div class="pick-price"><span class="mono">от 60 000 ₽</span><a href="/services/imidzhevyj-film.html">что входит</a></div>
+      </div>
+      <div class="pick" data-pick="Съёмка мероприятия" data-g="event">
+        <button class="pick-hit" type="button" aria-pressed="false" aria-label="Выбрать: съёмка мероприятия"></button>
+        <div class="pick-top"><span class="kicker">03 · для бизнеса</span><span class="pick-go" aria-hidden="true">→</span></div>
+        <div><h3>Съёмка мероприятия</h3><p>Конференция, форум, чемпионат: репортаж дня, интервью, отчётный ролик и вертикальные фрагменты.</p></div>
+        <div class="pick-price"><span class="mono">от 30 000 ₽</span><a href="/services/semka-meropriyatij.html">что входит</a></div>
+      </div>
+      <div class="pick" data-pick="Свадебное кино" data-g="svadba">
+        <button class="pick-hit" type="button" aria-pressed="false" aria-label="Выбрать: свадебное кино"></button>
+        <div class="pick-top"><span class="kicker">04 · для пары</span><span class="pick-go" aria-hidden="true">→</span></div>
+        <div><h3>Свадебное кино</h3><p>Фильм о вашем дне, который хочется пересматривать, а не пролистывать.</p></div>
+        <div class="pick-price"><span class="mono">от 60 000 ₽</span><a href="/services/svadebnoe-kino.html">что входит</a></div>
+      </div>
+      <div class="pick" data-pick="Музыкальный клип" data-g="klip">
+        <button class="pick-hit" type="button" aria-pressed="false" aria-label="Выбрать: музыкальный клип"></button>
+        <div class="pick-top"><span class="kicker">05 · для артиста</span><span class="pick-go" aria-hidden="true">→</span></div>
+        <div><h3>Музыкальный клип</h3><p>От идеи под трек до монтажа под бит и цвета под настроение релиза.</p></div>
+        <div class="pick-price"><span class="mono">от 60 000 ₽</span><a href="/services/muzykalnyj-klip.html">что входит</a></div>
+      </div>
+      <div class="pick" data-pick="Цветокоррекция" data-g="cvet">
+        <button class="pick-hit" type="button" aria-pressed="false" aria-label="Выбрать: цветокоррекция"></button>
+        <div class="pick-top"><span class="kicker">06 · уже снято</span><span class="pick-go" aria-hidden="true">→</span></div>
+        <div><h3>Цветокоррекция</h3><p>Покрашу ваш материал в DaVinci Resolve: log и RAW, look по референсам. Удалённо.</p></div>
+        <div class="pick-price"><span class="mono">от 15 000 ₽</span><a href="/services/cvetokorrekciya.html">что входит</a></div>
+      </div>
+      <div class="pick wide" id="digital" data-pick="Сайт" data-g="">
+        <button class="pick-hit" type="button" aria-pressed="false" aria-label="Выбрать: сайт, бот или приложение"></button>
+        <div><h3>Сайт, бот или приложение</h3><p>Та же режиссура — в коде: сайты от 50 000 ₽, боты и автоматизация от 30 000 ₽ за сценарий, приложения от 150 000 ₽. Кейсы — <a href="/cases/monolith.html">MONOLITH</a> и <a href="/cases/seversvet.html">СЕВЕРСВЕТ</a>.</p></div>
+        <span class="pick-go" aria-hidden="true">→</span>
+      </div>
+    </div>
+    <p class="picks-foot">Нужен только оператор с техникой на день? <a href="/videosemka-moskva.html">Съёмочный день в Москве</a> — от 30 000 ₽, материал на руки.</p>
+
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Дальше · сцена 03</span>
+        <a href="#films">Посмотреть, как это выглядит в кадре <span class="arrow down">↓</span></a>
+      </div>
+      <p class="next-alt">Уже знаете задачу? <button type="button" data-lead>Оставить заявку</button></p>
+    </div>
+  </div>
+</section>
+
+<!-- СЦЕНА 03 · РАБОТЫ: карточки строит tools/build_films.py из data/films.json (home) -->
+<section id="films" class="scene-films" data-scene="Работы" data-next="цвет">
+  <div class="wrap">
+    <div class="scene-head split rv">
+      <span class="kicker"><b>03</b> Работы</span>
+      <h2>Реклама, имидж, клипы и <em>свадьбы</em></h2>
+      <p class="sub">Наведите — ролик оживёт, нажмите — откроется целиком. Всё портфолио по темам — на <a href="/raboty.html" style="color:var(--ink);text-decoration:underline;text-underline-offset:3px">странице работ</a>.</p>
+      <div class="say">
+        <img src="assets/img/about-fisheye.webp" alt="" width="960" height="1280">
+        <p data-say-works><b>Савелий</b>Это избранное. Выберите задачу выше — первыми встанут работы вашего жанра.</p>
+      </div>
+    </div>
+    <div class="films rv">
 <!-- HOME-FILMS:START -->
-      <div class="film" data-src="https://seversvet.github.io/assets/film/fabrik.mp4" tabindex="0" role="button" aria-label="FABRIK — Имиджевый ролик · ГК OSTOV, смотреть видео">
+      <div class="film" data-src="https://seversvet.github.io/assets/film/fabrik.mp4" data-g="imidzh reklama" tabindex="0" role="button" aria-label="FABRIK — Имиджевый ролик · ГК OSTOV, смотреть видео">
         <img loading="lazy" width="1280" height="720" src="/assets/img/film/fabrik.webp" alt="FABRIK — Имиджевый ролик · ГК OSTOV">
         <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/fabrik-loop.mp4"></video>
         <span class="film-len">1:08</span>
         <div class="film-cap"><b>FABRIK</b><span>Имиджевый ролик · ГК OSTOV</span></div>
       </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/ostov.mp4" tabindex="0" role="button" aria-label="ГК ОСТОВ — Имиджевый ролик, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/film/ostov.webp" alt="ГК ОСТОВ — Имиджевый ролик">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/ostov-loop.mp4"></video>
-        <span class="film-len">1:22</span>
-        <div class="film-cap"><b>ГК ОСТОВ</b><span>Имиджевый ролик</span></div>
-      </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/abilympics.mp4" tabindex="0" role="button" aria-label="Абилимпикс 2025 — Отчётный ролик чемпионата, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/film/abilympics.webp" alt="Абилимпикс 2025 — Отчётный ролик чемпионата">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/abilympics-loop.mp4"></video>
-        <span class="film-len">2:59</span>
-        <div class="film-cap"><b>Абилимпикс 2025</b><span>Отчётный ролик чемпионата</span></div>
-      </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/principled.mp4" tabindex="0" role="button" aria-label="«Принципиальный» — Короткий метр, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/film/principled.webp" alt="«Принципиальный» — Короткий метр">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/principled-loop.mp4"></video>
-        <span class="film-len">10:47</span>
-        <div class="film-cap"><b>«Принципиальный»</b><span>Короткий метр</span></div>
-      </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/wedding-de.mp4" tabindex="0" role="button" aria-label="Дмитрий и Евгения — Свадебное кино · 2.67:1, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/film/wedding-de.webp" alt="Дмитрий и Евгения — Свадебное кино · 2.67:1">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/wedding-de-loop.mp4"></video>
-        <span class="film-len">2:37</span>
-        <div class="film-cap"><b>Дмитрий и Евгения</b><span>Свадебное кино · 2.67:1</span></div>
-      </div>
-      <div class="film" data-src="/assets/video/polya.mp4" tabindex="0" role="button" aria-label="«Поля» — Fashion-муд · натура, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/polya-poster.webp" alt="«Поля» — Fashion-муд · натура">
-        <video muted loop playsinline preload="none" src="/assets/video/polya-loop.mp4"></video>
-        <span class="film-len">1:59</span>
-        <div class="film-cap"><b>«Поля»</b><span>Fashion-муд · натура</span></div>
-      </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/teaser-soon.mp4" tabindex="0" role="button" aria-label="«Скоро» — Тизер проекта · ночь и огонь, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/film/teaser-soon.webp" alt="«Скоро» — Тизер проекта · ночь и огонь">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/teaser-soon-loop.mp4"></video>
-        <span class="film-len">0:31</span>
-        <div class="film-cap"><b>«Скоро»</b><span>Тизер проекта · ночь и огонь</span></div>
-      </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/banshee.mp4" tabindex="0" role="button" aria-label="Vo Devil × Stokes — Музыкальный клип, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/film/banshee.webp" alt="Vo Devil × Stokes — Музыкальный клип">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/banshee-loop.mp4"></video>
-        <span class="film-len">4:11</span>
-        <div class="film-cap"><b>Vo Devil × Stokes</b><span>Музыкальный клип</span></div>
-      </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/evergo.mp4" tabindex="0" role="button" aria-label="EverGO — Реклама батончиков, смотреть видео">
+      <div class="film" data-src="https://seversvet.github.io/assets/film/evergo.mp4" data-g="reklama" tabindex="0" role="button" aria-label="EverGO — Реклама батончиков, смотреть видео">
         <img loading="lazy" width="1280" height="720" src="/assets/img/film/evergo.webp" alt="EverGO — Реклама батончиков">
         <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/evergo-loop.mp4"></video>
         <span class="film-len">0:19</span>
         <div class="film-cap"><b>EverGO</b><span>Реклама батончиков</span></div>
       </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/box.mp4" tabindex="0" role="button" aria-label="Бокс — Спортивный ролик, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/film/box.webp" alt="Бокс — Спортивный ролик">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/box-loop.mp4"></video>
-        <span class="film-len">0:54</span>
-        <div class="film-cap"><b>Бокс</b><span>Спортивный ролик</span></div>
+      <div class="film" data-src="https://seversvet.github.io/assets/film/abilympics.mp4" data-g="event" tabindex="0" role="button" aria-label="Абилимпикс 2025 — Отчётный ролик чемпионата, смотреть видео">
+        <img loading="lazy" width="1280" height="720" src="/assets/img/film/abilympics.webp" alt="Абилимпикс 2025 — Отчётный ролик чемпионата">
+        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/abilympics-loop.mp4"></video>
+        <span class="film-len">2:59</span>
+        <div class="film-cap"><b>Абилимпикс 2025</b><span>Отчётный ролик чемпионата</span></div>
       </div>
-      <div class="film" data-src="/assets/video/ftx.mp4" tabindex="0" role="button" aria-label="FTX — Мотофристайл · фестиваль, смотреть видео">
-        <img loading="lazy" width="1280" height="720" src="/assets/img/ftx-poster.webp" alt="FTX — Мотофристайл · фестиваль">
-        <video muted loop playsinline preload="none" src="/assets/video/ftx-loop.mp4"></video>
-        <span class="film-len">1:16</span>
-        <div class="film-cap"><b>FTX</b><span>Мотофристайл · фестиваль</span></div>
+      <div class="film" data-src="https://seversvet.github.io/assets/film/wedding-de.mp4" data-g="svadba" tabindex="0" role="button" aria-label="Дмитрий и Евгения — Свадебное кино · 2.67:1, смотреть видео">
+        <img loading="lazy" width="1280" height="720" src="/assets/img/film/wedding-de.webp" alt="Дмитрий и Евгения — Свадебное кино · 2.67:1">
+        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/wedding-de-loop.mp4"></video>
+        <span class="film-len">2:37</span>
+        <div class="film-cap"><b>Дмитрий и Евгения</b><span>Свадебное кино · 2.67:1</span></div>
       </div>
-      <a class="film film-more" href="/raboty.html"><div class="film-more-in"><b>Все работы — по темам</b><span>реклама, имидж, события, клипы, свадьбы, ИИ →</span></div></a>
+      <div class="film" data-src="https://seversvet.github.io/assets/film/banshee.mp4" data-g="klip" tabindex="0" role="button" aria-label="Vo Devil × Stokes — Музыкальный клип, смотреть видео">
+        <img loading="lazy" width="1280" height="720" src="/assets/img/film/banshee.webp" alt="Vo Devil × Stokes — Музыкальный клип">
+        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/banshee-loop.mp4"></video>
+        <span class="film-len">4:11</span>
+        <div class="film-cap"><b>Vo Devil × Stokes</b><span>Музыкальный клип</span></div>
+      </div>
+      <div class="film" data-src="/assets/video/polya.mp4" data-g="cvet klip" tabindex="0" role="button" aria-label="«Поля» — Fashion-муд · натура, смотреть видео">
+        <img loading="lazy" width="1280" height="720" src="/assets/img/polya-poster.webp" alt="«Поля» — Fashion-муд · натура">
+        <video muted loop playsinline preload="none" src="/assets/video/polya-loop.mp4"></video>
+        <span class="film-len">1:59</span>
+        <div class="film-cap"><b>«Поля»</b><span>Fashion-муд · натура</span></div>
+      </div>
+      <a class="film film-more" href="/raboty.html"><div class="film-more-in"><b>Все 41 работ — по темам →</b><span>реклама, имидж, события, клипы, свадьбы, 9:16, ИИ</span></div></a>
 <!-- HOME-FILMS:END -->
     </div>
-    <div class="films films-vert rv" id="films-vert">
-<!-- HOME-VERT:START -->
-      <div class="film" data-src="https://seversvet.github.io/assets/film/v-patek.mp4" data-vert tabindex="0" role="button" aria-label="Patek Philippe × DiW — Реклама часов · 9:16, смотреть видео">
-        <img loading="lazy" width="720" height="1280" src="/assets/img/film/v-patek.webp" alt="Patek Philippe × DiW — Реклама часов · 9:16">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/v-patek-loop.mp4"></video>
-        <span class="film-len">0:16</span>
-        <div class="film-cap"><b>Patek Philippe × DiW</b><span>Реклама часов · 9:16</span></div>
+
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Дальше · сцена 04</span>
+        <a href="#color">Почему у этих роликов такой цвет <span class="arrow down">↓</span></a>
       </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/v-rolex.mp4" data-vert tabindex="0" role="button" aria-label="Rolex Daytona × DiW — Реклама часов · 9:16, смотреть видео">
-        <img loading="lazy" width="720" height="1280" src="/assets/img/film/v-rolex.webp" alt="Rolex Daytona × DiW — Реклама часов · 9:16">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/v-rolex-loop.mp4"></video>
-        <span class="film-len">0:15</span>
-        <div class="film-cap"><b>Rolex Daytona × DiW</b><span>Реклама часов · 9:16</span></div>
-      </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/v-cult.mp4" data-vert tabindex="0" role="button" aria-label="CULT — Лукбук · стоп-моушен, смотреть видео">
-        <img loading="lazy" width="720" height="1280" src="/assets/img/film/v-cult.webp" alt="CULT — Лукбук · стоп-моушен">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/v-cult-loop.mp4"></video>
-        <span class="film-len">0:45</span>
-        <div class="film-cap"><b>CULT</b><span>Лукбук · стоп-моушен</span></div>
-      </div>
-      <div class="film" data-src="https://seversvet.github.io/assets/film/v-gym.mp4" data-vert tabindex="0" role="button" aria-label="Зал — Спорт · 9:16, смотреть видео">
-        <img loading="lazy" width="720" height="1280" src="/assets/img/film/v-gym.webp" alt="Зал — Спорт · 9:16">
-        <video muted loop playsinline preload="none" src="https://seversvet.github.io/assets/film/v-gym-loop.mp4"></video>
-        <span class="film-len">1:00</span>
-        <div class="film-cap"><b>Зал</b><span>Спорт · 9:16</span></div>
-      </div>
-<!-- HOME-VERT:END -->
+      <p class="next-alt">Понравилось? <button type="button" data-lead>Обсудим ваш проект</button></p>
     </div>
   </div>
 </section>
 
-<!-- ЦВЕТ -->
-<section id="color">
+<!-- СЦЕНА 04 · ЦВЕТ: доказательство ремесла — тот же ролик, что в фоне, до и после -->
+<section id="color" data-scene="Цвет" data-next="как и сколько">
   <div class="wrap">
-    <div class="sec-head rv">
-      <span class="label">02 · Колористика</span>
+    <div class="scene-head rv">
+      <span class="kicker"><b>04</b> Цветокоррекция</span>
       <h2>Цвет — половина <em>кадра</em></h2>
     </div>
-    <div class="color-grid rv">
-      <div class="color-copy">
-        <p>Камера пишет плоский, блёклый материал — так задумано. Настоящий вид кадру даёт грейд: глубина, воздух, настроение. Крашу в DaVinci Resolve — свои съёмки и чужой материал.</p>
-        <p>Справа тот же ролик, что в фоне первого экрана: каждый кадр показан до и после цвета. Разница — и есть работа.</p>
-        <div class="color-price"><b>от 15 000 ₽</b><span>за ролик · или от 2 500 ₽ за минуту</span></div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Прислать материал на грейд</a><a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a></div>
+    <figure class="ba rv">
+      <video controls muted loop playsinline preload="none"></video>
+      <script>
+      /* тот же ролик, что в фоне: телефон получает лёгкую копию (15 МБ
+         вместо 38), обложка тоже по размеру экрана */
+      (function () {
+        var v = document.currentScript.previousElementSibling;
+        var big = innerWidth >= 1024;
+        v.poster = big ? "assets/img/hero-poster.webp" : "assets/img/hero-poster-m.webp";
+        v.src = big ? "assets/video/hero-loop.mp4" : "assets/video/hero-loop-m.mp4";
+      })();
+      </script>
+      <div class="ba-tags" aria-hidden="true"><span>«Поля»</span><span>Каждый кадр: до и после</span></div>
+    </figure>
+    <div class="ba-row rv">
+      <div>
+        <p>Камера пишет плоский, блёклый материал — так задумано: в нём спрятан запас для цвета. Вид кадру даёт грейд — глубина, воздух, кожа, настроение. Разница в ролике выше — и есть работа.</p>
+        <p style="margin-top:14px">Цветокоррекция видео в DaVinci Resolve — свои съёмки и чужой материал: log и RAW, look по вашим референсам, удалённо по всей России. Хотите разобраться сами — <a href="/uroki/">уроки DaVinci Resolve</a> и разбор <a href="/articles/skolko-stoit-cvetokorrekciya.html">сколько стоит цветокоррекция</a>.</p>
       </div>
-      <div class="color-video">
-        <video controls muted loop playsinline preload="none"></video>
-        <script>
-        /* тот же ролик, что в фоне: телефон получает лёгкую копию (15 МБ
-           вместо 38), обложка тоже по размеру экрана */
-        (function () {
-          var v = document.currentScript.previousElementSibling;
-          var big = innerWidth >= 1024;
-          v.poster = big ? "assets/img/hero-poster.webp" : "assets/img/hero-poster-m.webp";
-          v.src = big ? "assets/video/hero-loop.mp4" : "assets/video/hero-loop-m.mp4";
-        })();
-        </script>
+      <div class="ba-price">
+        <b>от 15 000 ₽</b>
+        <span>за ролик · или от 2 500 ₽ за минуту</span>
+        <button class="btn btn-lamp" type="button" data-lead="Цветокоррекция">Прислать материал на грейд</button>
+        <p class="next-alt">или сразу в <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">телеграм</a> · <a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a></p>
+      </div>
+    </div>
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Дальше · сцена 05</span>
+        <a href="#services">Как мы работаем и сколько это стоит <span class="arrow down">↓</span></a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- КАДРЫ -->
-<section id="frames">
+<!-- СЦЕНА 05 · КАК И СКОЛЬКО: процесс и цены вместе — это один вопрос посетителя.
+     Суммы сверяет tools/check_prices.py с assets/data/prices.json -->
+<section id="services" data-scene="Как и сколько" data-next="кто снимает">
   <div class="wrap">
-    <div class="sec-head rv">
-      <span class="label">03 · Кадры</span>
-      <h2>Плёнка со <em>смен</em></h2>
-      <p class="sub">Стоп-кадры из проектов — по три на съёмку. Листайте вбок.</p>
+    <div class="scene-head split rv">
+      <span class="kicker"><b>05</b> Как и сколько</span>
+      <h2>Сколько стоит <em>видеосъёмка</em></h2>
+      <div class="say">
+        <img src="assets/img/about-fisheye.webp" alt="" width="960" height="1280">
+        <p><b>Савелий</b>Пять шагов, и на каждом вы знаете, что получите дальше. Цена фиксируется в смете до начала работ.</p>
+      </div>
     </div>
+    <p class="short-answer rv"><b>Коротко:</b> съёмочный день в Москве и области — от 30 000 ₽, рекламный ролик или имиджевый фильм под ключ — от 60 000 ₽, цветокоррекция — от 15 000 ₽ за ролик. Точную смету считаю после брифа: она зависит от задачи, сроков и состава работ.</p>
+
+    <ol class="road rv">
+      <li><span class="kicker">Шаг 01 · сегодня</span><h3>Заявка</h3><p>Пара строк о задаче — в форме, телеграме или ВК.</p><span class="get">Ответ в тот же день</span></li>
+      <li><span class="kicker">Шаг 02</span><h3>Бриф</h3><p>Созвон или переписка: цель, референсы, сроки, площадки.</p><span class="get">Понятная задача</span></li>
+      <li><span class="kicker">Шаг 03</span><h3>Смета и договор</h3><p>Состав работ, цена и календарь. Предоплата — часть сметы.</p><span class="get">Цена без скрытых доплат</span></li>
+      <li><span class="kicker">Шаг 04</span><h3>Съёмка и монтаж</h3><p>Или разработка — с промежуточными показами.</p><span class="get">Видите ход дела</span></li>
+      <li><span class="kicker">Шаг 05</span><h3>Сдача</h3><p>Правки, финал, передача мастеров и исходников.</p><span class="get">Всё ваше</span></li>
+    </ol>
+
+    <div class="sub-h rv"><h3>Стартовые цены</h3><a href="/ceny.html">Полный прайс <span class="arrow">→</span></a></div>
+    <div class="pl rv">
+      <a class="pl-row" href="/services/reklamnyj-rolik.html"><h3>Рекламный ролик</h3><p>Идея, съёмочный день со светом, монтаж, цвет и звук, мастер под горизонталь и 9:16</p><span class="mono">от 60 000 ₽<small>под ключ · 2–3 недели</small></span><span class="go">→</span></a>
+      <a class="pl-row" href="/services/imidzhevyj-film.html"><h3>Имиджевый фильм</h3><p>Сценарный план, съёмка на ваших площадках, интервью, монтаж, цвет и титры</p><span class="mono">от 60 000 ₽<small>за фильм</small></span><span class="go">→</span></a>
+      <a class="pl-row" href="/services/semka-meropriyatij.html"><h3>Съёмка мероприятия</h3><p>Репортаж полного дня, интервью гостей и спикеров, вертикальные фрагменты</p><span class="mono">от 30 000 ₽<small>монтаж ролика — от 20 000 ₽</small></span><span class="go">→</span></a>
+      <a class="pl-row" href="/services/svadebnoe-kino.html"><h3>Свадебное кино</h3><p>Полный день съёмки, монтаж и цвет фильма о вашем дне</p><span class="mono">от 60 000 ₽<small>день 10–12 часов</small></span><span class="go">→</span></a>
+      <a class="pl-row" href="/services/muzykalnyj-klip.html"><h3>Музыкальный клип</h3><p>Идея под трек, постановочный свет, монтаж под бит и цвет под релиз</p><span class="mono">от 60 000 ₽<small>клип</small></span><span class="go">→</span></a>
+      <a class="pl-row" href="/videosemka-moskva.html"><h3>Съёмочный день</h3><p>Оператор с техникой и светом, материал на руки; монтаж и цвет — потом</p><span class="mono">от 30 000 ₽<small>смена до 8 часов</small></span><span class="go">→</span></a>
+      <a class="pl-row" href="/services/cvetokorrekciya.html"><h3>Цветокоррекция</h3><p>Грейд ролика в DaVinci Resolve: log и RAW, look по референсам</p><span class="mono">от 15 000 ₽<small>или от 2 500 ₽ / мин</small></span><span class="go">→</span></a>
+      <a class="pl-row" href="/services/sozdanie-sajtov.html"><h3>Сайты и боты</h3><p>Быстрые сайты без конструкторов, боты и автоматизация рутины</p><span class="mono">от 50 000 ₽<small>бот — от 30 000 ₽ за сценарий</small></span><span class="go">→</span></a>
+    </div>
+    <p class="pl-note rv">Работаю по договору по Москве и Московской области. В <a href="/videograf-naro-fominsk.html">Наро-Фоминске</a>, <a href="/videograf-aprelevka.html">Апрелевке</a> и <a href="/videograf-obninsk.html">Обнинске</a> — без наценки за выезд. Для компаний — <a href="/video-dlya-biznesa.html">какое видео нужно бизнесу</a>.</p>
+
+    <div class="sub-h rv"><h3>Прочитайте перед заказом</h3><a href="/articles/">Все статьи <span class="arrow">→</span></a></div>
+    <div class="reads rv">
+      <a class="read" href="/articles/skolko-stoit-reklamnyj-rolik.html"><span class="kicker">Цена</span><b>Сколько стоит рекламный ролик и из чего складывается смета</b></a>
+      <a class="read" href="/articles/kak-snyat-reklamnyj-rolik.html"><span class="kicker">Процесс</span><b>Как снимается рекламный ролик — все этапы</b></a>
+      <a class="read" href="/articles/dogovor-s-videografom.html"><span class="kicker">Договор</span><b>Договор с видеографом — что проверить</b></a>
+      <a class="read" href="/articles/kak-vybrat-svadebnogo-videografa.html"><span class="kicker">Выбор</span><b>Как выбрать свадебного видеографа</b></a>
+    </div>
+
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Дальше · сцена 06</span>
+        <a href="#about">Кто всё это делает <span class="arrow down">↓</span></a>
+      </div>
+      <p class="next-alt">Цена понятна? <button type="button" data-lead>Оставить заявку</button></p>
+    </div>
+  </div>
+</section>
+
+<!-- СЦЕНА 06 · КТО СНИМАЕТ: человек, факты, кадры со смен и снятые сомнения -->
+<section id="about" data-scene="Кто снимает" data-next="ваш ход">
+  <div class="wrap">
+    <div class="scene-head rv">
+      <span class="kicker"><b>06</b> Кто снимает</span>
+      <h2>Видеограф Савелий <em>Бубнов</em></h2>
+    </div>
+    <div class="about-grid rv">
+      <figure class="about-photo">
+        <img loading="lazy" src="assets/img/about-monitor.webp" alt="Савелий Бубнов на площадке у монитора" width="1600" height="901">
+        <figcaption>На площадке: контроль кадра до того, как он попал в монтаж</figcaption>
+      </figure>
+      <div class="about-copy">
+        <p><b>Я — Савелий Бубнов,</b> оператор-постановщик и колорист из Подмосковья. Снимаю рекламу, имиджевые фильмы, клипы и свадебное кино и довожу каждую работу сам — от раскадровки до финального грейда. Вам не придётся пересказывать задачу трём подрядчикам.</p>
+        <p>До продакшена строил ресторанный бизнес, поэтому говорю с заказчиком на языке задач и денег, а не таймкодов. Мне не нужно объяснять, зачем ролику продавать.</p>
+        <p>Третье ремесло — цифровое: собираю сайты, приложение <a href="/cases/monolith.html" style="text-decoration:underline;text-underline-offset:3px">MONOLITH</a> и автоматизации с ИИ-инструментами. Один человек, три инструмента, общий вкус.</p>
+        <div class="nums">
+          <div><b>9</b><span>тем в портфолио — от рекламы до ИИ-роликов</span></div>
+          <div><b>3</b><span>ремесла: съёмка, цвет, код</span></div>
+          <div><b>1</b><span>человек от идеи до цвета</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap" id="frames">
+    <div class="sub-h rv"><h3>Кадры со смен</h3><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео» <span class="arrow">→</span></a></div>
   </div>
   <div class="wrap strip-wrap rv">
     <div class="strip" id="strip">
@@ -295,206 +419,99 @@
 <!-- STRIP:END -->
     </div>
   </div>
+
+  <div class="wrap">
+    <div class="faq rv">
+      <h3>Частые вопросы</h3>
+      <details open><summary>Сколько стоит видеосъёмка в Москве?</summary><p>Съёмочный день с техникой и светом — от 30 000 ₽, рекламный ролик или имиджевый фильм под ключ — от 60 000 ₽, свадебное кино — от 60 000 ₽ за полный день. Точная цена — в смете после брифа, все услуги — в <a href="/ceny.html">прайсе</a>.</p></details>
+      <details><summary>Работаете по договору?</summary><p>Да. Договор фиксирует состав работ, сроки и цену. Предоплата — часть сметы, финал — после сдачи.</p></details>
+      <details><summary>Сколько времени занимает рекламный ролик?</summary><p>Обычно 2–3 недели от брифа до мастера. Экспресс-ролик в день мероприятия возможен, если договориться до съёмки.</p></details>
+      <details><summary>Выезжаете за пределы Москвы?</summary><p>Да: вся Московская область, Обнинск и Калужская область. В Наро-Фоминском округе, Апрелевке и Обнинске — без наценки за выезд.</p></details>
+      <details><summary>Отдаёте исходники?</summary><p>Да. На сдаче передаю мастера и исходники — всё ваше.</p></details>
+      <details><summary>Как быстро ответите?</summary><p>В тот же день. Если телеграм недоступен — пишите во ВКонтакте или звоните: +7 982 905-44-54.</p></details>
+    </div>
+
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Последняя сцена · 07</span>
+        <a href="#hod">Ваш ход — заявка в три касания <span class="arrow down">↓</span></a>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ЦИФРОВЫЕ ПРОДУКТЫ -->
-<section id="digital">
+<!-- СЦЕНА 07 · ВАШ ХОД: бриф в три касания собирает сообщение за посетителя.
+     «Отправить заявку» открывает общую форму lead.js с темой и описанием;
+     id="zayavka" — запасной путь кнопки /#zayavka, если скрипт формы не загрузился -->
+<section id="hod" data-scene="Ваш ход" data-next="">
   <div class="wrap">
-    <div class="sec-head rv">
-      <span class="label">04 · Цифровые продукты</span>
-      <h2>Та же режиссура — в <em>коде</em></h2>
-      <p class="sub">Строю сайты, приложения и автоматизации с ИИ-инструментами: быстро, дешевле студий и со вкусом человека, который каждый день собирает кадр.</p>
+    <div class="final-h rv">
+      <span class="kicker"><b>07</b> Ваш ход</span>
+      <h2 class="display" style="font-size:clamp(36px,4.8vw,56px)">Заказать видеосъёмку: три касания до <em>заявки</em></h2>
+      <div class="say">
+        <img src="assets/img/about-fisheye.webp" alt="" width="960" height="1280">
+        <p><b>Савелий</b>Ответьте на три вопроса — сообщение соберётся само. Подбирать слова не нужно: уточнения задам я.</p>
+      </div>
     </div>
-    <div class="products rv">
-      <a class="product" href="zakazy-sami.html">
-        <div class="product-shot"><img loading="lazy" src="assets/img/case-monolith-assistant.webp" alt="Приложение MONOLITH — экран ассистента" width="1200" height="644"></div>
-        <div class="product-body">
-          <b>MONOLITH</b>
-          <p>Приложение для тех, кто снимает: заказы, клиенты, деньги с налогом. Модуль ШТАБ приносит заявки с рынка сам.</p>
-          <span class="go">Смотреть, как это работает →</span>
+
+    <div class="brief rv" id="zayavka">
+      <div class="brief-q">
+        <fieldset>
+          <legend><span class="kicker">1/3</span>Что делаем?</legend>
+          <div class="chips" data-group="what">
+            <button type="button" class="chip" aria-pressed="false">Рекламный ролик</button>
+            <button type="button" class="chip" aria-pressed="false">Имиджевый фильм</button>
+            <button type="button" class="chip" aria-pressed="false">Съёмка мероприятия</button>
+            <button type="button" class="chip" aria-pressed="false">Свадебное кино</button>
+            <button type="button" class="chip" aria-pressed="false">Музыкальный клип</button>
+            <button type="button" class="chip" aria-pressed="false">Цветокоррекция</button>
+            <button type="button" class="chip" aria-pressed="false">Сайт</button>
+            <button type="button" class="chip" aria-pressed="false">Другое — опишу ниже</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend><span class="kicker">2/3</span>Когда?</legend>
+          <div class="chips" data-group="when">
+            <button type="button" class="chip" aria-pressed="false">В этом месяце</button>
+            <button type="button" class="chip" aria-pressed="false">В ближайшие 2–3 месяца</button>
+            <button type="button" class="chip" aria-pressed="false">Пока прицениваюсь</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend><span class="kicker">3/3</span>Ориентир по бюджету?</legend>
+          <div class="chips" data-group="budget">
+            <button type="button" class="chip" aria-pressed="false">до 50 000 ₽</button>
+            <button type="button" class="chip" aria-pressed="false">50–150 000 ₽</button>
+            <button type="button" class="chip" aria-pressed="false">от 150 000 ₽</button>
+            <button type="button" class="chip" aria-pressed="false">Подскажите вы</button>
+          </div>
+        </fieldset>
+      </div>
+      <div class="brief-out">
+        <span class="kicker">Ваше сообщение</span>
+        <div class="brief-msg" data-msg aria-live="polite">Здравствуйте! Пишу с сайта pobubnim.ru.
+Задача: …
+Сроки: …
+Бюджет: …</div>
+        <button class="btn btn-lamp btn-l" type="button" data-brief-send data-lead>Отправить заявку</button>
+        <div class="brief-alt">
+          <a class="btn btn-ghost" data-brief-tg href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">В телеграм</a>
+          <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>
+          <a class="btn btn-ghost" href="tel:+79829054454">Позвонить</a>
         </div>
-      </a>
-      <a class="product" href="cases/seversvet.html">
-        <div class="product-shot"><img loading="lazy" src="assets/img/case-seversvet.webp" alt="Сайт рентала СЕВЕРСВЕТ" width="1200" height="630"></div>
-        <div class="product-body">
-          <b>СЕВЕРСВЕТ</b>
-          <p>Сайт кинорентала и продакшена: каталог техники, портфолио, заявки — статика без движка.</p>
-          <span class="go">Смотреть кейс →</span>
-        </div>
-      </a>
-      <div class="product">
-        <div class="product-shot"><img loading="lazy" src="assets/img/hz-watch-1.webp" alt="Автоматизация и интеграции" width="1600" height="900"></div>
-        <div class="product-body">
-          <b>Интеграции и автоматизация</b>
-          <p>Телеграм-боты, автопубликация контента, связки сервисов и ИИ в рабочие процессы — под вашу задачу.</p>
-          <span class="go">Обсуждается лично</span>
-        </div>
+        <span class="brief-note">Отвечаю в тот же день</span>
       </div>
     </div>
+    <p class="brief-after rv">Хотите снимать и красить сами? <a href="/education.html">Обучение съёмке и DaVinci Resolve</a> — от 3 000 ₽ за занятие.</p>
   </div>
 </section>
 
-<!-- ОБО МНЕ -->
-<section id="about">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="label">05 · Обо мне</span>
-      <h2>Кто такой <em>Бубнов</em></h2>
-    </div>
-    <div class="about-grid rv">
-      <figure class="about-photo">
-        <img loading="lazy" src="assets/img/about-monitor.webp" alt="Савелий Бубнов на площадке у монитора" width="1600" height="901">
-        <figcaption>На площадке: контроль кадра до того, как он попал в монтаж</figcaption>
-      </figure>
-      <div class="about-copy">
-        <p><b>Я — Савелий Бубнов,</b> оператор-постановщик и колорист. Снимаю рекламу, имиджевые фильмы, клипы и свадебное кино; каждую работу довожу до конца сам — от раскадровки до финального грейда.</p>
-        <p>До продакшена строил ресторанный бизнес, поэтому с заказчиком говорю на языке задач и денег, а не таймкодов. Мне не нужно объяснять, зачем ролику продавать.</p>
-        <p>Третье ремесло — цифровое: собираю сайты, приложение MONOLITH и автоматизации с ИИ-инструментами. Один человек, три инструмента, общий вкус.</p>
-        <div class="about-mini">
-          <img loading="lazy" src="assets/img/about-camera.webp" alt="С камерой на съёмке" width="1200" height="900">
-          <img loading="lazy" src="assets/img/about-steadicam.webp" alt="Со стедикамом" width="1200" height="900">
-          <img loading="lazy" src="assets/img/about-chroma.webp" alt="Съёмка на хромакее" width="1280" height="576">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- УСЛУГИ И ЦЕНЫ -->
-<section id="services">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="label">06 · Услуги и цены</span>
-      <h2>Сколько стоит <em>видеосъёмка</em></h2>
-      <p class="sub">Стартовые вилки. Точная смета — после брифа: она зависит от задачи, сроков и состава работ.</p>
-    </div>
-    <div class="services rv">
-      <div class="service">
-        <div class="service-name"><b>Видеопродакшен</b><span><a href="services/reklamnyj-rolik.html">реклама</a> · <a href="services/imidzhevyj-film.html">имидж</a> · <a href="services/muzykalnyj-klip.html">клипы</a> · <a href="services/svadebnoe-kino.html">свадьбы</a> · <a href="services/semka-meropriyatij.html">события</a></span></div>
-        <div class="service-desc">Ролик под ключ: идея, съёмка, монтаж, цвет, звук. Или только съёмочный день с материалом на руки.</div>
-        <div class="service-price"><b>от 60 000 ₽</b><span>съёмочный день — от 30 000 ₽</span></div>
-      </div>
-      <div class="service">
-        <div class="service-name"><b>Колористика</b><span><a href="services/cvetokorrekciya.html">цветокоррекция видео</a> · DaVinci Resolve</span></div>
-        <div class="service-desc">Грейд ролика: базовая коррекция, look, согласование по референсам. Работаю с log и RAW.</div>
-        <div class="service-price"><b>от 15 000 ₽</b><span>или от 2 500 ₽ / минута</span></div>
-      </div>
-      <div class="service">
-        <div class="service-name"><b>Сайты</b><span><a href="services/sozdanie-sajtov.html">создание сайтов</a> · лендинги · портфолио</span></div>
-        <div class="service-desc">Быстрые статические сайты без конструкторов: дизайн, тексты, вёрстка, запуск и домен.</div>
-        <div class="service-price"><b>от 50 000 ₽</b><span>многостраничник — от 90 000 ₽</span></div>
-      </div>
-      <div class="service">
-        <div class="service-name"><b>Приложения</b><span>Android · Windows · MVP</span></div>
-        <div class="service-desc">Рабочий продукт с настоящими функциями, а не прототип: интерфейс, логика, сборка, доставка.</div>
-        <div class="service-price"><b>от 150 000 ₽</b><span>MVP под задачу</span></div>
-      </div>
-      <div class="service">
-        <div class="service-name"><b>Интеграции и автоматизация</b><span><a href="services/boty-avtomatizaciya.html">боты и автоматизация</a> · связки сервисов</span></div>
-        <div class="service-desc">Автоматизирую рутину: контент-конвейеры, телеграм-боты, отчёты, ИИ в рабочих процессах.</div>
-        <div class="service-price"><b>от 30 000 ₽</b><span>за сценарий</span></div>
-      </div>
-    </div>
-    <p class="services-note">Работаю по договору. Предоплата — часть сметы, финал — после сдачи. Если задача нестандартная, так и напишите: разберём и посчитаем честно.</p>
-    <p class="services-note" style="margin-top:10px">Полный прайс со всеми услугами, фото, монтажом и обучением — <a href="/ceny.html" style="text-decoration:underline">цены и подбор формата под задачу</a> · для компаний — <a href="/video-dlya-biznesa.html" style="text-decoration:underline">какое видео нужно бизнесу</a></p>
-    <p class="services-note" style="margin-top:10px">Разборы цен: <a href="articles/skolko-stoit-reklamnyj-rolik.html" style="text-decoration:underline">сколько стоит рекламный ролик</a> · <a href="articles/skolko-stoit-cvetokorrekciya.html" style="text-decoration:underline">сколько стоит цветокоррекция</a> · <a href="articles/kak-vybrat-svadebnogo-videografa.html" style="text-decoration:underline">как выбрать свадебного видеографа</a> · <a href="articles/skolko-stoit-svadebnyj-videograf.html" style="text-decoration:underline">сколько стоит свадебный видеограф</a> · <a href="articles/skolko-stoit-klip.html" style="text-decoration:underline">сколько стоит снять клип</a></p>
-    <p class="services-note" style="margin-top:10px">Как это устроено: <a href="articles/kak-snyat-reklamnyj-rolik.html" style="text-decoration:underline">как снимается рекламный ролик — все этапы</a> · <a href="articles/dogovor-s-videografom.html" style="text-decoration:underline">договор с видеографом — что проверить</a> · <a href="articles/" style="text-decoration:underline">все статьи и уроки</a></p>
-    <p class="services-note" style="margin-top:10px">Уроки DaVinci Resolve: <a href="uroki/poryadok-cvetokorrekcii.html" style="text-decoration:underline">порядок цветокоррекции</a> · <a href="uroki/skoupy-kak-videt.html" style="text-decoration:underline">как читать скоупы</a> · <a href="uroki/kolesa-lift-gamma-gain.html" style="text-decoration:underline">колёса Lift, Gamma, Gain</a> · <a href="uroki/" style="text-decoration:underline">все восемь уроков</a></p>
-    <p class="services-note" style="margin-top:10px">Гайды для тех, кто хочет сам: <a href="articles/kak-snimat-video-na-telefon.html" style="text-decoration:underline">как снимать на телефон</a> · <a href="articles/cvetokorrekciya-video-kak-sdelat.html" style="text-decoration:underline">цветокоррекция своими руками</a> · <a href="articles/obuchenie-videosemke-s-nulya.html" style="text-decoration:underline">обучение съёмке с нуля</a></p>
-    <p class="services-note" style="margin-top:10px">Бесплатные инструменты: <a href="konstruktor-dogovora.html" style="text-decoration:underline">конструктор договоров и актов на фото- и видеосъёмку</a></p>
-  </div>
-</section>
-
-<!-- ПРОЦЕСС -->
-<section id="process">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="label">07 · Процесс</span>
-      <h2>Как мы <em>работаем</em></h2>
-    </div>
-    <div class="steps rv">
-      <div class="step"><i>01</i><b>Заявка</b><p>Пишете в телеграм пару строк о задаче — отвечаю в тот же день.</p></div>
-      <div class="step"><i>02</i><b>Бриф</b><p>Созвон или переписка: цель, референсы, сроки, площадки.</p></div>
-      <div class="step"><i>03</i><b>Смета</b><p>Фиксируем состав работ, цену и календарь. Без скрытых доплат.</p></div>
-      <div class="step"><i>04</i><b>Работа</b><p>Съёмка или разработка с промежуточными показами — вы видите ход дела.</p></div>
-      <div class="step"><i>05</i><b>Сдача</b><p>Правки, финал, передача исходников и мастеров. Всё ваше.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ГЕОГРАФИЯ: города-страницы должны иметь вход из тела главной, а не только из подвала -->
-<section id="geo">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="label">08 · География</span>
-      <h2>Где я <em>снимаю</em></h2>
-      <p class="sub">База — Наро-Фоминский округ Подмосковья. Работаю по Москве и Московской области, выезжаю в Обнинск и Калужскую область. По своему округу транспортной наценки нет.</p>
-    </div>
-    <div class="services rv">
-      <a class="service" href="videosemka-moskva.html">
-        <div class="service-name"><b>Москва и область</b><span>реклама · мероприятия · фильмы · свадьбы</span></div>
-        <div class="service-desc">Съёмка, монтаж и цвет одним исполнителем по всей Москве и Московской области. Цены и работы на одной странице.</div>
-        <div class="service-price"><b>от 30 000 ₽</b><span>страница города →</span></div>
-      </a>
-      <a class="service" href="videograf-naro-fominsk.html">
-        <div class="service-name"><b>Наро-Фоминск</b><span>свадьбы · события · реклама для бизнеса</span></div>
-        <div class="service-desc">Домашний город: знаю локации не по карте, приезжаю без наценки за выезд. Фото и видео одной командой.</div>
-        <div class="service-price"><b>от 15 000 ₽</b><span>страница города →</span></div>
-      </a>
-      <a class="service" href="videograf-aprelevka.html">
-        <div class="service-name"><b>Апрелевка</b><span>свадьбы · семейные праздники · бизнес</span></div>
-        <div class="service-desc">Соседний город округа, дорога около получаса. Съёмка праздников и роликов для местных заведений.</div>
-        <div class="service-price"><b>от 15 000 ₽</b><span>страница города →</span></div>
-      </a>
-      <a class="service" href="videograf-obninsk.html">
-        <div class="service-name"><b>Обнинск</b><span>производство · конференции · имидж</span></div>
-        <div class="service-desc">Наукоград и предприятия Калужской области: имиджевые фильмы, съёмка цехов и форумов.</div>
-        <div class="service-price"><b>от 15 000 ₽</b><span>страница города →</span></div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ОБУЧЕНИЕ (тизер) -->
-<section id="edu">
-  <div class="wrap">
-    <div class="channel rv">
-      <div class="channel-copy">
-        <b>Научу снимать и красить</b>
-        <p>База съёмки, DaVinci Resolve, колористика, свет и приборы на площадке. Индивидуально, онлайн или очно — от 3 000 ₽ за занятие.</p>
-      </div>
-      <a class="btn btn-lamp" href="education.html">Программы обучения</a>
-    </div>
-  </div>
-</section>
-
-<!-- КАНАЛ -->
-<section id="channel">
-  <div class="wrap">
-    <div class="channel rv">
-      <div class="channel-copy">
-        <b>Побубним за видео?</b>
-        <p>Телеграм-канал про съёмку, цвет и продакшн изнутри: разборы кадров, бекстейджи, инструменты. Посмотрите, как я думаю, — до того, как писать.</p>
-      </div>
-      <a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Подписаться</a>
-    </div>
-  </div>
-</section>
 </main>
 
 <footer class="footer">
   <div class="wrap">
-    <!-- сюда ведёт запасной путь кнопки «Оставить заявку» (/#zayavka): если
-         скрипт формы не загрузился, человек попадает на живые контакты -->
-    <div class="footer-cta rv" id="zayavka">
-      <h2 class="display">Есть задача?<br><em>Побубним.</em></h2>
-      <div style="display:flex;gap:14px;flex-wrap:wrap">
-        <a class="btn btn-lamp" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
-        <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>
-      </div>
-    </div>
     <nav class="footer-solutions rv" aria-label="Решения">
-      <span class="label">Решения</span>
+      <span class="label">Решения и города</span>
       <div>
         <a href="services/reklamnyj-rolik.html">Рекламный ролик</a>
         <a href="services/imidzhevyj-film.html">Имиджевый фильм</a>
@@ -504,28 +521,58 @@
         <a href="services/semka-meropriyatij.html">Съёмка мероприятий</a>
         <a href="services/sozdanie-sajtov.html">Создание сайтов</a>
         <a href="services/boty-avtomatizaciya.html">Боты и автоматизация</a>
+        <a href="video-dlya-biznesa.html">Видео для бизнеса</a>
+        <a href="ceny.html">Цены на видеосъёмку</a>
         <a href="raboty.html">Портфолио по темам</a>
-        <a href="education.html">Обучение съёмке</a>
-        <a href="articles/obuchenie-videosemke-s-nulya.html">Съёмка с нуля: гайд</a>
-        <a href="uroki/">Уроки DaVinci Resolve</a>
+        <a href="videosemka-moskva.html">Видеосъёмка в Москве</a>
         <a href="videograf-naro-fominsk.html">Съёмка в Наро-Фоминске</a>
         <a href="videograf-aprelevka.html">Съёмка в Апрелевке</a>
         <a href="videograf-obninsk.html">Съёмка в Обнинске</a>
       </div>
     </nav>
+    <nav class="footer-solutions rv" aria-label="Знания" style="margin-top:28px">
+      <span class="label">Знания и обучение</span>
+      <div>
+        <a href="articles/skolko-stoit-svadebnyj-videograf.html">Сколько стоит свадебный видеограф</a>
+        <a href="articles/skolko-stoit-klip.html">Сколько стоит снять клип</a>
+        <a href="uroki/poryadok-cvetokorrekcii.html">Порядок цветокоррекции</a>
+        <a href="uroki/skoupy-kak-videt.html">Как читать скоупы</a>
+        <a href="uroki/kolesa-lift-gamma-gain.html">Колёса Lift, Gamma, Gain</a>
+        <a href="uroki/">Все уроки DaVinci Resolve</a>
+        <a href="articles/kak-snimat-video-na-telefon.html">Как снимать на телефон</a>
+        <a href="articles/cvetokorrekciya-video-kak-sdelat.html">Цветокоррекция своими руками</a>
+        <a href="articles/obuchenie-videosemke-s-nulya.html">Съёмка с нуля: гайд</a>
+        <a href="education.html">Обучение съёмке</a>
+        <a href="konstruktor-dogovora.html">Конструктор договоров на съёмку</a>
+        <a href="instrumenty/">Инструменты</a>
+      </div>
+    </nav>
     <div class="footer-links">
       <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
       <nav aria-label="Контакты">
+        <a href="tel:+79829054454">+7 982 905-44-54</a>
         <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм</a>
         <a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>
         <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
-        <a href="education.html">Обучение</a>
         <a href="https://seversvet.github.io" target="_blank" rel="noopener">СЕВЕРСВЕТ</a>
         <a href="https://monolithapp.github.io" target="_blank" rel="noopener">MONOLITH</a>
       </nav>
     </div>
   </div>
 </footer>
+
+<!-- таймлайн сцен: вне <header>, чтобы tools/build_nav.py находил кнопку шапки на месте -->
+<div class="route-bar" id="route" aria-hidden="true">
+  <div class="route-in"><span class="route-here" data-here>Сцена 01 · Знакомство</span><a class="route-next" data-route-next href="#zadacha" tabindex="-1">Дальше: что вам нужно →</a></div>
+  <div class="route" data-route></div>
+</div>
+
+<!-- док телефона: заявка всегда под пальцем -->
+<div class="dock" id="dock">
+  <button class="btn btn-lamp" type="button" data-lead>Оставить заявку</button>
+  <a class="btn btn-ghost" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+  <a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener" aria-label="Написать в телеграм"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 4.3 2.9 11.5c-1.3.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.9.8.9.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.4-1.5ZM9 14.2l9.3-5.9c.4-.3.9-.1.5.3l-7.8 7.1-.3 3.3L9 14.2Z"/></svg></a>
+</div>
 
 <dialog class="player" id="player">
   <button class="close" aria-label="Закрыть">×</button>
@@ -536,5 +583,6 @@
 <script src="assets/js/main.js"></script>
 <script src="/assets/js/films.js" defer></script>
 <script src="assets/js/nav.js" defer></script>
+<script src="/assets/js/scenes.js" defer></script>
 </body>
 </html>

@@ -18,6 +18,19 @@
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
   --font-ui: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif;
   --font-accent: "Playfair Display", Georgia, serif;
+
+  /* ДС v2 «Режиссёрский сценарий» (24.09.2026, docs/design/). Новые имена
+     добавлены рядом со старыми, старые не переименованы: на них держатся
+     90+ страниц. Компоненты сцен — assets/css/scenes.css. */
+  --bg-1: #0e0e0c;
+  --bg-2: #161614;
+  --ink-2: #b4aea2;
+  --line-2: rgba(255, 253, 245, 0.16);
+  --line-3: rgba(255, 253, 245, 0.32);
+  /* лампочка записи: только точка «вы здесь» и прогресс — не текст и не фон */
+  --tally: #ff5b3a;
+  --tally-glow: rgba(255, 91, 58, 0.45);
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
