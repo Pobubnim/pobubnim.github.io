@@ -887,7 +887,9 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 @media (max-width: 700px) {
   .films { grid-template-columns: 1fr; }
   .films-vert { grid-template-columns: repeat(2, 1fr); }
-  .steps { grid-template-columns: 1fr; }
+  /* .steps.four сильнее .steps и держал на телефоне две колонки по ~160 px:
+     длинное слово в карточке выталкивало страницу вбок (check_live 25.09) */
+  .steps, .steps.four { grid-template-columns: 1fr; }
   .hero-note { display: none; }
   .hero-in { flex-direction: column; align-items: flex-start; }
   .about-mini { grid-template-columns: repeat(3, 1fr); }
