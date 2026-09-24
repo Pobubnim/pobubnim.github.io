@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Дизайн-система ПОБУБНИМ v2</title>
+<link rel="stylesheet" href="../../assets/css/fonts.css">
+<link rel="stylesheet" href="ds.css">
+<style>
+  /* оформление самой документации */
+  .doc-hdr { border-bottom: 1px solid var(--line-1); position: sticky; top: 0; z-index: 10; background: rgba(0,0,0,.85); backdrop-filter: blur(14px); }
+  .doc-hdr .wrap { height: 56px; display: flex; align-items: center; gap: var(--s-5); overflow-x: auto; scrollbar-width: none; }
+  .doc-hdr nav { display: flex; gap: var(--s-5); margin-left: auto; }
+  .doc-hdr nav a { font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+  .doc-hdr nav a:hover { color: var(--ink-1); }
+  .intro { padding: var(--s-9) 0 var(--s-6); display: grid; gap: var(--s-5); }
+  .block { padding-top: var(--s-9); }
+  .block > .kicker { display: block; margin-bottom: var(--s-3); }
+  .block > h2 { margin-bottom: var(--s-5); }
+  .block > .t-lead { margin-bottom: var(--s-7); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-4); }
+  @media (max-width: 900px) { .grid3, .grid4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .grid2, .grid3, .grid4 { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--line-1); border-radius: var(--r-m); padding: var(--s-5); background: var(--bg-1); display: grid; gap: var(--s-2); align-content: start; }
+  .card h3 { font-size: var(--t-18); font-weight: 500; }
+  .card p, .card li { font-size: 14px; color: var(--ink-2); }
+  .card ul { padding-left: 18px; display: grid; gap: 4px; }
+  .card .t-mono { color: var(--ink-3); }
+  .bad { border-color: rgba(255, 91, 58, .25); }
+  .bad .t-mono { color: var(--tally); }
+  .sw { border-radius: var(--r-m); overflow: hidden; border: 1px solid var(--line-1); }
+  .sw i { display: block; height: 72px; }
+  .sw div { padding: 10px 12px; display: grid; gap: 2px; }
+  .sw b { font-size: 13px; font-weight: 500; }
+  .sw span { font: 400 11px/1.4 var(--font-mono); color: var(--ink-3); }
+  .spec { display: grid; gap: 0; border-top: 1px solid var(--line-1); }
+  .spec > div { display: grid; grid-template-columns: 180px 1fr; gap: var(--s-5); align-items: baseline; padding: var(--s-4) 0; border-bottom: 1px solid var(--line-1); }
+  .spec .t-mono { color: var(--ink-3); }
+  @media (max-width: 600px) { .spec > div { grid-template-columns: 1fr; gap: 6px; } }
+  .space { display: flex; align-items: flex-end; gap: var(--s-4); flex-wrap: wrap; }
+  .space div { display: grid; gap: 6px; justify-items: center; }
+  .space i { display: block; background: var(--ink-3); opacity: .6; }
+  .space span { font: 400 11px/1 var(--font-mono); color: var(--ink-3); }
+  .stage { border: 1px dashed var(--line-2); border-radius: var(--r-l); padding: clamp(20px, 3vw, 40px); display: grid; gap: var(--s-6); }
+  .stage-row { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; }
+  .cmp-name { font: 500 11px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: var(--s-3); display: block; }
+  .flow { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); }
+  .flow ol { list-style: none; display: grid; gap: 6px; }
+  .flow li { display: grid; grid-template-columns: 34px 1fr; gap: var(--s-3); padding: 10px 14px; border: 1px solid var(--line-1); border-radius: var(--r-s); font-size: 14px; color: var(--ink-2); }
+  .flow li .num { color: var(--ink-3); font-size: 12px; }
+  .flow .new li { background: var(--bg-1); color: var(--ink-1); }
+  .flow .new li small { display: block; color: var(--ink-3); font-size: 12px; margin-top: 2px; }
+  @media (max-width: 760px) { .flow { grid-template-columns: 1fr; } }
+  .shot { border-radius: var(--r-m); overflow: hidden; border: 1px solid var(--line-2); background: var(--bg-1); }
+  .shot img { width: 100%; }
+  .shot figcaption { padding: 10px 14px; font-size: 13px; color: var(--ink-2); border-top: 1px solid var(--line-1); }
+  .long { max-height: 720px; overflow-y: auto; }
+  .phones { overflow-x: auto; border-radius: var(--r-m); border: 1px solid var(--line-2); }
+  .phones img { max-width: none; height: 560px; width: auto; }
+  .mini-dock { display: flex; gap: 8px; padding: 8px; border-radius: var(--r-pill); background: rgba(22,22,20,.9); border: 1px solid var(--line-2); max-width: 360px; }
+  .mini-dock .btn-lamp { flex: 1; height: 44px; }
+  .mini-dock .btn-line { width: 44px; height: 44px; padding: 0; }
+  .demo-route { max-width: 560px; }
+  .demo-route .route b:nth-child(1)::after { transform: scaleX(1); }
+  .demo-route .route b:nth-child(2)::after { transform: scaleX(.45); background: var(--tally); }
+  footer.doc-foot { margin-top: var(--s-10); padding: var(--s-6) 0 var(--s-8); border-top: 1px solid var(--line-1); font-size: 13px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+
+<header class="doc-hdr">
+  <div class="wrap">
+    <a class="logo" href="#"><i></i>ПОБУБНИМ · ДС v2</a>
+    <nav>
+      <a href="#idea">Идея</a><a href="#structure">Структура</a><a href="#tokens">Токены</a>
+      <a href="#components">Компоненты</a><a href="#mockups">Макеты</a><a href="#rollout">Внедрение</a>
+      <a href="maket.html">Живой макет →</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="intro">
+  <span class="kicker">Дизайн-система v2 · черновик 24.09.2026</span>
+  <h1 class="t-display">Режиссёрский <em>сценарий</em></h1>
+  <p class="t-lead">Сайт — это фильм, который смотрит клиент. У фильма есть режиссёр, и он ведёт зрителя за руку: говорит с ним, показывает по одному и всегда даёт понять, что будет дальше.</p>
+  <div class="stage-row">
+    <a class="btn btn-lamp" href="maket.html">Открыть живой макет главной</a>
+    <a class="btn btn-line" href="#mockups">Кадры ПК и мобайла ↓</a>
+  </div>
+</section>
+
+<!-- ============ ИДЕЯ ============ -->
+<section class="block" id="idea">
+  <span class="kicker">01 · Диагноз и идея</span>
+  <h2>Что мешает сейчас</h2>
+  <p class="t-lead">Вкус у сайта уже есть. Нет сюжета: главная — это десять равноправных витрин, а человек сам решает, куда смотреть и когда писать.</p>
+  <div class="grid3">
+    <div class="card bad"><span class="t-mono">Проблема 1</span><h3>Десять секций без развилки</h3><p>Работы → цвет → кадры → продукты → обо мне → цены → процесс → география → обучение → канал. Посетитель с задачей «свадьба» листает то же, что директор завода.</p></div>
+    <div class="card bad"><span class="t-mono">Проблема 2</span><h3>Много равных действий</h3><p>В первом экране три кнопки одного веса, в шапке семь пунктов меню, телефон и заявка. Главное действие не выделено.</p></div>
+    <div class="card bad"><span class="t-mono">Проблема 3</span><h3>Нет «что дальше»</h3><p>Секции обрываются. Человек не знает, сколько ещё листать и где он сейчас. Заявка стоит только в шапке и в подвале.</p></div>
+    <div class="card bad"><span class="t-mono">Проблема 4</span><h3>Свалка ссылок в прайсе</h3><p>Под ценами шесть абзацев мелких ссылок на статьи, уроки и гайды. Для SEO это полезно, но ломает ритм в самом горячем месте.</p></div>
+    <div class="card bad"><span class="t-mono">Проблема 5</span><h3>Автор молчит</h3><p>Сайт личный, а голос Савелия слышно только в абзаце «Обо мне». Остальное — безличные подписи.</p></div>
+    <div class="card bad"><span class="t-mono">Проблема 6</span><h3>Заявку надо сочинять</h3><p>Кнопка ведёт в пустую личку. Человеку приходится самому формулировать задачу, и часть посетителей на этом отваливается.</p></div>
+  </div>
+
+  <h2 style="margin-top:var(--s-9)">Четыре правила</h2>
+  <div class="grid4" style="margin-top:var(--s-6)">
+    <div class="card"><span class="t-mono">Правило 1</span><h3>Сайт говорит</h3><p>В каждой сцене есть <b>реплика</b> автора: фото, имя, одна-две фразы по делу, от первого лица. Реплика объясняет, что делать на этом экране.</p></div>
+    <div class="card"><span class="t-mono">Правило 2</span><h3>Следующий шаг виден всегда</h3><p><b>Таймлайн</b> в шапке показывает, где вы, и называет следующую сцену. Каждая сцена кончается <b>склейкой</b>: «Дальше — …» плюс короткий путь к заявке.</p></div>
+    <div class="card"><span class="t-mono">Правило 3</span><h3>Одно главное действие</h3><p>На экране одна крем-кнопка (<code>lamp</code>). Остальное — контурные кнопки и текст. На телефоне заявка всегда под пальцем в <b>доке</b>.</p></div>
+    <div class="card"><span class="t-mono">Правило 4</span><h3>Цвет даёт материал</h3><p>Интерфейс ахроматичен. Кадры — единственное цветное на странице. Лампочка записи <code>tally</code> — только точки «вы здесь» и прогресс.</p></div>
+  </div>
+</section>
+
+<!-- ============ СТРУКТУРА ============ -->
+<section class="block" id="structure">
+  <span class="kicker">02 · Строение сайта</span>
+  <h2>Было десять витрин — стало <em>семь сцен</em></h2>
+  <p class="t-lead">Порядок сцен повторяет вопросы клиента в голове: кто это → умеет ли моё → как выглядит → почему так красиво → как и сколько → можно ли доверять → как начать.</p>
+  <div class="flow">
+    <div>
+      <span class="cmp-name">Сейчас · index.html</span>
+      <ol>
+        <li><span class="num">—</span>Hero, три кнопки одного веса</li>
+        <li><span class="num">01</span>Работы (16 карточек)</li>
+        <li><span class="num">02</span>Колористика</li>
+        <li><span class="num">03</span>Кадры (лента стоп-кадров)</li>
+        <li><span class="num">04</span>Цифровые продукты</li>
+        <li><span class="num">05</span>Обо мне</li>
+        <li><span class="num">06</span>Услуги и цены + 6 абзацев ссылок</li>
+        <li><span class="num">07</span>Процесс</li>
+        <li><span class="num">08</span>География</li>
+        <li><span class="num">—</span>Обучение · Канал · Подвал</li>
+      </ol>
+    </div>
+    <div class="new">
+      <span class="cmp-name">Станет · 7 сцен</span>
+      <ol>
+        <li><span class="num">01</span><span>Знакомство<small>одно действие «Подобрать под задачу» + план разговора</small></span></li>
+        <li><span class="num">02</span><span>Задача<small>развилка из 7 карточек с ценой «от»; выбор ведёт по странице</small></span></li>
+        <li><span class="num">03</span><span>Работы<small>1 главная + 3 работы + «все 35 по темам»</small></span></li>
+        <li><span class="num">04</span><span>Цвет<small>шторка до/после, цена грейда, мостик в уроки</small></span></li>
+        <li><span class="num">05</span><span>Как и сколько<small>5 шагов с «что получите» + стартовые цены</small></span></li>
+        <li><span class="num">06</span><span>Кто я<small>фото, 2 абзаца, факты цифрами, 4 вопроса</small></span></li>
+        <li><span class="num">07</span><span>Ваш ход<small>бриф в три касания собирает сообщение за клиента</small></span></li>
+        <li><span class="num">+</span><span>Подвал-навигатор<small>решения, знания, учёба, география: всё, что было свалкой</small></span></li>
+      </ol>
+    </div>
+  </div>
+  <div class="grid3" style="margin-top:var(--s-6)">
+    <div class="card"><h3>Шапка: 4 раздела вместо 7</h3><p>Работы · Услуги и цены · Обучение · Знания (статьи, уроки, инструменты, «Заказы сами»). Справа телефон и одна кнопка «Обсудить проект».</p></div>
+    <div class="card"><h3>Куда делись секции</h3><p>«Кадры» уходят на страницу «Работы». «Цифровые продукты» — в развилку и в прайс. География и обучение — в подвал-навигатор и на свои страницы.</p></div>
+    <div class="card"><h3>Внутренние страницы</h3><p>Услуги, статьи и уроки получают ту же грамматику: таймлайн, реплики и склейку в конце. Главный шаг там — «Обсудить этот формат».</p></div>
+  </div>
+</section>
+
+<!-- ============ ТОКЕНЫ ============ -->
+<section class="block" id="tokens">
+  <span class="kicker">03 · Токены</span>
+  <h2>Цвет, шрифт, <em>ритм</em></h2>
+  <p class="t-lead">Все значения живут в <code>:root</code> файла <code>ds.css</code>. Компоненты берут только токены, сырых hex вне токенов нет.</p>
+
+  <span class="cmp-name">Поверхности и текст</span>
+  <div class="grid4">
+    <div class="sw"><i style="background:var(--bg-0)"></i><div><b>bg-0 · канвас</b><span>#000000</span></div></div>
+    <div class="sw"><i style="background:var(--bg-1)"></i><div><b>bg-1 · карточка</b><span>#0e0e0c</span></div></div>
+    <div class="sw"><i style="background:var(--bg-2)"></i><div><b>bg-2 · реплика, ховер</b><span>#161614</span></div></div>
+    <div class="sw"><i style="background:var(--bg-3)"></i><div><b>bg-3 · поднятое</b><span>#20201c</span></div></div>
+    <div class="sw"><i style="background:var(--ink-1)"></i><div><b>ink-1 · текст</b><span>#f2efe8</span></div></div>
+    <div class="sw"><i style="background:var(--ink-2)"></i><div><b>ink-2 · вторичный</b><span>#b4aea2</span></div></div>
+    <div class="sw"><i style="background:var(--ink-3)"></i><div><b>ink-3 · метки</b><span>#8c867a · AA</span></div></div>
+    <div class="sw"><i style="background:var(--line-2)"></i><div><b>line-1/2/3</b><span>белый 8 / 16 / 32 %</span></div></div>
+  </div>
+  <span class="cmp-name" style="margin-top:var(--s-6)">Свет — ровно два источника</span>
+  <div class="grid2">
+    <div class="sw"><i style="background:var(--lamp);box-shadow:inset 0 -30px 60px rgba(0,0,0,.05)"></i><div><b>lamp · действие</b><span>#f5efe2 — главная кнопка, выбранный чип и карточка. Одна на экран.</span></div></div>
+    <div class="sw"><i style="background:radial-gradient(circle at 40px 36px, var(--tally) 6px, transparent 7px), var(--bg-1)"></i><div><b>tally · «идёт запись»</b><span>#ff5b3a — точка «вы здесь», прогресс сцены, логотип. Не текст и не фон.</span></div></div>
+  </div>
+
+  <span class="cmp-name" style="margin-top:var(--s-7)">Три голоса шрифта</span>
+  <div class="spec">
+    <div><span class="t-mono">Inter Tight 300</span><span class="t-display" style="font-size:var(--t-56)">Голос сайта</span></div>
+    <div><span class="t-mono">Playfair Italic 500</span><span style="font-size:var(--t-56);line-height:1.1"><em>эмоция</em> — одно слово в заголовке</span></div>
+    <div><span class="t-mono">JetBrains Mono 500</span><span class="kicker" style="font-size:14px;color:var(--ink-1)">сцена 02 · таймкод 1:08 · от 60 000 ₽</span></div>
+  </div>
+  <span class="cmp-name" style="margin-top:var(--s-7)">Шкала кегля · мобайл → десктоп</span>
+  <div class="spec">
+    <div><span class="t-mono">t-88 · 44→88</span><span class="t-display">Снимаю</span></div>
+    <div><span class="t-mono">t-56 · 36→56 · h2</span><span class="t-h2">Заголовок сцены</span></div>
+    <div><span class="t-mono">t-40 · 30→40 · цифры</span><span style="font:300 var(--t-40)/1 var(--font-ui)">35 работ</span></div>
+    <div><span class="t-mono">t-28 · 22→28 · h3</span><span class="t-h3">Подзаголовок</span></div>
+    <div><span class="t-mono">t-22 · 19→22 · лид</span><span class="t-lead">Лид-абзац и склейка «Дальше»</span></div>
+    <div><span class="t-mono">t-16 · текст</span><span class="t-body">Основной текст, 1.55 интерлиньяж, до 640px в строку</span></div>
+    <div><span class="t-mono">t-12 mono · метка</span><span class="kicker">Сцена · шаг · таймкод</span></div>
+  </div>
+
+  <span class="cmp-name" style="margin-top:var(--s-7)">Отступы · шаг 4px</span>
+  <div class="space">
+    <div><i style="width:4px;height:4px"></i><span>4</span></div><div><i style="width:8px;height:8px"></i><span>8</span></div>
+    <div><i style="width:12px;height:12px"></i><span>12</span></div><div><i style="width:16px;height:16px"></i><span>16</span></div>
+    <div><i style="width:24px;height:24px"></i><span>24</span></div><div><i style="width:32px;height:32px"></i><span>32</span></div>
+    <div><i style="width:48px;height:48px"></i><span>48</span></div><div><i style="width:64px;height:64px"></i><span>64</span></div>
+    <div><i style="width:96px;height:96px"></i><span>96</span></div><div><i style="width:128px;height:128px"></i><span>128</span></div>
+  </div>
+  <div class="grid3" style="margin-top:var(--s-6)">
+    <div class="card"><span class="t-mono">Радиусы</span><p><code>6</code> метки · <code>12</code> карточки · <code>20</code> медиа, реплики, бриф · <code>pill</code> кнопки и чипы</p></div>
+    <div class="card"><span class="t-mono">Сетка</span><p>Контейнер 1200, поле 20→40. Десктоп — 12 колонок, планшет — 2, телефон — 1. Между сценами 88→144.</p></div>
+    <div class="card"><span class="t-mono">Движение</span><p>160 / 240 / 480 мс, <code>ease-out</code>, без пружин. Появление — сдвиг 12px, один раз. <code>reduced-motion</code> выключает всё.</p></div>
+  </div>
+</section>
+
+<!-- ============ КОМПОНЕНТЫ ============ -->
+<section class="block" id="components">
+  <span class="kicker">04 · Компоненты</span>
+  <h2>Словарь <em>разговора</em></h2>
+  <p class="t-lead">Каждый компонент отвечает на вопрос посетителя. Если на экране нечему ответить, компонент не нужен.</p>
+
+  <div class="stage">
+    <div>
+      <span class="cmp-name">Реплика · «что мне тут делать?»</span>
+      <div class="say"><img src="../../assets/img/about-fisheye.webp" alt=""><p><b>Савелий</b>Нажмите на карточку — дальше покажу работы именно этого жанра и подставлю задачу в заявку.</p></div>
+    </div>
+    <div>
+      <span class="cmp-name">Таймлайн · «где я и сколько ещё?»</span>
+      <div class="demo-route">
+        <div class="route-labels" style="display:flex"><span class="here">Сцена 02 · Задача</span><a href="#">Дальше: примеры работ →</a></div>
+        <div class="route"><b></b><b class="on"></b><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+    </div>
+    <div>
+      <span class="cmp-name">Склейка · «что дальше?»</span>
+      <div class="next" style="margin-top:0">
+        <div class="next-go"><span class="kicker">Дальше · сцена 03</span><a href="#">Посмотреть, как это выглядит в кадре <span class="arrow down">↓</span></a></div>
+        <p class="next-alt">Не нашли свою задачу? <a href="#">Опишите её своими словами</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage" style="margin-top:var(--s-4)">
+    <div>
+      <span class="cmp-name">Кнопки · одна крем-кнопка на экран</span>
+      <div class="stage-row">
+        <a class="btn btn-lamp btn-l" href="#">Главное действие</a>
+        <a class="btn btn-lamp" href="#">Основная</a>
+        <a class="btn btn-line" href="#">Второстепенная</a>
+        <a class="btn btn-line btn-s" href="#">Малая</a>
+        <a class="btn btn-text" href="#">Текстовая <span class="arrow">→</span></a>
+      </div>
+    </div>
+    <div>
+      <span class="cmp-name">Чипы · выбор в одно касание</span>
+      <div class="chips"><button class="chip" aria-pressed="true">Рекламный ролик</button><button class="chip" aria-pressed="false">Свадебное кино</button><button class="chip" aria-pressed="false">Цветокоррекция</button></div>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-top:var(--s-4)">
+    <div class="stage">
+      <span class="cmp-name" style="margin:0">Карточка задачи · развилка</span>
+      <div class="picks" style="grid-template-columns:1fr">
+        <button class="pick" aria-pressed="true"><div class="pick-top"><span class="t-mono">01 · для бизнеса</span><span class="pick-go">→</span></div><div><h3>Рекламный ролик</h3><p>Продающий ролик под сайт, соцсети или маркетплейс.</p></div><div class="pick-price"><span class="num">от 60 000 ₽</span><span>под ключ</span></div></button>
+      </div>
+    </div>
+    <div class="stage">
+      <span class="cmp-name" style="margin:0">Карточка работы · таймкод и жанр</span>
+      <a class="work" href="#" style="aspect-ratio:16/10"><img src="../../assets/img/film/fabrik.webp" alt=""><span class="tag">Реклама · имидж</span><span class="tc">1:08</span><div class="work-meta"><b>FABRIK</b><span>Имиджевый ролик для ГК ОСТОВ</span></div></a>
+    </div>
+  </div>
+
+  <div class="stage" style="margin-top:var(--s-4)">
+    <div>
+      <span class="cmp-name">Шаги процесса · «что я получу на каждом шаге?»</span>
+      <ol class="steps">
+        <li class="step"><span class="t-mono">Шаг 01 · сегодня</span><h3>Заявка</h3><p>Пара строк о задаче.</p><span class="get">Ответ в тот же день</span></li>
+        <li class="step"><span class="t-mono">Шаг 02</span><h3>Бриф</h3><p>Цель, референсы, сроки.</p><span class="get">Понятная задача</span></li>
+        <li class="step"><span class="t-mono">Шаг 03</span><h3>Смета</h3><p>Состав, цена, календарь.</p><span class="get">Цена без сюрпризов</span></li>
+        <li class="step"><span class="t-mono">Шаг 04</span><h3>Работа</h3><p>С промежуточными показами.</p><span class="get">Видите ход дела</span></li>
+        <li class="step"><span class="t-mono">Шаг 05</span><h3>Сдача</h3><p>Финал и исходники.</p><span class="get">Всё ваше</span></li>
+      </ol>
+    </div>
+    <div>
+      <span class="cmp-name">Строка цены · «сколько?»</span>
+      <div class="prices"><a class="price" href="#"><h3>Колористика</h3><p>Грейд ролика в DaVinci Resolve, log и RAW</p><span class="num">от 15 000 ₽<small>или от 2 500 ₽ / мин</small></span><span class="go">→</span></a></div>
+    </div>
+    <div class="grid2">
+      <div>
+        <span class="cmp-name">Факт цифрой · «можно доверять?»</span>
+        <div class="facts" style="grid-template-columns:1fr 1fr"><div class="fact"><b class="num">35</b><span>работ в портфолио</span></div><div class="fact"><b class="num">1</b><span>исполнитель на весь проект</span></div></div>
+      </div>
+      <div>
+        <span class="cmp-name">Вопрос · снимает сомнение</span>
+        <div class="faq"><details open><summary>Работаете по договору?</summary><p>Да. Предоплата — часть сметы, финал — после сдачи.</p></details></div>
+      </div>
+    </div>
+    <div>
+      <span class="cmp-name">Док телефона · заявка под пальцем</span>
+      <div class="mini-dock"><a class="btn btn-lamp" href="#">Обсудить проект</a><a class="btn btn-line" href="#" aria-label="Телеграм">✈</a></div>
+    </div>
+  </div>
+  <p class="t-small" style="margin-top:var(--s-4)">Бриф в три касания, шторка «до/после», подвал-навигатор и шапка собраны в <a href="maket.html" style="color:var(--ink-1);border-bottom:1px solid var(--line-2)">живом макете</a>.</p>
+</section>
+
+<!-- ============ МАКЕТЫ ============ -->
+<section class="block" id="mockups">
+  <span class="kicker">05 · Макеты</span>
+  <h2>Главная на <em>ПК</em> и на телефоне</h2>
+  <p class="t-lead">Макет — это настоящая вёрстка на новой системе (<code>maket.html</code>), а не картинка. Кадры сняты с неё: 1440px и 390px. Кнопки, развилка и бриф в живом макете работают.</p>
+
+  <span class="cmp-name">ПК · ключевые экраны</span>
+  <div class="grid3">
+    <figure class="shot"><img src="shots/d-01.jpg" alt="ПК: первый экран"><figcaption>01 · Знакомство: одно действие, реплика, план разговора</figcaption></figure>
+    <figure class="shot"><img src="shots/d-02.jpg" alt="ПК: развилка задач"><figcaption>02 · Задача: развилка с ценами, выбор ведёт дальше</figcaption></figure>
+    <figure class="shot"><img src="shots/d-07.jpg" alt="ПК: бриф"><figcaption>07 · Ваш ход: бриф собирает сообщение</figcaption></figure>
+  </div>
+
+  <span class="cmp-name" style="margin-top:var(--s-7)">Телефон · семь сцен и док</span>
+  <div class="phones"><img src="shots/mobile-screens.jpg" alt="Семь экранов мобильной версии"></div>
+
+  <div class="grid2" style="margin-top:var(--s-7)">
+    <div><span class="cmp-name">ПК · вся страница</span><figure class="shot long"><img src="shots/desktop-full.jpg" alt="ПК: вся главная"></figure></div>
+    <div><span class="cmp-name">Телефон · вся страница</span><figure class="shot long" style="max-width:390px"><img src="shots/mobile-full.jpg" alt="Телефон: вся главная"></figure></div>
+  </div>
+</section>
+
+<!-- ============ ВНЕДРЕНИЕ ============ -->
+<section class="block" id="rollout">
+  <span class="kicker">06 · Внедрение</span>
+  <h2>Как перенести на <em>живой</em> сайт</h2>
+  <p class="t-lead">Без сборщиков и без большого взрыва: система ложится поверх <code>style.css</code> по шагам, каждый шаг — отдельный коммит с проверкой <code>audit_site.py</code> и <code>check_a11y.py</code>.</p>
+  <div class="grid2">
+    <div class="card"><span class="t-mono">Шаг 1</span><h3>Токены</h3><p>Перенести <code>:root</code> из <code>ds.css</code> в <code>assets/css/style.css</code>: старые имена (<code>--char</code>, <code>--smoke</code>…) оставить алиасами на новые, чтобы 90+ страниц не сломались.</p></div>
+    <div class="card"><span class="t-mono">Шаг 2</span><h3>Главная</h3><p>Пересобрать <code>index.html</code> по семи сценам. SEO-ссылки из прайса переезжают в подвал-навигатор, JSON-LD и тексты для роботов не трогаем. Бриф опирается на существующий <code>lead.js</code>.</p></div>
+    <div class="card"><span class="t-mono">Шаг 3</span><h3>Шапка и подвал везде</h3><p>Новая шапка из 4 разделов и подвал-навигатор раскладываются по всем страницам через <code>tools/build_nav.py</code>; меню телефона и док — в <code>nav.js</code>.</p></div>
+    <div class="card"><span class="t-mono">Шаг 4</span><h3>Страницы услуг и статьи</h3><p>Шаблон «сцены + реплика + склейка» на 8 страниц <code>services/</code>, затем статьи и уроки. В конце статьи склейка ведёт к релевантной услуге.</p></div>
+  </div>
+  <div class="card" style="margin-top:var(--s-4)"><span class="t-mono">Что решает владелец</span>
+    <ul>
+      <li>Утвердить tally-красный как второй «свет» интерфейса или оставить только крем.</li>
+      <li>Тексты реплик: сейчас это черновик в тоне сайта, голос должен быть ваш.</li>
+      <li>Факты цифрами: в макете только проверяемые (35 работ, 3 ремесла, 1 исполнитель); если есть годы в профессии или число проектов — подставить.</li>
+      <li>Шторка «до/после»: ждёт пары синхронных кадров LOG + грейд (правило SPEC: без фейкового лога фильтром).</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+<footer class="doc-foot"><div class="wrap">ПОБУБНИМ · дизайн-система v2 «Режиссёрский сценарий» · docs/design/ — служебная папка, на прод не публикуется (_config.yml exclude: docs/)</div></footer>
+</body>
+</html>
