@@ -5,7 +5,8 @@
 это документ. Раньше все двенадцать ссылок в мессенджерах выглядели
 одинаково (общий og/home.jpg), теперь у каждой своя карточка.
 
-Запуск:  python tools/build_og_tools.py   ->  assets/og/tool-<slug>.jpg
+Запуск:  python tools/build_og_tools.py [slug ...]  ->  assets/og/tool-<slug>.jpg
+         (без аргументов — все карточки; со slug — только названные)
 """
 import os
 
@@ -47,6 +48,9 @@ TOOLS = {
     "soglasie-na-semku-rebenka": ("Согласие на съёмку ребёнка", "Документы · дети",
                                   "СОГЛАСИЕ ЗАКОННОГО ПРЕДСТАВИТЕЛЯ", ["1. Персональные данные — 152-ФЗ", "2. Изображение — ст. 152.1 ГК",
                                                                       "3. Публикация — ст. 10.1"]),
+    "kommercheskoe-predlozhenie-na-videosemku": ("Коммерческое предложение на съёмку", "Клиент · документы",
+                                                 "ПРЕДЛОЖЕНИЕ № 12", ["1. Задача клиента", "2. Варианты: состав и цена",
+                                                                             "3. Что не входит, срок"]),
     "shot-list": ("Шот-лист: план кадров", "Планирование · съёмка",
                   "ШОТ-ЛИСТ · СЦЕНА 1", ["1.1 Детали: кольца — ECU", "1.2 Проход — общий (WS)",
                                          "7 кадров · 2 ч 45 мин из 8 ч"]),
@@ -82,13 +86,19 @@ TOOLS = {
 NOTE_DEFAULT = ("Бесплатно, без регистрации",
                 "Всё считается в браузере — данные никуда не уходят")
 NOTES = {
-    "monolit": ("14 дней бесплатно, дальше подписка",
-                "Заказы, деньги и лента заявок с рынка — на ПК и телефоне"),
+    # 24.09: карточка жила со старой моделью оплаты («14 дней, дальше подписка»)
+    # и три дня после правки текстов продавала её в каждом превью ссылки
+    "monolit": ("Ядро бесплатно, без подписки",
+                "ШТАБ — 5 000 ₽ в год · заказы, деньги, заявки"),
 }
 
 REPO_FONTS = os.path.join(REPO, "assets", "fonts")
 FALLBACK = {"bold": "C:/Windows/Fonts/arialbd.ttf", "regular": "C:/Windows/Fonts/arial.ttf",
             "serif": "C:/Windows/Fonts/times.ttf", "serif-bold": "C:/Windows/Fonts/timesbd.ttf"}
+if os.name != "nt":   # облачная сессия: в Liberation Serif нет знака ₽, в DejaVu Serif есть
+    DJ = "/usr/share/fonts/truetype/dejavu/"
+    FALLBACK.update({"serif": DJ + "DejaVuSerif.ttf", "serif-bold": DJ + "DejaVuSerif-Bold.ttf",
+                     "bold": DJ + "DejaVuSans-Bold.ttf", "regular": DJ + "DejaVuSans.ttf"})
 VAR = os.path.join(REPO_FONTS, "InterTight-var.ttf")   # переменный, с кириллицей
 WEIGHT = {"bold": "Bold", "regular": "Regular"}
 
@@ -116,7 +126,7 @@ def wrap(draw, text, f, max_w):
     return lines
 
 
-def build():
+def build(only=None):
     f_brand = font("bold", 26)
     f_over = font("regular", 22)
     f_title = font("bold", 58)
@@ -125,6 +135,8 @@ def build():
     f_doc = font("serif", 21)
 
     for slug, (title, over, doc_h, doc_lines) in TOOLS.items():
+        if only and slug not in only:
+            continue
         im = Image.new("RGB", (W, H), BG)
         d = ImageDraw.Draw(im)
 
@@ -161,4 +173,5 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    import sys
+    build(set(sys.argv[1:]) or None)

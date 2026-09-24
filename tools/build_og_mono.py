@@ -21,7 +21,7 @@ from PIL import Image
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets" / "og"
 FONTS = ROOT / "assets" / "fonts"
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+from _chrome import CHROME  # Windows или облако — tools/_chrome.py
 
 # slug: (надчерк, заголовок, подпись под ним, число в кольце, подпись числа)
 CARDS = {
@@ -67,7 +67,7 @@ h1{{margin-top:22px;font-family:'Manrope';font-size:58px;font-weight:800;letter-
     <div class="eye">{eye}</div>
     <h1>{title}</h1>
     <div class="sub">{sub}</div>
-    <div class="chips"><span class="chip">Windows и Android</span><span class="chip w">14 дней без карты</span></div>
+    <div class="chips"><span class="chip">Windows и Android</span><span class="chip w">Ядро бесплатно, без подписки</span></div>
   </div>
   <div class="ring">
     <svg width="330" height="330" viewBox="0 0 330 330">
