@@ -25,7 +25,7 @@ try:
 except ImportError:
     astral_sun = None
 
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+from _chrome import CHROME  # Windows или облако — tools/_chrome.py
 PORT = 9391
 URL = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:8765/instrumenty/vyzyvnoj-list.html"
 

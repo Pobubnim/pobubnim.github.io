@@ -21,14 +21,14 @@ import urllib.request
 
 import websocket
 
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+from _chrome import CHROME  # Windows или облако — tools/_chrome.py
 PORT = 9503
 LOCAL = os.environ.get("POBUBNIM_URL", "http://localhost:8765/")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WIDTHS = ((390, 844, "телефон"), (1440, 900, "десктоп"))
 
 AXE = os.path.join(
-    subprocess.run(["npm", "root", "-g"], capture_output=True, text=True, shell=True).stdout.strip(),
+    subprocess.run(["npm", "root", "-g"], capture_output=True, text=True, shell=(os.name == "nt")).stdout.strip(),
     "axe-core", "axe.min.js")
 
 RUN = """
@@ -98,6 +98,11 @@ class Tab:
             if not self.js(open_js):
                 return None
             time.sleep(0.6)
+        # Появления (fade/wipe) проверяются в КОНЕЧНОМ виде: axe, пойманный на
+        # середине перехода, мерит полупрозрачный текст и пишет ложный контраст
+        # (замер 24.09: одна и та же подпись давала 4.31, а на повторе 3.56).
+        self.js("document.getAnimations().forEach(a => { try { a.finish(); } catch (e) {} })")
+        time.sleep(0.1)
         self.js(self.axe)
         return json.loads(self.js(RUN, wait=True))
 
