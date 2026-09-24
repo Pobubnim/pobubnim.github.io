@@ -12,9 +12,9 @@
   if (!navIn) return;
   var path = location.pathname || "/";
   var TEL = "tel:+79829054454", TG = "https://t.me/sbphotoshoter";
+  /* те же пункты и тот же порядок, что в панелях шапки (tools/build_nav.py) */
   var SVC = [
-    ["/ceny.html", "Цены на все услуги"],
-    ["/video-dlya-biznesa.html", "Видео для бизнеса"],
+    ["/video-dlya-biznesa.html", "Видео для бизнеса: подбор под задачу"],
     ["/services/reklamnyj-rolik.html", "Рекламный ролик"],
     ["/services/imidzhevyj-film.html", "Имиджевый фильм"],
     ["/services/svadebnoe-kino.html", "Свадебное кино"],
@@ -22,12 +22,16 @@
     ["/services/cvetokorrekciya.html", "Цветокоррекция"],
     ["/services/semka-meropriyatij.html", "Съёмка мероприятий"],
     ["/services/sozdanie-sajtov.html", "Создание сайтов"],
-    ["/services/boty-avtomatizaciya.html", "Боты и автоматизация"]
+    ["/services/boty-avtomatizaciya.html", "Боты и автоматизация"],
+    ["/ceny.html", "Цены на все услуги"]
+  ];
+  var LEARN = [
+    ["/education.html", "Программы обучения"],
+    ["/uroki/", "Уроки DaVinci Resolve"]
   ];
   var KNOW = [
     ["/articles/", "Статьи и разборы цен"],
-    ["/uroki/", "Уроки DaVinci Resolve"],
-    ["/instrumenty/", "Инструменты"],
+    ["/instrumenty/", "Инструменты для съёмки"],
     ["/zakazy-sami.html", "Заказы сами", "hot"]
   ];
   var ICON_TEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
@@ -58,6 +62,47 @@
     }).join("");
   }
 
+  /* --- выпадающие панели шапки ---
+     Открываются наведением и фокусом (CSS), щелчком — закрепляются (.open).
+     aria-expanded говорит диктору, открыта ли панель; Esc закрывает её и
+     возвращает фокус на кнопку раздела */
+  [].forEach.call(document.querySelectorAll(".nav-links .nav-drop"), function (d) {
+    var b = d.querySelector("button");
+    if (!b) return;
+    var sync = function () {
+      var open = !d.classList.contains("shut") && (d.classList.contains("open") || d.matches(":hover") || d.contains(document.activeElement));
+      b.setAttribute("aria-expanded", String(open));
+    };
+    b.setAttribute("aria-expanded", "false");
+    b.addEventListener("click", function () {
+      var open = !d.classList.contains("open") || d.classList.contains("shut");
+      d.classList.remove("shut");
+      d.classList.toggle("open", open);
+      if (!open) d.classList.add("shut");
+      sync();
+    });
+    d.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      d.classList.remove("open");
+      d.classList.add("shut");
+      b.focus();
+      sync();
+    });
+    d.addEventListener("focusin", sync);
+    d.addEventListener("mouseenter", function () { d.classList.remove("shut"); sync(); });
+    d.addEventListener("mouseleave", function () { d.classList.remove("shut"); sync(); });
+    d.addEventListener("focusout", function (e) {
+      if (d.contains(e.relatedTarget)) return;
+      d.classList.remove("open", "shut");
+      setTimeout(sync, 0);
+    });
+  });
+  document.addEventListener("click", function (e) {
+    [].forEach.call(document.querySelectorAll(".nav-links .nav-drop.open"), function (d) {
+      if (!d.contains(e.target)) { d.classList.remove("open"); d.querySelector("button").setAttribute("aria-expanded", "false"); }
+    });
+  });
+
   /* --- бургер + полноэкранное меню (телефон и планшет) --- */
   var burger = document.createElement("button");
   burger.className = "burger";
@@ -71,9 +116,10 @@
   menu.setAttribute("aria-label", "Меню");
   menu.innerHTML =
     '<div class="menu-in">' +
-    '<div class="menu-col"><span class="label">Разделы</span>' +
-    links([["/raboty.html", "Работы"], ["/education.html", "Обучение"]]) + "</div>" +
+    '<div class="menu-col"><span class="label">Работы</span>' +
+    links([["/raboty.html", "Работы по темам"]]) + "</div>" +
     '<div class="menu-col"><span class="label">Услуги и цены</span>' + links(SVC) + "</div>" +
+    '<div class="menu-col"><span class="label">Обучение</span>' + links(LEARN) + "</div>" +
     '<div class="menu-col"><span class="label">Знания</span>' + links(KNOW) + "</div>" +
     '<div class="menu-cta">' +
     cta("btn btn-lamp", "Обсудить проект") +

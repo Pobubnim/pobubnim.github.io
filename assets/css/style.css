@@ -277,6 +277,14 @@ h2 {
 .drop-panel a:hover { color: var(--ink); background: var(--char2); }
 /* первый пункт «Решений» — хаб «Видео для бизнеса»: вход по задаче, а не по названию услуги */
 .drop-panel a.drop-lead { color: var(--ink); margin-bottom: 6px; box-shadow: 0 1px 0 var(--line-soft); border-radius: 7px 7px 0 0; white-space: nowrap; }
+/* последний пункт «Услуг» — прайс: отбит чертой, как итог списка */
+.drop-panel a.drop-foot { color: var(--ink); margin-top: 6px; box-shadow: 0 -1px 0 var(--line-soft); border-radius: 0 0 7px 7px; }
+/* открыта щелчком (nav.js) — держится и без наведения; Esc закрывает (.shut),
+   даже если фокус остался внутри: подсказка по фокусу обязана закрываться (WCAG 1.4.13) */
+.nav-drop.open .drop-panel { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+.nav-drop.open .caret { transform: rotate(180deg); }
+.nav-drop.shut .drop-panel { opacity: 0; visibility: hidden; transform: translateX(-50%) translateY(6px); }
+.nav-drop.shut .caret { transform: none; }
 
 /* --- полноэкранное меню --- */
 .menu {
@@ -711,9 +719,15 @@ a.product:hover .product-shot img { transform: scale(1.03); }
   padding: clamp(48px, 7vw, 72px) 0 32px;
 }
 .footer .footer-cta { margin: 0 0 clamp(56px, 8vw, 88px); }
-.foot-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; }
+/* колонка бренда с контактами + две полки («Решения и города», «Знания и обучение»),
+   в каждой полке две колонки с подписью — как подвал главной v2 */
+.foot-grid { display: grid; grid-template-columns: 1.1fr 2fr 2fr; gap: 40px 48px; }
+.foot-shelf { display: grid; gap: 18px; align-content: start; }
+.foot-shelf-t { padding-bottom: 12px; border-bottom: 1px solid var(--line-1); }
+.foot-shelf-in { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .foot-col { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
 .foot-col .label { margin-bottom: 10px; }
+.foot-sub { margin-bottom: 6px; font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
 .foot-col a { padding: 4px 0; font-size: 14px; color: var(--smoke); transition: color var(--d-fast); }
 .foot-col a:hover { color: var(--ink); }
 .foot-brand p { font-size: 14px; color: var(--smoke); max-width: 280px; text-wrap: pretty; }
@@ -729,9 +743,12 @@ a.product:hover .product-shot img { transform: scale(1.03); }
 }
 .foot-base nav { display: flex; gap: 8px 18px; flex-wrap: wrap; }
 .foot-base a:hover { color: var(--ink); }
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .foot-grid { grid-template-columns: 1fr 1fr; }
   .foot-grid > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+  .foot-grid { grid-template-columns: 1fr; }
 }
 
 /* ---------- модальный плеер ---------- */
@@ -1326,3 +1343,10 @@ main:has(.cfg, .paper) .art-h2::before { content: none; }
 @media (prefers-reduced-motion: reduce) {
   .route-bar, .dock, .arrow { transition: none; }
 }
+
+/* реплика внутри сцены услуги (tools/build_scenes.py): под заголовком, до текста сцены */
+.scene-say { margin: -4px 0 28px; }
+/* склейка между сценами услуги: та же, что на главной, но без лишнего воздуха —
+   у следующей сцены свой отступ сверху */
+.next.scene-next { margin-top: clamp(40px, 6vw, 64px); }
+.next.scene-next + section.svc-sec, .next.scene-next + .footer-cta { margin-top: clamp(56px, 8vw, 96px); }

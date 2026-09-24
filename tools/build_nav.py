@@ -10,15 +10,18 @@
 
 ШАПКА (24.09.2026, docs/design/ §02): четыре раздела вместо семи — Работы ·
 Услуги и цены · Обучение · Знания. Справа телефон и одна кнопка «Обсудить
-проект». Все услуги, прайс, статьи, уроки и инструменты остаются в выпадающих
-панелях статикой — ни одна ссылка шапки не пропала, они стали по полкам.
+проект». «Услуги и цены» открываются подбором «Видео для бизнеса» (.drop-lead),
+дальше 8 услуг и прайс; «Обучение» — программы и уроки DaVinci; «Знания» —
+статьи, инструменты и «Заказы сами» с точкой .hot. Ни одна ссылка шапки не
+пропала — они стали по полкам.
 
-ПОДВАЛ-НАВИГАТОР (там же): вместо строки «На главную · Статьи · Канал» —
-пять полок (о себе, услуги и цены, знания, учиться, география) и строка
-контактов. Ссылки старого подвала, которых нет на полках (на главной — статьи
-и уроки, СЕВЕРСВЕТ, MONOLITH), не выбрасываются: они остаются на своей
-странице строкой «Ещё» под полками. Блок призыва .footer-cta внутри подвала
-(«Работы», «Обучение») сохраняется как есть.
+ПОДВАЛ-НАВИГАТОР (там же): колонка бренда с контактами (телефон, телеграм,
+ВКонтакте, канал) и две полки, как на главной v2: «Решения и города» (услуги,
+прайс, города — /videosemka-moskva.html обязана быть в подвале каждой страницы,
+SEO_RULES 17.09) и «Знания и обучение». Ссылки старого подвала, которых нет на
+полках (на главной — статьи и уроки, СЕВЕРСВЕТ, MONOLITH), не выбрасываются:
+они остаются на своей странице строкой «Ещё» под полками. Блок призыва
+.footer-cta внутри подвала («Работы», «Обучение») сохраняется как есть.
 
 Кнопка заявки в шапке держится рабочей: data-lead — assets/js/lead.js
 перехватывает клик и открывает форму на месте, href остаётся запасным путём.
@@ -45,13 +48,20 @@ SOLUTIONS = [
     ("/services/sozdanie-sajtov.html", "Создание сайтов"),
     ("/services/boty-avtomatizaciya.html", "Боты и автоматизация"),
 ]
-# «Услуги и цены»: прайс первым — это вход «сколько стоит», дальше подбор по задаче
-SERVICES = [("/video-dlya-biznesa.html", "Видео для бизнеса: подбор под задачу")] + SOLUTIONS
+# «Услуги и цены» (задание 24.09): первым пунктом — вход по задаче «Видео для
+# бизнеса: подбор под задачу» (.drop-lead), дальше 8 услуг, последним — прайс
+# (.drop-foot): кто пришёл за «сколько стоит», находит его в конце списка услуг.
+SERVICES_LEAD = ("/video-dlya-biznesa.html", "Видео для бизнеса: подбор под задачу")
+SERVICES = SOLUTIONS + [("/ceny.html", "Цены на все услуги", "drop-foot")]
+# «Обучение»: программы и уроки DaVinci — всё, где человек учится сам
+LEARN = [
+    ("/education.html", "Программы обучения"),
+    ("/uroki/", "Уроки DaVinci Resolve"),
+]
 # «Знания»: всё, что отвечает на вопрос, а не продаёт. «Заказы сами» — шоурум
 # продукта; точка-маркер у пункта осталась (раньше он жил отдельным пунктом шапки)
 KNOW = [
     ("/articles/", "Статьи и разборы цен"),
-    ("/uroki/", "Уроки DaVinci Resolve"),
     ("/instrumenty/", "Инструменты для съёмки"),
     ("/zakazy-sami.html", "Заказы сами", "hot"),
 ]
@@ -63,24 +73,31 @@ TEL = ('<a class="nav-tel" href="tel:+79829054454" aria-label="Позвонит�
        '<span>+7 982 905-44-54</span></a>')
 
 # ---------- подвал-навигатор: полки ----------
+# Две полки, как на главной v2 (задание 24.09): «Решения и города» и «Знания и
+# обучение»; внутри каждой — две колонки с подписью. Контакты — в колонке бренда.
 FOOT = [
-    ("Услуги и цены", [("/ceny.html", "Цены на видеосъёмку"), ("/video-dlya-biznesa.html", "Видео для бизнеса")]
-     + SOLUTIONS),
-    ("Знания", [("/raboty.html", "Работы по темам"), ("/articles/", "Статьи и разборы цен"),
-                ("/uroki/", "Уроки DaVinci Resolve"), ("/instrumenty/", "Инструменты"),
-                ("/konstruktor-dogovora.html", "Конструктор договора"), ("/zakazy-sami.html", "Заказы сами")]),
-    ("Учиться", [("/education.html", "Программы обучения"),
-                 ("/articles/obuchenie-videosemke-s-nulya.html", "Съёмка с нуля"),
-                 ("/articles/kak-snimat-video-na-telefon.html", "Как снимать на телефон"),
-                 ("/articles/cvetokorrekciya-video-kak-sdelat.html", "Цветокоррекция своими руками")]),
-    ("География", [("/videosemka-moskva.html", "Видеосъёмка в Москве"),
-                   ("/videograf-naro-fominsk.html", "Съёмка в Наро-Фоминске"),
-                   ("/videograf-aprelevka.html", "Съёмка в Апрелевке"),
-                   ("/videograf-obninsk.html", "Съёмка в Обнинске")]),
+    ("Решения и города", [
+        ("Услуги и цены", [("/video-dlya-biznesa.html", "Видео для бизнеса"), ("/ceny.html", "Цены на видеосъёмку")]
+         + SOLUTIONS),
+        ("Где снимаю", [("/videosemka-moskva.html", "Видеосъёмка в Москве"),
+                        ("/videograf-naro-fominsk.html", "Съёмка в Наро-Фоминске"),
+                        ("/videograf-aprelevka.html", "Съёмка в Апрелевке"),
+                        ("/videograf-obninsk.html", "Съёмка в Обнинске"),
+                        ("/raboty.html", "Работы по темам")]),
+    ]),
+    ("Знания и обучение", [
+        ("Знания", [("/articles/", "Статьи и разборы цен"), ("/instrumenty/", "Инструменты"),
+                    ("/konstruktor-dogovora.html", "Конструктор договора"), ("/zakazy-sami.html", "Заказы сами")]),
+        ("Учиться", [("/education.html", "Программы обучения"), ("/uroki/", "Уроки DaVinci Resolve"),
+                     ("/articles/obuchenie-videosemke-s-nulya.html", "Съёмка с нуля"),
+                     ("/articles/kak-snimat-video-na-telefon.html", "Как снимать на телефон"),
+                     ("/articles/cvetokorrekciya-video-kak-sdelat.html", "Цветокоррекция своими руками")]),
+    ]),
 ]
 TG, VK, CHANNEL = "https://t.me/sbphotoshoter", "https://vk.ru/sbphotoshoter", "https://t.me/pobubnimzavideo"
 BASE = [(TG, "Телеграм"), (VK, "ВКонтакте"), (CHANNEL, "Канал"), ("/privacy.html", "Конфиденциальность")]
-KNOWN = {h for _, items in FOOT for h, _ in items} | {h for h, _ in BASE} | {"/", "tel:+79829054454"}
+KNOWN = ({h for _, cols in FOOT for _, items in cols for h, _ in items} | {h for h, _ in BASE}
+         | {"/", "tel:+79829054454"})
 
 
 def link(href: str, text: str, page_url: str, cls: str = "") -> str:
@@ -91,6 +108,8 @@ def link(href: str, text: str, page_url: str, cls: str = "") -> str:
 
 
 def drop(title: str, items: list, page_url: str, lead: tuple[str, str] | None = None) -> str:
+    # aria-expanded ведёт nav.js (открыто наведением, фокусом или щелчком); без JS
+    # панель всё равно раскрывается по :focus-within — ссылки доступны с клавиатуры
     inner = (f'\n        {link(*lead, page_url, cls="drop-lead")}' if lead else "") + "".join(
         f'\n        {link(it[0], it[1], page_url, cls=it[2] if len(it) > 2 else "")}' for it in items)
     here = ' data-here' if any(it[0] == page_url for it in items) or (lead and lead[0] == page_url) else ""
@@ -106,8 +125,8 @@ def nav_html(page_url: str) -> str:
     return (
         '<nav class="nav-links" aria-label="Основная">'
         f'\n      {link("/raboty.html", "Работы", page_url)}'
-        + drop("Услуги и цены", SERVICES, page_url, lead=("/ceny.html", "Цены на все услуги"))
-        + f'\n      {link("/education.html", "Обучение", page_url)}'
+        + drop("Услуги и цены", SERVICES, page_url, lead=SERVICES_LEAD)
+        + drop("Обучение", LEARN, page_url)
         + drop("Знания", KNOW, page_url)
         + "\n    </nav>"
     )
@@ -139,10 +158,12 @@ def footer_html(inner: str, page_url: str) -> str:
             continue
         seen.add(href)
         extra.append(f'<a href="{href}"{ext(href)}>{a.group(2).strip()}</a>')
-    cols = "".join(
-        f'\n      <nav class="foot-col" aria-label="{title}"><span class="label">{title}</span>'
-        + "".join(link(h, t, page_url) for h, t in items) + "</nav>"
-        for title, items in FOOT)
+    shelves = "".join(
+        f'\n      <div class="foot-shelf"><span class="label foot-shelf-t">{title}</span><div class="foot-shelf-in">'
+        + "".join(f'<nav class="foot-col" aria-label="{sub}"><span class="foot-sub">{sub}</span>'
+                  + "".join(link(h, t, page_url) for h, t in items) + "</nav>" for sub, items in cols)
+        + "</div></div>"
+        for title, cols in FOOT)
     return (
         '<footer class="footer">\n  <div class="wrap">'
         + (f"\n    {cta}" if cta else "")
@@ -151,8 +172,10 @@ def footer_html(inner: str, page_url: str) -> str:
         '<a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>'
         "<p>Видеосъёмка, цвет и цифровые продукты. Москва, область, Обнинск — лично или командой продакшена MONOLITH7.</p>"
         '<a class="foot-tel" href="tel:+79829054454">+7 982 905-44-54</a>'
+        f'<a href="{TG}" target="_blank" rel="noopener">Телеграм · @sbphotoshoter</a>'
+        f'<a href="{VK}" target="_blank" rel="noopener">ВКонтакте — если телеграм не открывается</a>'
         f'<a href="{CHANNEL}" target="_blank" rel="noopener">Канал «Побубним за видео» →</a></div>'
-        + cols
+        + shelves
         + "\n    </div>"
         + (f'\n    <nav class="foot-extra" aria-label="Ещё по теме"><span class="label">Ещё</span>{"".join(extra)}</nav>'
            if extra else "")
