@@ -8,15 +8,18 @@
 /* Метка, таймлайн, реплика, склейка и док телефона — сквозные компоненты
    ДС v2, живут в style.css (24.09: грамматика сцен разнесена по всему сайту). */
 
+/* цифры и цены главной. Только здесь: на «Заказах сами» .mono — область стилей
+   продукта (monolith.css), общее правило ломало там весь текст */
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
 /* ---------- первый экран ---------- */
 /* v2: высота по содержимому (не меньше экрана), текст на левой тёмной половине кадра */
 .hero.hero-v2 { height: auto; min-height: 100svh; }
-.hero.hero-v2::after {
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 28%),
-    linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.2) 48%, rgba(0,0,0,0) 70%),
-    linear-gradient(0deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 38%, rgba(0,0,0,0) 62%);
-}
+/* Затемнение кадра — как было до v2 (слово владельца 24.09: «детализация ролика
+   не должна ухудшиться»). Три плотных градиента v2 гасили кадр целиком; текст
+   держится на мягкой тени у самих букв, ролик остаётся светлым и детальным. */
+.hero.hero-v2 .hero-copy h1, .hero.hero-v2 .hero-copy p { text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55); }
+.hero.hero-v2 .plan { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6); }
 .hero-in.hero-v2 { padding-top: calc(64px + 72px); }
 .hero.hero-v2 .display { font-size: clamp(44px, 6.6vw, 96px); }
 .hero.hero-v2 .hero-copy p { color: var(--ink); opacity: 0.88; }

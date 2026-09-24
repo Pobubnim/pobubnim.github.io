@@ -106,7 +106,7 @@
   (function () {
     var v = document.currentScript.previousElementSibling;
     var c = navigator.connection || {};
-    var big = innerWidth >= 1024;
+    var big = Math.max(innerWidth, screen.width || 0) >= 1024;  /* экран, а не окно: HD не теряется в узком окне */
     v.poster = big ? "/assets/img/hero-poster.webp" : "/assets/img/hero-poster-m.webp";
     if (c.saveData) return;                 /* экономия трафика: только обложка */
     v.src = big ? "/assets/video/hero-loop-hd.mp4" : "/assets/video/hero-loop-m.mp4";

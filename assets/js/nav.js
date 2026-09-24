@@ -33,16 +33,23 @@
   var ICON_TEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
   var ICON_TG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 4.3 2.9 11.5c-1.3.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.9.8.9.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.4-1.5ZM9 14.2l9.3-5.9c.4-.3.9-.1.5.3l-7.8 7.1-.3 3.3L9 14.2Z"/></svg>';
 
-  /* кнопка шапки — главное действие страницы; её тема идёт в меню и в док.
-     Своя тема страницы (свадьба, клип) берётся из первой кнопки заявки с темой */
+  /* Меню и док открывают форму заявки на месте, как шапка. Тема — та, что автор
+     страницы поставил своей финальной сцене («Ваш ход») или первому экрану услуги;
+     иначе тема кнопки шапки. Не «первая кнопка с темой где попало»: на главной так
+     подставлялась «Цветокоррекция» из блока цвета (проверка 24.09) */
   var head = document.querySelector(".nav .btn-lamp");
-  var leads = document.querySelector("main [data-lead]:not([data-lead=''])") || document.querySelector("[data-lead]:not([data-lead=''])");
-  var topic = leads ? leads.getAttribute("data-lead").replace(/"/g, "") : "";
+  var own = document.querySelector(".footer-cta [data-lead]:not([data-lead='']), .svc-hero [data-lead]:not([data-lead=''])");
+  var topic = ((own || head || { getAttribute: function () { return ""; } }).getAttribute("data-lead") || "").replace(/"/g, "");
+  /* док — только там, где шапка сама открывает форму (не на страницах-шоурумах с телеграмом) */
   var leadBtn = head && head.hasAttribute("data-lead");
   function cta(cls, text) {
-    return leadBtn
-      ? '<button class="' + cls + '" type="button" data-lead="' + topic + '">' + text + "</button>"
-      : '<a class="' + cls + '" href="' + head.getAttribute("href") + '" target="_blank" rel="noopener">' + head.textContent + "</a>";
+    return '<button class="' + cls + '" type="button" data-lead="' + topic + '">' + text + "</button>";
+  }
+  /* ссылка в личку с темой страницы: её уже подписал lead.js — меню и док берут
+     её же, иначе человек пишет «пустое» сообщение (закон 17.09, test_lead) */
+  function tg() {
+    var a = document.querySelector('a[href*="t.me/sbphotoshoter?"]:not([data-brief-tg])');
+    return a ? a.getAttribute("href") : TG;
   }
   function links(list) {
     return list.map(function (s) {
@@ -69,10 +76,11 @@
     '<div class="menu-col"><span class="label">Услуги и цены</span>' + links(SVC) + "</div>" +
     '<div class="menu-col"><span class="label">Знания</span>' + links(KNOW) + "</div>" +
     '<div class="menu-cta">' +
-    (head ? cta("btn btn-lamp", "Обсудить проект") : "") +
+    cta("btn btn-lamp", "Обсудить проект") +
     '<a class="btn btn-ghost" href="' + TEL + '">Позвонить: +7 982 905-44-54</a>' +
-    '<a class="btn btn-ghost" href="' + TG + '" target="_blank" rel="noopener">Написать в телеграм</a>' +
+    '<a class="btn btn-ghost" href="' + tg() + '" target="_blank" rel="noopener">Написать в телеграм</a>' +
     '<a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">Написать в ВК</a>' +
+    '<a class="btn btn-ghost" href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео»</a>' +
     "</div></div>";
   document.body.appendChild(menu);
 
@@ -90,14 +98,20 @@
      таймлайн и док там мешают работе, у них свой призыв внизу страницы */
   var tool = document.querySelector("main .cfg, main .paper, main #paper");
 
-  /* --- таймлайн сцен --- */
-  var scenes = [].slice.call(document.querySelectorAll("[data-scene]"));
-  var auto = !scenes.length;
-  if (auto && !tool) {
+  /* --- таймлайн сцен ---
+     Сцены главной — секции main с data-scene (у досок уроков data-scene есть и у
+     кнопок виджета — это не сцены). На остальных страницах — h1 и видимые h2;
+     список пересобирается на каждом кадре: чипы хабов прячут разделы, и номер
+     сцены обязан совпадать с меткой «—— 03», которую считает CSS */
+  var fixed = [].slice.call(document.querySelectorAll("main > section[data-scene]"));
+  var auto = !fixed.length;
+  function list() {
+    if (!auto) return fixed;
     var h1 = document.querySelector("main h1");
-    scenes = [].slice.call(document.querySelectorAll("main h2")).filter(function (h) { return h.offsetParent !== null; });
-    if (h1) scenes.unshift(h1);
+    var hs = [].slice.call(document.querySelectorAll("main h2")).filter(function (h) { return h.getClientRects().length; });
+    return h1 ? [h1].concat(hs) : hs;
   }
+  var scenes = tool ? [] : list();
   var bar = document.getElementById("route");
   if (scenes.length >= 3 && !bar && !tool) {
     bar = document.createElement("div");
@@ -118,10 +132,14 @@
       return low && t.length > 1 && t[1] === t[1].toLowerCase() ? t[0].toLowerCase() + t.slice(1) : t;
     };
     var track = bar.querySelector("[data-route]"), here = bar.querySelector("[data-here]"), next = bar.querySelector("[data-route-next]");
-    var cells = scenes.map(function () { return track.appendChild(document.createElement("b")); });
+    var cells = [];
     var ticking = false;
     var paint = function () {
       ticking = false;
+      scenes = list();
+      if (!scenes.length) return;
+      while (cells.length < scenes.length) cells.push(track.appendChild(document.createElement("b")));
+      while (cells.length > scenes.length) track.removeChild(cells.pop());
       var line = innerHeight * 0.4, cur = 0, tops = scenes.map(function (s) { return s.getBoundingClientRect().top; });
       tops.forEach(function (top, i) {
         if (top < line) cur = i;
@@ -150,12 +168,13 @@
   /* --- док телефона: заявка всегда под пальцем, пока её нет на экране --- */
   var dock = document.getElementById("dock");
   if (!dock && head && leadBtn && !tool) {
-    dock = document.createElement("div");
+    dock = document.createElement("aside");   /* своя область: axe требует, чтобы всё лежало в ориентирах */
     dock.className = "dock";
     dock.id = "dock";
+    dock.setAttribute("aria-label", "Связаться");
     dock.innerHTML = cta("btn btn-lamp", "Обсудить проект") +
       '<a class="btn btn-ghost" href="' + TEL + '" aria-label="Позвонить: +7 982 905-44-54">' + ICON_TEL + "</a>" +
-      '<a class="btn btn-ghost" href="' + TG + '" target="_blank" rel="noopener" aria-label="Написать в телеграм">' + ICON_TG + "</a>";
+      '<a class="btn btn-ghost" href="' + tg() + '" target="_blank" rel="noopener" aria-label="Написать в телеграм">' + ICON_TG + "</a>";
     document.body.appendChild(dock);
   }
   if (dock && "IntersectionObserver" in window) {
