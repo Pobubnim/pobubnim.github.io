@@ -5,99 +5,8 @@
    Эталон и правила — docs/design/ (index.html — система, maket.html — макет).
    Токены — в :root style.css; этот файл подключается после него. */
 
-/* ---------- служебная речь: сцены, таймкоды, цены ---------- */
-.kicker {
-  font: 500 12px/1.4 var(--font-mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--mute);
-}
-.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-.arrow { display: inline-block; transition: transform 0.24s var(--ease); }
-a:hover > .arrow, button:hover > .arrow { transform: translateX(4px); }
-a:hover > .arrow.down { transform: translateY(3px); }
-.btn-l { height: 54px; padding: 0 28px; font-size: 16px; }
-
-/* ---------- таймлайн сцен ---------- */
-.route-bar {
-  position: fixed; inset: 64px 0 auto 0; z-index: 69;
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--line-soft);
-  opacity: 0; visibility: hidden; transform: translateY(-6px);
-  transition: opacity 0.24s var(--ease), transform 0.24s var(--ease), visibility 0.24s;
-}
-.route-bar.on { opacity: 1; visibility: visible; transform: none; }
-.route-in {
-  max-width: var(--w-page); margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px);
-  height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--mute);
-}
-.route-here { color: var(--ink); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
-.route-here::before, .dot-live::before {
-  content: ""; width: 6px; height: 6px; border-radius: 50%; flex: none;
-  background: var(--tally); box-shadow: 0 0 8px var(--tally-glow);
-}
-.route-next { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.16s; }
-.route-next:hover { color: var(--ink); }
-.route { display: flex; gap: 3px; height: 2px; }
-.route b { flex: 1; background: var(--line); position: relative; overflow: hidden; }
-.route b::after {
-  content: ""; position: absolute; inset: 0; background: var(--smoke);
-  transform: scaleX(var(--p, 0)); transform-origin: left;
-}
-.route b.on::after { background: var(--tally); }
-/* нав прозрачен над первым экраном; вместе с таймлайном он всегда «solid» */
-@media (max-width: 700px) {
-  .route-bar { top: 64px; }
-  .route-in { height: 30px; }
-}
-
-/* ---------- сцена ---------- */
-.scene-head { display: grid; gap: 14px; margin-bottom: clamp(32px, 5vw, 52px); }
-.scene-head.split { grid-template-columns: 1fr minmax(280px, 420px); align-items: end; column-gap: clamp(32px, 5vw, 64px); }
-.scene-head.split .say { grid-column: 2; grid-row: 1 / span 3; }
-.scene-head .kicker { display: inline-flex; align-items: center; gap: 10px; }
-.scene-head .kicker b { color: var(--ink); font-weight: 500; }
-.scene-head .kicker::before { content: ""; width: 24px; height: 1px; background: var(--line-3); }
-.scene-head .sub { color: var(--smoke); font-size: 18px; font-weight: 300; max-width: 620px; text-wrap: pretty; }
-@media (max-width: 900px) {
-  .scene-head.split { grid-template-columns: 1fr; }
-  .scene-head.split .say { grid-column: 1; grid-row: auto; }
-}
-
-/* реплика — голос автора: фото, имя, одна-две фразы, что делать на этом экране */
-.say { display: flex; gap: 12px; align-items: flex-start; max-width: 460px; }
-.say img {
-  width: 36px; height: 36px; border-radius: 50%; flex: none;
-  object-fit: cover; object-position: 50% 35%;
-  border: 1px solid var(--line-2);
-}
-.say p {
-  background: var(--bg-2);
-  border: 1px solid var(--line-soft);
-  border-radius: 4px 20px 20px 20px;
-  padding: 12px 16px;
-  font-size: 15px; line-height: 1.5; color: var(--ink);
-  text-wrap: pretty;
-}
-.say p b { display: block; font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); margin-bottom: 8px; }
-.say.glass p { background: rgba(14, 14, 12, 0.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-
-/* склейка: главный следующий шаг + короткий путь к заявке */
-.next {
-  margin-top: clamp(48px, 7vw, 80px);
-  border-top: 1px solid var(--line-soft);
-  padding-top: 24px;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap;
-}
-.next-go { display: grid; gap: 6px; }
-.next-go > a { font-size: clamp(19px, 1.7vw, 22px); font-weight: 300; letter-spacing: -0.01em; display: inline-flex; gap: 12px; align-items: baseline; }
-.next-go > a:hover { color: #fff; }
-.next-alt { font-size: 14px; color: var(--mute); }
-.next-alt a, .next-alt button { color: var(--ink); border-bottom: 1px solid var(--line-2); background: none; border-top: 0; border-left: 0; border-right: 0; font: inherit; cursor: pointer; padding: 0; }
-.next-alt a:hover, .next-alt button:hover { border-bottom-color: var(--ink); }
+/* Метка, таймлайн, реплика, склейка и док телефона — сквозные компоненты
+   ДС v2, живут в style.css (24.09: грамматика сцен разнесена по всему сайту). */
 
 /* ---------- первый экран ---------- */
 /* v2: высота по содержимому (не меньше экрана), текст на левой тёмной половине кадра */
@@ -357,27 +266,6 @@ a:hover > .arrow.down { transform: translateY(3px); }
 #hod { padding-bottom: clamp(56px, 7vw, 88px); }
 .footer { margin-top: 0; }
 
-/* ---------- док телефона: заявка под большим пальцем ---------- */
-.dock { display: none; }
-@media (max-width: 700px) {
-  .dock {
-    display: flex; gap: 8px; align-items: center;
-    position: fixed; inset: auto 12px calc(12px + env(safe-area-inset-bottom)) 12px; z-index: 55;
-    padding: 8px; border-radius: var(--r-pill);
-    background: rgba(22, 22, 20, 0.86);
-    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-    border: 1px solid var(--line-2);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-    transition: transform 0.24s var(--ease), opacity 0.24s var(--ease);
-  }
-  .dock.away { transform: translateY(calc(100% + 24px)); opacity: 0; pointer-events: none; }
-  .dock .btn { height: 44px; }
-  .dock .btn-lamp { flex: 1; justify-content: center; }
-  .dock .btn-ghost { width: 44px; padding: 0; justify-content: center; }
-  .dock svg { width: 18px; height: 18px; }
-  body.has-dock { padding-bottom: 84px; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .route-bar, .dock, .pick, .chip, .arrow, .pl-row { transition: none; }
+  .pick, .chip, .pl-row { transition: none; }
 }

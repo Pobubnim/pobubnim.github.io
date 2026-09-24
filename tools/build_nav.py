@@ -1,28 +1,34 @@
 # -*- coding: utf-8 -*-
-"""Единая верхняя навигация на всех страницах.
+"""Единые шапка и подвал на всех страницах (ДС v2 «Режиссёрский сценарий»).
 
 Было: 7 разных наборов пунктов, разъехавшихся по 56 файлам вручную (на главной
 9 штук плюс два добавлял nav.js — строка переполнялась, «Обо мне» ломалось на
 две строки, базовая линия скакала). Стало: один список здесь, статикой в HTML
 (робот видит ссылки — JS-меню он не читает).
 
-Запуск:  python tools/build_nav.py
+Запуск:  python tools/build_nav.py      (идемпотентен: второй прогон ничего не меняет)
 
-Правило набора: в шапке живут РАЗДЕЛЫ сайта, а не якоря главной. Якоря
-(«Цвет», «Кадры», «Продукты», «Обо мне») остаются в бургер-меню — nav.js.
-CTA-кнопка в подвале у каждой страницы своя, скрипт её не трогает.
+ШАПКА (24.09.2026, docs/design/ §02): четыре раздела вместо семи — Работы ·
+Услуги и цены · Обучение · Знания. Справа телефон и одна кнопка «Обсудить
+проект». Все услуги, прайс, статьи, уроки и инструменты остаются в выпадающих
+панелях статикой — ни одна ссылка шапки не пропала, они стали по полкам.
 
-Заодно скрипт держит рабочей кнопку заявки в ШАПКЕ: раньше она вела на
-/#zayavka, то есть уносила человека с текущей страницы на главную. Теперь у
-неё есть data-lead — assets/js/lead.js перехватывает клик и открывает форму
-на месте, а href остаётся запасным путём, если скрипт не загрузился. Файл
-lead.js подключается на каждой странице, где есть хоть одна кнопка заявки.
+ПОДВАЛ-НАВИГАТОР (там же): вместо строки «На главную · Статьи · Канал» —
+пять полок (о себе, услуги и цены, знания, учиться, география) и строка
+контактов. Ссылки старого подвала, которых нет на полках (на главной — статьи
+и уроки, СЕВЕРСВЕТ, MONOLITH), не выбрасываются: они остаются на своей
+странице строкой «Ещё» под полками. Блок призыва .footer-cta внутри подвала
+(«Работы», «Обучение») сохраняется как есть.
+
+Кнопка заявки в шапке держится рабочей: data-lead — assets/js/lead.js
+перехватывает клик и открывает форму на месте, href остаётся запасным путём.
 """
 from __future__ import annotations
 
 import glob
 import io
 import os
+import posixpath
 import re
 import sys
 
@@ -39,6 +45,16 @@ SOLUTIONS = [
     ("/services/sozdanie-sajtov.html", "Создание сайтов"),
     ("/services/boty-avtomatizaciya.html", "Боты и автоматизация"),
 ]
+# «Услуги и цены»: прайс первым — это вход «сколько стоит», дальше подбор по задаче
+SERVICES = [("/video-dlya-biznesa.html", "Видео для бизнеса: подбор под задачу")] + SOLUTIONS
+# «Знания»: всё, что отвечает на вопрос, а не продаёт. «Заказы сами» — шоурум
+# продукта; точка-маркер у пункта осталась (раньше он жил отдельным пунктом шапки)
+KNOW = [
+    ("/articles/", "Статьи и разборы цен"),
+    ("/uroki/", "Уроки DaVinci Resolve"),
+    ("/instrumenty/", "Инструменты для съёмки"),
+    ("/zakazy-sami.html", "Заказы сами", "hot"),
+]
 
 TEL = ('<a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54">'
        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 '
@@ -46,10 +62,25 @@ TEL = ('<a class="nav-tel" href="tel:+79829054454" aria-label="Позвонит�
        '-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>'
        '<span>+7 982 905-44-54</span></a>')
 
-LEARN = [
-    ("/education.html", "Программы обучения"),
-    ("/uroki/", "Уроки DaVinci Resolve"),
+# ---------- подвал-навигатор: полки ----------
+FOOT = [
+    ("Услуги и цены", [("/ceny.html", "Цены на видеосъёмку"), ("/video-dlya-biznesa.html", "Видео для бизнеса")]
+     + SOLUTIONS),
+    ("Знания", [("/raboty.html", "Работы по темам"), ("/articles/", "Статьи и разборы цен"),
+                ("/uroki/", "Уроки DaVinci Resolve"), ("/instrumenty/", "Инструменты"),
+                ("/konstruktor-dogovora.html", "Конструктор договора"), ("/zakazy-sami.html", "Заказы сами")]),
+    ("Учиться", [("/education.html", "Программы обучения"),
+                 ("/articles/obuchenie-videosemke-s-nulya.html", "Съёмка с нуля"),
+                 ("/articles/kak-snimat-video-na-telefon.html", "Как снимать на телефон"),
+                 ("/articles/cvetokorrekciya-video-kak-sdelat.html", "Цветокоррекция своими руками")]),
+    ("География", [("/videosemka-moskva.html", "Видеосъёмка в Москве"),
+                   ("/videograf-naro-fominsk.html", "Съёмка в Наро-Фоминске"),
+                   ("/videograf-aprelevka.html", "Съёмка в Апрелевке"),
+                   ("/videograf-obninsk.html", "Съёмка в Обнинске")]),
 ]
+TG, VK, CHANNEL = "https://t.me/sbphotoshoter", "https://vk.ru/sbphotoshoter", "https://t.me/pobubnimzavideo"
+BASE = [(TG, "Телеграм"), (VK, "ВКонтакте"), (CHANNEL, "Канал"), ("/privacy.html", "Конфиденциальность")]
+KNOWN = {h for _, items in FOOT for h, _ in items} | {h for h, _ in BASE} | {"/", "tel:+79829054454"}
 
 
 def link(href: str, text: str, page_url: str, cls: str = "") -> str:
@@ -59,10 +90,10 @@ def link(href: str, text: str, page_url: str, cls: str = "") -> str:
     return f'<a{c} href="{href}"{cur}>{text}</a>'
 
 
-def drop(title: str, items: list[tuple[str, str]], page_url: str, lead: tuple[str, str] | None = None) -> str:
+def drop(title: str, items: list, page_url: str, lead: tuple[str, str] | None = None) -> str:
     inner = (f'\n        {link(*lead, page_url, cls="drop-lead")}' if lead else "") + "".join(
-        f'\n        {link(h, t, page_url)}' for h, t in items)
-    here = ' data-here' if any(h == page_url for h, _ in items) else ""
+        f'\n        {link(it[0], it[1], page_url, cls=it[2] if len(it) > 2 else "")}' for it in items)
+    here = ' data-here' if any(it[0] == page_url for it in items) or (lead and lead[0] == page_url) else ""
     return (
         f'\n      <div class="nav-drop"{here}>'
         f'\n        <button type="button">{title}<span class="caret">▾</span></button>'
@@ -75,16 +106,59 @@ def nav_html(page_url: str) -> str:
     return (
         '<nav class="nav-links" aria-label="Основная">'
         f'\n      {link("/raboty.html", "Работы", page_url)}'
-        # хаб «под задачу» первым пунктом (17.09): без него страница жила только по ссылке с прайса
-        + drop("Решения", SOLUTIONS, page_url, lead=("/video-dlya-biznesa.html", "Видео для бизнеса: подбор под задачу"))
-        + f'\n      {link("/ceny.html", "Цены", page_url)}'
-        + drop("Обучение", LEARN, page_url)
-        + f'\n      {link("/articles/", "Статьи", page_url)}'
-        f'\n      {link("/instrumenty/", "Инструменты", page_url)}'
-        # ВХОД В ШОУРУМ ПРОДУКТА. Без него страница живёт только по прямой ссылке:
-        # человек, попавший на любую другую страницу, о ней не узнаёт.
-        f'\n      {link("/zakazy-sami.html", "Заказы сами", page_url, cls="hot")}'
-        "\n    </nav>"
+        + drop("Услуги и цены", SERVICES, page_url, lead=("/ceny.html", "Цены на все услуги"))
+        + f'\n      {link("/education.html", "Обучение", page_url)}'
+        + drop("Знания", KNOW, page_url)
+        + "\n    </nav>"
+    )
+
+
+def ext(href: str) -> str:
+    return ' target="_blank" rel="noopener"' if href.startswith("http") else ""
+
+
+def abs_url(href: str, page_url: str) -> str:
+    """Относительная ссылка старого подвала → путь от корня, как у полок."""
+    if re.match(r"^(https?:|tel:|mailto:|/|#)", href):
+        return href
+    base = page_url if page_url.endswith("/") else posixpath.dirname(page_url).rstrip("/") + "/"
+    out = posixpath.normpath(posixpath.join(base, href))
+    return out + ("/" if href.endswith("/") and not out.endswith("/") else "")
+
+
+def footer_html(inner: str, page_url: str) -> str:
+    # призыв внутри подвала («Работы», «Обучение») — остаётся первым, как был
+    m = re.search(r'<div class="footer-cta[^"]*">.*?<div class="cta-row">.*?</div>\s*(?:<p class="cta-after">.*?</p>\s*)?</div>',
+                  inner, re.S)
+    cta = m.group(0) if m else ""
+    rest = inner.replace(cta, "") if cta else inner
+    extra, seen = [], set()
+    for a in re.finditer(r'<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>', rest, re.S):
+        href = abs_url(a.group(1), page_url)
+        if href in KNOWN or href in seen or not re.sub(r"<[^>]+>", "", a.group(2)).strip():
+            continue
+        seen.add(href)
+        extra.append(f'<a href="{href}"{ext(href)}>{a.group(2).strip()}</a>')
+    cols = "".join(
+        f'\n      <nav class="foot-col" aria-label="{title}"><span class="label">{title}</span>'
+        + "".join(link(h, t, page_url) for h, t in items) + "</nav>"
+        for title, items in FOOT)
+    return (
+        '<footer class="footer">\n  <div class="wrap">'
+        + (f"\n    {cta}" if cta else "")
+        + '\n    <div class="foot-grid">'
+        '\n      <div class="foot-col foot-brand">'
+        '<a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a>'
+        "<p>Видеосъёмка, цвет и цифровые продукты. Москва, область, Обнинск — лично или командой продакшена MONOLITH7.</p>"
+        '<a class="foot-tel" href="tel:+79829054454">+7 982 905-44-54</a>'
+        f'<a href="{CHANNEL}" target="_blank" rel="noopener">Канал «Побубним за видео» →</a></div>'
+        + cols
+        + "\n    </div>"
+        + (f'\n    <nav class="foot-extra" aria-label="Ещё по теме"><span class="label">Ещё</span>{"".join(extra)}</nav>'
+           if extra else "")
+        + '\n    <div class="foot-base"><span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>'
+        '<nav aria-label="Контакты">' + "".join(f'<a href="{h}"{ext(h)}>{t}</a>' for h, t in BASE) + "</nav></div>"
+        "\n  </div>\n</footer>"
     )
 
 
@@ -101,24 +175,28 @@ def page_url_of(path: str) -> str:
 def main() -> None:
     os.chdir(ROOT)
     pages = [p.replace("\\", "/") for p in glob.glob("**/*.html", recursive=True)]
-    pages = [p for p in pages if not p.startswith("videos/")]
+    pages = [p for p in pages if not p.startswith(("videos/", "docs/", "promo/"))]
     changed = skipped = 0
     for p in pages:
         t = open(p, encoding="utf-8").read()
         if '<nav class="nav-links"' not in t:
             skipped += 1
             continue
-        new = re.sub(r'<nav class="nav-links"[^>]*>.*?</nav>',
-                     lambda _: nav_html(page_url_of(p)), t, count=1, flags=re.S)
-        # кнопка «Оставить заявку» приводится к одному виду везде: /#zayavka —
-        # запасной путь, data-lead открывает форму прямо на странице.
+        url = page_url_of(p)
+        new = re.sub(r'<nav class="nav-links"[^>]*>.*?</nav>', lambda _: nav_html(url), t, count=1, flags=re.S)
+        # кнопка заявки в шапке: одна на все страницы — «Обсудить проект» (ДС v2).
+        # /#zayavka — запасной путь, data-lead открывает форму прямо на странице.
+        # Кнопки с темой (обучение, приложение) и «Записаться» не трогаются.
         # (на статье про блёклую картинку она вела на /#contact — якоря с таким
         # именем на сайте нет, кнопка молча не работала)
-        new = re.sub(r'<a class="btn btn-lamp[^"]*" href="/#(?:zayavka|contact)">Оставить заявку</a>',
-                     '<a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>', new)
+        def head_btn(m: re.Match) -> str:
+            h = re.sub(r'<a class="btn btn-lamp[^"]*" href="/#(?:zayavka|contact)"(?: data-lead)?>(?:Оставить заявку|Обсудить проект)</a>',
+                       '<a class="btn btn-lamp" href="/#zayavka" data-lead>Обсудить проект</a>', m.group(0))
+            return re.sub(r'<button class="btn btn-lamp"( type="button")? data-lead>Оставить заявку</button>',
+                          r'<button class="btn btn-lamp"\1 data-lead>Обсудить проект</button>', h)
+        new = re.sub(r"<header\b.*?</header>", head_btn, new, count=1, flags=re.S)
         # телефон в шапке (слово владельца 17.09: «да, везде»). Трафик Директа —
         # телефоны, а номера на сайте не было нигде, кроме JSON-LD для роботов.
-        # На узкой шапке остаётся значок, на телефоне — кнопка рядом с бургером.
         # Кнопка шапки на разных страницах своя (<a>/<button>, заявка/запись/обсудить),
         # поэтому якорь — «последняя крем-кнопка перед </header>».
         if p != "admin.html":
@@ -126,13 +204,15 @@ def main() -> None:
                          r'(<(a|button) class="btn btn-lamp[^"]*"[^>]*>[^<]*</\2>\s*'
                          r'(?:<button class="burger"[^>]*>.*?</button>\s*)?</div>\s*</header>)',
                          lambda m: TEL + "\n    " + m.group(1), new, count=1, flags=re.S)
+            new = re.sub(r'<footer class="footer">(.*?)</footer>', lambda m: footer_html(m.group(1), url),
+                         new, count=1, flags=re.S)
         if "data-lead" in new and "assets/js/lead.js" not in new:
             new = new.replace("</body>",
                               '<script src="/assets/js/lead.js" defer></script>\n</body>', 1)
         if new != t:
             open(p, "w", encoding="utf-8").write(new)
             changed += 1
-    print(f"Шапка обновлена: {changed} страниц · без шапки: {skipped}")
+    print(f"Шапка и подвал обновлены: {changed} страниц · без шапки: {skipped}")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,10 @@
 /* ПОБУБНИМ — поведение сцен главной (ДС v2 «Режиссёрский сценарий», 24.09.2026).
-   Главная — фильм из семи сцен [data-scene]. Этот файл:
-   — ведёт таймлайн под шапкой: где человек сейчас и какая сцена следующая;
+   Главная — фильм из семи сцен [data-scene]. Таймлайн под шапкой и док
+   телефона ведёт assets/js/nav.js — они теперь на всех страницах. Этот файл:
    — развилка «какое видео нужно»: выбор ставит работы жанра первыми (data-g
      карточек пишет tools/build_films.py), меняет реплику и тему заявки;
    — бриф в три касания собирает текст: в телеграм уходит ссылкой ?text=,
      в форму lead.js — темой и описанием;
-   — прячет док телефона, когда заявка и так на экране.
    Без JS страница цела: сцены идут подряд, кнопки открывают форму или чат. */
 
 (function () {
@@ -13,43 +12,7 @@
   if (!scenes.length) return;
   var TG = "https://t.me/sbphotoshoter";
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var pad = function (n) { return (n < 10 ? "0" : "") + n; };
   var goal = function (n, p) { if (window.pbGoal) window.pbGoal(n, p); };
-
-  /* ---------- таймлайн ---------- */
-  var bar = document.getElementById("route");
-  var track = bar && bar.querySelector("[data-route]");
-  var here = bar && bar.querySelector("[data-here]");
-  var next = bar && bar.querySelector("[data-route-next]");
-  var cells = [];
-  if (track) scenes.forEach(function () { cells.push(track.appendChild(document.createElement("b"))); });
-
-  var ticking = false;
-  function paint() {
-    ticking = false;
-    var line = innerHeight * 0.4, cur = 0;
-    scenes.forEach(function (s, i) {
-      var r = s.getBoundingClientRect();
-      if (r.top < line) cur = i;
-      if (cells[i]) {
-        cells[i].style.setProperty("--p", Math.min(1, Math.max(0, (line - r.top) / r.height)).toFixed(3));
-        cells[i].classList.toggle("on", false);
-      }
-    });
-    if (cells[cur]) cells[cur].classList.add("on");
-    if (!bar) return;
-    bar.classList.toggle("on", scrollY > innerHeight * 0.6);
-    var s = scenes[cur], n = scenes[cur + 1];
-    here.textContent = "Сцена " + pad(cur + 1) + " из " + pad(scenes.length) + " · " + s.dataset.scene;
-    if (n) {
-      next.textContent = "Дальше: " + s.dataset.next + " →";
-      next.href = "#" + n.id;
-      next.hidden = false;
-    } else next.hidden = true;
-  }
-  addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(paint); } }, { passive: true });
-  addEventListener("resize", paint);
-  paint();
 
   /* ---------- бриф в три касания ---------- */
   var state = { what: "", when: "", budget: "" };
@@ -135,18 +98,4 @@
       if (to) to.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
     });
   });
-
-  /* ---------- док телефона ---------- */
-  var dock = document.getElementById("dock");
-  if (dock && "IntersectionObserver" in window) {
-    document.body.classList.add("has-dock");
-    var seen = new Set();
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target); });
-      dock.classList.toggle("away", seen.size > 0);
-    }, { threshold: 0.15 });
-    ["zayavka", "top"].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
-    var foot = document.querySelector(".footer");
-    if (foot) io.observe(foot);
-  }
 })();

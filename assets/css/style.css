@@ -5,11 +5,13 @@
   --void: #000000;          /* канвас */
   --char: #131311;          /* поверхность +1 */
   --char2: #1c1c19;         /* поверхность +2 (ховеры) */
-  --line: rgba(255, 253, 245, 0.09);
+  --line: var(--line-1);
   --line-soft: rgba(255, 253, 245, 0.05);
   --ink: #f2efe8;           /* тёплый белый — текст */
-  --smoke: #a39e93;         /* вторичный */
-  --mute: #898478;          /* метаданные (AA на всех трёх поверхностях: 5.6 / 5.0 / 4.6) */
+  /* вторичный и метки — алиасы на ДС v2 (шаг 1 плана внедрения, 24.09):
+     старые имена живут на 90+ страницах, значения берутся из новых токенов */
+  --smoke: var(--ink-2);
+  --mute: var(--ink-3);     /* метаданные (AA на bg-0…bg-2) */
   --lamp: #f5efe2;          /* крем — единственный «свет» CTA */
   --r-card: 10px;
   --r-pill: 999px;
@@ -24,13 +26,25 @@
      90+ страниц. Компоненты сцен — assets/css/scenes.css. */
   --bg-1: #0e0e0c;
   --bg-2: #161614;
+  --bg-3: #20201c;
+  --ink-1: var(--ink);
   --ink-2: #b4aea2;
+  --ink-3: #8c867a;
+  --line-1: rgba(255, 253, 245, 0.08);
   --line-2: rgba(255, 253, 245, 0.16);
   --line-3: rgba(255, 253, 245, 0.32);
+  --lamp-glow: rgba(245, 239, 226, 0.16);
+  --on-lamp: #0b0b0a;
   /* лампочка записи: только точка «вы здесь» и прогресс — не текст и не фон */
   --tally: #ff5b3a;
   --tally-glow: rgba(255, 91, 58, 0.45);
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r-s: 6px;
+  --r-m: 12px;
+  --r-l: 20px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --d-fast: 160ms;
+  --d-base: 240ms;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -51,6 +65,9 @@ body {
 }
 
 img, video { max-width: 100%; height: auto; display: block; }
+/* атрибут hidden сильнее любого display: правило выше показывало скрытый
+   кадр-исходник досок уроков (#bd-src, 1600×900) огромной картинкой под подвалом */
+[hidden] { display: none !important; }
 
 a { color: inherit; text-decoration: none; }
 
@@ -58,10 +75,10 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- типографика ---------- */
 
+/* метка — «служебная речь» ДС v2: моноширинный, как таймкод на монтажном столе */
 .label {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  font: 500 12px/1.4 var(--font-mono);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--mute);
 }
@@ -115,12 +132,13 @@ h2 {
 }
 .btn-lamp:hover { background: #fff; }
 
+/* контурная — всё, что не главное действие: на экране одна крем-кнопка (ДС v2, правило 3) */
 .btn-ghost {
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-2);
   color: var(--ink);
   background: transparent;
 }
-.btn-ghost:hover { border-color: rgba(255, 253, 245, 0.3); }
+.btn-ghost:hover { border-color: var(--line-3); background: var(--bg-2); }
 
 /* ---------- навигация ---------- */
 
@@ -150,12 +168,13 @@ h2 {
 }
 .wordmark span { color: var(--mute); font-weight: 300; }
 
+/* ДС v2: четыре раздела сразу за логотипом, справа телефон и одна кнопка */
 .nav-links {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;   /* строка пунктов не переносится */
-  gap: 22px;
-  margin-left: auto;
+  gap: 24px;
+  margin-left: 12px;
 }
 /* один рост и одна базовая линия у всех пунктов, включая кнопки дропдаунов:
    до этого «Обо мне» рвалось на две строки и роняло выравнивание всей строки */
@@ -177,14 +196,12 @@ h2 {
 /* Пункт «Заказы сами» — вход в шоурум продукта. Точка-маркер вместо слова
    «новое»: интерфейс сайта ахроматичен, второй акцент ему заводить нельзя,
    поэтому маркер берёт --lamp — единственный свет интерфейса. */
-.nav-links > a.hot,
-.menu-col a.hot { position: relative; }
-.nav-links > a.hot::after,
+.drop-panel a.hot::after,
 .menu-col a.hot::after {
   content: "";
-  position: absolute;
-  top: 4px;
-  right: -8px;
+  display: inline-block;
+  vertical-align: super;
+  margin-left: 6px;
   width: 5px;
   height: 5px;
   border-radius: 50%;
@@ -198,15 +215,16 @@ h2 {
 .nav-tel {
   display: inline-flex; align-items: center; gap: 8px;
   height: 38px; flex: none;
-  font: 500 14px/1 var(--font-ui);
-  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+  font: 500 14px/1 var(--font-mono);
+  letter-spacing: -0.02em;
   color: var(--smoke);
   white-space: nowrap;
   transition: color 0.2s;
 }
 .nav-tel:hover { color: var(--ink); }
 .nav-tel svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
-@media (max-width: 1199px) { .nav-tel span { display: none; } }  /* замер: номер влезает с 1200 */
+@media (max-width: 1023px) { .nav-tel span { display: none; } }  /* 4 раздела: номер влезает с 1024 */
 
 /* --- бургер --- */
 .burger {
@@ -638,32 +656,83 @@ a.product:hover .product-shot img { transform: scale(1.03); }
 
 /* ---------- футер ---------- */
 
-.footer {
-  margin-top: var(--gap-sec);
-  border-top: 1px solid var(--line-soft);
-  padding: clamp(64px, 9vw, 110px) 0 40px;
+/* Финальная сцена страницы «Ваш ход» (ДС v2): метка сцены, крупный вопрос,
+   реплика автора и одна крем-кнопка. Разметка у 75 страниц своя и не менялась —
+   вид собран здесь: .cta-note и так написан от первого лица, поэтому он стал
+   репликой (фото, имя, пузырь), а не серой подписью. */
+.footer-cta {
+  display: flex; flex-direction: column; gap: 24px; align-items: flex-start;
+  margin-top: clamp(64px, 9vw, 112px);
+  padding: clamp(28px, 5vw, 56px);
+  border: 1px solid var(--line-2); border-radius: var(--r-l);
+  background: var(--bg-1);
 }
-
-.footer-cta { display: flex; flex-direction: column; gap: 26px; align-items: flex-start; }
-.footer-cta .cta-note { max-width: 56ch; color: var(--smoke); font-size: 15px; margin-top: -8px; text-wrap: pretty; }
+.footer-cta[style*="padding-top"] { padding-top: clamp(28px, 5vw, 56px) !important; }
+.footer-cta::before {
+  content: "Ваш ход"; content: "Ваш ход" / "";
+  padding-left: 16px;
+  background: radial-gradient(circle, var(--tally) 2.5px, transparent 3px) left center / 6px 6px no-repeat;
+  font: 500 12px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink);
+}
+.footer-cta h2.display { font-size: clamp(36px, 4.8vw, 56px); line-height: 1.06; }
+.footer-cta .cta-note {
+  position: relative; margin: 0 0 0 48px; max-width: 520px;
+  padding: 12px 16px;
+  background: var(--bg-2); border: 1px solid var(--line-1);
+  border-radius: 4px var(--r-l) var(--r-l) var(--r-l);
+  color: var(--ink); font-size: 15px; line-height: 1.5; text-wrap: pretty;
+}
+.footer-cta .cta-note::before {
+  content: "Савелий"; content: "Савелий" / "";
+  display: block; margin-bottom: 8px;
+  font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute);
+}
+.footer-cta .cta-note::after {
+  content: ""; position: absolute; left: -48px; top: 0;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--line-2);
+  background: var(--bg-2) url("/assets/img/say.webp") center / cover;
+}
 .footer-cta .cta-note a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-.cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
 /* строка под кнопками: второй адресат призыва (на инструментах — заказчик) */
-.footer-cta .cta-after { max-width: 56ch; margin-top: 18px; font-size: 13.5px; color: var(--mute); text-wrap: pretty; }
+.footer-cta .cta-after { max-width: 56ch; margin-top: -4px; font-size: 13.5px; color: var(--mute); text-wrap: pretty; }
 .footer-cta .cta-after a { color: var(--smoke); text-decoration: underline; text-underline-offset: 3px; }
-
-.footer-links {
-  margin-top: clamp(48px, 7vw, 80px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  font-size: 13px;
-  color: var(--mute);
-  flex-wrap: wrap;
+@media (max-width: 560px) {
+  .cta-row .btn { flex: 1 1 100%; justify-content: center; }
 }
-.footer-links nav { display: flex; gap: 18px; flex-wrap: wrap; }
-.footer-links a:hover { color: var(--ink); }
+
+/* Подвал-навигатор (ДС v2): всё, что раньше было строкой мелких ссылок, — по полкам.
+   Разметку пишет tools/build_nav.py, одну на все страницы. */
+.footer {
+  margin-top: clamp(72px, 9vw, 112px);
+  border-top: 1px solid var(--line-1);
+  padding: clamp(48px, 7vw, 72px) 0 32px;
+}
+.footer .footer-cta { margin: 0 0 clamp(56px, 8vw, 88px); }
+.foot-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; }
+.foot-col { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.foot-col .label { margin-bottom: 10px; }
+.foot-col a { padding: 4px 0; font-size: 14px; color: var(--smoke); transition: color var(--d-fast); }
+.foot-col a:hover { color: var(--ink); }
+.foot-brand p { font-size: 14px; color: var(--smoke); max-width: 280px; text-wrap: pretty; }
+.foot-brand .wordmark { color: var(--ink); font-size: 16px; }
+.foot-brand .foot-tel { font: 500 15px/1 var(--font-mono); letter-spacing: -0.02em; color: var(--ink); }
+.foot-extra { margin-top: 40px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 20px; }
+.foot-extra a { font-size: 13.5px; color: var(--smoke); }
+.foot-extra a:hover { color: var(--ink); }
+.foot-base {
+  margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-1);
+  display: flex; justify-content: space-between; align-items: center; gap: 12px 20px; flex-wrap: wrap;
+  font-size: 13px; color: var(--mute);
+}
+.foot-base nav { display: flex; gap: 8px 18px; flex-wrap: wrap; }
+.foot-base a:hover { color: var(--ink); }
+@media (max-width: 900px) {
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .foot-grid > :first-child { grid-column: 1 / -1; }
+}
 
 /* ---------- модальный плеер ---------- */
 
@@ -780,19 +849,6 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
   background: none; border: 0; cursor: pointer;
 }
 
-/* ---------- футер: решения ---------- */
-
-.footer-solutions { margin-top: clamp(48px, 7vw, 80px); display: flex; flex-direction: column; gap: 14px; }
-.footer-solutions div { display: flex; flex-wrap: wrap; gap: 10px; }
-.footer-solutions a {
-  font-size: 13.5px;
-  color: var(--smoke);
-  border: 1px solid var(--line-soft);
-  border-radius: var(--r-pill);
-  padding: 8px 16px;
-}
-.footer-solutions a:hover { color: var(--ink); border-color: var(--line); }
-
 /* ---------- появление ---------- */
 
 .rv { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
@@ -815,14 +871,17 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
   .channel { flex-direction: column; align-items: flex-start; }
 }
 
-/* Шапка уходит в бургер до 1040 px, а не до 700: строка разделов занимает ~940 px,
-   и на планшете (768–1000) она вылезала за край ещё до телефона (замер 17.09). */
-@media (max-width: 1040px) {
+/* Шапка ДС v2: четыре раздела занимают ~370 px, строка целиком влезает с 900 px
+   (раньше семь пунктов уходили в бургер уже на 1040). Уже 900 — бургер, телефон
+   значком, кнопка остаётся; на телефоне её роль берёт док внизу экрана. */
+@media (max-width: 900px) {
   .nav-links { display: none; }
   .burger { display: flex; }
-  .nav .btn { display: none; }   /* CTA уезжает в меню — в шапке логотип, телефон и бургер */
-  .nav-tel { margin-left: auto; width: 44px; height: 44px; justify-content: center; color: var(--ink); }
+  .nav-tel { width: 44px; height: 44px; justify-content: center; color: var(--ink); }
   .nav-tel svg { width: 20px; height: 20px; }
+}
+@media (max-width: 700px) {
+  .nav .btn { display: none; }   /* кнопка — в доке и в меню */
 }
 
 @media (max-width: 700px) {
@@ -898,12 +957,16 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 
 /* FAQ-гармошка. Раньше жила инлайном в 24 файлах — уроки её не получали,
    и вставленный туда блок вопросов остался бы без стиля. */
-.svc-faq { border-top: 1px solid var(--line-soft); padding: 18px 4px; }
-.svc-faq:last-of-type { border-bottom: 1px solid var(--line-soft); }
-.svc-faq summary { font-size: 16.5px; font-weight: 500; cursor: pointer; list-style: none; position: relative; padding-right: 30px; }
-.svc-faq summary::after { content: "+"; position: absolute; right: 4px; top: 0; color: var(--mute); font-weight: 300; font-size: 20px; }
-.svc-faq[open] summary::after { content: "–"; }
-.svc-faq p { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
+/* ДС v2: вопрос — строка во всю ширину, «+» поворачивается в «×» */
+.svc-faq { border-top: 1px solid var(--line-1); padding: 0 4px; }
+.svc-faq:last-of-type { border-bottom: 1px solid var(--line-1); }
+.svc-faq summary { font-size: 17px; font-weight: 400; cursor: pointer; list-style: none; position: relative; padding: 20px 36px 20px 0; }
+.svc-faq summary::-webkit-details-marker { display: none; }
+.svc-faq summary::after { content: "+"; position: absolute; right: 4px; top: 17px; color: var(--mute); font: 300 22px/1 var(--font-ui); transition: transform var(--d-base) var(--ease), color var(--d-base); }
+.svc-faq[open] summary::after { transform: rotate(45deg); color: var(--ink); }
+.svc-faq summary:hover::after { color: var(--ink); }
+.svc-faq p { margin: -4px 0 20px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
+@media (prefers-reduced-motion: reduce) { .svc-faq summary::after { transition: none; } }
 
 /* Лента настоящих отзывов (Авито, «Моменты» ВК): карточки в ряд, дальше прокрутка вбок.
    Стили были заперты внутри videosemka-moskva.html — из-за этого блок нельзя было поставить
@@ -1018,3 +1081,242 @@ dialog.lead::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(6
 /* Под чипами разделы стоят теснее. Общее правило section даёт padding-top 140px —
    это ритм длинной страницы, а после нажатия на чип он читается как пустой экран. */
 .hub-nav ~ .hub-sec { padding-top: 0; margin-top: clamp(44px, 5vw, 72px); }
+
+/* ══ ДС v2 «Режиссёрский сценарий» на всём сайте (24.09.2026) ══════════════
+   Сайт — фильм из сцен. Главная собрана по системе первой (scenes.css), здесь
+   то, что нужно ЛЮБОЙ странице: метка-таймкод, таймлайн сцен под шапкой,
+   реплика автора, склейка «дальше», док заявки на телефоне и шаблоны страниц
+   услуг и статей. Эталон — docs/design/. Поведение — assets/js/nav.js. */
+
+/* ---------- служебная речь: сцены, таймкоды, цены ---------- */
+.kicker {
+  font: 500 12px/1.4 var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.arrow { display: inline-block; transition: transform var(--d-base) var(--ease); }
+a:hover > .arrow, button:hover > .arrow { transform: translateX(4px); }
+a:hover > .arrow.down { transform: translateY(3px); }
+.btn-l { height: 54px; padding: 0 28px; font-size: 16px; }
+
+/* ---------- таймлайн сцен: «где я → что дальше» ---------- */
+.route-bar {
+  position: fixed; inset: 64px 0 auto 0; z-index: 69;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line-soft);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity var(--d-base) var(--ease), transform var(--d-base) var(--ease), visibility var(--d-base);
+}
+.route-bar.on { opacity: 1; visibility: visible; transform: none; }
+.route-in {
+  max-width: var(--w-page); margin: 0 auto; padding: 0 var(--gutter);
+  height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--mute);
+}
+.route-here { color: var(--ink); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.route-here::before, .dot-live::before {
+  content: ""; display: inline-block; vertical-align: 1px; margin-right: 8px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--tally); box-shadow: 0 0 8px var(--tally-glow);
+}
+.route-next { flex: none; max-width: 45%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color var(--d-fast); }
+.route-next:hover { color: var(--ink); }
+.route { display: flex; gap: 3px; height: 2px; }
+.route b { flex: 1; background: var(--line); position: relative; overflow: hidden; }
+.route b::after {
+  content: ""; position: absolute; inset: 0; background: var(--smoke);
+  transform: scaleX(var(--p, 0)); transform-origin: left;
+}
+.route b.on::after { background: var(--tally); }
+@media (max-width: 700px) {
+  .route-in { height: 30px; }
+  .route-next { display: none; }   /* на телефоне строка одна: где я */
+}
+
+/* ---------- сцена: метка, заголовок, реплика ---------- */
+.scene-head { display: grid; gap: 14px; margin-bottom: clamp(32px, 5vw, 52px); }
+.scene-head.split { grid-template-columns: 1fr minmax(280px, 420px); align-items: end; column-gap: clamp(32px, 5vw, 64px); }
+.scene-head.split .say { grid-column: 2; grid-row: 1 / span 3; }
+.scene-head .kicker { display: inline-flex; align-items: center; gap: 10px; }
+.scene-head .kicker b { color: var(--ink); font-weight: 500; }
+.scene-head .kicker::before { content: ""; width: 24px; height: 1px; background: var(--line-3); }
+.scene-head .sub { color: var(--smoke); font-size: 18px; font-weight: 300; max-width: 620px; text-wrap: pretty; }
+@media (max-width: 900px) {
+  .scene-head.split { grid-template-columns: 1fr; }
+  .scene-head.split .say { grid-column: 1; grid-row: auto; }
+}
+
+/* реплика — голос автора: фото, имя, одна-две фразы, что делать на этом экране */
+.say { display: flex; gap: 12px; align-items: flex-start; max-width: 460px; }
+.say img {
+  width: 36px; height: 36px; border-radius: 50%; flex: none;
+  object-fit: cover; object-position: 50% 35%;
+  border: 1px solid var(--line-2);
+}
+.say p {
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px var(--r-l) var(--r-l) var(--r-l);
+  padding: 12px 16px;
+  font-size: 15px; line-height: 1.5; color: var(--ink);
+  text-wrap: pretty;
+}
+.say p b { display: block; font: 500 11px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); margin-bottom: 8px; }
+.say.glass p { background: rgba(14, 14, 12, 0.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+/* склейка: главный следующий шаг + короткий путь к заявке */
+.next {
+  margin-top: clamp(48px, 7vw, 80px);
+  border-top: 1px solid var(--line-soft);
+  padding-top: 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap;
+}
+.next-go { display: grid; gap: 6px; }
+.next-go > a { font-size: clamp(19px, 1.7vw, 22px); font-weight: 300; letter-spacing: -0.01em; display: inline-flex; gap: 12px; align-items: baseline; }
+.next-go > a:hover { color: #fff; }
+.next-alt { font-size: 14px; color: var(--mute); }
+.next-alt a, .next-alt button { color: var(--ink); border-bottom: 1px solid var(--line-2); background: none; border-top: 0; border-left: 0; border-right: 0; font: inherit; cursor: pointer; padding: 0; }
+.next-alt a:hover, .next-alt button:hover { border-bottom-color: var(--ink); }
+
+/* ---------- док телефона: заявка под большим пальцем ----------
+   На главной разметка статичная, на остальных страницах док собирает nav.js. */
+.dock { display: none; }
+@media (max-width: 700px) {
+  .dock {
+    display: flex; gap: 8px; align-items: center;
+    position: fixed; inset: auto 12px calc(12px + env(safe-area-inset-bottom)) 12px; z-index: 55;
+    padding: 8px; border-radius: var(--r-pill);
+    background: rgba(22, 22, 20, 0.86);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--line-2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    transition: transform var(--d-base) var(--ease), opacity var(--d-base) var(--ease);
+  }
+  .dock.away { transform: translateY(calc(100% + 24px)); opacity: 0; pointer-events: none; }
+  .dock .btn { height: 44px; }
+  .dock .btn-lamp { flex: 1; justify-content: center; }
+  .dock .btn-ghost { width: 44px; padding: 0; justify-content: center; }
+  .dock svg { width: 18px; height: 18px; }
+  body.has-dock { padding-bottom: 84px; }
+}
+
+/* ---------- страницы услуг, городов и прайса (.svc-*) ----------
+   Шаблон жил инлайном в каждой из 8 услуг одинаковым блоком; теперь он здесь
+   и перекрашен в ДС v2. Общее правило section давало ещё 88–140 px сверху
+   к собственному отступу раздела — сцены разъезжались на полтора экрана. */
+.svc-hero { padding-top: 150px; max-width: 760px; }
+.svc-hero .label, .art-hero .label { margin-bottom: 14px; display: block; }
+.svc-hero p.lead, .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
+.svc-hero .hero-cta { margin-top: 28px; }
+/* первый экран с репликой: текст слева, автор справа (на телефоне — под кнопками) */
+.svc-hero:has(> .say) {
+  max-width: none; display: grid;
+  grid-template-columns: minmax(0, 760px) minmax(260px, 380px);
+  column-gap: clamp(32px, 5vw, 72px); justify-content: space-between; align-items: end;
+}
+.svc-hero:has(> .say) > :not(.say) { grid-column: 1; }
+.svc-hero > .say { grid-column: 2; grid-row: 1 / span 4; margin-bottom: 4px; }
+@media (max-width: 900px) {
+  .svc-hero:has(> .say) { grid-template-columns: minmax(0, 1fr); }
+  .svc-hero > .say { grid-column: 1; grid-row: auto; margin-top: 28px; }
+}
+/* общее правило section (ритм главной) тут не работает: у сцен услуг и статей
+   свой отступ, а первый экран-section без него оставлял 140 px пустоты снизу */
+section.svc-sec, section.svc-hero, section.art-hero { padding-bottom: 0; }
+section.svc-sec { padding-top: 0; }
+@media (max-width: 560px) {
+  .svc-hero .hero-cta .btn, .art-hero .hero-cta .btn { flex: 1 1 100%; justify-content: center; }
+}
+.svc-sec { margin-top: clamp(72px, 10vw, 128px); }
+.svc-h2 { font-size: clamp(28px, 3.4vw, 44px); line-height: 1.08; margin-bottom: 24px; }
+.svc-body p { color: var(--smoke); font-weight: 300; font-size: 17px; max-width: 680px; text-wrap: pretty; margin-bottom: 14px; }
+/* короткий ответ: цена и суть в первых сорока словах — их вырезают в сниппет
+   и в быстрые ответы поиска. Вид — «Коротко» главной: крем-кромка слева */
+.svc-body p.svc-short {
+  color: var(--ink); font-weight: 400; font-size: 16px;
+  padding: 18px 22px; margin-bottom: 24px;
+  border-left: 2px solid var(--lamp); background: var(--bg-1);
+  border-radius: 0 var(--r-m) var(--r-m) 0;
+}
+.svc-grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
+.svc-inc { background: var(--bg-1); border: 1px solid var(--line-1); border-radius: var(--r-m); padding: 24px; }
+.svc-inc b { display: block; margin-bottom: 14px; font: 500 12px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); }
+.svc-inc ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.svc-inc li { font-size: 14.5px; color: var(--smoke); font-weight: 300; padding-left: 20px; position: relative; }
+.svc-inc li::before { content: "→"; position: absolute; left: 0; color: var(--mute); }
+.svc-price { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+.svc-price b { font: 400 clamp(26px, 2.6vw, 32px)/1 var(--font-mono); letter-spacing: -0.03em; white-space: nowrap; }
+.svc-price span { font-size: 13px; color: var(--mute); }
+.svc-works { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.svc-work video { width: 100%; aspect-ratio: 16/9; object-fit: contain; border-radius: var(--r-m); outline: 1px solid rgba(255,255,255,0.07); outline-offset: -1px; background: #000; }
+.svc-work figcaption { margin-top: 10px; display: flex; flex-direction: column; gap: 2px; }
+.svc-work figcaption b { font-size: 15px; font-weight: 500; }
+.svc-work figcaption span { font-size: 13px; color: var(--mute); }
+/* ссылки-чипы «другие решения», «рядом»: чип ДС v2 */
+.svc-all { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+.svc-all a {
+  display: inline-flex; align-items: center; min-height: 38px; padding: 0 16px;
+  font-size: 14px; color: var(--smoke);
+  border: 1px solid var(--line-2); border-radius: var(--r-pill);
+  transition: color var(--d-fast) var(--ease), border-color var(--d-fast) var(--ease);
+}
+.svc-all a:hover { color: var(--ink); border-color: var(--line-3); }
+@media (max-width: 800px) { .svc-grid { grid-template-columns: 1fr; } }
+
+/* ---------- статьи, уроки, инструменты (.art-*) ---------- */
+.art-hero { padding-top: 150px; max-width: 760px; }
+.art-hero time { display: block; margin-top: 16px; font: 500 12px/1.4 var(--font-mono); color: var(--mute); letter-spacing: 0.06em; }
+.art-body { max-width: 720px; margin-top: clamp(40px, 6vw, 64px); }
+.art-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
+.art-body p b { color: var(--ink); font-weight: 500; }
+.art-body a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-3); }
+.art-body a:hover { text-decoration-color: var(--ink); }
+.art-h2 { font-size: clamp(24px, 2.6vw, 32px); margin: clamp(40px, 6vw, 64px) 0 16px; }
+.art-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.art-list li { font-size: 16px; color: var(--smoke); font-weight: 300; padding-left: 18px; position: relative; text-wrap: pretty; }
+.art-list li::before { content: "·"; position: absolute; left: 2px; color: var(--mute); }
+.art-table-wrap { overflow-x: auto; margin-bottom: 16px; }
+.art-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.art-table th { text-align: left; font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line-2); }
+.art-table td { color: var(--smoke); font-weight: 300; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.art-table td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
+
+/* метка сцены над заголовком раздела: «—— 03». Номер = номер сцены в таймлайне
+   (счётчик идёт по всем h2 страницы, первая сцена — первый экран с h1).
+   Альтернативный текст пустой: диктор читает заголовок, а не «ноль три». */
+main { counter-reset: sc 1; }
+main h2 { counter-increment: sc; }
+.svc-h2::before, .art-h2::before {
+  content: counter(sc, decimal-leading-zero);
+  content: counter(sc, decimal-leading-zero) / "";
+  display: block; width: fit-content;
+  margin-bottom: 14px; padding-left: 34px;
+  background: linear-gradient(var(--line-3), var(--line-3)) left center / 24px 1px no-repeat;
+  font: 500 12px/1.4 var(--font-mono); letter-spacing: 0.06em; color: var(--ink);
+}
+/* в конструкторах документов номера разделов не нужны: там своя нумерация листа */
+main:has(.cfg, .paper) .art-h2::before { content: none; }
+
+/* склейка в конце статьи или урока: «Дальше · смотреть решение» + ссылка на услугу */
+.art-svc, .svc-case {
+  margin-top: clamp(48px, 7vw, 72px); max-width: 720px;
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 24px 0 0; background: none; border-radius: 0;
+  border-top: 1px solid var(--line-2);
+}
+.art-svc span, .svc-case span {
+  order: -1;
+  font: 500 12px/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute);
+}
+.art-svc span::before, .svc-case span::before { content: "Дальше · "; content: "Дальше · " / ""; }
+.art-svc b, .svc-case b { font-size: clamp(19px, 1.7vw, 22px); font-weight: 300; letter-spacing: -0.01em; transition: color var(--d-fast); }
+.art-svc:hover b, .svc-case:hover b { color: #fff; }
+.art-svc:hover span, .svc-case:hover span { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .route-bar, .dock, .arrow { transition: none; }
+}
