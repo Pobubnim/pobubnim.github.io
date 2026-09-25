@@ -40,7 +40,14 @@ python reels/reel.py telegram 001-blyokloe-video --to <chat_id>    # присл�
 Черновик без ключа: `all <slug> --placeholder --silent` соберёт ролик на заглушках
 и тишине, чтобы проверить монтаж, титры и длину.
 
-## Подключение ChatGPT
+## Картинки от ChatGPT через GitHub (без баланса API)
+
+ChatGPT рисует по подписке и сдаёт кадры в `reels/incoming/<slug>/` на ветке
+`codex/reels-images`. Протокол — `reels/bridge/README.md`, вход для ChatGPT —
+`reels/bridge/CHATGPT_START.md`, задания — `reels/bridge/tasks/`
+(`python reels/reel.py task <slug>`). Присланные кадры `images` берёт первыми.
+
+## Подключение ChatGPT через API
 
 Для ролика нужен ключ API OpenAI. Подписка ChatGPT Plus не подходит, у API
 отдельный счёт.

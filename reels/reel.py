@@ -6,6 +6,11 @@
     python reels/reel.py all     <slug>     всё по порядку
     python reels/reel.py check   <slug>     проверить сценарий, ничего не генерируя
     python reels/reel.py telegram <slug>    отправить готовый ролик с текстом поста в Telegram
+    python reels/reel.py task    <slug>     задание ChatGPT на картинки -> reels/bridge/tasks/
+
+Картинки можно не генерировать через API, а получить от ChatGPT через GitHub:
+он кладёт их в reels/incoming/<slug>/s1.jpg … (протокол — reels/bridge/README.md),
+и `images` берёт их оттуда в первую очередь, без обращения к API.
 
 Ключ берётся из переменной окружения OPENAI_API_KEY (в репо ключ НЕ класть).
 Для `telegram`: TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID (личка — на проверку,
@@ -37,6 +42,7 @@ ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 FONTS = REPO / "assets" / "fonts"
 OUT = ROOT / "out"
+INCOMING = ROOT / "incoming"
 
 W, H, FPS = 1080, 1920, 30
 CREAM = (245, 239, 226)
@@ -128,6 +134,11 @@ def cmd_images(data, args):
     d = outdir(data["slug"], "img")
     for sc in scenes_for(data, args.only):
         path = d / f"{sc['id']}.png"
+        got = incoming(data["slug"], sc["id"])
+        if got:
+            fit(got, path)
+            print(f"  {sc['id']}: от ChatGPT ({got.name})")
+            continue
         if path.exists() and not args.force:
             print(f"  {sc['id']}: уже есть")
             continue
@@ -151,6 +162,63 @@ def cmd_images(data, args):
             path.write_bytes(base64.b64decode(item["b64_json"]))
         else:
             path.write_bytes(requests.get(item["url"], timeout=120).content)
+
+
+def incoming(slug, sid):
+    for ext in (".png", ".jpg", ".jpeg", ".webp"):
+        p = INCOMING / slug / f"{sid}{ext}"
+        if p.exists():
+            return p
+    return None
+
+
+def fit(src, dst):
+    """Любой присланный кадр -> 1024×1536 (2:3) обрезкой по центру, как отдаёт API."""
+    img = Image.open(src).convert("RGB")
+    w, h = img.size
+    if w / h > 1024 / 1536:
+        nw = int(h * 1024 / 1536)
+        img = img.crop(((w - nw) // 2, 0, (w - nw) // 2 + nw, h))
+    else:
+        nh = int(w * 1536 / 1024)
+        img = img.crop((0, (h - nh) // 2, w, (h - nh) // 2 + nh))
+    img.resize((1024, 1536), Image.LANCZOS).save(dst)
+
+
+def cmd_task(data, args):
+    """Задание для ChatGPT: по промпту на кадр, куда положить файл."""
+    slug = data["slug"]
+    lines = [
+        f"# Картинки для рилса {slug}: {data['title']}",
+        "",
+        "Исполнитель: ChatGPT. Протокол: reels/bridge/README.md.",
+        f"Сдать в папку `reels/incoming/{slug}/` на ветке `codex/reels-images`.",
+        "",
+        "Требования ко всем кадрам:",
+        "- вертикаль 2:3 (1024×1536), формат JPG, качество ~90, файл до 1,5 МБ;",
+        "- имя файла строго `<id>.jpg` из заголовка кадра;",
+        f"- общий стиль (одинаковый для всех кадров): {data.get('style', STYLE)}",
+        "",
+    ]
+    for sc in data["scenes"]:
+        lines += [
+            f"## {sc['id']}.jpg",
+            "",
+            "Промпт:",
+            "",
+            "```",
+            f"{sc['image']}",
+            "",
+            f"Style: {data.get('style', STYLE)}",
+            "```",
+            "",
+            f"Смысл кадра (голос за кадром): {plain(sc['voice'])}",
+            "",
+        ]
+    d = ROOT / "bridge" / "tasks"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / f"{slug}.md").write_text("\n".join(lines), encoding="utf-8")
+    print(f"задание: reels/bridge/tasks/{slug}.md")
 
 
 def placeholder(sc, path):
@@ -451,7 +519,7 @@ def cmd_check(data, args):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("cmd", choices=["images", "voice", "build", "all", "check", "telegram"])
+    p.add_argument("cmd", choices=["images", "voice", "build", "all", "check", "telegram", "task"])
     p.add_argument("slug")
     p.add_argument("--only", help="только эти сцены: s1,s3")
     p.add_argument("--force", action="store_true", help="перегенерировать готовое")
@@ -465,6 +533,8 @@ def main():
         cmd_check(data, args)
     if args.cmd == "telegram":
         cmd_telegram(data, args)
+    if args.cmd == "task":
+        cmd_task(data, args)
     if args.cmd in ("images", "all"):
         print("картинки:")
         cmd_images(data, args)
