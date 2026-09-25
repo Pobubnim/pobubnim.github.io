@@ -5,3 +5,6 @@ videos/**/*.wav
 videos/**/*.mp3
 videos/**/frames/
 tools/__pycache__/
+# Рилсы: картинки, голос и готовые ролики генерируются, в git не идут
+reels/out/
+reels/__pycache__/
