@@ -26,6 +26,7 @@ index_repository после крупных правок; проверка: index
 | (код) tools/indexnow.py | пинг IndexNow по страницам последнего коммита |
 | LEADS_ADMIN.md | заявки: Supabase-бэкенд, админка |
 | VIDEO_LESSONS_PLAN.md, YANDEX_ALGO.md | архив (ролики отменены 25.08; конспект алгоритмов) |
+| (другой репо) monolith_assistant/marketing/VIDEOBLOG_SERIES.md | план серий видеоблога на Remotion (25.09): бренд ПОБУБНИМ, ролики-инструменты, трейлеры уроков, «как это сделано»; факты сайта в нём сверяются с этим репо |
 
 ## Страницы
 
