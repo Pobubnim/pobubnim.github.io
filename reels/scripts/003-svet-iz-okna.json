@@ -1,0 +1,49 @@
+{
+  "slug": "003-svet-iz-okna",
+  "title": "Киношный свет из обычного окна",
+  "cover": "Киношный свет бесплатно",
+  "source": "EDU_BASE §6; урок /uroki/svet-iz-okna.html",
+  "scenes": [
+    {
+      "id": "s1",
+      "title": "Киношный свет бесплатно",
+      "voice": "Самый дешёвый киношный свет уже есть у вас дома. Это окно.",
+      "keyword": "окно",
+      "image": "Empty room with a single large window, soft daylight falling across a wooden chair and floor, deep shadows in the rest of the room, dust particles in the light beam.",
+      "move": "in"
+    },
+    {
+      "id": "s2",
+      "voice": "Окно — это большой мягкий источник света, и он бесплатный. Но всё решает, где стоит герой.",
+      "keyword": "герой",
+      "image": "Wide shot of a person seen from behind standing in a dim room facing a bright window, silhouette softly outlined, curtains, calm mood."
+    },
+    {
+      "id": "s3",
+      "voice": "Лицом к окну — свет плоский, объёма нет. Окно за спиной — силуэт.",
+      "keyword": "силуэт",
+      "image": "Dark silhouette of a person's shoulders and head from behind against a bright overexposed window, no facial detail visible, strong backlight, cinematic.",
+      "move": "out"
+    },
+    {
+      "id": "s4",
+      "voice": "А вот окно сбоку даёт рисунок: одна сторона в свете, другая уходит в тень. Это и есть кино.",
+      "keyword": "кино",
+      "image": "Hands holding a cup of tea on a table lit by soft side window light, one side bright and the other falling off into shadow, beautiful light gradient, dark background."
+    },
+    {
+      "id": "s5",
+      "voice": "Поверните героя к окну боком и сравните. Урок, где можно подвигать окно самому, — по ссылке в профиле.",
+      "keyword": "боком",
+      "image": "Behind-the-scenes: a small mirrorless camera on a tripod in a room pointing at an empty chair beside a window with soft side light, warm and dark tones.",
+      "move": "up"
+    }
+  ],
+  "instagram": {
+    "caption": "Самый дешёвый киношный свет — обычное окно.\n\nЛицом к окну: свет плоский.\nСпиной к окну: силуэт.\nБоком к окну: рисунок и объём, та самая «киношность».\n\nСохрани и попробуй на ближайшей съёмке. Урок, где окно можно двигать самому, — ссылка в шапке профиля.",
+    "hashtags": ["светдлявидео", "видеосъемка", "съемканателефон", "видеограф", "кинематограф", "обучениевидеосъемке"]
+  },
+  "telegram": {
+    "post": "Киношный свет из обычного окна\n\nОкно — большой мягкий источник, и он бесплатный. Всё решает, как стоит герой:\n— лицом к окну: плоско, без объёма;\n— спиной к окну: силуэт;\n— боком: одна сторона в свете, другая уходит в тень. Это и есть рисунок.\n\nИнтерактивный урок, где окно можно повернуть самому:\nhttps://pobubnim.ru/uroki/svet-iz-okna.html?utm_source=telegram&utm_medium=reel"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "slug": "002-tri-oshibki-cveta",
+  "title": "Три ошибки цвета, которые выдают новичка",
+  "cover": "Три ошибки цвета новичка",
+  "source": "EDU_BASE §4, §8б.4а; урок /uroki/tri-oshibki-cveta.html",
+  "scenes": [
+    {
+      "id": "s1",
+      "title": "Три ошибки, которые выдают новичка",
+      "voice": "Три ошибки в цвете, по которым сразу видно новичка. Третью делают почти все.",
+      "keyword": "новичка",
+      "image": "Dramatic close-up of a monitor in a dark room showing an oversaturated, acid-green tinted video frame of a street, reflections on the glossy screen, a hand hovering over a mouse.",
+      "move": "in"
+    },
+    {
+      "id": "s2",
+      "voice": "Первая: LUT прямо поверх лога. Картинка становится кислотной. Сначала техническая конверсия, потом творчество.",
+      "keyword": "кислотной",
+      "image": "Macro shot of a laptop screen with a color grading node graph, one node glowing, a USB drive labeled with nothing lying beside the keyboard, neon acid-green light spill on the desk."
+    },
+    {
+      "id": "s3",
+      "voice": "Вторая: кожа под общим грейдом. Небо красьте как хотите, а кожа обязана остаться кожей. Иначе зритель чувствует фальшь.",
+      "keyword": "кожей",
+      "image": "A hand resting on a table in warm window light, natural healthy skin tone, the rest of the scene graded in deep teal shadows; cinematic contrast between skin and cool background. No face.",
+      "move": "out"
+    },
+    {
+      "id": "s4",
+      "voice": "Третья: красить на глаз по своему экрану. Экран почти всегда врёт в тепло или в холод. Смотрите на скоупы и проверяйте на втором устройстве.",
+      "keyword": "скоупы",
+      "image": "Side-by-side on a dark desk: a laptop screen with a slightly cold blue cast and a phone showing the same frame warmer; between them a small monitor with a green waveform scope. Low-key light."
+    },
+    {
+      "id": "s5",
+      "voice": "Проверьте свой последний ролик по этим трём пунктам. Интерактивный урок — по ссылке в профиле.",
+      "keyword": "трём",
+      "image": "Top-down view of a dark editing desk: notebook with three hand-drawn check boxes (no readable text), a pen, a coffee cup, keyboard edge and warm lamp light pooling on the paper.",
+      "move": "down"
+    }
+  ],
+  "instagram": {
+    "caption": "Три ошибки в цвете, по которым сразу видно новичка:\n\n1. LUT прямо поверх лога. Сначала техническая конверсия, потом творческий LUT.\n2. Кожа под общим грейдом. Небо может быть любым, кожа должна остаться кожей.\n3. Покраска на глаз по своему экрану. Смотрите на скоупы и проверяйте на втором устройстве, хотя бы на телефоне.\n\nИнтерактивный урок с примерами — ссылка в шапке профиля.",
+    "hashtags": ["цветокоррекция", "davinciresolve", "lut", "колорист", "видеомонтаж", "видеограф", "монтажвидео"]
+  },
+  "telegram": {
+    "post": "Три ошибки цвета, которые выдают новичка\n\n1. LUT поверх лога без конверсии: картинка становится кислотной.\n2. Кожа под общим грейдом: зритель чувствует фальшь, не понимая почему.\n3. Покраска на глаз: экран почти наверняка уводит в тепло или холод. Скоупы и второй экран обязательны.\n\nУрок, где каждую ошибку можно включить и выключить:\nhttps://pobubnim.ru/uroki/tri-oshibki-cveta.html?utm_source=telegram&utm_medium=reel"
+  }
+}
