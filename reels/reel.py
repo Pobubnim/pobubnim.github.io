@@ -7,6 +7,7 @@
     python reels/reel.py check   <slug>     проверить сценарий, ничего не генерируя
     python reels/reel.py telegram <slug>    отправить готовый ролик с текстом поста в Telegram
     python reels/reel.py task    <slug>     задание ChatGPT на картинки -> reels/bridge/tasks/
+    python reels/reel.py import  <архив.zip|папка>   разложить кадры от ChatGPT/Codex по reels/incoming/
 
 Картинки можно не генерировать через API, а получить от ChatGPT через GitHub:
 он кладёт их в reels/incoming/<slug>/s1.jpg … (протокол — reels/bridge/README.md),
@@ -38,6 +39,10 @@ from pathlib import Path
 import requests
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import brief  # noqa: E402
+import inserts  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 FONTS = REPO / "assets" / "fonts"
@@ -55,15 +60,7 @@ IMAGE_QUALITY = os.environ.get("OPENAI_IMAGE_QUALITY", "high")
 TTS_MODEL = os.environ.get("OPENAI_TTS_MODEL", "gpt-4o-mini-tts")
 TTS_VOICE = os.environ.get("OPENAI_TTS_VOICE", "onyx")
 
-# Общий стиль картинок: одна рука на весь блог, чтобы лента выглядела серией.
-STYLE = (
-    "Cinematic film still, vertical 9:16 composition, shot on a cinema camera, "
-    "moody low-key lighting, deep true blacks, warm cream highlights, subtle film grain, "
-    "shallow depth of field, color palette of black, warm cream (#f5efe2) and amber. "
-    "Faceless: no recognizable human faces (show hands, silhouettes, backs, gear, screens). "
-    "Absolutely no text, letters, numbers, logos or watermarks in the image. "
-    "Keep the middle-lower third calm and uncluttered: subtitles will be placed there."
-)
+# Промпт кадра — фотопостановка (brief.py), графика поверх кадра — код (inserts.py).
 
 TTS_INSTRUCTIONS = (
     "Русский язык. Спокойный уверенный мужской голос опытного колориста, "
@@ -88,6 +85,9 @@ def load(slug):
         for key in ("id", "voice", "image"):
             if not sc.get(key):
                 errors.append(f"сцена {i + 1}: нет поля {key}")
+        ins = sc.get("insert")
+        if ins and ins.get("type") not in ("scope", "compare", "wheels", "checklist", "chip"):
+            errors.append(f"сцена {sc.get('id')}: неизвестная вставка {ins.get('type')}")
         if sc.get("id") in ids:
             errors.append(f"сцена {sc.get('id')}: id повторяется")
         ids.add(sc.get("id"))
@@ -109,14 +109,21 @@ def outdir(slug, sub=""):
     return d
 
 
-def api_key():
+def auth():
+    """Заголовок авторизации. Ключ — OPENAI_API_KEY; если его нет, запрос уходит без заголовка:
+    облачная среда Claude с «API credentials» подставляет ключ сама, не показывая его сессии."""
     key = os.environ.get("OPENAI_API_KEY")
-    if not key:
-        sys.exit(
-            "нет OPENAI_API_KEY. Добавь ключ в переменные окружения "
-            "(или запусти с --placeholder / --silent для черновика)."
-        )
-    return key
+    return {"Authorization": f"Bearer {key}"} if key else {}
+
+
+def api_fail(what, r):
+    hint = ""
+    if r.status_code == 401:
+        hint = ("\nКлюча нет: добавь OPENAI_API_KEY или API credential для api.openai.com в настройках "
+                "среды (или запусти с --placeholder / --silent для черновика).")
+    elif r.status_code == 429 and "credit" in r.text:
+        hint = "\nНа счёте API нет денег: platform.openai.com → Billing."
+    sys.exit(f"{what} {r.status_code}: {r.text[:400]}{hint}")
 
 
 def scenes_for(data, only):
@@ -146,17 +153,17 @@ def cmd_images(data, args):
             placeholder(sc, path)
             print(f"  {sc['id']}: заглушка")
             continue
-        prompt = f"{sc['image']}\n\nStyle: {data.get('style', STYLE)}"
+        prompt = brief.compose(sc, data)
         print(f"  {sc['id']}: генерирую ({IMAGE_MODEL})…", flush=True)
         r = requests.post(
             f"{API}/images/generations",
-            headers={"Authorization": f"Bearer {api_key()}"},
+            headers=auth(),
             json={"model": IMAGE_MODEL, "prompt": prompt, "size": "1024x1536",
                   "quality": IMAGE_QUALITY, "n": 1},
             timeout=300,
         )
         if r.status_code != 200:
-            sys.exit(f"Images API {r.status_code}: {r.text[:500]}")
+            api_fail("Images API", r)
         item = r.json()["data"][0]
         if item.get("b64_json"):
             path.write_bytes(base64.b64decode(item["b64_json"]))
@@ -186,7 +193,7 @@ def fit(src, dst):
 
 
 def cmd_task(data, args):
-    """Задание для ChatGPT: по промпту на кадр, куда положить файл."""
+    """Задание для ChatGPT: полный бриф на кадр (brief.py) и куда положить файл."""
     slug = data["slug"]
     lines = [
         f"# Картинки для рилса {slug}: {data['title']}",
@@ -195,26 +202,18 @@ def cmd_task(data, args):
         f"Сдать в папку `reels/incoming/{slug}/` на ветке `codex/reels-images`.",
         "",
         "Требования ко всем кадрам:",
-        "- вертикаль 2:3 (1024×1536), формат JPG, качество ~90, файл до 1,5 МБ;",
+        "- вертикаль 2:3 (1024×1536), самое высокое качество генерации, JPG ~90, файл до 1,5 МБ;",
         "- имя файла строго `<id>.jpg` из заголовка кадра;",
-        f"- общий стиль (одинаковый для всех кадров): {data.get('style', STYLE)}",
+        "- промпт копировать ЦЕЛИКОМ, все строки: это постановка съёмки, а не пожелания;",
+        "- текст, цифры, логотипы и приборы в кадр НЕ рисовать: их кладёт сборка поверх кадра;",
+        "- кадр с кривыми руками, лишними пальцами, текстом или пластиковым видом — перегенерировать.",
         "",
     ]
     for sc in data["scenes"]:
-        lines += [
-            f"## {sc['id']}.jpg",
-            "",
-            "Промпт:",
-            "",
-            "```",
-            f"{sc['image']}",
-            "",
-            f"Style: {data.get('style', STYLE)}",
-            "```",
-            "",
-            f"Смысл кадра (голос за кадром): {plain(sc['voice'])}",
-            "",
-        ]
+        lines += [f"## {sc['id']}.jpg", "", "Промпт:", "", "```", brief.compose(sc, data), "```", ""]
+        if sc.get("insert"):
+            lines += [f"Поверх кадра сборка положит вставку `{sc['insert']['type']}` в нижней трети: оставь её спокойной.", ""]
+        lines += [f"Смысл кадра (голос за кадром): {plain(sc['voice'])}", ""]
     d = ROOT / "bridge" / "tasks"
     d.mkdir(parents=True, exist_ok=True)
     (d / f"{slug}.md").write_text("\n".join(lines), encoding="utf-8")
@@ -253,14 +252,14 @@ def cmd_voice(data, args):
         print(f"  {sc['id']}: озвучиваю ({TTS_MODEL}, {TTS_VOICE})…", flush=True)
         r = requests.post(
             f"{API}/audio/speech",
-            headers={"Authorization": f"Bearer {api_key()}"},
+            headers=auth(),
             json={"model": TTS_MODEL, "voice": data.get("voice_name", TTS_VOICE),
                   "input": sc["voice"], "instructions": TTS_INSTRUCTIONS,
                   "response_format": "mp3"},
             timeout=300,
         )
         if r.status_code != 200:
-            sys.exit(f"TTS API {r.status_code}: {r.text[:500]}")
+            api_fail("TTS API", r)
         path.write_bytes(r.content)
 
 
@@ -417,24 +416,47 @@ def cmd_build(data, args):
             layers.append((png, t if j else 0, end))
             t += span
 
+        # вставка кода поверх кадра (inserts.py): сравнение меняет саму основу кадра
+        ins = sc.get("insert")
+        src = img
+        if ins and ins["type"] == "compare":
+            src = tmp / f"{sc['id']}_compare.png"
+            inserts.compare_base(img, src)
+        ins_png = None
+        if ins:
+            frame = Image.open(src).convert("RGB")
+            fw, fh = frame.size
+            cw = int(fh * 9 / 16)
+            frame = frame.crop(((fw - cw) // 2, 0, (fw - cw) // 2 + cw, fh)).resize((W, H))
+            ins_png = tmp / f"{sc['id']}_insert.png"
+            inserts.render(ins, frame).save(ins_png)
+
         move = sc.get("move", moves[i % len(moves)])
         z = {"in": "1+0.10*on/{n}", "out": "1.10-0.10*on/{n}",
              "up": "1.08", "down": "1.08"}[move].format(n=frames)
         yexpr = {"up": f"(ih-ih/zoom)*(1-on/{frames})", "down": f"(ih-ih/zoom)*on/{frames}"}.get(
             move, "ih/2-(ih/zoom/2)")
         # 1024×1536 -> вырез 9:16 -> x2 (меньше дрожи у zoompan) -> плавный наезд
+        base_label = "vb" if ins_png else "v0"
         chain = (f"[0:v]crop=864:1536,scale=2160:3840,"
                  f"zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='{yexpr}':d={frames}:s={W}x{H}:fps={FPS},"
-                 f"format=yuv420p[v0]")
-        inputs = ["-i", str(img)]
+                 f"format=yuv420p[{base_label}]")
+        inputs = ["-i", str(src)]
+        first = 1
+        if ins_png:
+            # вставка входит на 0,25 с: проявляется за 0,35 с и подъезжает на 40 px
+            inputs += ["-loop", "1", "-framerate", str(FPS), "-t", f"{dur:.3f}", "-i", str(ins_png)]
+            chain += (";[1:v]format=rgba,fade=t=in:st=0.25:d=0.35:alpha=1[ins];"
+                      "[vb][ins]overlay=0:'if(lt(t,0.25),40,if(lt(t,0.7),40*(1-(t-0.25)/0.45),0))'[v0]")
+            first = 2
         for k, (png, a, b) in enumerate(layers):
             inputs += ["-i", str(png)]
-            chain += (f";[v{k}][{k + 1}:v]overlay=0:0:enable='between(t,{a:.3f},{b:.3f})'"
+            chain += (f";[v{k}][{k + first}:v]overlay=0:0:enable='between(t,{a:.3f},{b:.3f})'"
                       f"[v{k + 1}]")
         inputs += ["-i", str(audio)]
         seg = tmp / f"seg_{i:02d}.mp4"
         ffmpeg(inputs + [
-            "-filter_complex", chain + f";[{len(layers) + 1}:a]apad=pad_dur={pad},"
+            "-filter_complex", chain + f";[{len(layers) + first}:a]apad=pad_dur={pad},"
             f"aresample=44100,aformat=channel_layouts=stereo[a]",
             "-map", f"[v{len(layers)}]", "-map", "[a]", "-t", f"{dur:.3f}",
             "-r", str(FPS), "-c:v", "libx264", "-preset", "medium", "-crf", "18",
@@ -506,6 +528,45 @@ def cmd_telegram(data, args):
     print(f"отправлено в {chat}")
 
 
+def cmd_import(src):
+    """Архив или папка с кадрами → reels/incoming/<slug>/<id>.<ext>. Slug берётся из пути
+    (папка с именем сценария), id — из имени файла (s1.jpg, s1_v2.png → s1)."""
+    import shutil
+    import tempfile
+    import zipfile
+
+    src = Path(src)
+    tmpdir = None
+    if src.suffix.lower() == ".zip":
+        tmpdir = Path(tempfile.mkdtemp())
+        with zipfile.ZipFile(src) as z:
+            z.extractall(tmpdir)
+        src = tmpdir
+    slugs = {p.stem for p in (ROOT / "scripts").glob("*.json")}
+    placed, skipped = {}, []
+    for f in sorted(src.rglob("*")):
+        if f.suffix.lower() not in (".png", ".jpg", ".jpeg", ".webp") or "__MACOSX" in f.parts:
+            continue
+        slug = next((part for part in f.parts if part in slugs), None)
+        m = re.match(r"(s\d+)", f.stem.lower())
+        if not slug or not m:
+            skipped.append(str(f.relative_to(src)))
+            continue
+        dst = INCOMING / slug / f"{m.group(1)}{f.suffix.lower()}"
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        for old in dst.parent.glob(f"{m.group(1)}.*"):
+            old.unlink()
+        shutil.copy2(f, dst)
+        placed.setdefault(slug, []).append(m.group(1))
+    for slug, ids in placed.items():
+        print(f"  {slug}: {', '.join(sorted(ids))}")
+    if skipped:
+        print("  пропущено (нет папки-сценария или имени sN):\n    " + "\n    ".join(skipped))
+    if tmpdir:
+        shutil.rmtree(tmpdir, ignore_errors=True)
+    return list(placed)
+
+
 def cmd_check(data, args):
     total = 0.0
     for sc in data["scenes"]:
@@ -519,8 +580,8 @@ def cmd_check(data, args):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("cmd", choices=["images", "voice", "build", "all", "check", "telegram", "task"])
-    p.add_argument("slug")
+    p.add_argument("cmd", choices=["images", "voice", "build", "all", "check", "telegram", "task", "import"])
+    p.add_argument("slug", help="сценарий; для import — архив .zip или папка с кадрами")
     p.add_argument("--only", help="только эти сцены: s1,s3")
     p.add_argument("--force", action="store_true", help="перегенерировать готовое")
     p.add_argument("--placeholder", action="store_true", help="картинки-заглушки без API")
@@ -528,6 +589,11 @@ def main():
     p.add_argument("--music", help="фоновая музыка (mp3/wav), тихо под голос")
     p.add_argument("--to", help="telegram: куда отправить (chat_id или @канал)")
     args = p.parse_args()
+    if args.cmd == "import":
+        print("кадры:")
+        for slug in cmd_import(args.slug):
+            cmd_images(load(slug), args)
+        return
     data = load(args.slug)
     if args.cmd == "check":
         cmd_check(data, args)

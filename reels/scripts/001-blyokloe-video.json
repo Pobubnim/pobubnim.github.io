@@ -10,38 +10,84 @@
       "voice": "Почему видео с дорогой камеры выглядит хуже, чем с айфона? Серое. Плоское. Блёклое.",
       "keyword": "Блёклое",
       "image": "Close-up of a cinema camera's small monitor showing a flat, washed-out, low-contrast grey image of a city street at dusk; the camera body is sharp in the foreground, dark studio around it.",
-      "move": "in"
+      "move": "in",
+      "shot": "tight close-up at the level of the camera's side monitor, slight 3/4 angle",
+      "set": "matte black cinema camera body with rubberised grips, brushed aluminium cage, coiled monitor cable, small scuffs on the cage",
+      "light": "single dim practical behind the camera, soft glow of the flat grey monitor as the main light on the metal",
+      "mood": "puzzled quiet",
+      "insert": {
+        "type": "scope"
+      }
     },
     {
       "id": "s2",
       "voice": "Это не брак. Камера пишет лог: нарочно плоский файл, в котором спрятан весь свет сцены. Как негатив у плёнки.",
       "keyword": "негатив",
-      "image": "Hands holding a strip of developed color film negative up against a warm light table, orange film base glowing, dark room, extreme detail of the film grain and sprocket holes."
+      "image": "Hands holding a strip of developed color film negative up against a warm light table, orange film base glowing, dark room, extreme detail of the film grain and sprocket holes.",
+      "shot": "macro close-up, straight-on, film strip crossing the frame diagonally",
+      "lens": "100mm macro at T2.8",
+      "set": "developed 35mm colour negative with orange base, fingerprints and dust specks on the acetate, light table with faint grid",
+      "light": "warm light table glowing through the negative from below, everything else black",
+      "mood": "craft, patience"
     },
     {
       "id": "s3",
       "voice": "Айфон красит картинку за вас. Сразу и навсегда. А камера оставляет выбор вам.",
       "keyword": "выбор",
       "image": "A smartphone lying on a dark wooden desk next to a cinema camera, both screens glowing: the phone shows a punchy saturated image, the camera screen shows a soft flat one. Moody top light.",
-      "move": "out"
+      "move": "out",
+      "shot": "top-down overhead shot, both devices side by side",
+      "set": "dark walnut desk with fine scratches, a modern smartphone and a compact cinema camera, a lens cap, a coiled cable",
+      "light": "one soft overhead key with sharp fall-off, both screens emitting their own glow",
+      "mood": "contrast of two choices",
+      "insert": {
+        "type": "chip",
+        "text": "Телефон красит сам, навсегда",
+        "tone": "info"
+      }
     },
     {
       "id": "s4",
       "voice": "Цветокоррекция и есть проявка. Сначала перевод лога в нормальный цвет, потом контраст, кожа и настроение кадра.",
       "keyword": "проявка",
-      "image": "Over-the-shoulder view of a colorist's hands on a color grading control panel with three trackballs, a large monitor in front showing a rich cinematic graded frame, dark grading suite, warm practical lamp."
+      "image": "Over-the-shoulder view of a colorist's hands on a color grading control panel with three trackballs, a large monitor in front showing a rich cinematic graded frame, dark grading suite, warm practical lamp.",
+      "shot": "over-the-shoulder medium shot from behind the colorist, hands on the trackballs in focus",
+      "set": "colour grading panel with three trackballs and rings, worn rubber, a large reference monitor with a rich graded frame, bias light behind the monitor",
+      "light": "D65 bias light behind the monitor, a warm desk practical on the right, the room otherwise dark",
+      "mood": "focused craftsmanship",
+      "insert": {
+        "type": "compare",
+        "left": "LOG",
+        "right": "Rec.709"
+      }
     },
     {
       "id": "s5",
       "voice": "Я колорист и показываю это на живых кадрах. Разбор с примерами — по ссылке в профиле.",
       "keyword": "ссылке",
       "image": "Dark editing room at night, empty chair in front of two monitors with a color grading interface and waveform scopes glowing, a cup of coffee, city lights through the window behind. Nobody in frame.",
-      "move": "up"
+      "move": "up",
+      "shot": "wide shot of the empty grading suite, chair turned slightly away",
+      "set": "two monitors with a grading interface of abstract colour wheels and scopes (no readable text), coffee cup, headphones on the desk, city lights bokeh through the window",
+      "light": "monitor glow and a single amber desk lamp, cool night city behind",
+      "mood": "invitation, calm",
+      "insert": {
+        "type": "wheels"
+      }
     }
   ],
   "instagram": {
     "caption": "Почему видео с камеры за сотни тысяч выглядит серее, чем с телефона?\n\nПотому что это лог: камера нарочно пишет плоский файл, чтобы сохранить весь диапазон света. Телефон красит картинку сразу и навсегда, камера оставляет покраску вам.\n\nЦветокоррекция и есть проявка этого «негатива». Разбор с примерами и интерактивный урок — ссылка в шапке профиля.\n\nСохрани, чтобы не паниковать после первой съёмки в логе.",
-    "hashtags": ["цветокоррекция", "видеосъемка", "davinciresolve", "колорист", "log", "видеограф", "монтажвидео", "съемкавидео"]
+    "hashtags": [
+      "цветокоррекция",
+      "видеосъемка",
+      "davinciresolve",
+      "колорист",
+      "log",
+      "видеограф",
+      "монтажвидео",
+      "съемкавидео"
+    ]
   },
   "telegram": {
     "post": "Почему видео с дорогой камеры выглядит блёклым\n\nЭто не брак, а лог: камера нарочно пишет плоский файл, чтобы сохранить и света, и тени. Телефон красит картинку сразу и навсегда, камера оставляет этот выбор вам.\n\nПорядок проявки: сначала перевод лога в Rec.709 (CST или технический LUT камеры), потом контраст, кожа и настроение.\n\nИнтерактивный урок, где можно покрутить кривую самому:\nhttps://pobubnim.ru/uroki/log-i-grade.html?utm_source=telegram&utm_medium=reel"

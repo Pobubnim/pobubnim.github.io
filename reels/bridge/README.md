@@ -19,7 +19,9 @@
    (ветку создать от рабочей ветки рилсов). Затем отмечает задание в
    `reels/bridge/STATUS.md` и пушит ветку. Если у ChatGPT нет записи в GitHub,
    владелец скачивает картинки из чата и загружает их в ту же папку через сайт GitHub
-   (Add file → Upload files, ветка `codex/reels-images`).
+   (Add file → Upload files, ветка `codex/reels-images`). Третий путь — архив: папки
+   `<slug>/s1.jpg …` в одном zip, владелец передаёт его Claude в чат, Claude раскладывает
+   командой `python reels/reel.py import архив.zip`.
 3. **Claude** забирает ветку (`git fetch origin codex/reels-images`), переносит
    картинки из `reels/incoming/` и собирает ролик: `images` берёт присланные кадры
    первыми, API не вызывает. Готовый mp4, обложка и тексты уходят владельцу.
