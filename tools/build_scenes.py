@@ -111,10 +111,15 @@ def build(t: str, slug: str) -> str:
     n = 1
 
     def anchor(m: re.Match) -> str:
+        # свой якорь автора (id="voprosy") не трогаем; выданный скриптом «scena-NN»
+        # перенумеровывается на каждом прогоне: новый раздел в середине страницы
+        # иначе получил бы номер соседа, и склейка повела бы не туда
         nonlocal n
         n += 1
-        hid = m.group(1) or f"scena-{n:02d}"
-        return m.group(0) if m.group(1) else m.group(0).replace('">', f'" id="{hid}">', 1)
+        if m.group(1) and not re.fullmatch(r"scena-\d+", m.group(1)):
+            return m.group(0)
+        tag = re.sub(r' id="scena-\d+"', "", m.group(0))
+        return tag.replace('">', f'" id="scena-{n:02d}">', 1)
 
     body = H2.sub(anchor, body)
 
