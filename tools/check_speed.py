@@ -19,7 +19,7 @@ import urllib.request
 
 import websocket
 
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+from _chrome import CHROME  # Windows или облако — tools/_chrome.py
 PORT = 9509
 LOCAL = os.environ.get("POBUBNIM_URL", "http://localhost:8765/")
 KEY = ["", "raboty.html", "zakazy-sami.html", "education.html", "instrumenty/",

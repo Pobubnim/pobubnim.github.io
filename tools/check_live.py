@@ -21,10 +21,16 @@ import urllib.request
 
 import websocket
 
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+from _chrome import CHROME  # Windows или облако — tools/_chrome.py
 PORT = 9334
 LOCAL = os.environ.get("POBUBNIM_URL", "http://localhost:8765/")
 WIDTHS = (375, 1280)
+# Облачная сессия выпускает наружу только через прокси с белым списком хостов:
+# Метрика, видео с seversvet и прочие внешние адреса там не грузятся НИКОГДА.
+# Такие отказы — свойство песочницы, а не страницы, и в находки не идут;
+# на машине владельца прокси нет, и этих кодов ошибки не бывает.
+SANDBOX_ERRORS = ("net::ERR_TUNNEL_CONNECTION_FAILED", "net::ERR_PROXY_CONNECTION_FAILED")
+sandboxed = set()
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PROBE = r"""
@@ -99,6 +105,9 @@ class Chrome:
         self.cmd("Runtime.enable")
         self.cmd("Log.enable")
         self.cmd("Network.enable")
+        r = self.cmd("Runtime.evaluate", returnByValue=True, expression=(
+            "document.createElement('video').canPlayType('video/mp4; codecs=\"avc1.42E01E\"')"))
+        self.no_h264 = not r.get("result", {}).get("result", {}).get("value")
 
     def cmd(self, method, **params):
         self.mid += 1
@@ -181,18 +190,34 @@ def main():
                     findings += 1
                     continue
                 msgs = []
+                req_url = {}
                 for e in ch.events:
                     m = e.get("method")
                     if m == "Log.entryAdded":
                         en = e["params"]["entry"]
+                        if any(x in en.get("text", "") for x in SANDBOX_ERRORS) and \
+                                not en.get("url", "").startswith(LOCAL):
+                            continue
                         if en.get("level") in ("error",) and "favicon" not in en.get("url", ""):
                             msgs.append("консоль: " + en.get("text", "")[:120])
                     elif m == "Runtime.exceptionThrown":
                         d = e["params"]["exceptionDetails"]
                         msgs.append("JS-исключение: " + (d.get("text", "") + " " +
                                     str(d.get("exception", {}).get("description", ""))[:120]))
+                    elif m == "Network.requestWillBeSent":
+                        req_url[e["params"]["requestId"]] = e["params"]["request"]["url"]
                     elif m == "Network.loadingFailed":
-                        msgs.append("не загрузилось: " + e["params"].get("errorText", ""))
+                        err = e["params"].get("errorText", "")
+                        src = req_url.get(e["params"].get("requestId"), "")
+                        if err in SANDBOX_ERRORS and not src.startswith(LOCAL):
+                            sandboxed.add(src.split("/")[2] if "//" in src else src)
+                            continue
+                        # Chromium песочницы (Playwright) собран без H.264: ролик
+                        # .mp4 он обрывает сам, у Google Chrome владельца такого нет
+                        if err == "net::ERR_ABORTED" and ch.no_h264 and ".mp4" in src:
+                            sandboxed.add("mp4: браузер без H.264")
+                            continue
+                        msgs.append("не загрузилось: " + err + (" — " + src[:100] if src else ""))
                 if res["scrollW"] > res["clientW"] + 1:
                     msgs.append(f"оверфлоу по горизонтали: scrollW {res['scrollW']} > {res['clientW']}"
                                 + (" — виновники: " + ", ".join(
@@ -212,6 +237,8 @@ def main():
                     print(f"ok {name}")
     finally:
         ch.close()
+    if sandboxed:
+        print("\nВнешние адреса, закрытые песочницей (не находка): " + ", ".join(sorted(sandboxed)))
     print(f"\nНаходок: {findings}")
     return 1 if findings else 0
 

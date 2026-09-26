@@ -14,6 +14,11 @@
 .cfg, .cfg-sec, .fld, .opt, .paper-col { min-width: 0; }   /* грид-колонки должны уметь
    сжиматься: без этого широкая таблица внутри листа растягивает всю страницу */
 .cfg-sec > .label { display: block; margin-bottom: 14px; }
+/* Блок формы — это <section>, а общее правило сайта даёт каждой секции страницы
+   140 px сверху (и снизу последней). В форме оно превращало отступ между блоками
+   из задуманных 28–40 px (gap у .cfg) в 180 px пустоты, а первый блок уезжал
+   на 130 px ниже листа справа. Двойной класс перебивает и section:last-of-type. */
+.cfg .cfg-sec { padding: 0; }
 .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 8px; }
 .opt { position: relative; }
 .opt input { position: absolute; opacity: 0; pointer-events: none; }

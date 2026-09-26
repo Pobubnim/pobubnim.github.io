@@ -646,6 +646,7 @@ a.product:hover .product-shot img { transform: scale(1.03); }
 .step i { font: 500 12px/1.4 var(--font-mono); font-style: normal; color: var(--mute); letter-spacing: 0.06em; }
 .step b { font-size: 16px; font-weight: 500; }
 .step p { font-size: 13.5px; color: var(--smoke); font-weight: 300; }
+.step p a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }  /* ссылка в карточке должна отличаться не только цветом */
 
 /* ---------- канал ---------- */
 

@@ -5,7 +5,7 @@ import tempfile
 import base64, json, subprocess, sys, time, urllib.request
 import websocket
 
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+from _chrome import CHROME  # Windows или облако — tools/_chrome.py
 PORT = 9333
 
 def main():

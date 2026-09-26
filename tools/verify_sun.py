@@ -27,7 +27,7 @@ except ImportError:
     print("нужен astral: pip install astral")
     sys.exit(2)
 
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+from _chrome import CHROME  # Windows или облако — tools/_chrome.py
 PORT = 9381
 URL = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:8765/instrumenty/vyzyvnoj-list.html"
 TOL_MIN = 2
