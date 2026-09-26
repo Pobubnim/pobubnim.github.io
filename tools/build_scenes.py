@@ -12,6 +12,10 @@
   2. РЕПЛИКУ автора (.say) в сцене цен и в сцене «что прислать / как
      подготовиться». Тексты ниже — пересказ фактов со своей же страницы и из
      assets/data/prices.json: ни одной новой цифры, обещания или отзыва.
+  3. РАЗМЕТКУ VideoObject для роликов, встроенных в страницу (услуги и
+     /videosemka-moskva.html): имя и подпись — из подписи ролика на странице,
+     длительность и дата выкладки — из data/films.json (как на raboty.html и
+     гео-страницах). Ролик, которого нет в каталоге, разметку не получает.
 
 Запуск:  python tools/build_scenes.py   (идемпотентен: второй прогон ничего не меняет)
 Всё, что пишет скрипт, помечено data-gen="scenes" и перед прогоном снимается.
@@ -20,6 +24,7 @@ from __future__ import annotations
 
 import glob
 import io
+import json
 import os
 import re
 import sys
@@ -146,17 +151,65 @@ def build(t: str, slug: str) -> str:
     return t[:main_a] + body + t[main_b:]
 
 
+VIDEO_LD = re.compile(r'<script type="application/ld\+json" data-gen="scenes-video">.*?</script>\n', re.S)
+VIDEO = re.compile(r'<figure class="svc-work">\s*<video[^>]*poster="/assets/img/film/([^".]+)\.webp"[^>]*src="([^"]+)"'
+                   r'[^>]*></video>\s*<figcaption><b>(.*?)</b><span>(.*?)</span>', re.S)
+
+
+def films() -> dict:
+    out: dict = {}
+
+    def walk(x):
+        if isinstance(x, dict):
+            # у одной работы бывает несколько записей (темы, главная); дата выкладки — только в темах
+            if "id" in x and "len" in x and "up" in x:
+                out[x["id"]] = x
+            for v in x.values():
+                walk(v)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+    walk(json.load(open("data/films.json", encoding="utf-8")))
+    return out
+
+
+def iso(length: str) -> str:
+    parts = [int(x) for x in length.split(":")]
+    h, m, s = ([0] * (3 - len(parts)) + parts)[-3:]
+    return "PT" + (f"{h}H" if h else "") + (f"{m}M" if m else "") + f"{s}S"
+
+
+def video_ld(t: str, url: str, cat: dict) -> str:
+    t = VIDEO_LD.sub("", t)
+    items = []
+    for fid, src, name, sub in VIDEO.findall(t):
+        f = cat.get(fid)
+        if not f:
+            continue
+        thumb = f"https://pobubnim.ru/assets/img/film/{fid}.webp"
+        items.append({"@type": "VideoObject", "name": f"{plain(name)} — {plain(sub)}", "description": plain(sub) + ".",
+                      "thumbnailUrl": thumb, "thumbnail": {"@type": "ImageObject", "url": thumb},
+                      "contentUrl": src, "uploadDate": f["up"], "duration": iso(f["len"]),
+                      "isFamilyFriendly": True, "url": url})
+    if not items:
+        return t
+    ld = json.dumps({"@context": "https://schema.org", "@graph": items}, ensure_ascii=False)
+    return t.replace("</head>", f'<script type="application/ld+json" data-gen="scenes-video">{ld}</script>\n</head>', 1)
+
+
 def main() -> None:
     os.chdir(ROOT)
     changed = 0
-    for p in sorted(glob.glob("services/*.html")):
+    cat = films()
+    for p in sorted(glob.glob("services/*.html")) + ["videosemka-moskva.html"]:
         slug = os.path.basename(p)[:-5]
         t = open(p, encoding="utf-8").read()
-        new = build(t, slug)
+        new = build(t, slug) if p.startswith("services/") else t
+        new = video_ld(new, "https://pobubnim.ru/" + p, cat)
         if new != t:
             open(p, "w", encoding="utf-8").write(new)
             changed += 1
-    print(f"Сцены услуг обновлены: {changed} страниц")
+    print(f"Сцены и разметка роликов обновлены: {changed} страниц")
 
 
 if __name__ == "__main__":

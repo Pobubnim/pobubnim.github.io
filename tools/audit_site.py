@@ -143,6 +143,15 @@ def page_url(rel):
     return SITE + ("" if rel == "index.html" else rel.replace("index.html", ""))
 
 
+def lead_topics():
+    js = open(os.path.join(ROOT, "assets", "js", "lead.js"), encoding="utf-8").read()
+    m = re.search(r"var WHAT = \[(.*?)\];", js, re.S)
+    return set(re.findall(r'"([^"]+)"', m.group(1))) if m else set()
+
+
+LEAD_TOPICS = lead_topics()
+
+
 def main():
     files = html_files()
     titles, descs = defaultdict(list), defaultdict(list)
@@ -228,6 +237,11 @@ def main():
         for a, text in p.buttons:
             if not (text.strip() or a.get("aria-label") or a.get("title")):
                 warn(rel, "кнопка без доступного имени: " + (a.get("id") or a.get("class") or "?"))
+        # тема кнопки заявки обязана быть в списке «Что нужно» формы (lead.js):
+        # иначе форма открывается без темы и заявка приходит как «Другое» (аудит 25.09)
+        for topic in re.findall(r'data-lead="([^"]+)"', raw):
+            if topic not in LEAD_TOPICS:
+                err(rel, f"тема заявки «{topic}» не из списка формы lead.js")
         seen_ids = set()
         for i in p.ids:
             if i in seen_ids:
