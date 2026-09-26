@@ -71,12 +71,6 @@
   .who-card b { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; text-wrap: balance; }
   .who-card p { font-size: 14px; color: var(--smoke); font-weight: 300; text-wrap: pretty; }
 
-  .svc-faq { border-top: 1px solid var(--line-soft); padding: 18px 4px; }
-  .svc-faq:last-of-type { border-bottom: 1px solid var(--line-soft); }
-  .svc-faq summary { font-size: 16.5px; font-weight: 500; cursor: pointer; list-style: none; position: relative; padding-right: 30px; }
-  .svc-faq summary::after { content: "+"; position: absolute; right: 4px; top: 0; color: var(--mute); font-weight: 300; font-size: 20px; }
-  .svc-faq[open] summary::after { content: "–"; }
-  .svc-faq p { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
 
   .edu-pick { margin-top: 28px; display: flex; flex-direction: column; gap: 14px; }
   .edu-pick-q { font-size: 14px; color: var(--smoke); font-weight: 300; }
@@ -118,7 +112,7 @@
     <nav class="nav-links" aria-label="Основная">
       <a href="/raboty.html">Работы</a>
       <div class="nav-drop">
-        <button type="button">Решения<span class="caret">▾</span></button>
+        <button type="button">Услуги и цены<span class="caret">▾</span></button>
         <div class="drop-panel">
         <a class="drop-lead" href="/video-dlya-biznesa.html">Видео для бизнеса: подбор под задачу</a>
         <a href="/services/reklamnyj-rolik.html">Рекламный ролик</a>
@@ -129,9 +123,9 @@
         <a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a>
         <a href="/services/sozdanie-sajtov.html">Создание сайтов</a>
         <a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a>
+        <a class="drop-foot" href="/ceny.html">Цены на все услуги</a>
         </div>
       </div>
-      <a href="/ceny.html">Цены</a>
       <div class="nav-drop" data-here>
         <button type="button">Обучение<span class="caret">▾</span></button>
         <div class="drop-panel">
@@ -139,9 +133,14 @@
         <a href="/uroki/">Уроки DaVinci Resolve</a>
         </div>
       </div>
-      <a href="/articles/">Статьи</a>
-      <a href="/instrumenty/">Инструменты</a>
-      <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+      <div class="nav-drop">
+        <button type="button">Знания<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a href="/articles/">Статьи и разборы цен</a>
+        <a href="/instrumenty/">Инструменты для съёмки</a>
+        <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+        </div>
+      </div>
     </nav>
     <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
     <a class="btn btn-lamp" href="#napravlenie">Записаться</a>
@@ -326,7 +325,7 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="label">05 · Уроки и гайды</span>
-      <h2>Двенадцать бесплатных уроков — <em>начните сами</em></h2>
+      <h2>Пятнадцать бесплатных уроков — <em>начните сами</em></h2>
       <p class="sub">Свет, звук, цвет и оптика на живых досках: всё, что я показываю на первых занятиях, только в браузере. Пройдите до записи — на занятии разберём уже ваш материал, а не основы.</p>
     </div>
     <div class="tools">
@@ -342,9 +341,13 @@
       <a class="tool" style="border:1px solid var(--line)" href="uroki/myagkij-svet.html"><b>Урок: мягкий свет</b><span>Угловой размер источника, полутень в сантиметрах и цена мягкости в ступенях</span></a>
       <a class="tool" style="border:1px solid var(--line)" href="uroki/balans-belogo.html"><b>Урок: баланс белого и смешанный свет</b><span>Окно и лампа на одном лице: почему обе половины одновременно нейтральными не сделать</span></a>
       <a class="tool" style="border:1px solid var(--line)" href="uroki/mercanie-na-video.html"><b>Урок: мерцание и полосы в кадре</b><span>Пульсация 100 Гц, построчное считывание и выдержки, при которых полос нет совсем</span></a>
+      <a class="tool" style="border:1px solid var(--line)" href="uroki/tri-oshibki-cveta.html"><b>Урок: три ошибки цвета новичка</b><span>Ошибка применяется к кадру по-настоящему, а приборы читают пиксели: кожа уходит с линии 123°</span></a>
+      <a class="tool" style="border:1px solid var(--line)" href="uroki/svet-iz-okna.html"><b>Урок: свет из окна</b><span>Окно — площадной источник: поворот героя, перепад по лицу и отдача отражателя</span></a>
+      <a class="tool" style="border:1px solid var(--line)" href="uroki/raw-ili-log.html"><b>Урок: RAW или log</b><span>Сколько кодов файл тратит на ступень и почему log держит тени лучше линейного RAW</span></a>
       <a class="tool" href="articles/obuchenie-videosemke-s-nulya.html"><b>Обучение с нуля: с чего начать</b><span>Маршрут: что учить, в каком порядке и на чём люди теряют год</span></a>
       <a class="tool" href="articles/kak-snimat-video-na-telefon.html"><b>Как снимать на телефон</b><span>Настройки, свет из окна, стабильность и звук — база первого занятия</span></a>
       <a class="tool" href="articles/cvetokorrekciya-video-kak-sdelat.html"><b>Цветокоррекция самому</b><span>Бесплатный DaVinci Resolve и четыре шага до киношной картинки</span></a>
+      <a class="tool" href="articles/montazh-video-s-chego-nachat.html"><b>Монтаж с нуля</b><span>План на первый месяц вместо обзора программ</span></a>
     </div>
     <div class="svc-all" style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap"><a href="uroki/" style="font-size:13.5px;color:var(--smoke);border:1px solid var(--line-soft);border-radius:var(--r-pill);padding:8px 16px">Все пятнадцать уроков →</a><a href="articles/" style="font-size:13.5px;color:var(--smoke);border:1px solid var(--line-soft);border-radius:var(--r-pill);padding:8px 16px">Статьи и разборы цен →</a></div>
   </div>
@@ -378,16 +381,12 @@
       <a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
     </div>
     </div>
-    <div class="footer-links">
-      <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
-      <nav aria-label="Подвал">
-        <a href="/">На главную</a>
-        <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
-        <a href="raboty.html">Работы</a>
-        <a href="privacy.html">Конфиденциальность</a>
-      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
-      </nav>
+    <div class="foot-grid">
+      <div class="foot-col foot-brand"><a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a><p>Видеосъёмка, цвет и цифровые продукты. Москва, область, Обнинск — лично или командой продакшена MONOLITH7.</p><a class="foot-tel" href="tel:+79829054454">+7 982 905-44-54</a><a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм · @sbphotoshoter</a><a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте — если телеграм не открывается</a><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео» →</a></div>
+      <div class="foot-shelf"><span class="label foot-shelf-t">Решения и города</span><div class="foot-shelf-in"><nav class="foot-col" aria-label="Услуги и цены"><span class="foot-sub">Услуги и цены</span><a href="/video-dlya-biznesa.html">Видео для бизнеса</a><a href="/ceny.html">Цены на видеосъёмку</a><a href="/services/reklamnyj-rolik.html">Рекламный ролик</a><a href="/services/imidzhevyj-film.html">Имиджевый фильм</a><a href="/services/svadebnoe-kino.html">Свадебное кино</a><a href="/services/muzykalnyj-klip.html">Музыкальный клип</a><a href="/services/cvetokorrekciya.html">Цветокоррекция</a><a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a><a href="/services/sozdanie-sajtov.html">Создание сайтов</a><a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a></nav><nav class="foot-col" aria-label="Где снимаю"><span class="foot-sub">Где снимаю</span><a href="/videosemka-moskva.html">Видеосъёмка в Москве</a><a href="/videograf-naro-fominsk.html">Съёмка в Наро-Фоминске</a><a href="/videograf-aprelevka.html">Съёмка в Апрелевке</a><a href="/videograf-obninsk.html">Съёмка в Обнинске</a><a href="/raboty.html">Работы по темам</a></nav></div></div>
+      <div class="foot-shelf"><span class="label foot-shelf-t">Знания и обучение</span><div class="foot-shelf-in"><nav class="foot-col" aria-label="Знания"><span class="foot-sub">Знания</span><a href="/articles/">Статьи и разборы цен</a><a href="/instrumenty/">Инструменты</a><a href="/konstruktor-dogovora.html">Конструктор договора</a><a href="/zakazy-sami.html">Заказы сами</a></nav><nav class="foot-col" aria-label="Учиться"><span class="foot-sub">Учиться</span><a href="/education.html" aria-current="page">Программы обучения</a><a href="/uroki/">Уроки DaVinci Resolve</a><a href="/articles/obuchenie-videosemke-s-nulya.html">Съёмка с нуля</a><a href="/articles/kak-snimat-video-na-telefon.html">Как снимать на телефон</a><a href="/articles/cvetokorrekciya-video-kak-sdelat.html">Цветокоррекция своими руками</a></nav></div></div>
     </div>
+    <div class="foot-base"><span>© 2026 Савелий Бубнов · ПОБУБНИМ</span><nav aria-label="Контакты"><a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм</a><a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a><a href="/privacy.html">Конфиденциальность</a></nav></div>
   </div>
 </footer>
 

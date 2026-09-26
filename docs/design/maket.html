@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Макет главной · ДС «Режиссёрский сценарий»</title>
+<link rel="stylesheet" href="../../assets/css/fonts.css">
+<link rel="stylesheet" href="ds.css">
+<style>
+  /* только то, что есть у одной главной и в систему не выносится */
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; isolation: isolate; }
+  .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 30%),
+                linear-gradient(90deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 62%),
+                linear-gradient(0deg, #000 0%, rgba(0,0,0,.72) 32%, rgba(0,0,0,0) 64%); }
+  .hero-in { width: 100%; padding-top: calc(var(--header-h) + 34px + 40px); padding-bottom: 40px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 360px; gap: var(--s-8); align-items: end; }
+  .hero h1 { margin: var(--s-4) 0 var(--s-5); }
+  .hero .kicker { color: var(--ink-1); text-shadow: 0 1px 12px rgba(0,0,0,.8); }
+  .hero .t-lead { color: var(--ink-1); opacity: .86; }
+  .hero-cta { display: flex; gap: var(--s-3); flex-wrap: wrap; margin-top: var(--s-6); }
+  .hero .say { justify-self: end; }
+  .plan { margin-top: var(--s-8); padding-top: var(--s-5); border-top: 1px solid var(--line-2);
+    display: grid; grid-template-columns: auto repeat(6, 1fr); gap: var(--s-4); align-items: start; }
+  .plan > .t-mono { padding-top: 2px; }
+  .plan a { display: grid; gap: 6px; font-size: 14px; color: var(--ink-2); transition: color var(--d-fast); }
+  .plan a .t-mono { color: var(--ink-3); }
+  .plan a:hover { color: var(--ink-1); }
+  .trust-bar { padding-top: var(--s-6); }
+  .color-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-8); margin-top: var(--s-6); }
+  .color-row p { color: var(--ink-2); }
+  .how { display: grid; gap: clamp(56px, 7vw, 88px); }
+  .sub-h { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-5); }
+  .about { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .about-photo { border-radius: var(--r-l); overflow: hidden; position: relative; }
+  .about-photo img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
+  .about-photo figcaption { position: absolute; inset: auto 0 0 0; padding: var(--s-5); font-size: 13px; color: var(--ink-2); background: linear-gradient(0deg, rgba(0,0,0,.8), transparent); }
+  .about-copy { display: grid; gap: var(--s-5); }
+  .about-copy > p { font-size: var(--t-18); color: var(--ink-2); font-weight: 300; }
+  .about-copy > p b { color: var(--ink-1); font-weight: 500; }
+  .final-h { text-align: center; display: grid; justify-items: center; gap: var(--s-4); margin-bottom: var(--s-7); }
+  .final-h .say { text-align: left; }
+  @media (max-width: 1020px) {
+    .plan { grid-template-columns: repeat(3, 1fr); }
+    .plan > .t-mono { grid-column: 1 / -1; }
+  }
+  @media (max-width: 900px) {
+    .hero-grid, .color-row, .about { grid-template-columns: 1fr; }
+    .hero .say { justify-self: start; }
+    .facts { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  @media (max-width: 760px) {
+    .hero { min-height: 0; }
+    .hero > img { height: 62%; }
+    .hero-in { padding-top: 38vh; padding-bottom: 8px; }
+    .hero-cta .btn { flex: 1 1 100%; }
+    .plan { display: none; }
+    .facts { grid-template-columns: 1fr; }
+    .color-row { gap: var(--s-4); }
+    .fact { display: flex; align-items: baseline; gap: var(--s-4); padding: var(--s-4); }
+    .fact b { margin: 0; min-width: 72px; font-size: 32px; }
+    .final-h { text-align: left; justify-items: start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ШАПКА: 4 раздела вместо 7, одна кнопка действия, под ней — таймлайн сцен -->
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="logo" href="#top"><i></i>ПОБУБНИМ</a>
+    <nav class="hdr-nav" aria-label="Основная">
+      <a href="#">Работы</a>
+      <a href="#">Услуги и цены</a>
+      <a href="#">Обучение</a>
+      <a href="#">Знания</a>
+    </nav>
+    <div class="hdr-right">
+      <span class="hdr-scene" data-scene-chip>01 / 07</span>
+      <a class="hdr-tel" href="tel:+79829054454">+7 982 905-44-54</a>
+      <a class="btn btn-lamp btn-s" href="#hod">Обсудить проект</a>
+      <button class="burger" aria-label="Меню"><i></i><i></i><i></i></button>
+    </div>
+  </div>
+  <div class="route-bar">
+    <div class="wrap route-labels">
+      <span class="here" data-here>Сцена 01 · Знакомство</span>
+      <a href="#zadacha" data-next>Дальше: что вам нужно →</a>
+    </div>
+    <div class="route" data-route><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+  </div>
+</header>
+
+<main>
+
+<!-- СЦЕНА 01 · ЗНАКОМСТВО: кто я, что даю, и план разговора -->
+<section class="hero" id="top" data-scene="Знакомство" data-next-label="что вам нужно">
+  <img src="../../assets/img/hero-poster.webp" alt="" width="1920" height="1080">
+  <div class="wrap hero-in">
+    <div class="hero-grid">
+      <div>
+        <span class="kicker">Савелий Бубнов · видеограф и колорист · Москва и область</span>
+        <h1 class="t-display">Снимаю. Крашу.<br>И <em>строю</em> цифровое.</h1>
+        <p class="t-lead">Реклама, имиджевые фильмы, клипы и свадьбы — от идеи до финального цвета одним человеком. А ещё сайты и автоматизация той же рукой.</p>
+        <div class="hero-cta">
+          <a class="btn btn-lamp btn-l" href="#zadacha">Подобрать под мою задачу <span class="arrow down">↓</span></a>
+          <a class="btn btn-line btn-l" href="#hod">Сразу написать</a>
+        </div>
+      </div>
+      <div class="say">
+        <img src="../../assets/img/about-fisheye.webp" alt="">
+        <p><b>Савелий</b>Привет! За три минуты покажу, что снимаю, сколько это стоит и как мы начнём. Вы выбираете задачу — я веду дальше.</p>
+      </div>
+    </div>
+    <nav class="plan" aria-label="План страницы">
+      <span class="t-mono">План разговора</span>
+      <a href="#zadacha"><span class="t-mono">02</span>Что вам нужно</a>
+      <a href="#raboty"><span class="t-mono">03</span>Как это выглядит</a>
+      <a href="#cvet"><span class="t-mono">04</span>Цвет</a>
+      <a href="#kak"><span class="t-mono">05</span>Как и сколько</a>
+      <a href="#kto"><span class="t-mono">06</span>Кто я</a>
+      <a href="#hod"><span class="t-mono">07</span>Ваш ход</a>
+    </nav>
+  </div>
+</section>
+
+<div class="wrap trust-bar">
+  <div class="trust">
+    <span class="kicker">Снимал для</span>
+    <span>Альфа-банк</span><span>ГК ОСТОВ</span><span>EverGO</span><span>Абилимпикс</span><span>Конвергентум</span><span>ERP Channel</span>
+  </div>
+</div>
+
+<!-- СЦЕНА 02 · ЗАДАЧА: развилка. Выбор запоминается и ведёт по всей странице -->
+<section class="scene" id="zadacha" data-scene="Задача" data-next-label="примеры работ">
+  <div class="wrap">
+    <div class="scene-head split">
+      <span class="kicker"><b>02</b> Задача</span>
+      <h2>Что нужно <em>снять</em> или собрать?</h2>
+      <div class="say">
+        <img src="../../assets/img/about-fisheye.webp" alt="">
+        <p><b>Савелий</b>Нажмите на карточку — дальше покажу работы именно этого жанра и подставлю задачу в заявку.</p>
+      </div>
+    </div>
+
+    <div class="picks" data-picks>
+      <button class="pick" data-pick="Рекламный ролик" aria-pressed="false">
+        <div class="pick-top"><span class="t-mono">01 · для бизнеса</span><span class="pick-go">→</span></div>
+        <div><h3>Рекламный ролик</h3><p>Продающий ролик под сайт, соцсети или маркетплейс: идея, съёмка, монтаж, цвет.</p></div>
+        <div class="pick-price"><span class="num">от 60 000 ₽</span><span>под ключ</span></div>
+      </button>
+      <button class="pick" data-pick="Имиджевый фильм" aria-pressed="false">
+        <div class="pick-top"><span class="t-mono">02 · для бизнеса</span><span class="pick-go">→</span></div>
+        <div><h3>Имиджевый фильм</h3><p>Кино о компании, производстве, команде — чтобы вам доверяли до первой встречи.</p></div>
+        <div class="pick-price"><span class="num">от 60 000 ₽</span><span>под ключ</span></div>
+      </button>
+      <button class="pick" data-pick="Съёмка мероприятия" aria-pressed="false">
+        <div class="pick-top"><span class="t-mono">03 · для бизнеса</span><span class="pick-go">→</span></div>
+        <div><h3>Мероприятие</h3><p>Конференция, форум, чемпионат: отчётный ролик и материал для соцсетей.</p></div>
+        <div class="pick-price"><span class="num">от 30 000 ₽</span><span>съёмочный день</span></div>
+      </button>
+      <button class="pick" data-pick="Свадебное кино" aria-pressed="false">
+        <div class="pick-top"><span class="t-mono">04 · для людей</span><span class="pick-go">→</span></div>
+        <div><h3>Свадебное кино</h3><p>Фильм о вашем дне, который хочется пересматривать, а не пролистывать.</p></div>
+        <div class="pick-price"><span class="num">от 60 000 ₽</span><span>полный день</span></div>
+      </button>
+      <button class="pick" data-pick="Музыкальный клип" aria-pressed="false">
+        <div class="pick-top"><span class="t-mono">05 · для артистов</span><span class="pick-go">→</span></div>
+        <div><h3>Музыкальный клип</h3><p>От сценария и локаций до финального грейда в характере трека.</p></div>
+        <div class="pick-price"><span class="num">от 60 000 ₽</span><span>под ключ</span></div>
+      </button>
+      <button class="pick" data-pick="Цветокоррекция" aria-pressed="false">
+        <div class="pick-top"><span class="t-mono">06 · уже снято</span><span class="pick-go">→</span></div>
+        <div><h3>Цветокоррекция</h3><p>Покрашу ваш материал в DaVinci Resolve: log, RAW, согласование по референсам.</p></div>
+        <div class="pick-price"><span class="num">от 15 000 ₽</span><span>за ролик</span></div>
+      </button>
+      <button class="pick wide" data-pick="Сайт или автоматизация" aria-pressed="false">
+        <div><h3>Сайт, бот или автоматизация</h3><p>Та же режиссура — в коде: лендинги от 50 000 ₽, боты и связки от 30 000 ₽ за сценарий.</p></div>
+        <span class="pick-go">→</span>
+      </button>
+    </div>
+
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Дальше · сцена 03</span>
+        <a href="#raboty" data-next-link>Посмотреть, как это выглядит в кадре <span class="arrow down">↓</span></a>
+      </div>
+      <p class="next-alt">Не нашли свою задачу? <a href="#hod">Опишите её своими словами</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- СЦЕНА 03 · РАБОТЫ: одна главная работа + четыре, остальное — на странице «Работы» -->
+<section class="scene" id="raboty" data-scene="Работы" data-next-label="цвет">
+  <div class="wrap">
+    <div class="scene-head split">
+      <span class="kicker"><b>03</b> Работы</span>
+      <h2>Смотреть — быстрее, чем <em>читать</em></h2>
+      <div class="say">
+        <img src="../../assets/img/about-fisheye.webp" alt="">
+        <p data-say-works><b>Савелий</b>Здесь избранное. Наведите — ролик оживёт, нажмите — откроется целиком со звуком.</p>
+      </div>
+    </div>
+
+    <div class="reel">
+      <a class="work hero-w" href="#">
+        <img src="../../assets/img/film/fabrik.webp" alt="">
+        <span class="tag">Реклама · имидж</span><span class="tc">1:08</span>
+        <div class="work-meta"><b>FABRIK</b><span>Имиджевый ролик для ГК ОСТОВ</span></div>
+      </a>
+      <a class="work" href="#"><img src="../../assets/img/film/abilympics.webp" alt=""><span class="tc">2:59</span>
+        <div class="work-meta"><b>Абилимпикс 2025</b><span>Отчётный ролик чемпионата</span></div></a>
+      <a class="work" href="#"><img src="../../assets/img/film/wedding-de.webp" alt=""><span class="tc">2:37</span>
+        <div class="work-meta"><b>Дмитрий и Евгения</b><span>Свадебное кино</span></div></a>
+      <a class="work" href="#"><img src="../../assets/img/film/evergo.webp" alt=""><span class="tc">0:19</span>
+        <div class="work-meta"><b>EverGO</b><span>Реклама батончиков</span></div></a>
+      <a class="work more" href="#"><b>Все 35 работ — по темам →</b><span>реклама, имидж, события, клипы, свадьбы, 9:16, ИИ</span></a>
+    </div>
+
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Дальше · сцена 04</span>
+        <a href="#cvet">Почему у этих роликов такой цвет <span class="arrow down">↓</span></a>
+      </div>
+      <p class="next-alt">Уже нравится? <a href="#hod">Обсудим ваш проект</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- СЦЕНА 04 · ЦВЕТ: доказательство ремесла на одном кадре -->
+<section class="scene" id="cvet" data-scene="Цвет" data-next-label="как и сколько">
+  <div class="wrap">
+    <div class="scene-head">
+      <span class="kicker"><b>04</b> Цвет</span>
+      <h2>Цвет — половина <em>кадра</em></h2>
+    </div>
+    <figure class="ba">
+      <video muted loop playsinline autoplay poster="../../assets/img/polya-field.webp" src="../../assets/video/hero-loop.mp4"></video>
+      <div class="ba-labels"><span>«Поля»</span><span>До → после цвета</span></div>
+      <div class="ba-bottom">
+        <div class="say quiet">
+          <img src="../../assets/img/about-fisheye.webp" alt="">
+          <p><b>Савелий</b>Камера пишет блёклый материал — так задумано. Вид кадру даёт грейд. Разница на этой шторке — и есть работа.</p>
+        </div>
+        <a class="btn btn-lamp" href="#hod">Прислать материал на грейд</a>
+      </div>
+    </figure>
+    <div class="color-row">
+      <p>Крашу в DaVinci Resolve свои съёмки и чужой материал: базовая коррекция, look, согласование по референсам. Работаю с log и RAW.</p>
+      <p><span class="num" style="color:var(--ink-1)">от 15 000 ₽</span> за ролик · или <span class="num" style="color:var(--ink-1)">от 2 500 ₽</span> за минуту. Хотите разобраться сами — есть <a href="#" style="border-bottom:1px solid var(--line-2);color:var(--ink-1)">уроки DaVinci Resolve</a>.</p>
+    </div>
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Дальше · сцена 05</span>
+        <a href="#kak">Как мы работаем и сколько это стоит <span class="arrow down">↓</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- СЦЕНА 05 · КАК И СКОЛЬКО: процесс и цены вместе — это один вопрос посетителя -->
+<section class="scene" id="kak" data-scene="Как и сколько" data-next-label="кто я">
+  <div class="wrap how">
+    <div>
+      <div class="scene-head split">
+        <span class="kicker"><b>05</b> Как и сколько</span>
+        <h2>Пять шагов — и ролик <em>ваш</em></h2>
+        <div class="say">
+          <img src="../../assets/img/about-fisheye.webp" alt="">
+          <p><b>Савелий</b>Вы всегда знаете, на каком мы шаге и что получите дальше. Без скрытых доплат.</p>
+        </div>
+      </div>
+      <ol class="steps">
+        <li class="step"><span class="t-mono">Шаг 01 · сегодня</span><h3>Заявка</h3><p>Пара строк о задаче в телеграм или ВК.</p><span class="get">Ответ в тот же день</span></li>
+        <li class="step"><span class="t-mono">Шаг 02</span><h3>Бриф</h3><p>Созвон или переписка: цель, референсы, сроки.</p><span class="get">Понятная задача</span></li>
+        <li class="step"><span class="t-mono">Шаг 03</span><h3>Смета</h3><p>Состав работ, цена и календарь. Договор.</p><span class="get">Цена без сюрпризов</span></li>
+        <li class="step"><span class="t-mono">Шаг 04</span><h3>Работа</h3><p>Съёмка или разработка с промежуточными показами.</p><span class="get">Видите ход дела</span></li>
+        <li class="step"><span class="t-mono">Шаг 05</span><h3>Сдача</h3><p>Правки, финал, исходники и мастера.</p><span class="get">Всё ваше</span></li>
+      </ol>
+    </div>
+
+    <div>
+      <div class="sub-h">
+        <h3>Стартовые цены</h3>
+        <a class="btn-text btn" href="#">Полный прайс <span class="arrow">→</span></a>
+      </div>
+      <div class="prices">
+        <a class="price" href="#"><h3>Видеопродакшен</h3><p>Ролик под ключ: идея, съёмка, монтаж, цвет, звук</p><span class="num">от 60 000 ₽<small>день съёмки — от 30 000 ₽</small></span><span class="go">→</span></a>
+        <a class="price" href="#"><h3>Колористика</h3><p>Грейд ролика в DaVinci Resolve, log и RAW</p><span class="num">от 15 000 ₽<small>или от 2 500 ₽ / мин</small></span><span class="go">→</span></a>
+        <a class="price" href="#"><h3>Сайты</h3><p>Быстрые статические сайты без конструкторов</p><span class="num">от 50 000 ₽<small>многостраничник — от 90 000 ₽</small></span><span class="go">→</span></a>
+        <a class="price" href="#"><h3>Приложения</h3><p>Рабочий MVP: интерфейс, логика, сборка</p><span class="num">от 150 000 ₽<small>MVP под задачу</small></span><span class="go">→</span></a>
+        <a class="price" href="#"><h3>Автоматизация</h3><p>Боты, контент-конвейеры, ИИ в процессах</p><span class="num">от 30 000 ₽<small>за сценарий</small></span><span class="go">→</span></a>
+      </div>
+    </div>
+
+    <div class="next" style="margin-top:0">
+      <div class="next-go">
+        <span class="kicker">Дальше · сцена 06</span>
+        <a href="#kto">Кто всё это делает <span class="arrow down">↓</span></a>
+      </div>
+      <p class="next-alt">Цена понятна? <a href="#hod">Перейти к заявке</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- СЦЕНА 06 · КТО Я: человек, факты и снятые сомнения -->
+<section class="scene" id="kto" data-scene="Кто я" data-next-label="ваш ход">
+  <div class="wrap">
+    <div class="scene-head">
+      <span class="kicker"><b>06</b> Кто я</span>
+      <h2>Один человек — от идеи до <em>цвета</em></h2>
+    </div>
+    <div class="about">
+      <figure class="about-photo">
+        <img src="../../assets/img/about-fisheye.webp" alt="Савелий Бубнов на съёмке">
+        <figcaption>На площадке: контроль кадра до того, как он попал в монтаж</figcaption>
+      </figure>
+      <div class="about-copy">
+        <p><b>Я — Савелий Бубнов,</b> оператор-постановщик и колорист. Каждую работу довожу сам — от раскадровки до финального грейда.</p>
+        <p>До продакшена строил ресторанный бизнес, поэтому говорю с заказчиком на языке задач и денег, а не таймкодов.</p>
+        <div class="facts">
+          <div class="fact"><b class="num">35</b><span>работ в портфолио по 9 темам</span></div>
+          <div class="fact"><b class="num">3</b><span>ремесла: съёмка, цвет, код</span></div>
+          <div class="fact"><b class="num">1</b><span>исполнитель на весь проект</span></div>
+        </div>
+        <div class="faq">
+          <details open><summary>Работаете по договору?</summary><p>Да. Предоплата — часть сметы, финал — после сдачи. Договор фиксирует состав работ, сроки и цену.</p></details>
+          <details><summary>Когда ответите?</summary><p>В тот же день. Если телеграм недоступен — пишите во ВКонтакте или звоните.</p></details>
+          <details><summary>Выезжаете за пределы Москвы?</summary><p>Да: вся Московская область, Обнинск и Калужская область. По Наро-Фоминскому округу — без наценки за выезд.</p></details>
+          <details><summary>Исходники отдаёте?</summary><p>Да, на сдаче передаю мастера и исходники — всё ваше.</p></details>
+        </div>
+      </div>
+    </div>
+    <div class="next">
+      <div class="next-go">
+        <span class="kicker">Последняя сцена · 07</span>
+        <a href="#hod">Ваш ход — три касания до заявки <span class="arrow down">↓</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- СЦЕНА 07 · ВАШ ХОД: бриф в три касания собирает сообщение за посетителя -->
+<section class="scene" id="hod" data-scene="Ваш ход" data-next-label="">
+  <div class="wrap">
+    <div class="final-h">
+      <span class="kicker"><b>07</b> Ваш ход</span>
+      <h2 class="t-display" style="font-size:var(--t-56)">Есть задача? <em>Побубним.</em></h2>
+      <div class="say">
+        <img src="../../assets/img/about-fisheye.webp" alt="">
+        <p><b>Савелий</b>Три ответа — и сообщение готово. Не нужно подбирать слова, я сам задам уточняющие вопросы.</p>
+      </div>
+    </div>
+
+    <form class="brief" data-brief onsubmit="return false">
+      <div class="brief-q">
+        <fieldset>
+          <legend><span class="t-mono">1/3</span>Что делаем?</legend>
+          <div class="chips" data-group="what">
+            <button type="button" class="chip" aria-pressed="false">Рекламный ролик</button>
+            <button type="button" class="chip" aria-pressed="false">Имиджевый фильм</button>
+            <button type="button" class="chip" aria-pressed="false">Съёмка мероприятия</button>
+            <button type="button" class="chip" aria-pressed="false">Свадебное кино</button>
+            <button type="button" class="chip" aria-pressed="false">Музыкальный клип</button>
+            <button type="button" class="chip" aria-pressed="false">Цветокоррекция</button>
+            <button type="button" class="chip" aria-pressed="false">Сайт или автоматизация</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend><span class="t-mono">2/3</span>Когда?</legend>
+          <div class="chips" data-group="when">
+            <button type="button" class="chip" aria-pressed="false">В этом месяце</button>
+            <button type="button" class="chip" aria-pressed="false">В ближайшие 2–3 месяца</button>
+            <button type="button" class="chip" aria-pressed="false">Пока прицениваюсь</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend><span class="t-mono">3/3</span>Ориентир по бюджету?</legend>
+          <div class="chips" data-group="budget">
+            <button type="button" class="chip" aria-pressed="false">до 50 000 ₽</button>
+            <button type="button" class="chip" aria-pressed="false">50–150 000 ₽</button>
+            <button type="button" class="chip" aria-pressed="false">от 150 000 ₽</button>
+            <button type="button" class="chip" aria-pressed="false">Подскажите вы</button>
+          </div>
+        </fieldset>
+      </div>
+      <div class="brief-out">
+        <span class="kicker">Ваше сообщение</span>
+        <div class="brief-msg" data-msg></div>
+        <a class="btn btn-lamp btn-l" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Отправить в Телеграм</a>
+        <div class="brief-alt">
+          <a class="btn btn-line" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">В ВКонтакте</a>
+          <a class="btn btn-line" href="tel:+79829054454">Позвонить</a>
+        </div>
+        <span class="brief-note">Отвечаю в тот же день</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ПОДВАЛ-НАВИГАТОР: всё, что раньше было свалкой ссылок в прайсе, — по полкам -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <a class="logo" href="#top"><i></i>ПОБУБНИМ</a>
+        <p class="t-small" style="max-width:280px">Видеосъёмка, цвет и цифровые продукты. Москва, область, Обнинск.</p>
+        <a href="https://t.me/pobubnimzavideo">Канал «Побубним за видео» →</a>
+      </div>
+      <div class="foot-col"><span class="kicker">Решения</span>
+        <a href="#">Рекламный ролик</a><a href="#">Имиджевый фильм</a><a href="#">Свадебное кино</a><a href="#">Музыкальный клип</a><a href="#">Съёмка мероприятий</a><a href="#">Цветокоррекция</a><a href="#">Сайты и боты</a></div>
+      <div class="foot-col"><span class="kicker">Знания</span>
+        <a href="#">Статьи и разборы цен</a><a href="#">Уроки DaVinci Resolve</a><a href="#">Инструменты</a><a href="#">Конструктор договора</a><a href="#">Заказы сами</a></div>
+      <div class="foot-col"><span class="kicker">Учиться</span>
+        <a href="#">Программы обучения</a><a href="#">Съёмка с нуля</a><a href="#">Как снимать на телефон</a></div>
+      <div class="foot-col"><span class="kicker">География</span>
+        <a href="#">Москва и область</a><a href="#">Наро-Фоминск</a><a href="#">Апрелевка</a><a href="#">Обнинск</a></div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
+      <span><a href="tel:+79829054454">+7 982 905-44-54</a> · <a href="#">Телеграм</a> · <a href="#">ВКонтакте</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ДОК: на телефоне заявка всегда под пальцем -->
+<div class="dock">
+  <a class="btn btn-lamp" href="#hod">Обсудить проект</a>
+  <a class="btn btn-line" href="https://t.me/sbphotoshoter" aria-label="Телеграм">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 4.3 2.9 11.5c-1.3.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.9.8.9.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.4-1.5ZM9 14.2l9.3-5.9c.4-.3.9-.1.5.3l-7.8 7.1-.3 3.3L9 14.2Z"/></svg>
+  </a>
+</div>
+
+<script>
+/* демо-поведение макета: таймлайн сцен, развилка задач, бриф в три касания */
+(function () {
+  var scenes = [].slice.call(document.querySelectorAll("[data-scene]"));
+  var bars = document.querySelectorAll("[data-route] b");
+  var here = document.querySelector("[data-here]");
+  var next = document.querySelector("[data-next]");
+  var chip = document.querySelector("[data-scene-chip]");
+  var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+
+  function onScroll() {
+    var mid = innerHeight * 0.4, cur = 0;
+    scenes.forEach(function (s, i) {
+      var r = s.getBoundingClientRect();
+      if (r.top < mid) cur = i;
+      var p = Math.min(1, Math.max(0, (mid - r.top) / r.height));
+      bars[i].style.setProperty("--p", p);
+      bars[i].classList.toggle("on", i === cur);
+    });
+    var s = scenes[cur], n = scenes[cur + 1];
+    here.textContent = "Сцена " + pad(cur + 1) + " · " + s.dataset.scene;
+    chip.textContent = pad(cur + 1) + " / " + pad(scenes.length);
+    if (n) { next.textContent = "Дальше: " + s.dataset.nextLabel + " →"; next.href = "#" + n.id; next.style.visibility = ""; }
+    else next.style.visibility = "hidden";
+  }
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* бриф */
+  var state = { what: "", when: "", budget: "" };
+  var msg = document.querySelector("[data-msg]");
+  function render() {
+    msg.textContent = "Привет! Пишу с сайта.\n" +
+      "Задача: " + (state.what || "…") + "\n" +
+      "Сроки: " + (state.when || "…") + "\n" +
+      "Бюджет: " + (state.budget || "…");
+  }
+  function press(group, value) {
+    document.querySelectorAll('[data-group="' + group + '"] .chip').forEach(function (c) {
+      c.setAttribute("aria-pressed", String(c.textContent === value));
+    });
+    state[group] = value; render();
+  }
+  document.querySelectorAll("[data-group]").forEach(function (g) {
+    g.addEventListener("click", function (e) {
+      var c = e.target.closest(".chip"); if (c) press(g.dataset.group, c.textContent);
+    });
+  });
+  render();
+
+  /* развилка: выбор задачи подсвечивается, подставляется в бриф и в реплику у работ */
+  var sayWorks = document.querySelector("[data-say-works]");
+  document.querySelectorAll("[data-pick]").forEach(function (p) {
+    p.addEventListener("click", function () {
+      document.querySelectorAll("[data-pick]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === p)); });
+      var v = p.dataset.pick;
+      press("what", v);
+      sayWorks.innerHTML = "<b>Савелий</b>Вы выбрали «" + v + "» — первыми стоят работы этого жанра. Задачу я уже подставил в заявку внизу.";
+      if (!document.body.hasAttribute("data-static")) document.getElementById("raboty").scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  if (location.hash === "#demo-picked") {
+    document.body.setAttribute("data-static", "");
+    document.querySelector('[data-pick="Рекламный ролик"]').click();
+    press("when", "В ближайшие 2–3 месяца"); press("budget", "50–150 000 ₽");
+    scrollTo(0, 0);
+  }
+})();
+</script>
+</body>
+</html>

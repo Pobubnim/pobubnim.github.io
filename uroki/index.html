@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#000000">
 <title>Уроки видеосъёмки и DaVinci Resolve бесплатно | ПОБУБНИМ</title>
-<meta name="description" content="Двенадцать бесплатных интерактивных уроков: свет и звук по физике, цвет в DaVinci Resolve, скоупы, log-кривые, ISO, глубина резкости и мерцание. Крутите ползунки прямо в браузере.">
+<meta name="description" content="Пятнадцать бесплатных интерактивных уроков: свет и звук по физике, цвет в DaVinci Resolve, скоупы, log-кривые, ISO, глубина резкости и мерцание. Крутите ползунки прямо в браузере.">
 <meta name="author" content="Савелий Бубнов">
 <link rel="canonical" href="https://pobubnim.ru/uroki/">
 <meta property="og:title" content="Уроки DaVinci Resolve на русском — бесплатно">
-<meta property="og:description" content="Восемь уроков с интерактивными досками: колёса, скоупы, log, ISO, ГРИП. Всё считается вживую в браузере.">
+<meta property="og:description" content="Пятнадцать уроков с интерактивными досками: свет, звук, колёса, скоупы, log, ISO, ГРИП. Всё считается вживую в браузере.">
 <meta property="og:image" content="https://pobubnim.ru/assets/og/uroki.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pobubnim.ru/uroki/">
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="../assets/css/fonts.css">
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/lesson.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Уроки DaVinci Resolve и видеосъёмки", "description": "Восемь бесплатных интерактивных уроков по цвету, камере и оптике.", "url": "https://pobubnim.ru/uroki/", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Уроки DaVinci Resolve и видеосъёмки", "description": "Пятнадцать бесплатных интерактивных уроков по свету, звуку, цвету, камере и оптике.", "url": "https://pobubnim.ru/uroki/", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Уроки", "item": "https://pobubnim.ru/uroki/"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Где в DaVinci Resolve менять экспозицию?", "acceptedAnswer": {"@type": "Answer", "text": "Зависит от материала. RAW — вкладка Camera RAW, поле Exposure. Log — колесо Offset на странице Color: сдвиг по log-кривой и есть стопы. Линейный свет — палитра HDR, Global Exposure. Колесо Gain для этого не подходит: оно множит дисплейный сигнал, а не свет сцены, и ломает контраст."}},
@@ -71,7 +71,7 @@
     <nav class="nav-links" aria-label="Основная">
       <a href="/raboty.html">Работы</a>
       <div class="nav-drop">
-        <button type="button">Решения<span class="caret">▾</span></button>
+        <button type="button">Услуги и цены<span class="caret">▾</span></button>
         <div class="drop-panel">
         <a class="drop-lead" href="/video-dlya-biznesa.html">Видео для бизнеса: подбор под задачу</a>
         <a href="/services/reklamnyj-rolik.html">Рекламный ролик</a>
@@ -82,9 +82,9 @@
         <a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a>
         <a href="/services/sozdanie-sajtov.html">Создание сайтов</a>
         <a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a>
+        <a class="drop-foot" href="/ceny.html">Цены на все услуги</a>
         </div>
       </div>
-      <a href="/ceny.html">Цены</a>
       <div class="nav-drop" data-here>
         <button type="button">Обучение<span class="caret">▾</span></button>
         <div class="drop-panel">
@@ -92,12 +92,17 @@
         <a href="/uroki/" aria-current="page">Уроки DaVinci Resolve</a>
         </div>
       </div>
-      <a href="/articles/">Статьи</a>
-      <a href="/instrumenty/">Инструменты</a>
-      <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+      <div class="nav-drop">
+        <button type="button">Знания<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a href="/articles/">Статьи и разборы цен</a>
+        <a href="/instrumenty/">Инструменты для съёмки</a>
+        <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+        </div>
+      </div>
     </nav>
     <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
-    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Обсудить проект</a>
   </div>
 </header>
 
@@ -107,7 +112,7 @@
   <section class="hub-hero">
     <span class="label">Уроки · бесплатно · без регистрации</span>
     <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Уроки видеосъёмки и DaVinci Resolve</span> Не читать, а <em>крутить</em></h1>
-    <p class="lead">Двенадцать уроков с живыми досками: скоупы считаются из настоящих пикселей, log-кривые нарисованы по формулам Sony и ARRI, полосы мерцания — интегралом пульсации, граница звука — формулой критического расстояния. Двигаете ползунок — приборы отвечают, как в программе.</p>
+    <p class="lead">Пятнадцать уроков с живыми досками: скоупы считаются из настоящих пикселей, log-кривые нарисованы по формулам Sony и ARRI, полосы мерцания — интегралом пульсации, граница звука — формулой критического расстояния. Двигаете ползунок — приборы отвечают, как в программе.</p>
     <nav class="base-nav" aria-label="База знаний">
       <a href="/articles/">Статьи <span>21</span></a>
       <a href="/uroki/" aria-current="page">Уроки с живыми досками <span>15</span></a>
@@ -222,17 +227,13 @@
 </main>
 
 <footer class="footer">
-  <div class="wrap footer-links">
-    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
-    <nav aria-label="Подвал">
-      <a href="/">На главную</a>
-      <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
-      <a href="../articles/">Статьи</a>
-      <a href="../instrumenty/">Инструменты</a>
-      <a href="../education.html">Обучение</a>
-      <a href="../privacy.html">Конфиденциальность</a>
-      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
-    </nav>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand"><a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a><p>Видеосъёмка, цвет и цифровые продукты. Москва, область, Обнинск — лично или командой продакшена MONOLITH7.</p><a class="foot-tel" href="tel:+79829054454">+7 982 905-44-54</a><a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм · @sbphotoshoter</a><a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте — если телеграм не открывается</a><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео» →</a></div>
+      <div class="foot-shelf"><span class="label foot-shelf-t">Решения и города</span><div class="foot-shelf-in"><nav class="foot-col" aria-label="Услуги и цены"><span class="foot-sub">Услуги и цены</span><a href="/video-dlya-biznesa.html">Видео для бизнеса</a><a href="/ceny.html">Цены на видеосъёмку</a><a href="/services/reklamnyj-rolik.html">Рекламный ролик</a><a href="/services/imidzhevyj-film.html">Имиджевый фильм</a><a href="/services/svadebnoe-kino.html">Свадебное кино</a><a href="/services/muzykalnyj-klip.html">Музыкальный клип</a><a href="/services/cvetokorrekciya.html">Цветокоррекция</a><a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a><a href="/services/sozdanie-sajtov.html">Создание сайтов</a><a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a></nav><nav class="foot-col" aria-label="Где снимаю"><span class="foot-sub">Где снимаю</span><a href="/videosemka-moskva.html">Видеосъёмка в Москве</a><a href="/videograf-naro-fominsk.html">Съёмка в Наро-Фоминске</a><a href="/videograf-aprelevka.html">Съёмка в Апрелевке</a><a href="/videograf-obninsk.html">Съёмка в Обнинске</a><a href="/raboty.html">Работы по темам</a></nav></div></div>
+      <div class="foot-shelf"><span class="label foot-shelf-t">Знания и обучение</span><div class="foot-shelf-in"><nav class="foot-col" aria-label="Знания"><span class="foot-sub">Знания</span><a href="/articles/">Статьи и разборы цен</a><a href="/instrumenty/">Инструменты</a><a href="/konstruktor-dogovora.html">Конструктор договора</a><a href="/zakazy-sami.html">Заказы сами</a></nav><nav class="foot-col" aria-label="Учиться"><span class="foot-sub">Учиться</span><a href="/education.html">Программы обучения</a><a href="/uroki/" aria-current="page">Уроки DaVinci Resolve</a><a href="/articles/obuchenie-videosemke-s-nulya.html">Съёмка с нуля</a><a href="/articles/kak-snimat-video-na-telefon.html">Как снимать на телефон</a><a href="/articles/cvetokorrekciya-video-kak-sdelat.html">Цветокоррекция своими руками</a></nav></div></div>
+    </div>
+    <div class="foot-base"><span>© 2026 Савелий Бубнов · ПОБУБНИМ</span><nav aria-label="Контакты"><a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм</a><a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a><a href="/privacy.html">Конфиденциальность</a></nav></div>
   </div>
 </footer>
 

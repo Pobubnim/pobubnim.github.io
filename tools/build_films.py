@@ -62,7 +62,8 @@ def card(f: dict, vert: bool, indent: str = "      ") -> str:
     alt = esc(f"{plain(f['t'])} — {f['s']}")
     src = base(f) + f["id"] + ".mp4"
     return (
-        f'{indent}<div class="film" data-src="{esc(src)}"{" data-vert" if vert else ""} '
+        f'{indent}<div class="film" data-src="{esc(src)}"{" data-vert" if vert else ""}'
+        f'{(" data-g=" + chr(34) + esc(f["g"]) + chr(34)) if f.get("g") else ""} '
         f'tabindex="0" role="button" aria-label="{alt}, смотреть видео">\n'
         f'{indent}  <img loading="lazy" width="{w}" height="{h}" src="{esc(poster(f))}" alt="{alt}">\n'
         f'{indent}  <video muted loop playsinline preload="none" src="{esc(base(f) + f["id"] + "-loop.mp4")}"></video>\n'
@@ -156,13 +157,17 @@ def main() -> None:
     p = ROOT / "index.html"
     t = p.read_text(encoding="utf-8")
     home = "\n".join(card(f, False) for f in DATA["home"])
+    films = sum(len(th["films"]) for th in DATA["themes"])
     home += (
         '\n      <a class="film film-more" href="/raboty.html">'
-        '<div class="film-more-in"><b>Все работы — по темам</b>'
-        "<span>реклама, имидж, события, клипы, свадьбы, ИИ →</span></div></a>"
+        f'<div class="film-more-in"><b>Все {films} работ — по темам →</b>'
+        "<span>реклама, имидж, события, клипы, свадьбы, 9:16, ИИ</span></div></a>"
     )
     t = replace_block(t, "HOME-FILMS", home)
-    t = replace_block(t, "HOME-VERT", "\n".join(card(f, True) for f in DATA["homeVert"]))
+    # вертикальные ролики с главной сняты редизайном 24.09 (живут в теме «9:16»
+    # на raboty.html); маркер необязателен — вернёте его в index.html, лента вернётся
+    if "<!-- HOME-VERT:START -->" in t:
+        t = replace_block(t, "HOME-VERT", "\n".join(card(f, True) for f in DATA["homeVert"]))
     strip = "\n".join(
         f'      <figure><img loading="lazy" width="720" height="1280" '
         f'src="/assets/img/{s["img"]}.webp" alt="{esc(s["cap"])}">'
@@ -171,7 +176,6 @@ def main() -> None:
     t = replace_block(t, "STRIP", strip)
     p.write_text(t, encoding="utf-8")
 
-    films = sum(len(th["films"]) for th in DATA["themes"])
     print(f"Готово: портфолио — {len(DATA['themes'])} тем и {films} работ, "
           f"главная — {len(DATA['home'])}+{len(DATA['homeVert'])} карточек "
           f"и {len(DATA['strip'])} кадров ленты.")

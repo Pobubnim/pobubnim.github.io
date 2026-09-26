@@ -35,46 +35,6 @@
 {"@type": "Question", "name": "А если процесс у нас поменяется?", "acceptedAnswer": {"@type": "Answer", "text": "Тогда меняется и сценарий, это нормально. Поэтому я сразу отдаю понятную схему и инструкцию, а логику стараюсь держать в настройках, а не в коде. Но если процесс переписывают каждый месяц, автоматизировать его рано."}}
 ]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Боты и автоматизация", "item": "https://pobubnim.ru/services/boty-avtomatizaciya.html"}]}</script>
-<style>
-  .svc-hero { padding-top: 150px; max-width: 760px; }
-  .svc-hero .label { margin-bottom: 14px; display: block; }
-  .svc-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
-  .svc-hero .hero-cta { margin-top: 26px; }
-  .svc-sec { margin-top: clamp(52px, 7vw, 80px); }
-  .svc-h2 { font-size: clamp(24px, 2.6vw, 32px); margin-bottom: 22px; }
-  .svc-body p { color: var(--smoke); font-weight: 300; font-size: 17px; max-width: 680px; text-wrap: pretty; margin-bottom: 14px; }
-  /* короткий ответ: цена и суть в первых сорока словах — это то, что
-     вырезают в сниппет и в быстрые ответы поиска */
-  .svc-body p.svc-short { color: var(--ink); font-weight: 400; border-left: 2px solid var(--line-soft); padding-left: 16px; margin-bottom: 22px; }
-  .svc-grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
-  .svc-inc { background: var(--char); border-radius: var(--r-card); padding: 24px; }
-  .svc-inc b { font-size: 15px; font-weight: 500; display: block; margin-bottom: 12px; }
-  .svc-inc ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .svc-inc li { font-size: 14.5px; color: var(--smoke); font-weight: 300; padding-left: 16px; position: relative; }
-  .svc-inc li::before { content: "·"; position: absolute; left: 2px; color: var(--mute); }
-  .svc-price { margin-top: 18px; display: flex; flex-direction: column; gap: 2px; }
-  .svc-price b { font-size: 26px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .svc-price span { font-size: 13px; color: var(--mute); }
-  .svc-works { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-  .svc-work video { width: 100%; aspect-ratio: 16/9; object-fit: contain; border-radius: var(--r-card); outline: 1px solid rgba(255,255,255,0.07); outline-offset: -1px; background: #000; }
-  .svc-work figcaption { margin-top: 10px; display: flex; flex-direction: column; gap: 2px; }
-  .svc-work figcaption b { font-size: 15px; font-weight: 500; }
-  .svc-work figcaption span { font-size: 13px; color: var(--mute); }
-  .svc-case { display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 26px; background: var(--char); border-radius: var(--r-card); }
-  .svc-case:hover { background: var(--char2); }
-  .svc-case b { font-size: 16px; font-weight: 500; }
-  .svc-case span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
-  .svc-faq { border-top: 1px solid var(--line-soft); padding: 18px 4px; }
-  .svc-faq:last-of-type { border-bottom: 1px solid var(--line-soft); }
-  .svc-faq summary { font-size: 16.5px; font-weight: 500; cursor: pointer; list-style: none; position: relative; padding-right: 30px; }
-  .svc-faq summary::after { content: "+"; position: absolute; right: 4px; top: 0; color: var(--mute); font-weight: 300; font-size: 20px; }
-  .svc-faq[open] summary::after { content: "–"; }
-  .svc-faq p { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
-  .svc-all { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
-  .svc-all a { font-size: 13.5px; color: var(--smoke); border: 1px solid var(--line-soft); border-radius: var(--r-pill); padding: 8px 16px; }
-  .svc-all a:hover { color: var(--ink); border-color: var(--line); }
-  @media (max-width: 800px) { .svc-grid { grid-template-columns: 1fr; } }
-</style>
 <script src="../assets/js/analytics.js?v=4" defer></script>
 </head>
 <body>
@@ -85,7 +45,7 @@
     <nav class="nav-links" aria-label="Основная">
       <a href="/raboty.html">Работы</a>
       <div class="nav-drop" data-here>
-        <button type="button">Решения<span class="caret">▾</span></button>
+        <button type="button">Услуги и цены<span class="caret">▾</span></button>
         <div class="drop-panel">
         <a class="drop-lead" href="/video-dlya-biznesa.html">Видео для бизнеса: подбор под задачу</a>
         <a href="/services/reklamnyj-rolik.html">Рекламный ролик</a>
@@ -96,9 +56,9 @@
         <a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a>
         <a href="/services/sozdanie-sajtov.html">Создание сайтов</a>
         <a href="/services/boty-avtomatizaciya.html" aria-current="page">Боты и автоматизация</a>
+        <a class="drop-foot" href="/ceny.html">Цены на все услуги</a>
         </div>
       </div>
-      <a href="/ceny.html">Цены</a>
       <div class="nav-drop">
         <button type="button">Обучение<span class="caret">▾</span></button>
         <div class="drop-panel">
@@ -106,12 +66,17 @@
         <a href="/uroki/">Уроки DaVinci Resolve</a>
         </div>
       </div>
-      <a href="/articles/">Статьи</a>
-      <a href="/instrumenty/">Инструменты</a>
-      <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+      <div class="nav-drop">
+        <button type="button">Знания<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a href="/articles/">Статьи и разборы цен</a>
+        <a href="/instrumenty/">Инструменты для съёмки</a>
+        <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+        </div>
+      </div>
     </nav>
     <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
-    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Обсудить проект</a>
   </div>
 </header>
 
@@ -123,9 +88,12 @@
     <h1 class="display">Боты и <em>автоматизация</em></h1>
     <p class="lead">Рутина, которую делает робот: заявки, публикации, отчёты и ИИ — встроенные в ваши процессы.</p>
     <div class="hero-cta">
-      <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
+      <a class="btn btn-lamp" href="/#zayavka" data-lead="Бот / автоматизация">Обсудить этот формат</a>
       <a class="btn btn-ghost" href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Написать в телеграм</a>
-      <a class="btn btn-ghost" href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>
+    </div>
+    <div class="say">
+      <img src="/assets/img/say.webp" alt="" width="36" height="36">
+      <p><b>Савелий</b>Ниже — примеры, цена и что автоматизировать не стоит. Опишите рутину, которую хочется снять с людей, — отвечу в тот же день.</p>
     </div>
   </section>
 
@@ -143,14 +111,23 @@
     </div>
   </section>
 
+  <div class="next scene-next" data-gen="scenes">
+      <div class="next-go"><span class="kicker">Дальше · сцена 02</span><a href="#scena-02">Примеры работ <span class="arrow down" aria-hidden="true">↓</span></a></div>
+    </div>
+
   <section class="svc-sec">
-    <h2 class="svc-h2">Примеры работ</h2>
+    <h2 class="svc-h2" id="scena-02">Примеры работ</h2>
     <div class="svc-works">
       <a class="svc-case" href="../cases/monolith.html"><b>MONOLITH — приложение с ИИ-ассистентом</b><span>Смотреть кейс →</span></a>
     </div>
   </section>
+  <div class="next scene-next" data-gen="scenes">
+      <div class="next-go"><span class="kicker">Дальше · сцена 03</span><a href="#scena-03">Сколько стоит телеграм-бот и автоматизация <span class="arrow down" aria-hidden="true">↓</span></a></div>
+    </div>
+
   <section class="svc-sec">
-    <h2 class="svc-h2">Сколько стоит телеграм-бот и автоматизация</h2>
+    <h2 class="svc-h2" id="scena-03">Сколько стоит телеграм-бот и автоматизация</h2>
+    <div class="say scene-say" data-gen="scenes"><img src="/assets/img/say.webp" alt="" width="36" height="36" loading="lazy"><p><b>Савелий</b>Цену определяют число систем, которые надо подружить, и цена ошибки. Там, где бот трогает деньги и заявки, проверки дольше сборки, — это закладываю в смету сразу.</p></div>
     <p style="color:var(--smoke);font-weight:300;font-size:16.5px;max-width:720px;text-wrap:pretty">
       <b style="color:var(--ink);font-weight:500">От 30 000 ₽</b> — разбор процесса, сборка бота или связки
       сервисов, подключение ИИ там, где он окупается, тестовый прогон на реальных данных и инструкция.
@@ -174,8 +151,13 @@
     <p class="cmp-note">Цену определяет не размер бота, а число мест, где он может ошибиться незаметно.</p>
   </section>
 
+  <div class="next scene-next" data-gen="scenes">
+      <div class="next-go"><span class="kicker">Дальше · сцена 04</span><a href="#scena-04">Что получаете на руки <span class="arrow down" aria-hidden="true">↓</span></a></div>
+      <p class="next-alt">Цена понятна? <button type="button" data-lead="Бот / автоматизация">Обсудить этот формат</button></p>
+    </div>
+
   <section class="svc-sec">
-    <h2 class="svc-h2">Что получаете на руки</h2>
+    <h2 class="svc-h2" id="scena-04">Что получаете на руки</h2>
     <p class="svc-sub">Работающий процесс, а не папка с кодом. Вместе с ним — понимание, как он устроен.</p>
     <div class="facts">
       <div><b>Рабочий сценарий</b><span>Бот или связка сервисов, проверенная на ваших настоящих данных, а не на примерах из документации.</span></div>
@@ -194,8 +176,12 @@
     </div>
   </section>
 
+  <div class="next scene-next" data-gen="scenes">
+      <div class="next-go"><span class="kicker">Дальше · сцена 05</span><a href="#scena-05">Что автоматизировать не стоит <span class="arrow down" aria-hidden="true">↓</span></a></div>
+    </div>
+
   <section class="svc-sec">
-    <h2 class="svc-h2">Что автоматизировать не стоит</h2>
+    <h2 class="svc-h2" id="scena-05">Что автоматизировать не стоит</h2>
     <p class="svc-sub">Этот раздел мне дороже обещаний. Четыре случая, где автоматизация приносит убыток вместо экономии.</p>
     <div class="steps four">
       <div class="step"><i>01</i><b>Холодные рассылки по собранным базам</b><p>Реклама по телефону, почте и в мессенджерах без предварительного согласия человека запрещена статьёй 18 закона «О рекламе». Штраф выписывают получателю выгоды, то есть вам, а не подрядчику. Такие сценарии я не собираю и отговариваю от них.</p></div>
@@ -205,8 +191,13 @@
     </div>
   </section>
 
+  <div class="next scene-next" data-gen="scenes">
+      <div class="next-go"><span class="kicker">Дальше · сцена 06</span><a href="#scena-06">Что прислать, чтобы я посчитал точно <span class="arrow down" aria-hidden="true">↓</span></a></div>
+    </div>
+
   <section class="svc-sec">
-    <h2 class="svc-h2">Что прислать, чтобы я посчитал точно</h2>
+    <h2 class="svc-h2" id="scena-06">Что прислать, чтобы я посчитал точно</h2>
+    <div class="say scene-say" data-gen="scenes"><img src="/assets/img/say.webp" alt="" width="36" height="36" loading="lazy"><p><b>Савелий</b>Опишите процесс как есть, шаг за шагом. По этим пунктам видно, окупится автоматизация или нет, ещё до сметы.</p></div>
     <p class="svc-sub">Пять пунктов. По ним видно, окупится автоматизация или нет, ещё до сметы.</p>
     <div class="honest">
       <b>Опишите процесс как есть</b>
@@ -228,19 +219,31 @@
     <p class="rev-note">Отзывы заказчиков — в профиле MONOLITH7 PRODUCTION на Авито: 38 отзывов с 2017 года по всем услугам, из них о видео пока два. <a href="https://www.avito.ru/brands/i121868216/all?sellerId=b66f5071bab3647df5dba2eacbfd4194" target="_blank" rel="noopener">Посмотреть профиль →</a></p>
   </section>
 
+  <div class="next scene-next" data-gen="scenes">
+      <div class="next-go"><span class="kicker">Дальше · сцена 07</span><a href="#scena-07">Частые вопросы <span class="arrow down" aria-hidden="true">↓</span></a></div>
+    </div>
+
   <section class="svc-sec">
-    <h2 class="svc-h2">Частые вопросы</h2>
+    <h2 class="svc-h2" id="scena-07">Частые вопросы</h2>
     <details class="svc-faq"><summary>Что можно автоматизировать в малом бизнесе?</summary><p>Чаще всего: приём заявок в телеграме, напоминания клиентам, публикации в соцсети, сбор отчётов из разных сервисов в одно место. Если рутина повторяется — её почти наверняка можно снять.</p></details><details class="svc-faq"><summary>Бот требует сервера и оплаты?</summary><p>Простые сценарии живут на бесплатных мощностях. Где нужен сервер — подберу самый дешёвый вариант и отдам доступы вам, без привязки ко мне.</p></details><details class="svc-faq"><summary>Сколько занимает разработка?</summary><p>Типовой бот — 1–2 недели. Связка на несколько сервисов с ИИ — от двух недель, после разбора процесса скажу точно.</p></details><details class="svc-faq"><summary>Как оформляем и как платить?</summary><p>Работаю по договору: предоплата — часть сметы при бронировании даты, остаток — после сдачи работы. Оплата в любой удобной форме: перевод, наличные или счёт для компаний.</p></details><details class="svc-faq"><summary>Можно ли сделать рассылку по базе клиентов?</summary><p>По своей базе — да, если люди давали согласие на рекламные сообщения и могут отписаться. По купленной или собранной базе — нет. Статья 18 закона «О рекламе» требует предварительного согласия получателя, и отвечает за нарушение рекламодатель, то есть вы. Такие сценарии я не собираю.</p></details><details class="svc-faq"><summary>Где будут лежать ключи и доступы?</summary><p>На сервере, а не внутри бота или приложения. Ключ, зашитый в клиент, достаётся из установочного файла за десять минут, и дальше вашим лимитом пользуется посторонний. В своём приложении я вынес ключ модели на серверную функцию именно по этой причине.</p></details><details class="svc-faq"><summary>Нужен ли боту сервер и сколько он стоит?</summary><p>Зависит от сценария. Часть задач закрывается бесплатными серверными функциями и запусками по расписанию. Постоянно слушающий бот сервер обычно требует, и это несколько сотен рублей в месяц. Скажу на этапе разбора, до сметы, а не после запуска.</p></details><details class="svc-faq"><summary>Как понять, что бот сломался?</summary><p>Он должен сам сообщать, что жив. Молчащая автоматизация — худший вид поломки: всё выглядит работающим, а заявки не приходят вторую неделю. Поэтому в сценарий закладывается сигнал о работе и уведомление о сбое, а не надежда, что вы заметите.</p></details><details class="svc-faq"><summary>Где ИИ реально окупается, а где нет?</summary><p>Окупается там, где надо разобрать свободный текст человека: превратить письмо в заявку, вытащить сумму и срок из переписки, разложить сообщение по полям. Не окупается там, где ответ можно получить обычным условием: расписание, цены, статус заказа. Модель в таких местах дороже, медленнее и иногда ошибается.</p></details><details class="svc-faq"><summary>А если процесс у нас поменяется?</summary><p>Тогда меняется и сценарий, это нормально. Поэтому я сразу отдаю понятную схему и инструкцию, а логику стараюсь держать в настройках, а не в коде. Но если процесс переписывают каждый месяц, автоматизировать его рано.</p></details>
   </section>
 
 
+  <div class="next scene-next" data-gen="scenes">
+      <div class="next-go"><span class="kicker">Дальше · сцена 08</span><a href="#scena-08">Другие решения <span class="arrow down" aria-hidden="true">↓</span></a></div>
+    </div>
+
   <section class="svc-sec">
-    <h2 class="svc-h2">Другие решения</h2>
+    <h2 class="svc-h2" id="scena-08">Другие решения</h2>
     <div class="svc-all"><a href="/video-dlya-biznesa.html">Какое видео нужно бизнесу</a><a href="reklamnyj-rolik.html">Рекламный ролик под ключ</a><a href="imidzhevyj-film.html">Имиджевый фильм о компании</a><a href="svadebnoe-kino.html">Свадебное кино</a><a href="muzykalnyj-klip.html">Музыкальный клип</a><a href="cvetokorrekciya.html">Цветокоррекция видео</a><a href="semka-meropriyatij.html">Съёмка мероприятий</a><a href="sozdanie-sajtov.html">Создание сайтов</a></div>
   </section>
 
+  <div class="next scene-next" data-gen="scenes">
+      <div class="next-go"><span class="kicker">Дальше · сцена 09</span><a href="#scena-09">Ваш ход: обсудим задачу <span class="arrow down" aria-hidden="true">↓</span></a></div>
+    </div>
+
   <div class="footer-cta" style="padding-top:70px">
-    <h2 class="display">Обсудим <em>задачу</em>?</h2>
+    <h2 class="display" id="scena-09">Обсудим <em>задачу</em>?</h2>
     <p class="cta-note">Опишите рутину, которую хочется снять с людей. Отвечу в тот же день. Или во <a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a>.</p>
     <div class="cta-row">
       <button class="btn btn-lamp" data-lead="Бот / автоматизация">Оставить заявку</button>
@@ -251,15 +254,13 @@
 </main>
 
 <footer class="footer">
-  <div class="wrap footer-links">
-    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
-    <nav aria-label="Подвал">
-      <a href="/">На главную</a>
-      <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
-      <a href="../education.html">Обучение</a>
-      <a href="../privacy.html">Конфиденциальность</a>
-      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
-    </nav>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand"><a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a><p>Видеосъёмка, цвет и цифровые продукты. Москва, область, Обнинск — лично или командой продакшена MONOLITH7.</p><a class="foot-tel" href="tel:+79829054454">+7 982 905-44-54</a><a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм · @sbphotoshoter</a><a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте — если телеграм не открывается</a><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео» →</a></div>
+      <div class="foot-shelf"><span class="label foot-shelf-t">Решения и города</span><div class="foot-shelf-in"><nav class="foot-col" aria-label="Услуги и цены"><span class="foot-sub">Услуги и цены</span><a href="/video-dlya-biznesa.html">Видео для бизнеса</a><a href="/ceny.html">Цены на видеосъёмку</a><a href="/services/reklamnyj-rolik.html">Рекламный ролик</a><a href="/services/imidzhevyj-film.html">Имиджевый фильм</a><a href="/services/svadebnoe-kino.html">Свадебное кино</a><a href="/services/muzykalnyj-klip.html">Музыкальный клип</a><a href="/services/cvetokorrekciya.html">Цветокоррекция</a><a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a><a href="/services/sozdanie-sajtov.html">Создание сайтов</a><a href="/services/boty-avtomatizaciya.html" aria-current="page">Боты и автоматизация</a></nav><nav class="foot-col" aria-label="Где снимаю"><span class="foot-sub">Где снимаю</span><a href="/videosemka-moskva.html">Видеосъёмка в Москве</a><a href="/videograf-naro-fominsk.html">Съёмка в Наро-Фоминске</a><a href="/videograf-aprelevka.html">Съёмка в Апрелевке</a><a href="/videograf-obninsk.html">Съёмка в Обнинске</a><a href="/raboty.html">Работы по темам</a></nav></div></div>
+      <div class="foot-shelf"><span class="label foot-shelf-t">Знания и обучение</span><div class="foot-shelf-in"><nav class="foot-col" aria-label="Знания"><span class="foot-sub">Знания</span><a href="/articles/">Статьи и разборы цен</a><a href="/instrumenty/">Инструменты</a><a href="/konstruktor-dogovora.html">Конструктор договора</a><a href="/zakazy-sami.html">Заказы сами</a></nav><nav class="foot-col" aria-label="Учиться"><span class="foot-sub">Учиться</span><a href="/education.html">Программы обучения</a><a href="/uroki/">Уроки DaVinci Resolve</a><a href="/articles/obuchenie-videosemke-s-nulya.html">Съёмка с нуля</a><a href="/articles/kak-snimat-video-na-telefon.html">Как снимать на телефон</a><a href="/articles/cvetokorrekciya-video-kak-sdelat.html">Цветокоррекция своими руками</a></nav></div></div>
+    </div>
+    <div class="foot-base"><span>© 2026 Савелий Бубнов · ПОБУБНИМ</span><nav aria-label="Контакты"><a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм</a><a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a><a href="/privacy.html">Конфиденциальность</a></nav></div>
   </div>
 </footer>
 

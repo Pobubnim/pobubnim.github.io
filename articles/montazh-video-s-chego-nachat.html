@@ -25,34 +25,6 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "datePublished": "2026-09-21", "dateModified": "2026-09-21", "headline": "Монтаж видео с нуля: с чего начать", "description": "Обучающая статья о монтаже для новичка: выбор программы, порядок работы над первым проектом, порядок цветокоррекции, четыре типичные ошибки и план на первый месяц.", "inLanguage": "ru", "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/", "jobTitle": "Оператор-постановщик, колорист"}, "mainEntityOfPage": "https://pobubnim.ru/articles/montazh-video-s-chego-nachat.html", "image": "https://pobubnim.ru/assets/og/education.jpg"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "С чего начать монтаж, если я открыл программу и растерялся?", "acceptedAnswer": {"@type": "Answer", "text": "С отсмотра материала, а не с кнопок. Пересмотрите всё снятое от начала до конца и отметьте только те куски, которые не стыдно показать. Обычно их выходит меньше десятой части. Дальше вы собираете фильм из отмеченного, и половина вопросов про интерфейс отпадает сама: вы уже знаете, что именно ищете на таймлинии."}}, {"@type": "Question", "name": "Какую программу выбрать новичку?", "acceptedAnswer": {"@type": "Answer", "text": "Любую одну и не менять полгода. Я работаю в DaVinci Resolve и советую его по простой причине: бесплатная версия покрывает монтаж и цвет почти целиком, а платная Studio добавляет шумодав и часть эффектов. Это модель продаж Blackmagic, а не урезанная демка с водяным знаком. Новичку упираться в потолок бесплатной версии нечем ещё очень долго."}}, {"@type": "Question", "name": "Сколько времени занимает первый смонтированный ролик?", "acceptedAnswer": {"@type": "Answer", "text": "Первая минута готового видео у новичка занимает несколько вечеров, и это нормально. Считайте не по хронометражу, а по отсмотру: час снятого материала пересматривается минимум час, и это неустранимая часть работы. Дальше время уходит на выбор дублей. Скорость приходит от узнавания знакомых ситуаций, а не от знания горячих клавиш."}}, {"@type": "Question", "name": "Монтаж и цветокоррекция — это одно и то же?", "acceptedAnswer": {"@type": "Answer", "text": "Нет. Монтаж отвечает на вопрос «что показать и как долго», цвет — на вопрос «как это выглядит». Их даже делают в разном порядке: сначала фильм собран и утверждён по смыслу, потом красится. Красить незакрытый монтаж — значит красить кадры, которые вылетят. В Resolve это буквально разные страницы программы."}}, {"@type": "Question", "name": "В каком порядке крутить цвет?", "acceptedAnswer": {"@type": "Answer", "text": "Порядок строгий: баланс белого, затем экспозиция и контраст, затем насыщенность и только потом вид. Каждый шаг стоит на предыдущем. Если баланс белого не выправлен, вы будете вытягивать контраст у картинки с паразитным оттенком и в итоге вернётесь к началу. Подробный разбор с картинками лежит в уроке про порядок цветокоррекции."}}, {"@type": "Question", "name": "Почему у меня всё получается кислотным?", "acceptedAnswer": {"@type": "Answer", "text": "Скорее всего, вы положили творческий LUT поверх сырого log-материала. Log-профиль пишет нарочно плоскую картинку, а творческие LUT рассчитаны на нормальный контраст на входе. Сначала техническая конверсия — CST или официальный технический LUT камеры, и только потом творчество поверх. Второй частый источник кислоты — насыщенность, поднятая до предела."}}, {"@type": "Question", "name": "Зачем скоупы, если я вижу картинку глазами?", "acceptedAnswer": {"@type": "Answer", "text": "Потому что глаз адаптируется, а осциллограмма нет. Через двадцать минут работы с тёплым кадром мозг принимает этот перекос за норму, и вы уводите весь ролик. Waveform показывает яркость честно: прижатая полка внизу или вверху — это потерянная информация, которую уже не вернуть. Смотреть на скоупы дольше пяти секунд не нужно, достаточно привычки."}}, {"@type": "Question", "name": "Можно ли монтировать на телефоне?", "acceptedAnswer": {"@type": "Answer", "text": "Для сторис — да, базовая коррекция там есть: экспозиция, баланс, насыщенность, кривые. Порядок шагов тот же. Потолок наступает быстро: нет масок по областям, нет точной работы с кожей, нет скоупов. Клиентский ролик я всё равно прогоняю через Resolve. Как приём для тренировки глаза телефон годится, как основной инструмент — нет."}}, {"@type": "Question", "name": "Сколько стоит занятие по монтажу?", "acceptedAnswer": {"@type": "Answer", "text": "Занятие по съёмке или DaVinci — от 3 000 ₽ за 90 минут, колористика — от 3 500 ₽, курс из восьми занятий — от 20 000 ₽. Консультация без практики — от 2 000 ₽. Разбор чужого или своего материала занимает одно занятие и обычно экономит месяц самостоятельного блуждания, потому что ошибку показывают пальцем."}}, {"@type": "Question", "name": "Что делать, если проект надоел на середине?", "acceptedAnswer": {"@type": "Answer", "text": "Доводить до вывода файла, даже если он вышел плохим. Незаконченный проект не учит ничему: весь опыт лежит в последней трети работы, где приходится чинить то, что не сходится. Правило простое — сначала первая версия целиком от начала до конца, и только потом улучшения. Пять доведённых коротких роликов дают больше, чем один вечно переделываемый."}}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://pobubnim.ru/"}, {"@type": "ListItem", "position": 2, "name": "Статьи", "item": "https://pobubnim.ru/articles/"}, {"@type": "ListItem", "position": 3, "name": "Монтаж видео с нуля", "item": "https://pobubnim.ru/articles/montazh-video-s-chego-nachat.html"}]}</script>
-<style>
-  .art-hero { padding-top: 150px; max-width: 760px; }
-  .art-hero .label { margin-bottom: 14px; display: block; }
-  .art-hero p.lead { color: var(--smoke); font-weight: 300; font-size: 19px; margin-top: 20px; text-wrap: pretty; }
-  .art-hero time { display: block; margin-top: 16px; font-size: 12.5px; color: var(--mute); letter-spacing: 0.06em; }
-  .art-body { max-width: 720px; margin-top: clamp(40px, 6vw, 64px); }
-  .art-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
-  .art-body p b { color: var(--ink); font-weight: 500; }
-  .art-body a { text-decoration: underline; }
-  .art-h2 { font-size: clamp(24px, 2.6vw, 32px); margin: clamp(32px, 5vw, 48px) 0 16px; }
-  .art-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-  .art-list li { font-size: 16px; color: var(--smoke); font-weight: 300; padding-left: 18px; position: relative; text-wrap: pretty; }
-  .art-list li::before { content: "·"; position: absolute; left: 2px; color: var(--mute); }
-  .art-table-wrap { overflow-x: auto; margin-bottom: 16px; }
-  .art-table { width: 100%; border-collapse: collapse; font-size: 15px; }
-  .art-table th { text-align: left; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); }
-  .art-table td { color: var(--smoke); font-weight: 300; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
-  .art-table td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; }
-  .svc-faq { border-top: 1px solid var(--line-soft); padding: 18px 4px; }
-  .svc-faq:last-of-type { border-bottom: 1px solid var(--line-soft); }
-  .svc-faq summary { font-size: 16.5px; font-weight: 500; cursor: pointer; list-style: none; position: relative; padding-right: 30px; }
-  .svc-faq summary::after { content: "+"; position: absolute; right: 4px; top: 0; color: var(--mute); font-weight: 300; font-size: 20px; }
-  .svc-faq[open] summary::after { content: "–"; }
-  .svc-faq p { margin-top: 10px; color: var(--smoke); font-weight: 300; font-size: 15.5px; max-width: 640px; text-wrap: pretty; }
-  .art-svc { margin-top: clamp(40px, 6vw, 56px); display: flex; flex-direction: column; gap: 6px; padding: 26px; background: var(--char); border-radius: var(--r-card); max-width: 720px; }
-  .art-svc b { font-size: 17px; font-weight: 500; }
-  .art-svc span { font-size: 13px; color: var(--mute); letter-spacing: 0.05em; text-transform: uppercase; }
-</style>
 <script src="../assets/js/analytics.js?v=4" defer></script>
 </head>
 <body>
@@ -63,7 +35,7 @@
     <nav class="nav-links" aria-label="Основная">
       <a href="/raboty.html">Работы</a>
       <div class="nav-drop">
-        <button type="button">Решения<span class="caret">▾</span></button>
+        <button type="button">Услуги и цены<span class="caret">▾</span></button>
         <div class="drop-panel">
         <a class="drop-lead" href="/video-dlya-biznesa.html">Видео для бизнеса: подбор под задачу</a>
         <a href="/services/reklamnyj-rolik.html">Рекламный ролик</a>
@@ -74,9 +46,9 @@
         <a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a>
         <a href="/services/sozdanie-sajtov.html">Создание сайтов</a>
         <a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a>
+        <a class="drop-foot" href="/ceny.html">Цены на все услуги</a>
         </div>
       </div>
-      <a href="/ceny.html">Цены</a>
       <div class="nav-drop">
         <button type="button">Обучение<span class="caret">▾</span></button>
         <div class="drop-panel">
@@ -84,12 +56,17 @@
         <a href="/uroki/">Уроки DaVinci Resolve</a>
         </div>
       </div>
-      <a href="/articles/">Статьи</a>
-      <a href="/instrumenty/">Инструменты</a>
-      <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+      <div class="nav-drop">
+        <button type="button">Знания<span class="caret">▾</span></button>
+        <div class="drop-panel">
+        <a href="/articles/">Статьи и разборы цен</a>
+        <a href="/instrumenty/">Инструменты для съёмки</a>
+        <a class="hot" href="/zakazy-sami.html">Заказы сами</a>
+        </div>
+      </div>
     </nav>
     <a class="nav-tel" href="tel:+79829054454" aria-label="Позвонить: +7 982 905-44-54"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+7 982 905-44-54</span></a>
-    <a class="btn btn-lamp" href="/#zayavka" data-lead>Оставить заявку</a>
+    <a class="btn btn-lamp" href="/#zayavka" data-lead>Обсудить проект</a>
   </div>
 </header>
 
@@ -212,16 +189,13 @@
 </main>
 
 <footer class="footer">
-  <div class="wrap footer-links">
-    <span>© 2026 Савелий Бубнов · ПОБУБНИМ</span>
-    <nav aria-label="Подвал">
-      <a href="/">На главную</a>
-      <a href="/videosemka-moskva.html">Видеосъёмка в Москве</a>
-      <a href="../instrumenty/">Инструменты</a>
-      <a href="../articles/">Статьи</a>
-      <a href="../privacy.html">Конфиденциальность</a>
-      <a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a>
-    </nav>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand"><a class="wordmark" href="/">ПОБУБНИМ<span>?</span></a><p>Видеосъёмка, цвет и цифровые продукты. Москва, область, Обнинск — лично или командой продакшена MONOLITH7.</p><a class="foot-tel" href="tel:+79829054454">+7 982 905-44-54</a><a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм · @sbphotoshoter</a><a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте — если телеграм не открывается</a><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал «Побубним за видео» →</a></div>
+      <div class="foot-shelf"><span class="label foot-shelf-t">Решения и города</span><div class="foot-shelf-in"><nav class="foot-col" aria-label="Услуги и цены"><span class="foot-sub">Услуги и цены</span><a href="/video-dlya-biznesa.html">Видео для бизнеса</a><a href="/ceny.html">Цены на видеосъёмку</a><a href="/services/reklamnyj-rolik.html">Рекламный ролик</a><a href="/services/imidzhevyj-film.html">Имиджевый фильм</a><a href="/services/svadebnoe-kino.html">Свадебное кино</a><a href="/services/muzykalnyj-klip.html">Музыкальный клип</a><a href="/services/cvetokorrekciya.html">Цветокоррекция</a><a href="/services/semka-meropriyatij.html">Съёмка мероприятий</a><a href="/services/sozdanie-sajtov.html">Создание сайтов</a><a href="/services/boty-avtomatizaciya.html">Боты и автоматизация</a></nav><nav class="foot-col" aria-label="Где снимаю"><span class="foot-sub">Где снимаю</span><a href="/videosemka-moskva.html">Видеосъёмка в Москве</a><a href="/videograf-naro-fominsk.html">Съёмка в Наро-Фоминске</a><a href="/videograf-aprelevka.html">Съёмка в Апрелевке</a><a href="/videograf-obninsk.html">Съёмка в Обнинске</a><a href="/raboty.html">Работы по темам</a></nav></div></div>
+      <div class="foot-shelf"><span class="label foot-shelf-t">Знания и обучение</span><div class="foot-shelf-in"><nav class="foot-col" aria-label="Знания"><span class="foot-sub">Знания</span><a href="/articles/">Статьи и разборы цен</a><a href="/instrumenty/">Инструменты</a><a href="/konstruktor-dogovora.html">Конструктор договора</a><a href="/zakazy-sami.html">Заказы сами</a></nav><nav class="foot-col" aria-label="Учиться"><span class="foot-sub">Учиться</span><a href="/education.html">Программы обучения</a><a href="/uroki/">Уроки DaVinci Resolve</a><a href="/articles/obuchenie-videosemke-s-nulya.html">Съёмка с нуля</a><a href="/articles/kak-snimat-video-na-telefon.html">Как снимать на телефон</a><a href="/articles/cvetokorrekciya-video-kak-sdelat.html">Цветокоррекция своими руками</a></nav></div></div>
+    </div>
+    <div class="foot-base"><span>© 2026 Савелий Бубнов · ПОБУБНИМ</span><nav aria-label="Контакты"><a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener">Телеграм</a><a href="https://vk.ru/sbphotoshoter" target="_blank" rel="noopener">ВКонтакте</a><a href="https://t.me/pobubnimzavideo" target="_blank" rel="noopener">Канал</a><a href="/privacy.html">Конфиденциальность</a></nav></div>
   </div>
 </footer>
 
