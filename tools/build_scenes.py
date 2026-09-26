@@ -26,8 +26,10 @@ import glob
 import io
 import json
 import os
+import posixpath
 import re
 import sys
+from urllib.parse import urljoin
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -157,8 +159,7 @@ def build(t: str, slug: str) -> str:
 
 
 VIDEO_LD = re.compile(r'<script type="application/ld\+json" data-gen="scenes-video">.*?</script>\n', re.S)
-VIDEO = re.compile(r'<figure class="svc-work">\s*<video[^>]*poster="/assets/img/film/([^".]+)\.webp"[^>]*src="([^"]+)"'
-                   r'[^>]*></video>\s*<figcaption><b>(.*?)</b><span>(.*?)</span>', re.S)
+FIGURE = re.compile(r'<figure class="svc-work">(.*?)</figure>', re.S)
 
 
 def films() -> dict:
@@ -185,16 +186,24 @@ def iso(length: str) -> str:
 
 
 def video_ld(t: str, url: str, cat: dict) -> str:
+    """Ролик ищется по имени файла (evergo.mp4 → evergo), порядок атрибутов не важен;
+    адреса постера и ролика — как на странице, но абсолютные (локальный «Поля» тоже)."""
     t = VIDEO_LD.sub("", t)
     items = []
-    for fid, src, name, sub in VIDEO.findall(t):
-        f = cat.get(fid)
+    for fig in FIGURE.findall(t):
+        src = re.search(r'<video\b[^>]*\ssrc="([^"]+)"', fig)
+        poster = re.search(r'<video\b[^>]*\sposter="([^"]+)"', fig)
+        cap = re.search(r"<figcaption><b>(.*?)</b><span>(.*?)</span>", fig, re.S)
+        if not (src and poster and cap):
+            continue
+        f = cat.get(posixpath.splitext(posixpath.basename(src.group(1)))[0])
         if not f:
             continue
-        thumb = f"https://pobubnim.ru/assets/img/film/{fid}.webp"
-        items.append({"@type": "VideoObject", "name": f"{plain(name)} — {plain(sub)}", "description": plain(sub) + ".",
+        thumb = urljoin(url, poster.group(1))
+        name, sub = plain(cap.group(1)), plain(cap.group(2))
+        items.append({"@type": "VideoObject", "name": f"{name} — {sub}", "description": sub + ".",
                       "thumbnailUrl": thumb, "thumbnail": {"@type": "ImageObject", "url": thumb},
-                      "contentUrl": src, "uploadDate": f["up"], "duration": iso(f["len"]),
+                      "contentUrl": urljoin(url, src.group(1)), "uploadDate": f["up"], "duration": iso(f["len"]),
                       "isFamilyFriendly": True, "url": url})
     if not items:
         return t
@@ -206,8 +215,11 @@ def main() -> None:
     os.chdir(ROOT)
     changed = 0
     cat = films()
-    for p in sorted(glob.glob("services/*.html")) + ["videosemka-moskva.html"]:
-        slug = os.path.basename(p)[:-5]
+    # пути — всегда с прямой чертой: на Windows glob отдаёт services\\x.html, и проверка
+    # «это услуга?» и адрес страницы в разметке ломались бы молча
+    pages = [p.replace(os.sep, "/") for p in sorted(glob.glob("services/*.html"))] + ["videosemka-moskva.html"]
+    for p in pages:
+        slug = posixpath.basename(p)[:-5]
         t = open(p, encoding="utf-8").read()
         new = build(t, slug) if p.startswith("services/") else t
         new = video_ld(new, "https://pobubnim.ru/" + p, cat)
