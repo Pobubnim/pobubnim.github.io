@@ -13,3 +13,4 @@ exclude:
   - data/
   - README.md
   - AGENTS.md
+  - CLAUDE.md

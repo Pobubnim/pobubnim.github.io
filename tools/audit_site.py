@@ -9,6 +9,7 @@ analytics.js, покрытие sitemap, атрибуты <img> (скачки в�
 Запуск:  python tools/audit_site.py   (из корня репо)
 Код 1 — есть ОШИБКИ, 0 — чисто или только предупреждения.
 """
+import html
 import json
 import os
 import re
@@ -143,7 +144,36 @@ def page_url(rel):
     return SITE + ("" if rel == "index.html" else rel.replace("index.html", ""))
 
 
+def lead_topics():
+    js = open(os.path.join(ROOT, "assets", "js", "lead.js"), encoding="utf-8").read()
+    m = re.search(r"var WHAT = \[(.*?)\];", js, re.S)
+    return set(re.findall(r'"([^"]+)"', m.group(1))) if m else set()
+
+
+LEAD_TOPICS = lead_topics()
+
+
+def price_leads():
+    """Темы из прайса (поле lead) уходят в форму из подбора и прайса — тоже только из списка."""
+    out = []
+
+    def walk(x):
+        if isinstance(x, dict):
+            if isinstance(x.get("lead"), str):
+                out.append(x["lead"])
+            for v in x.values():
+                walk(v)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+    walk(json.load(open(os.path.join(ROOT, "assets", "data", "prices.json"), encoding="utf-8")))
+    return out
+
+
 def main():
+    for topic in price_leads():
+        if topic not in LEAD_TOPICS:
+            err("assets/data/prices.json", f"тема заявки «{topic}» не из списка формы lead.js")
     files = html_files()
     titles, descs = defaultdict(list), defaultdict(list)
     analytics_versions = defaultdict(list)
@@ -228,6 +258,12 @@ def main():
         for a, text in p.buttons:
             if not (text.strip() or a.get("aria-label") or a.get("title")):
                 warn(rel, "кнопка без доступного имени: " + (a.get("id") or a.get("class") or "?"))
+        # тема кнопки заявки обязана быть в списке «Что нужно» формы (lead.js):
+        # иначе форма открывается без темы и заявка приходит как «Другое» (аудит 25.09)
+        for q, topic in re.findall(r"""data-lead=(["'])(.*?)\1""", raw):
+            topic = html.unescape(topic)
+            if topic and topic not in LEAD_TOPICS:
+                err(rel, f"тема заявки «{topic}» не из списка формы lead.js")
         seen_ids = set()
         for i in p.ids:
             if i in seen_ids:

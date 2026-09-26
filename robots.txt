@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
-Clean-param: fbclid&diag&fresh&utm_source&utm_medium&utm_campaign&yclid&gclid
+Clean-param: fbclid&diag&fresh&utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&gclid
 
 # Роботы быстрых ответов Яндекса (YandexGPT и ответы Алисы) читают robots.txt
 # отдельно от индексирующего: без явного разрешения наши материалы могут не
