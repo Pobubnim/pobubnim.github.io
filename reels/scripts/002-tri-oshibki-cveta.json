@@ -1,0 +1,99 @@
+{
+  "slug": "002-tri-oshibki-cveta",
+  "title": "Три ошибки цвета, которые выдают новичка",
+  "cover": "Три ошибки цвета новичка",
+  "source": "EDU_BASE §4, §8б.4а; урок /uroki/tri-oshibki-cveta.html",
+  "scenes": [
+    {
+      "id": "s1",
+      "title": "Три ошибки, которые выдают новичка",
+      "voice": "Три ошибки в цвете, по которым сразу видно новичка. Третью делают почти все.",
+      "keyword": "новичка",
+      "image": "Dramatic close-up of a monitor in a dark room showing an oversaturated, acid-green tinted video frame of a street, reflections on the glossy screen, a hand hovering over a mouse.",
+      "move": "in",
+      "shot": "close-up of a monitor at a slight angle with the hand entering the frame",
+      "set": "glossy monitor showing an oversaturated acid-green street scene, reflections of a desk lamp on the glass, dust on the bezel",
+      "light": "sickly green spill from the monitor as the only light, deep black room",
+      "mood": "something is wrong"
+    },
+    {
+      "id": "s2",
+      "voice": "Первая: LUT прямо поверх лога. Картинка становится кислотной. Сначала техническая конверсия, потом творчество.",
+      "keyword": "кислотной",
+      "image": "Macro shot of a laptop screen with a color grading node graph, one node glowing, a USB drive labeled with nothing lying beside the keyboard, neon acid-green light spill on the desk.",
+      "shot": "macro close-up of the laptop screen edge and keyboard",
+      "lens": "100mm macro at T2.8",
+      "set": "laptop with a node-based grading interface as abstract glowing shapes (no readable text), a USB flash drive, cable, fingerprints on the trackpad",
+      "light": "acid-green screen spill on the keys, a thin warm rim from a lamp behind",
+      "mood": "mistake in progress",
+      "insert": {
+        "type": "chip",
+        "text": "Ошибка 1 · LUT поверх лога",
+        "tone": "bad"
+      }
+    },
+    {
+      "id": "s3",
+      "voice": "Вторая: кожа под общим грейдом. Небо красьте как хотите, а кожа обязана остаться кожей. Иначе зритель чувствует фальшь.",
+      "keyword": "кожей",
+      "image": "A hand resting on a table in warm window light, natural healthy skin tone, the rest of the scene graded in deep teal shadows; cinematic contrast between skin and cool background. No face.",
+      "move": "out",
+      "shot": "medium close-up of a resting hand and forearm on a table, background far behind",
+      "set": "linen shirt cuff, wooden table, a ceramic cup, a cold teal-graded background of a window and plants",
+      "light": "warm soft window light on the hand, background graded cool teal, clear separation of skin from background",
+      "mood": "natural and true",
+      "insert": {
+        "type": "chip",
+        "text": "Ошибка 2 · кожа под общим грейдом",
+        "tone": "bad"
+      }
+    },
+    {
+      "id": "s4",
+      "voice": "Третья: красить на глаз по своему экрану. Экран почти всегда врёт в тепло или в холод. Смотрите на скоупы и проверяйте на втором устройстве.",
+      "keyword": "скоупы",
+      "image": "Side-by-side on a dark desk: a laptop screen with a slightly cold blue cast and a phone showing the same frame warmer; between them a small monitor with a green waveform scope. Low-key light.",
+      "shot": "wide top-down over a dark desk with three screens",
+      "set": "a laptop with a slightly blue cast, a phone showing the same frame warmer, a small monitor with a green waveform trace between them (no numbers), sticky notes without text",
+      "light": "each screen lights its own patch of the desk, one soft overhead key",
+      "mood": "comparison, doubt",
+      "insert": {
+        "type": "scope"
+      }
+    },
+    {
+      "id": "s5",
+      "voice": "Проверьте свой последний ролик по этим трём пунктам. Интерактивный урок — по ссылке в профиле.",
+      "keyword": "трём",
+      "image": "Top-down view of a dark editing desk: notebook with three hand-drawn check boxes (no readable text), a pen, a coffee cup, keyboard edge and warm lamp light pooling on the paper.",
+      "move": "down",
+      "shot": "top-down close-up of a notebook with a pen",
+      "set": "blank notebook page with three hand-drawn empty check boxes (no words), fountain pen, coffee cup edge, keyboard corner",
+      "light": "warm lamp pool on the paper, quick fall-off to black",
+      "mood": "clarity, a plan",
+      "insert": {
+        "type": "checklist",
+        "items": [
+          "Сначала конверсия, потом LUT",
+          "Кожа остаётся кожей",
+          "Скоупы и второй экран"
+        ]
+      }
+    }
+  ],
+  "instagram": {
+    "caption": "Три ошибки в цвете, по которым сразу видно новичка:\n\n1. LUT прямо поверх лога. Сначала техническая конверсия, потом творческий LUT.\n2. Кожа под общим грейдом. Небо может быть любым, кожа должна остаться кожей.\n3. Покраска на глаз по своему экрану. Смотрите на скоупы и проверяйте на втором устройстве, хотя бы на телефоне.\n\nИнтерактивный урок с примерами — ссылка в шапке профиля.",
+    "hashtags": [
+      "цветокоррекция",
+      "davinciresolve",
+      "lut",
+      "колорист",
+      "видеомонтаж",
+      "видеограф",
+      "монтажвидео"
+    ]
+  },
+  "telegram": {
+    "post": "Три ошибки цвета, которые выдают новичка\n\n1. LUT поверх лога без конверсии: картинка становится кислотной.\n2. Кожа под общим грейдом: зритель чувствует фальшь, не понимая почему.\n3. Покраска на глаз: экран почти наверняка уводит в тепло или холод. Скоупы и второй экран обязательны.\n\nУрок, где каждую ошибку можно включить и выключить:\nhttps://pobubnim.ru/uroki/tri-oshibki-cveta.html?utm_source=telegram&utm_medium=reel"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "slug": "003-svet-iz-okna",
+  "title": "Киношный свет из обычного окна",
+  "cover": "Киношный свет бесплатно",
+  "source": "EDU_BASE §6; урок /uroki/svet-iz-okna.html",
+  "scenes": [
+    {
+      "id": "s1",
+      "title": "Киношный свет бесплатно",
+      "voice": "Самый дешёвый киношный свет уже есть у вас дома. Это окно.",
+      "keyword": "окно",
+      "image": "Empty room with a single large window, soft daylight falling across a wooden chair and floor, deep shadows in the rest of the room, dust particles in the light beam.",
+      "move": "in",
+      "shot": "wide shot of an empty room, window on the left third",
+      "set": "old wooden floor with worn varnish, a simple wooden chair, sheer curtain, plaster wall with texture",
+      "light": "overcast daylight through one large window as the only source, dust particles in the beam",
+      "mood": "quiet morning"
+    },
+    {
+      "id": "s2",
+      "voice": "Окно — это большой мягкий источник света, и он бесплатный. Но всё решает, где стоит герой.",
+      "keyword": "герой",
+      "image": "Wide shot of a person seen from behind standing in a dim room facing a bright window, silhouette softly outlined, curtains, calm mood.",
+      "shot": "medium wide shot from behind a person standing facing the window",
+      "set": "knit sweater, sheer curtain moving slightly, window frame with chipped paint",
+      "light": "large soft window light, the room falling off into deep shadow",
+      "mood": "contemplation",
+      "insert": {
+        "type": "chip",
+        "text": "Окно — большой мягкий источник",
+        "tone": "info"
+      }
+    },
+    {
+      "id": "s3",
+      "voice": "Лицом к окну — свет плоский, объёма нет. Окно за спиной — силуэт.",
+      "keyword": "силуэт",
+      "image": "Dark silhouette of a person's shoulders and head from behind against a bright overexposed window, no facial detail visible, strong backlight, cinematic.",
+      "move": "out",
+      "shot": "medium shot from behind, head and shoulders against the window",
+      "set": "bright window with soft blown-out daylight, silhouette edges with fine hair rim light",
+      "light": "strong backlight from the window only, no fill: subject becomes a silhouette",
+      "mood": "mystery",
+      "insert": {
+        "type": "chip",
+        "text": "Окно за спиной — силуэт",
+        "tone": "bad"
+      }
+    },
+    {
+      "id": "s4",
+      "voice": "А вот окно сбоку даёт рисунок: одна сторона в свете, другая уходит в тень. Это и есть кино.",
+      "keyword": "кино",
+      "image": "Hands holding a cup of tea on a table lit by soft side window light, one side bright and the other falling off into shadow, beautiful light gradient, dark background.",
+      "shot": "close-up of hands holding a cup, window to the side",
+      "set": "ceramic tea cup with steam, linen sleeve, wooden table with grain",
+      "light": "soft side window light: one side bright, the other falls off smoothly into shadow",
+      "mood": "warmth, depth",
+      "insert": {
+        "type": "chip",
+        "text": "Окно сбоку — объём и рисунок",
+        "tone": "good"
+      }
+    },
+    {
+      "id": "s5",
+      "voice": "Поверните героя к окну боком и сравните. Урок, где можно подвигать окно самому, — по ссылке в профиле.",
+      "keyword": "боком",
+      "image": "Behind-the-scenes: a small mirrorless camera on a tripod in a room pointing at an empty chair beside a window with soft side light, warm and dark tones.",
+      "move": "up",
+      "shot": "behind-the-scenes medium shot, camera on tripod in the foreground",
+      "set": "small mirrorless camera on a carbon tripod, empty chair beside the window, a folded reflector leaning on the wall",
+      "light": "soft side window light on the chair, warm practical lamp in the corner",
+      "mood": "ready to shoot",
+      "insert": {
+        "type": "checklist",
+        "items": [
+          "Лицом к окну — плоско",
+          "Спиной к окну — силуэт",
+          "Боком — рисунок"
+        ]
+      }
+    }
+  ],
+  "instagram": {
+    "caption": "Самый дешёвый киношный свет — обычное окно.\n\nЛицом к окну: свет плоский.\nСпиной к окну: силуэт.\nБоком к окну: рисунок и объём, та самая «киношность».\n\nСохрани и попробуй на ближайшей съёмке. Урок, где окно можно двигать самому, — ссылка в шапке профиля.",
+    "hashtags": [
+      "светдлявидео",
+      "видеосъемка",
+      "съемканателефон",
+      "видеограф",
+      "кинематограф",
+      "обучениевидеосъемке"
+    ]
+  },
+  "telegram": {
+    "post": "Киношный свет из обычного окна\n\nОкно — большой мягкий источник, и он бесплатный. Всё решает, как стоит герой:\n— лицом к окну: плоско, без объёма;\n— спиной к окну: силуэт;\n— боком: одна сторона в свете, другая уходит в тень. Это и есть рисунок.\n\nИнтерактивный урок, где окно можно повернуть самому:\nhttps://pobubnim.ru/uroki/svet-iz-okna.html?utm_source=telegram&utm_medium=reel"
+  }
+}
