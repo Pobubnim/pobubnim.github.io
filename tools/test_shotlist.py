@@ -231,6 +231,47 @@ def main():
         check("очистка вернула пустой лист", after == 1, after)
         check("очистка стёрла черновик", stored in (None, ""), stored)
 
+        # режим площадки: галочка «снято», счётчик остатка, отметка на листе
+        t.js("document.querySelector('#chips .chip.all').click()")
+        time.sleep(0.4)
+        total = json.loads(t.js("JSON.stringify(window.PobubnimShotlist.calc())"))
+        t.js("[...document.querySelectorAll('.shot .done')].slice(0,2).forEach(c=>c.click())")
+        time.sleep(0.4)
+        d = json.loads(t.js("JSON.stringify(window.PobubnimShotlist.calc())"))
+        check("две галочки «снято» посчитаны, остаток минут уменьшился",
+              d["done"] == 2 and d["shots"] == total["shots"] and d["left"] < total["left"], d)
+        meter = t.js("document.querySelector('#meter .mtext').innerText")
+        check("счётчик говорит, сколько снято и осталось", "снято 2 из " + str(d["shots"]) in meter and "осталось" in meter, meter)
+        check("снятые кадры погашены в списке и отмечены на листе",
+              t.js("document.querySelectorAll('.shot.is-done').length") == 2 and
+              "✓ 1.1" in t.js("document.getElementById('paper').innerText") and
+              "Снято 2 из" in t.js("document.getElementById('paper').innerText"), "")
+        t.js("document.querySelector('.shot .copy-shot').click()")
+        time.sleep(0.4)
+        check("дубль снятого кадра сам снятым не считается",
+              json.loads(t.js("JSON.stringify(window.PobubnimShotlist.state()[0].shots.slice(0,2).map(s=>!!s.done))")) == [True, False], "")
+        time.sleep(0.7)
+        t.goto(URL)
+        check("отметки «снято» пережили перезагрузку", t.js("document.querySelectorAll('.shot.is-done').length") == 2, "")
+
+        # черновик файлом: упаковка, чужой файл, возврат
+        pack = json.loads(t.js("JSON.stringify(window.PobubnimDraftFile.pack())"))
+        check("файл черновика несёт имя инструмента и сцены",
+              pack["app"] == "pobubnim-shotlist-v1" and len(pack["data"]["scenes"][0]["shots"]) == total["shots"] + 1, pack["app"])
+        check("файл другого инструмента не принимается",
+              t.js("window.PobubnimDraftFile.apply({app:'pobubnim-brief-v1',data:{}})") is False, "")
+        t.js("document.getElementById('btn-clear').click()")
+        time.sleep(0.6)
+        ok = t.js("window.PobubnimDraftFile.apply(%s)" % json.dumps(pack, ensure_ascii=False))
+        t.goto(URL)
+        check("черновик из файла вернул кадры и отметки",
+              ok is True and t.js("document.querySelectorAll('.shot').length") == total["shots"] + 1 and
+              t.js("document.querySelectorAll('.shot.is-done').length") == 2, ok)
+        check("кнопки «Сохранить в файл» и «Открыть из файла» стоят под листом",
+              t.js("!!document.getElementById('btn-file-save') && !!document.getElementById('btn-file-open')"), "")
+        t.js("document.getElementById('btn-clear').click()")
+        time.sleep(0.6)
+
         # 10. мобила: без горизонтального оверфлоу
         t.cmd("Emulation.setDeviceMetricsOverride", width=375, height=850,
               deviceScaleFactor=1, mobile=True)

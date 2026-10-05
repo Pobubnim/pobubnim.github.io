@@ -164,10 +164,13 @@
   function drawScenes() {
     scenesEl.innerHTML = scenes.map(function (sc, si) {
       var shots = sc.shots.map(function (sh, i) {
-        return '<div class="shot" data-si="' + si + '" data-i="' + i + '">' +
+        return '<div class="shot' + (sh.done ? " is-done" : "") + '" data-si="' + si + '" data-i="' + i + '">' +
           '<div class="shot-top">' +
             '<span class="grip" title="Перетащить кадр" aria-hidden="true">\u283F</span>' +
             '<span class="sn">' + (si + 1) + "." + (i + 1) + "</span>" +
+            /* режим площадки: снятый кадр гаснет, счётчик говорит, сколько осталось */
+            '<label class="done-l" title="Отметить кадр снятым"><input class="done" type="checkbox"' +
+              (sh.done ? " checked" : "") + ' aria-label="Кадр снят"></label>' +
             '<input class="what" type="text" value="' + esc(sh.what) + '" placeholder="Что в кадре: действие, кто и где" aria-label="Что в кадре">' +
             '<input class="min" type="number" min="0" step="5" value="' + esc(sh.min) + '" placeholder="мин" aria-label="Минут на кадр">' +
             '<span class="rowbtns">' +
@@ -210,6 +213,8 @@
       [].forEach.call(el.querySelectorAll(".shot"), function (s) {
         var sh = sc.shots[+s.dataset.i];
         sh.what = s.querySelector(".what").value;
+        sh.done = s.querySelector(".done").checked;
+        s.classList.toggle("is-done", sh.done);
         sh.min = s.querySelector(".min").value;
         sh.size = s.querySelector(".size").value;
         sh.angle = s.querySelector(".angle").value;
@@ -256,7 +261,9 @@
     } else if (t.closest(".copy-shot")) {
       readScenes();
       var sc = scenes[+shot.dataset.si], i = +shot.dataset.i;
-      sc.shots.splice(i + 1, 0, JSON.parse(JSON.stringify(sc.shots[i])));
+      var twin = JSON.parse(JSON.stringify(sc.shots[i]));
+      twin.done = false;                           /* дубль — новый кадр, его ещё предстоит снять */
+      sc.shots.splice(i + 1, 0, twin);
     } else if (t.closest(".del")) {
       readScenes();
       var sc2 = scenes[+shot.dataset.si];
@@ -358,19 +365,21 @@
   /* ---------- расчёт смены ---------- */
   function calc() {
     var defMin = num("f-defmin", 15);
-    var total = 0, n = 0;
+    var total = 0, n = 0, done = 0, left = 0;
     scenes.forEach(function (sc) {
       sc.shots.forEach(function (sh) {
         if (!sh.what) return;
         n++;
         var m = parseFloat(sh.min);
-        total += isNaN(m) ? defMin : m;
+        m = isNaN(m) ? defMin : m;
+        total += m;
+        if (sh.done) done++; else left += m;
       });
     });
     var extra = num("f-extra", 60);
     var shift = num("f-shift", 8) * 60;
     return { shots: n, mins: total, extra: extra, busy: total + extra, shift: shift,
-      over: total + extra > shift };
+      over: total + extra > shift, done: done, left: left };
   }
 
   function hm(mins) {
@@ -387,7 +396,9 @@
     box.querySelector(".mtext").innerHTML = d.shots
       ? "<b>" + d.shots + " " + plural(d.shots, ["кадр", "кадра", "кадров"]) + "</b> · " +
         hm(d.busy) + " из " + hm(d.shift) + " смены" +
-        (d.over ? " · <b>не влезает</b> — режьте кадры или берите вторую смену" : "")
+        (d.over ? " · <b>не влезает</b> — режьте кадры или берите вторую смену" : "") +
+        (d.done ? "<br>На площадке: <b>снято " + d.done + " из " + d.shots + "</b>" +
+          (d.done < d.shots ? ", осталось " + hm(d.left) + " съёмки" : " — план закрыт") : "")
       : "Добавьте кадры — посчитаю, влезает ли план в смену";
   }
   function plural(n, f) {
@@ -408,7 +419,7 @@
       rows++;
       var m = parseFloat(sh.min);
       var how = [sh.angle, sh.move].filter(Boolean).map(esc).join(" · ");
-      h.push("<tr><td>" + (si + 1) + "." + (i + 1) + "</td><td>" + esc(sh.what) +
+      h.push("<tr><td>" + (sh.done ? "✓ " : "") + (si + 1) + "." + (i + 1) + "</td><td>" + esc(sh.what) +
         (sh.note ? "<br><i>" + esc(sh.note) + "</i>" : "") + "</td><td>" +
         (sh.size ? esc(sh.size) : "—") + "</td><td>" + (how || "—") + "</td><td>" +
         (sh.lens ? esc(sh.lens) : "—") + "</td><td>" + (isNaN(m) ? defMin : m) + "</td></tr>");
@@ -437,7 +448,8 @@
     if (d.shots) {
       h.push("<p><b>Итого: " + d.shots + " " + plural(d.shots, ["кадр", "кадра", "кадров"]) +
         ", съёмки " + hm(d.mins) + "</b>" + (d.extra ? "; переезды, обед и запас — " + hm(d.extra) : "") +
-        ". Плановая смена — " + hm(d.shift) + (d.over ? ". ВНИМАНИЕ: план не влезает в смену." : ".") + "</p>");
+        ". Плановая смена — " + hm(d.shift) + (d.over ? ". ВНИМАНИЕ: план не влезает в смену." : ".") +
+        (d.done ? " Снято " + d.done + " из " + d.shots + "." : "") + "</p>");
     }
     h.push('<p class="doc-note">Минуты на кадр — ваши: отраслевой нормы «сколько ставится кадр» не существует. Собрано конструктором pobubnim.ru.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');

@@ -44,7 +44,13 @@
   .scene .scn { font: 500 10.5px var(--font-ui); letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
   .scene-bar { margin-top: 10px; }
   .shot { border-top: 1px solid var(--line-soft); margin-top: 12px; padding-top: 12px; }
-  .shot-top { display: grid; grid-template-columns: 18px 36px 1fr 62px auto; gap: 8px; align-items: center; }
+  .shot-top { display: grid; grid-template-columns: 18px 36px 26px 1fr 62px auto; gap: 8px; align-items: center; }
+  /* отметка «снято»: область нажатия шире самой галочки, снятый кадр гаснет */
+  .done-l { display: flex; align-items: center; justify-content: center; min-height: 42px; cursor: pointer; }
+  .done-l input { width: 18px; height: 18px; accent-color: var(--lamp); cursor: pointer; }
+  .shot.is-done .what, .shot.is-done .shot-grid { opacity: 0.45; transition: opacity 0.2s var(--ease); }
+  .shot.is-done .what { text-decoration: line-through; }
+  .paper table.shots td:first-child { white-space: nowrap; }
   .shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(124px, 1fr)); gap: 6px; margin-top: 6px; }
   .scene input, .scene select { background: #0c0c0b; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: 400 14px var(--font-ui); padding: 9px 10px; min-height: 42px; width: 100%; min-width: 0; }
   .scene input:focus, .scene select:focus { border-color: var(--lamp); outline: none; }
@@ -76,7 +82,7 @@
     .paper table.shots th, .paper table.shots td { padding: 4px 4px; }
     .scene-head { grid-template-columns: 1fr auto; }
     .scene .scn, .scene-head .sc-name, .scene-head .sc-loc { grid-column: 1 / -1; }
-    .shot-top { grid-template-columns: 16px 32px 1fr 50px; gap: 6px; }
+    .shot-top { grid-template-columns: 16px 32px 26px 1fr 50px; gap: 6px; }
     .shot-top .rowbtns { grid-column: 1 / -1; justify-content: flex-end; }
     .shot-grid { grid-template-columns: 1fr 1fr; }
     .scene input, .scene select { font-size: 13px; padding: 9px 8px; }
@@ -179,6 +185,7 @@
           <div class="bar"><i></i></div>
           <p class="mtext">Добавьте кадры — посчитаю, влезает ли план в смену</p>
         </div>
+        <div class="hint">На площадке отмечайте снятое галочкой у номера кадра: строка гаснет, а счётчик показывает, сколько кадров и минут осталось.</div>
         <div class="hint">Норматива «сколько ставится кадр» в отрасли нет: репортажный кадр — пара минут, постановочный со светом — час. Поэтому минуты ваши, а сумму считаю я.</div>
       </section>
     </form>

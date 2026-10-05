@@ -114,6 +114,59 @@
       else note.textContent = text;
     }
 
+    /* --- черновик файлом: перенос между устройствами без предела длины ссылки и запас
+       на случай, когда браузер почистили. Файл — тот же черновик, что лежит в хранилище,
+       плюс ключи из data-draft-extra (у вызывного листа это логотип). --- */
+    var extra = (document.body.getAttribute("data-draft-extra") || "").split(",").filter(Boolean);
+    function pack() {
+      var raw = null, more = {};
+      try { raw = localStorage.getItem(key); } catch (e) { raw = null; }
+      if (!raw) return null;
+      extra.forEach(function (k) { try { if (localStorage.getItem(k)) more[k] = localStorage.getItem(k); } catch (e) { /* нет доступа */ } });
+      return { app: key, saved: new Date().toISOString(), data: JSON.parse(raw), extra: more };
+    }
+    function apply(obj) {
+      if (!obj || obj.app !== key || !obj.data || typeof obj.data !== "object") return false;
+      try {
+        localStorage.setItem(key, JSON.stringify(obj.data));
+        extra.forEach(function (k) { if (obj.extra && obj.extra[k]) localStorage.setItem(k, obj.extra[k]); });
+      } catch (e) { return false; }
+      return true;
+    }
+    var files = document.createElement("p");
+    files.className = "draft-files";
+    files.innerHTML = '<button type="button" id="btn-file-save">Сохранить в файл</button>' +
+      '<button type="button" id="btn-file-open">Открыть из файла</button>' +
+      '<input type="file" id="f-draft-file" accept=".json,application/json" aria-label="Файл черновика" hidden>';
+    note.insertAdjacentElement("afterend", files);
+    files.querySelector("#btn-file-save").addEventListener("click", function () {
+      var obj = pack();
+      if (!obj) { say("Пока нечего сохранять: заполните хотя бы одно поле."); return; }
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(obj, null, 1)], { type: "application/json" }));
+      a.download = key.replace(/^pobubnim-/, "").replace(/-v\d+$/, "") + "-" + obj.saved.slice(0, 10) + ".json";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+      if (window.pbGoal) window.pbGoal("tool_file");
+    });
+    var pick = files.querySelector("#f-draft-file");
+    files.querySelector("#btn-file-open").addEventListener("click", function () { pick.click(); });
+    pick.addEventListener("change", function () {
+      var f = pick.files && pick.files[0];
+      pick.value = "";
+      if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        var obj = null;
+        try { obj = JSON.parse(rd.result); } catch (e) { obj = null; }
+        if (apply(obj)) location.reload();
+        else toast(obj && obj.app && obj.app !== key ? "Это файл другого инструмента — откройте его на своей странице"
+          : "Не получилось прочитать файл: нужен тот, что сохранён кнопкой «Сохранить в файл»");
+      };
+      rd.readAsText(f);
+    });
+    window.PobubnimDraftFile = { pack: pack, apply: apply };
+
     btn.addEventListener("click", function () {
       var raw;
       try { raw = localStorage.getItem(key); } catch (e) { raw = null; }

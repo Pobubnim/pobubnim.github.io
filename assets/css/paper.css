@@ -142,6 +142,11 @@
 @media (prefers-reduced-motion: reduce) { .pb-toast { transform: translate(-50%, 0); transition: opacity 0.2s; } }
 @media print { .pb-toast { display: none; } }
 
+/* черновик файлом (share.js): две тихие ссылки под кнопками листа */
+.draft-files { display: flex; flex-wrap: wrap; gap: 0 18px; margin: 0; padding: 0 14px 8px; }
+.draft-files button { background: none; border: 0; padding: 8px 0; font: 400 13px var(--font-ui); color: var(--smoke); cursor: pointer; text-decoration: underline; text-decoration-color: rgba(255, 253, 245, 0.25); text-underline-offset: 3px; transition: color 0.15s var(--ease); }
+.draft-files button:hover { color: var(--ink); }
+
 .paper-hint { margin-top: 12px; font-size: 13px; color: var(--smoke); line-height: 1.5; }
 .paper-hint a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .paper-note { margin-top: 12px; font-size: 13px; color: var(--mute); line-height: 1.5; }
