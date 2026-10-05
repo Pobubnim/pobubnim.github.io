@@ -93,7 +93,7 @@
       sched: [row("sched", { what: "Сбор группы" }), row("sched", { what: "Начало съёмки" }), row("sched", { what: "Конец смены" })],
       locs: [blank("locs")], crew: [row("crew", { role: "Оператор-постановщик" })],
       cast: [blank("cast")], scenes: [blank("scenes")],
-      on: { qr: true }, txt: {}, contact: "", noPhones: false, rev: 0, snap: null, sentAt: "" };
+      on: { qr: true }, txt: {}, contact: "", noPhones: false, noSign: false, rev: 0, snap: null, sentAt: "" };
   }
   var S = fresh();
 
@@ -630,7 +630,7 @@
     });
 
     h.push('<p class="doc-note">' + (hasSun ? "Восход, закат и золотой час посчитаны по формулам NOAA для указанных координат — точность около минуты. " : "") +
-      "Собрано в конструкторе pobubnim.ru.</p>");
+      "Собрано в конструкторе <a class='pb-by' href='https://pobubnim.ru/instrumenty/vyzyvnoj-list.html'>pobubnim.ru</a>.</p>");
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");
 
@@ -765,6 +765,7 @@
     $("contact-box").hidden = named.length < 2;
     $("starter").hidden = !isEmpty();
     $("f-nophones").checked = !!S.noPhones;
+    $("f-sign").checked = !S.noSign;
   }
   function isEmpty() {
     return !val("f-proj") && !val("f-date") && !timeline().length &&
@@ -830,7 +831,7 @@
   }
 
   /* ---------- состояние: снимок, возврат, черновик ---------- */
-  var STATE_KEYS = ["sched", "locs", "crew", "cast", "scenes", "on", "txt", "contact", "noPhones", "rev", "snap", "sentAt"];
+  var STATE_KEYS = ["sched", "locs", "crew", "cast", "scenes", "on", "txt", "contact", "noPhones", "noSign", "rev", "snap", "sentAt"];
   function snapshot() {
     var d = { v: 2 };
     FIELDS.forEach(function (k) { d[k] = val("f-" + k); });
@@ -916,6 +917,7 @@
   });
   form.addEventListener("submit", function (e) { e.preventDefault(); });
   $("f-nophones").addEventListener("change", function () { S.noPhones = this.checked; changed(); });
+  $("f-sign").addEventListener("change", function () { S.noSign = !this.checked; changed(); });
   $("add-sched").addEventListener("click", function () { addRow("sched"); });
   $("add-loc").addEventListener("click", function () { addRow("locs"); });
   $("add-crew").addEventListener("click", function () { addRow("crew"); });

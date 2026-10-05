@@ -331,7 +331,7 @@
       "<td><b>Арендатор</b>" + party("b") +
       "<br>Адрес: " + bl(val("f-baddr")) + "<br>Телефон: " + bl(val("f-btel")) +
       '<div class="sig">Подпись: ' + BL + "</div></td></tr></table>");
-    h.push('<p class="doc-note">Типовой шаблон собран конструктором pobubnim.ru по гл. 34 ГК РФ и не является юридической консультацией.</p>');
+    h.push('<p class="doc-note">Типовой шаблон собран конструктором <a class="pb-by" href="https://pobubnim.ru/instrumenty/dogovor-arendy-tehniki.html">pobubnim.ru</a> по гл. 34 ГК РФ и не является юридической консультацией.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");
   }

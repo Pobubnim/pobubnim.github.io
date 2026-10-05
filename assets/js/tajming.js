@@ -104,7 +104,7 @@
     var rows = schedule();
     var h = ['<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>'];
     h.push("<h2>ТАЙМИНГ СВАДЕБНОГО ДНЯ</h2>");
-    h.push('<p style="text-align:center;font-size:12px;color:#6b675e">план по часам · собрано на pobubnim.ru</p>');
+    h.push('<p style="text-align:center;font-size:12px;color:#6b675e">план по часам · собрано на <a class="pb-by" href="https://pobubnim.ru/instrumenty/tajming-svadby.html">pobubnim.ru</a></p>');
     rows.forEach(function (r) {
       h.push('<div class="line"><b>' + r.time + (r.end ? "–" + r.end : "") + "</b><span>" + r.nm + "</span></div>");
     });
@@ -123,7 +123,7 @@
 
   document.getElementById("btn-copy").addEventListener("click", function () {
     var btn = this;
-    var txt = "Тайминг свадебного дня — pobubnim.ru\n" +
+    var txt = "Тайминг свадебного дня — https://pobubnim.ru/instrumenty/tajming-svadby.html\n" +
       schedule().map(function (r) { return r.time + (r.end ? "–" + r.end : "") + "  " + r.nm; }).join("\n");
     var l = light(schedule());
     if (l) txt += "\nЗакат " + l.head + (l.note ? "\n" + l.note : "");

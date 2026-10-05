@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Пинг IndexNow: сообщает Яндексу об изменившихся страницах сайта.
+"""Пинг IndexNow: сообщает Яндексу и Bing об изменившихся страницах сайта.
 
 Ключ лежит в корне репозитория файлом <key>.txt — он же и есть значение ключа
 (так требует протокол). Только stdlib.
@@ -7,6 +7,12 @@
 Запуск:
   python tools/indexnow.py                       страницы из последнего коммита
   python tools/indexnow.py instrumenty/shot-list.html /   конкретные адреса
+  python tools/indexnow.py --sitemap             все адреса карты сайта
+
+Пинг уходит и Яндексу, и Bing. По протоколу участники делятся адресами между
+собой, но 05.10.2026 в Bing не было ни одной страницы сайта при том, что Яндексу
+пинги шли с августа, — поэтому шлём каждому напрямую. Индекс Bing кормит Copilot
+и DuckDuckGo.
 """
 from __future__ import annotations
 
@@ -19,7 +25,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 HOST = "pobubnim.ru"
-ENDPOINT = "https://yandex.com/indexnow"
+ENDPOINTS = ("https://yandex.com/indexnow", "https://www.bing.com/indexnow")
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
@@ -43,6 +49,10 @@ def changed_pages() -> list[str]:
 
 def main() -> int:
     given = sys.argv[1:]
+    if given == ["--sitemap"]:
+        import re
+        given = re.findall(r"<loc>https://%s(/[^<]*)</loc>" % re.escape(HOST),
+                           (ROOT / "sitemap.xml").read_text(encoding="utf-8"))
     pages = given or changed_pages()
     # Git Bash разворачивает ведущий "/" в путь установки Git: "/uroki/x.html"
     # приезжает сюда как "C:/Program Files/Git/uroki/x.html". Раньше такие
@@ -62,13 +72,21 @@ def main() -> int:
         return 0
     urls = [f"https://{HOST}{p if p.startswith('/') else '/' + p}" for p in pages]
     body = json.dumps({"host": HOST, "key": key(), "urlList": urls}).encode("utf-8")
-    req = urllib.request.Request(ENDPOINT, data=body,
-                                 headers={"Content-Type": "application/json; charset=utf-8"})
-    try:
-        with urllib.request.urlopen(req, timeout=30) as r:
-            print(f"IndexNow ответил {r.status} · страниц отправлено: {len(urls)}")
-    except urllib.error.HTTPError as e:
-        print(f"IndexNow отказал {e.code}: {e.read().decode('utf-8', 'replace')[:200]}")
+    failed = 0
+    for endpoint in ENDPOINTS:
+        req = urllib.request.Request(endpoint, data=body,
+                                     headers={"Content-Type": "application/json; charset=utf-8"})
+        name = endpoint.split("/")[2]
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                print(f"IndexNow {name} ответил {r.status} · страниц отправлено: {len(urls)}")
+        except urllib.error.HTTPError as e:
+            print(f"IndexNow {name} отказал {e.code}: {e.read().decode('utf-8', 'replace')[:200]}")
+            failed += 1
+        except Exception as e:  # один недоступный приёмник не должен глушить второй
+            print(f"IndexNow {name} недоступен: {e}")
+            failed += 1
+    if failed == len(ENDPOINTS):
         return 1
     for u in urls:
         print(" ·", u)

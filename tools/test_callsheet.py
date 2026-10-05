@@ -366,6 +366,24 @@ def main():
               chat.startswith("ВЫЗЫВНОЙ ЛИСТ · «Рекламный ролик EVERGO», смена 1 из 2") and "Общий сбор — 07:00" in chat and
               "Карта: https://yandex.ru/maps/?text=" in chat and "Гафер — Игорь Лапин, +7 916 000-00-01 — к 07:00" in chat and
               "На связи: Мария Соколова (продюсер)" in chat, chat[:400])
+        SIGN = "Лист собран в бесплатном конструкторе: https://pobubnim.ru/instrumenty/vyzyvnoj-list.html"
+        check("общий текст кончается строкой со ссылкой на конструктор", chat.rstrip().endswith(SIGN), chat[-160:])
+        t.click("#btn-send")
+        check("галочка подписи в окне рассылки стоит, строка видна в тексте",
+              t.js("document.getElementById('f-sign').checked") is True and SIGN in t.js("document.getElementById('msg-all').textContent"), "")
+        t.js("(()=>{const c=document.getElementById('f-sign');c.checked=false;c.dispatchEvent(new Event('change',{bubbles:true}));})()")
+        time.sleep(0.4)
+        check("без галочки подписи нет ни в тексте окна, ни в ссылке мессенджера",
+              SIGN not in t.js("document.getElementById('msg-all').textContent") and
+              "pobubnim.ru%2Finstrumenty" not in t.js("document.getElementById('btn-wa').href") and
+              t.js("PobubnimCallsheet.state().noSign") is True, t.js("document.getElementById('msg-all').textContent")[-120:])
+        t.js("(()=>{const c=document.getElementById('f-sign');c.checked=true;c.dispatchEvent(new Event('change',{bubbles:true}));})()")
+        time.sleep(0.4)
+        check("галочка вернула подпись", SIGN in t.js("document.getElementById('msg-all').textContent") and
+              "pobubnim.ru%2Finstrumenty" in t.js("document.getElementById('btn-wa').href"), "")
+        t.js("document.getElementById('send').close()")
+        check("подпись листа — ссылка на сам инструмент",
+              t.js("(document.querySelector('#paper .doc-note a.pb-by')||{}).href") == "https://pobubnim.ru/instrumenty/vyzyvnoj-list.html", "")
         per = t.js("PobubnimCallsheet.personal(PobubnimCallsheet.state().crew[0],'crew')")
         check("личный вызов: имя, своё время, адрес и карта",
               per.startswith("Иван, вызывной лист на понедельник, 14 сентября.") and "Вызов: 06:30 · Оператор-постановщик" in per and
@@ -506,6 +524,8 @@ def main():
             ok_xml = str(e)
         check(".docx распакован, document.xml — правильный XML", ok_xml is True, ok_xml)
         check(".docx: ссылка на карту кликается", 'HYPERLINK &quot;https://yandex.ru/maps/?text=' in xml, "")
+        check(".docx: подпись листа — кликабельная ссылка на инструмент",
+              'HYPERLINK &quot;https://pobubnim.ru/instrumenty/vyzyvnoj-list.html&quot;' in xml, "")
         check(".docx: подзаголовки цехов объединяют ячейки", '<w:gridSpan w:val="4"/>' in xml, "")
         check(".docx: расписание и группа на месте", "Сбор группы" in xml and "Иван Петров" in xml and "ВЫЗЫВНОЙ ЛИСТ" in xml, "")
         names = z.namelist()

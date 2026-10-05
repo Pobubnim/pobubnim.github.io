@@ -223,7 +223,7 @@
       h.push("<p><b>Отвечено " + st.done + " из " + st.all + "</b>" +
         (st.left ? ", без ответов " + st.left + " обязательных." : " — на всё важное ответы есть.") + "</p>");
     }
-    h.push('<p class="doc-note">Бриф — не договор: он фиксирует задачу и ожидания. Условия и деньги закрепляются договором и сметой. Собрано конструктором pobubnim.ru.</p>');
+    h.push('<p class="doc-note">Бриф — не договор: он фиксирует задачу и ожидания. Условия и деньги закрепляются договором и сметой. Собрано конструктором <a class="pb-by" href="https://pobubnim.ru/instrumenty/brif-na-semku.html">pobubnim.ru</a>.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");
     drawMeter();

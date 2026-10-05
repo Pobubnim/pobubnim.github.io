@@ -451,7 +451,7 @@
         ". Плановая смена — " + hm(d.shift) + (d.over ? ". ВНИМАНИЕ: план не влезает в смену." : ".") +
         (d.done ? " Снято " + d.done + " из " + d.shots + "." : "") + "</p>");
     }
-    h.push('<p class="doc-note">Минуты на кадр — ваши: отраслевой нормы «сколько ставится кадр» не существует. Собрано конструктором pobubnim.ru.</p>');
+    h.push('<p class="doc-note">Минуты на кадр — ваши: отраслевой нормы «сколько ставится кадр» не существует. Собрано конструктором <a class="pb-by" href="https://pobubnim.ru/instrumenty/shot-list.html">pobubnim.ru</a>.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");
     drawMeter();
