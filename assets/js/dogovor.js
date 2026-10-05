@@ -468,7 +468,7 @@
     h.push('<table class="req"><tr><td><b>Исполнитель</b>' + reqLines(s.exec) +
       '<div class="sig">Подпись: ' + BL + "</div></td><td><b>Заказчик</b>" + reqLines(s.client) +
       '<div class="sig">Подпись: ' + BL + "</div></td></tr></table>");
-    h.push('<p class="doc-note">Типовой шаблон собран конструктором pobubnim.ru и не является юридической консультацией.</p>');
+    h.push('<p class="doc-note">Типовой шаблон собран конструктором <a class="pb-by" href="https://pobubnim.ru/konstruktor-dogovora.html">pobubnim.ru</a> и не является юридической консультацией.</p>');
     h.push(MARK_BR);
     return h.join("").replace(/\{\{(\w+)\}\}/g, function (_, k) { return refs[k] || "___"; });
   }
@@ -494,7 +494,7 @@
     h.push('<table class="req"><tr><td><b>Исполнитель</b>' + reqLines(s.exec) +
       '<div class="sig">Подпись: ' + BL + "</div></td><td><b>Заказчик</b>" + reqLines(s.client) +
       '<div class="sig">Подпись: ' + BL + "</div></td></tr></table>");
-    h.push('<p class="doc-note">Типовой шаблон собран конструктором pobubnim.ru и не является юридической консультацией.</p>');
+    h.push('<p class="doc-note">Типовой шаблон собран конструктором <a class="pb-by" href="https://pobubnim.ru/konstruktor-dogovora.html">pobubnim.ru</a> и не является юридической консультацией.</p>');
     h.push(MARK_BR);
     return h.join("");
   }

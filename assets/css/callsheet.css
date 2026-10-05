@@ -211,6 +211,7 @@ dialog.send[open] { animation: send-in 0.22s var(--ease); }
 .msg { margin: 0; max-height: 216px; overflow: auto; padding: 12px 14px; background: var(--well, #0c0c0b); border: 1px solid var(--line); border-radius: 10px; font: 400 13px/1.5 var(--font-ui); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--smoke); }
 .send-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .send-row .pbtn, .send-ft .pbtn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.send-sign { margin-top: 10px; font-size: 13px; }
 .send-note { margin-top: 8px; font-size: 12.5px; color: var(--mute); text-wrap: pretty; }
 .per-i { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; padding: 10px 0; border-top: 1px solid var(--line-soft); }
 .per-i:first-child { border-top: 0; padding-top: 0; }

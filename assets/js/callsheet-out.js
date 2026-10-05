@@ -43,6 +43,8 @@
   }
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
+  var SIGN_URL = "https://pobubnim.ru/instrumenty/vyzyvnoj-list.html";
+
   /* ---------- общий текст в чат ---------- */
   function chatText() {
     var S = C.state(), k = C.key(), s = C.sun(), ph = !S.noPhones, o = [];
@@ -103,6 +105,9 @@
       if (b[2] && S.on[b[0]] && S.txt[b[0]]) o.push("", b[1].toUpperCase(), S.txt[b[0]]);
     });
     if (contactLine()) o.push("", contactLine());
+    /* подпись — последней строкой: кто получил лист и сам собирает такие же, найдёт конструктор.
+       Снимается галочкой в окне рассылки; в краткий текст и в личные вызовы не идёт */
+    if (!S.noSign) o.push("", "Лист собран в бесплатном конструкторе: " + SIGN_URL);
     return o.join("\n");
   }
 

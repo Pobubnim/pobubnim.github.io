@@ -81,6 +81,8 @@
 /* линия-пропуск переносится как слово, а не рвёт строку за край листа */
 .paper .blank { display: inline-block; min-width: 84px; border-bottom: 1px solid #8a8478; padding: 0 4px; }
 .paper .doc-note { margin-top: 20px; font-size: 11px; color: #6b675e; font-style: italic; text-align: left; }
+/* подпись «собрано в…» — ссылка на сам инструмент: в Word и PDF кликается, на бумаге читается как текст */
+.paper a.pb-by { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .paper .bmark { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 6px; background: #000; color: #f5efe2; font: italic 500 15px Georgia, "Times New Roman", serif; }
 .paper .bmark-row.tl { text-align: left; margin-bottom: 8px; }
 .paper .bmark-row.br { text-align: right; margin-top: 14px; }
@@ -92,6 +94,11 @@
 .copy-done { pointer-events: none; }
 
 /* ---------- SEO-блоки под инструментом ---------- */
+/* «Что ещё пригодится» — соседи по ходу работы, собирает tools/build_tool_chain.py */
+.tool-next { max-width: 760px; margin-top: clamp(40px, 6vw, 72px); }
+.tool-next ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.tool-next li { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; }
+.tool-next a { color: var(--ink); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
 .seo-body { max-width: 760px; margin-top: clamp(64px, 9vw, 110px); }
 .seo-body p { color: var(--smoke); font-weight: 300; font-size: 17px; text-wrap: pretty; margin-bottom: 16px; }
 .seo-body p b { color: var(--ink); font-weight: 500; }

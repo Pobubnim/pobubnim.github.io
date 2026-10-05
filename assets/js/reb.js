@@ -172,7 +172,7 @@
       '<div class="sig">Подпись: ' + BL + "</div></td>" +
       "<td><b>Оператор</b>" + bl(val("f-org")) +
       '<div class="sig">Подпись: ' + BL + "</div></td></tr></table>");
-    h.push('<p class="doc-note">Типовой шаблон собран конструктором pobubnim.ru по ст. 152.1 ГК РФ и Федеральному закону № 152-ФЗ. Не является юридической консультацией.</p>');
+    h.push('<p class="doc-note">Типовой шаблон собран конструктором <a class="pb-by" href="https://pobubnim.ru/instrumenty/soglasie-na-semku-rebenka.html">pobubnim.ru</a> по ст. 152.1 ГК РФ и Федеральному закону № 152-ФЗ. Не является юридической консультацией.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");
   }
@@ -235,7 +235,7 @@
       '<div class="sig">Подпись: ' + BL + "</div></td>" +
       "<td><b>Оператор</b>" + bl(val("f-org")) +
       '<div class="sig">Подпись: ' + BL + "</div></td></tr></table>");
-    h.push('<p class="doc-note">Типовой шаблон собран конструктором pobubnim.ru по ст. 10.1 Федерального закона № 152-ФЗ. Не является юридической консультацией.</p>');
+    h.push('<p class="doc-note">Типовой шаблон собран конструктором <a class="pb-by" href="https://pobubnim.ru/instrumenty/soglasie-na-semku-rebenka.html">pobubnim.ru</a> по ст. 10.1 Федерального закона № 152-ФЗ. Не является юридической консультацией.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");
   }
