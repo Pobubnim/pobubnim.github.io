@@ -116,6 +116,21 @@
   .paper { position: absolute; inset: 0; max-height: none; overflow: visible; background: #fff; color: #000; padding: 0; font-size: 12pt; }
   .paper-shell { border: none; box-shadow: none; background: #fff; }
 }
+/* Правило выше прячет страницу через visibility: она невидима, но её высота остаётся в
+   потоке и уезжает в PDF чистыми листами (замер 05.10.2026: смета на полстраницы печаталась
+   на четырёх, договор — на одиннадцати). Где браузер умеет :has, из потока уходит всё,
+   что не лист и не его предки; остальным остаётся прежнее правило. */
+@supports selector(:has(*)) {
+  @media print {
+    body :not(:has(.paper)):not(.paper):not(.paper *) { display: none !important; }
+    body, body :has(.paper) { display: block !important; position: static !important; margin: 0 !important; padding: 0 !important; max-width: none !important; max-height: none !important; height: auto !important; overflow: visible !important; border: 0 !important; box-shadow: none !important; background: #fff !important; }
+    /* !important: на узкой ширине листа печати срабатывают мобильные правила страниц
+       (у договора лист там зажат в 32vh), и без него печаталась одна обрезанная страница */
+    .paper { position: static !important; inset: auto; max-height: none !important; overflow: visible !important; }
+    .paper table tr, .paper .line { break-inside: avoid; }
+    .paper h3, .paper h4 { break-after: avoid; }
+  }
+}
 
 /* ---------- тост с отменой (share.js): общий для инструментов с черновиком ---------- */
 .pb-toast { position: fixed; left: 50%; bottom: 24px; z-index: 80; display: flex; align-items: center; gap: 14px; width: max-content; max-width: min(520px, calc(100vw - 24px)); padding: 10px 12px 10px 18px; background: #f2efe8; color: #141412; border-radius: 12px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6); font-size: 14px; line-height: 1.35; opacity: 0; transform: translate(-50%, 12px); pointer-events: none; transition: opacity 0.2s var(--ease), transform 0.2s var(--ease); }

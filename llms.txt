@@ -86,21 +86,25 @@
 ## Бесплатные инструменты для съёмочной группы
 
 - [Все инструменты](https://pobubnim.ru/instrumenty/): без регистрации, расчёты идут в браузере
-- [Приборы онлайн](https://pobubnim.ru/instrumenty/pribory-onlajn.html): waveform, парад, гистограмма, вектроскоп, false color, 3D-LUT — прямо в браузере
-- [Конструктор договора](https://pobubnim.ru/konstruktor-dogovora.html): договор на съёмку с выгрузкой в Word
-- [Смета и счёт](https://pobubnim.ru/instrumenty/smeta-i-schet.html): смена, ставки, итог прописью, счёт на оплату
-- [Ставка фрилансера](https://pobubnim.ru/instrumenty/stavka-frilansera.html): минимальная ставка за смену с налогом и амортизацией
-- [Шот-лист](https://pobubnim.ru/instrumenty/shot-list.html) и [вызывной лист](https://pobubnim.ru/instrumenty/vyzyvnoj-list.html): план кадров, расписание смены, расчёт заката и золотого часа
-- [Чек-лист съёмочного дня](https://pobubnim.ru/instrumenty/chek-list-semki.html)
-- [Калькулятор ГРИП](https://pobubnim.ru/instrumenty/kalkulyator-grip.html), [ND-фильтра](https://pobubnim.ru/instrumenty/kalkulyator-nd-filtra.html), [карты памяти](https://pobubnim.ru/instrumenty/kalkulyator-karty-pamyati.html)
-- [Бриф на съёмку](https://pobubnim.ru/instrumenty/brif-na-semku.html) и [тайминг свадьбы](https://pobubnim.ru/instrumenty/tajming-svadby.html)
-- [Модельный релиз](https://pobubnim.ru/instrumenty/modelnyj-reliz.html): согласие на съёмку по ст. 152.1 ГК РФ
-- [Согласие на съёмку ребёнка](https://pobubnim.ru/instrumenty/soglasie-na-semku-rebenka.html): для школы, сада и фотографа — 152-ФЗ и ст. 152.1 ГК РФ, отдельный лист на публикацию по ст. 10.1
-- [Договор аренды техники](https://pobubnim.ru/instrumenty/dogovor-arendy-tehniki.html): аренда и прокат оборудования по гл. 34 ГК РФ, опись с серийными номерами, акт приёма-передачи
+- [Приборы онлайн](https://pobubnim.ru/instrumenty/pribory-onlajn.html): вектроскоп, waveform, парад RGB, гистограмма, false color и 3D-LUT .cube — кадр считается прямо в браузере
+- [Договор на фото- и видеосъёмку](https://pobubnim.ru/konstruktor-dogovora.html): образец и конструктор — самозанятый, ИП, компания; акт, задаток, права на материалы; выгрузка в Word и PDF
+- [Смета и счёт](https://pobubnim.ru/instrumenty/smeta-i-schet.html): образец сметы на видеосъёмку — смены, ставки, итог прописью, счёт на оплату из тех же строк
+- [Ставка за съёмочную смену](https://pobubnim.ru/instrumenty/stavka-frilansera.html): сколько брать видеографу и фотографу — налог, расходы, амортизация техники, простой
+- [Шот-лист](https://pobubnim.ru/instrumenty/shot-list.html): шаблон плана кадров — крупность, ракурс, движение камеры, оптика, счётчик «влезет ли в смену»; Word и печать
+- [Вызывной лист](https://pobubnim.ru/instrumenty/vyzyvnoj-list.html): шаблон и образец call sheet — расписание смены, локации с картой, группа, закат и золотой час по дате и городу; личный вызов каждому в WhatsApp и Telegram, сообщение «что изменилось»; Word, PDF, Excel и календарь
+- [Чек-лист съёмочного дня](https://pobubnim.ru/instrumenty/chek-list-semki.html): что взять на съёмку видеографу и фотографу — набор под тип съёмки, свои пункты, галочки в браузере; Word и печать
+- [Калькулятор ГРИП](https://pobubnim.ru/instrumenty/kalkulyator-grip.html): глубина резкости, гиперфокальное расстояние, кружок нерезкости и размытие фона в пикселях записи
+- [Калькулятор ND-фильтра](https://pobubnim.ru/instrumenty/kalkulyator-nd-filtra.html): сколько стопов у ND8, ND64, ND1000 — таблица; подбор фильтра под шаттер 180° и пересчёт выдержки
+- [Калькулятор карты памяти](https://pobubnim.ru/instrumenty/kalkulyator-karty-pamyati.html): сколько весит час видео в 4К и сколько минут влезет на карту — по битрейту камеры, с классом скорости
+- [Бриф на видеосъёмку](https://pobubnim.ru/instrumenty/brif-na-semku.html): шаблон вопросов клиенту под шесть типов съёмки, отправка одним сообщением в мессенджер; Word
+- [Тайминг свадебного дня](https://pobubnim.ru/instrumenty/tajming-svadby.html): пример расписания по часам от времени церемонии — сборы, прогулка, банкет, торт
+- [Модельный релиз](https://pobubnim.ru/instrumenty/modelnyj-reliz.html): образец согласия на съёмку и публикацию по ст. 152.1 ГК РФ; Word
+- [Согласие на съёмку ребёнка](https://pobubnim.ru/instrumenty/soglasie-na-semku-rebenka.html): образец для школы, сада и фотографа — 152-ФЗ и ст. 152.1 ГК РФ, отдельный лист на публикацию по ст. 10.1
+- [Договор аренды техники](https://pobubnim.ru/instrumenty/dogovor-arendy-tehniki.html): образец договора аренды и проката фотоаппарата, камеры и оборудования по гл. 34 ГК РФ — опись с серийными номерами, залог, акт приёма-передачи
 
 ## Продукты
 
 - [ШТАБ: заказы приходят сами](https://pobubnim.ru/zakazy-sami.html): модуль ШТАБ и приложение МОНОЛИТ показом — лента заказов с Telegram, hh.ru, FL.ru и Авито, кольцо месяца, цены
-- [МОНОЛИТ — приложение для видеопродакшена](https://pobubnim.ru/instrumenty/monolit-crm-dlya-videoprodakshena.html): заказы, сметы, документы и учёт; 14 дней бесплатно, дальше 1 499 ₽/мес
+- [МОНОЛИТ — приложение для видеопродакшена](https://pobubnim.ru/instrumenty/monolit-crm-dlya-videoprodakshena.html): заказы, клиенты, деньги и налоги в одном приложении; ядро бесплатно и без подписки, деньги берут отдельные модули (ШТАБ — 5 000 ₽ в год)
 - [Кейс: МОНОЛИТ](https://pobubnim.ru/cases/monolith.html)
 - [Кейс: СЕВЕРСВЕТ](https://pobubnim.ru/cases/seversvet.html): сайт кинорентала

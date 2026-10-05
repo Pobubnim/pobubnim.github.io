@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#000000">
-<title>Тайминг свадебного дня — составить расписание онлайн | ПОБУБНИМ</title>
-<meta name="description" content="Тайминг свадебного дня онлайн: введите время церемонии — получите план по часам, от сборов до торта. Длительности двигаются под вашу свадьбу. Бесплатно, от свадебного видеографа.">
+<title>Тайминг свадьбы: пример расписания по часам онлайн | ПОБУБНИМ</title>
+<meta name="description" content="Тайминг свадебного дня: пример расписания по часам от сборов до торта. Введите время церемонии — план соберётся сам, длительности двигаются. Бесплатно, онлайн.">
 <meta name="author" content="Савелий Бубнов">
 <link rel="canonical" href="https://pobubnim.ru/instrumenty/tajming-svadby.html">
-<meta property="og:title" content="Тайминг свадебного дня — план по часам онлайн | ПОБУБНИМ">
+<meta property="og:title" content="Тайминг свадьбы: пример расписания по часам онлайн | ПОБУБНИМ">
 <meta property="og:description" content="Расписание свадьбы собирается от времени церемонии: сборы, прогулка, банкет, торт. Скачайте или распечатайте готовый план.">
 <meta property="og:image" content="https://pobubnim.ru/assets/og/tool-tajming-svadby.jpg">
 <meta property="og:image:width" content="1200">
@@ -93,7 +93,7 @@
 <div class="wrap">
   <section class="art-hero">
     <span class="label">Инструмент · Планирование · Бесплатно</span>
-    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Тайминг свадебного дня: расписание по часам</span> День, который <em>не опоздает</em></h1>
+    <h1 class="display"><span class="label" style="display:block;margin-bottom:12px">Тайминг свадебного дня: пример и расписание по часам</span> День, который <em>не опоздает</em></h1>
     <p class="lead">Введите время церемонии — план дня соберётся сам: сборы и утро посчитаются назад, прогулка и банкет — вперёд. Двигайте длительности и выключайте лишние блоки. Собрано свадебным видеографом по опыту реальных свадеб.</p>
     <div class="free-note"><b>Вместо оплаты</b> — если помогло, напишите спасибо в <a href="https://t.me/sbphotoshoter" target="_blank" rel="noopener" style="text-decoration:underline">личку телеграма</a></div>
   </section>
@@ -103,9 +103,12 @@
       <section class="cfg-sec">
         <span class="label">01 · Точка отсчёта</span>
         <div class="flds" style="margin-top:0">
-          <div class="fld"><label for="f-cer">Время церемонии</label><input id="f-cer" type="time" value="13:00"></div>
+          <div class="fld wide"><label for="f-cer">Время церемонии</label><input id="f-cer" type="time" value="13:00"></div>
+          <div class="fld"><label for="f-date">Дата свадьбы</label><input id="f-date" type="date"></div>
+          <div class="fld"><label for="f-city">Город</label><input id="f-city" type="text" list="dl-city" placeholder="Москва"></div>
         </div>
-        <div class="hint">Регистрация в ЗАГСе или выездная церемония — всё остальное считается от неё: утро назад, праздник вперёд.</div>
+        <datalist id="dl-city"></datalist>
+        <div class="hint">Регистрация в ЗАГСе или выездная церемония — всё остальное считается от неё: утро назад, праздник вперёд. С датой и городом в плане появятся закат и золотой час: видно, успевает ли прогулка до темноты.</div>
       </section>
       <section class="cfg-sec">
         <span class="label">02 · Блоки дня (галочка — включить, минуты — длительность)</span>
@@ -166,6 +169,7 @@
 </footer>
 
 <script src="../assets/js/docx.js" defer></script>
+<script src="../assets/js/sun.js" defer></script>
 <script src="../assets/js/tajming.js" defer></script>
 <script src="../assets/js/nav.js" defer></script>
 <script src="/assets/js/lead.js" defer></script>
