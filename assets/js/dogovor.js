@@ -650,5 +650,7 @@
   el("btn-print").addEventListener("click", function () { window.print(); });
 
   render();
-  window.PobubnimDogovor = { read: read, render: render, text: function () { return paper.innerText; } };
+  window.PobubnimDogovor = { read: read, render: render, text: function () { return paper.innerText; },
+    /* перерисовка без подсветки места правки — для подстановки реквизитов из профиля (profile.js) */
+    quietRender: function () { quiet = true; render(); } };
 })();
