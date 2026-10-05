@@ -117,6 +117,16 @@
   .paper-shell { border: none; box-shadow: none; background: #fff; }
 }
 
+/* ---------- тост с отменой (share.js): общий для инструментов с черновиком ---------- */
+.pb-toast { position: fixed; left: 50%; bottom: 24px; z-index: 80; display: flex; align-items: center; gap: 14px; width: max-content; max-width: min(520px, calc(100vw - 24px)); padding: 10px 12px 10px 18px; background: #f2efe8; color: #141412; border-radius: 12px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6); font-size: 14px; line-height: 1.35; opacity: 0; transform: translate(-50%, 12px); pointer-events: none; transition: opacity 0.2s var(--ease), transform 0.2s var(--ease); }
+.pb-toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.pb-toast span { padding: 6px 0; text-wrap: pretty; }
+.pb-toast button { flex: none; min-height: 36px; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(0, 0, 0, 0.25); background: none; color: inherit; font: 500 13.5px var(--font-ui); cursor: pointer; transition: background 0.15s var(--ease); }
+.pb-toast button:hover { background: rgba(0, 0, 0, 0.08); }
+.pb-toast button:active { transform: scale(0.97); }
+@media (prefers-reduced-motion: reduce) { .pb-toast { transform: translate(-50%, 0); transition: opacity 0.2s; } }
+@media print { .pb-toast { display: none; } }
+
 .paper-hint { margin-top: 12px; font-size: 13px; color: var(--smoke); line-height: 1.5; }
 .paper-hint a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .paper-note { margin-top: 12px; font-size: 13px; color: var(--mute); line-height: 1.5; }

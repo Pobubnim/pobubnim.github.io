@@ -56,6 +56,7 @@
     var pr = "";
     if (o.bold) pr += "<w:b/>";
     if (o.italic) pr += "<w:i/>";
+    if (o.underline) pr += '<w:u w:val="single"/>';
     if (o.color) pr += '<w:color w:val="' + o.color + '"/>';
     if (o.sz) pr += '<w:sz w:val="' + o.sz + '"/><w:szCs w:val="' + o.sz + '"/>';
     if (o.shd) pr += '<w:shd w:val="clear" w:color="auto" w:fill="' + o.shd + '"/>';
@@ -84,6 +85,12 @@
         var cls = ch.classList;
         if (cls.contains("blank")) out += run("______________", o);
         else if (ch.tagName === "BR") out += "<w:r><w:br/></w:r>";
+        /* веб-ссылка — поле HYPERLINK: в Word она кликается без отдельного файла связей.
+           tel: и прочее остаётся обычным текстом */
+        else if (ch.tagName === "A" && /^https?:/.test(ch.getAttribute("href") || "")) {
+          out += '<w:fldSimple w:instr=" HYPERLINK &quot;' + xesc(ch.getAttribute("href")) + '&quot; ">' +
+            inlineRuns(ch, Object.assign({}, o, { color: "0563C1", underline: true })) + "</w:fldSimple>";
+        }
         else if (ch.tagName === "B" || ch.tagName === "STRONG") out += inlineRuns(ch, Object.assign({}, o, { bold: true }));
         else if (ch.tagName === "EM" || ch.tagName === "I") out += inlineRuns(ch, Object.assign({}, o, { italic: true }));
         else out += inlineRuns(ch, o);
@@ -113,7 +120,9 @@
      видимые границы; th — жирная шапка */
   function itemsTableXml(tbl) {
     var trs = tbl.querySelectorAll("tr");
-    var cols = trs[0] ? trs[0].children.length : 0;
+    /* число колонок — по самой широкой строке: строка-подзаголовок с colspan уже остальных */
+    var cols = 0;
+    [].forEach.call(trs, function (tr) { cols = Math.max(cols, tr.children.length); });
     if (!cols) return "";
     /* ширины: по data-cols="7,40,13,..." (проценты) либо первая широкая */
     var pct = (tbl.dataset.cols || "").split(",").filter(function (x) { return x !== ""; });
@@ -128,9 +137,13 @@
     var leftAll = tbl.classList.contains("text");
     var border = '<w:tblBorders><w:top w:val="single" w:sz="4" w:color="999999"/><w:left w:val="single" w:sz="4" w:color="999999"/><w:bottom w:val="single" w:sz="4" w:color="999999"/><w:right w:val="single" w:sz="4" w:color="999999"/><w:insideH w:val="single" w:sz="4" w:color="999999"/><w:insideV w:val="single" w:sz="4" w:color="999999"/></w:tblBorders>';
     var rows = [].map.call(trs, function (tr) {
+      var at = 0;
       var cells = [].map.call(tr.children, function (td, i) {
-        var bold = td.tagName === "TH";
-        return '<w:tc><w:tcPr><w:tcW w:w="' + widths[i] + '" w:type="dxa"/></w:tcPr>' +
+        var bold = td.tagName === "TH", span = Math.min(td.colSpan || 1, cols - at), w = 0;
+        for (var j = 0; j < span; j++) w += widths[at + j];
+        at += span;
+        return '<w:tc><w:tcPr><w:tcW w:w="' + w + '" w:type="dxa"/>' +
+          (span > 1 ? '<w:gridSpan w:val="' + span + '"/>' : "") + "</w:tcPr>" +
           par(inlineRuns(td, bold ? { bold: true } : {}),
               { spaceAfter: 40, jc: (leftAll || i === 0) ? "left" : "right" }) + "</w:tc>";
       }).join("");
