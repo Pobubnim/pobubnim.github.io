@@ -164,11 +164,43 @@
       par(run(""), { spaceAfter: 0 });
   }
 
-  function bodyXml(paper) {
+  /* картинка в строке текста: data-URL PNG уходит в word/media, размер берётся из атрибутов
+     width/height (CSS-пиксели, 9525 EMU на пиксель) */
+  function drawingXml(img, media) {
+    var m = /^data:image\/png;base64,(.+)$/.exec(img.getAttribute("src") || "");
+    if (!m) return "";
+    var bin = atob(m[1]), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    media.push(bytes);
+    var n = media.length, cx = Math.round((+img.getAttribute("width") || 96) * 9525),
+      cy = Math.round((+img.getAttribute("height") || 96) * 9525);
+    return '<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="' + cx + '" cy="' + cy + '"/>' +
+      '<wp:docPr id="' + n + '" name="' + xesc(img.getAttribute("alt") || "Рисунок " + n) + '"/>' +
+      '<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' +
+      '<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' +
+      '<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' +
+      '<pic:nvPicPr><pic:cNvPr id="' + n + '" name="image' + n + '.png"/><pic:cNvPicPr/></pic:nvPicPr>' +
+      '<pic:blipFill><a:blip r:embed="rId' + (n + 1) + '"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>' +
+      '<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="' + cx + '" cy="' + cy + '"/></a:xfrm>' +
+      '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic>' +
+      "</wp:inline></w:drawing></w:r>";
+  }
+
+  function bodyXml(paper, media) {
     var out = [];
     [].forEach.call(paper.children, function (el) {
       var cls = el.classList;
-      if (cls.contains("bmark-row")) {
+      if (cls.contains("docx-fig")) {
+        /* блок с картинками: каждая — своим абзацем, подпись из data-cap идёт следом в той же строке */
+        [].forEach.call(el.querySelectorAll("img"), function (img) {
+          var d = drawingXml(img, media);
+          if (d) out.push(par(d + (img.getAttribute("data-cap") ? run("  " + img.getAttribute("data-cap")) : ""),
+            { jc: el.getAttribute("data-jc") || "left", spaceAfter: 100 }));
+        });
+        [].forEach.call(el.children, function (ch) {
+          if (ch.tagName === "P") out.push(par(inlineRuns(ch, { italic: true, color: "555555", sz: 18 }), { jc: "left", spaceAfter: 140 }));
+        });
+      } else if (cls.contains("bmark-row")) {
         out.push(par(run(" Б ", { bold: true, italic: true, shd: "000000", color: "F5EFE2", font: "Georgia" }),
           { jc: cls.contains("br") ? "right" : "left", spaceAfter: 120 }));
       } else if (el.tagName === "H2") {
@@ -212,6 +244,7 @@
     '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
     '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
     '<Default Extension="xml" ContentType="application/xml"/>' +
+    '<Default Extension="png" ContentType="image/png"/>' +
     '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
     '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>' +
     "</Types>";
@@ -219,10 +252,15 @@
     '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
     '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
     "</Relationships>";
-  var DOC_RELS = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
-    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>' +
-    "</Relationships>";
+  function docRels(n) {
+    var r = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>';
+    for (var i = 1; i <= n; i++) {
+      r += '<Relationship Id="rId' + (i + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/image' + i + '.png"/>';
+    }
+    return r + "</Relationships>";
+  }
   var STYLES = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
     '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
     "<w:docDefaults><w:rPrDefault><w:rPr>" +
@@ -232,23 +270,26 @@
     '<w:spacing w:after="140" w:line="300" w:lineRule="auto"/>' +
     "</w:pPr></w:pPrDefault></w:docDefaults></w:styles>";
 
-  function documentXml(paper) {
+  function documentXml(paper, media) {
     return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-      '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' +
-      bodyXml(paper) +
+      '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"' +
+      ' xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"' +
+      ' xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"><w:body>' +
+      bodyXml(paper, media) +
       '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/>' +
       '<w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0"/>' +
       "</w:sectPr></w:body></w:document>";
   }
 
   function build(paper) {
+    var media = [], doc = documentXml(paper, media);
     return zip([
       { name: "[Content_Types].xml", data: CONTENT_TYPES },
       { name: "_rels/.rels", data: RELS },
-      { name: "word/_rels/document.xml.rels", data: DOC_RELS },
+      { name: "word/_rels/document.xml.rels", data: docRels(media.length) },
       { name: "word/styles.xml", data: STYLES },
-      { name: "word/document.xml", data: documentXml(paper) }
-    ]);
+      { name: "word/document.xml", data: doc }
+    ].concat(media.map(function (bytes, i) { return { name: "word/media/image" + (i + 1) + ".png", data: bytes }; })));
   }
 
   /* сумма прописью: целые рубли до 999 999 999 (общая для договора и сметы) */

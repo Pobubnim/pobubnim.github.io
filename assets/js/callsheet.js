@@ -58,7 +58,7 @@
     "Начало съёмки", "Обед", "Переезд на вторую локацию", "Стоп, сбор техники", "Конец смены"];
 
   /* блоки по выбору: три со своей разметкой в странице, остальные — заголовок и текст */
-  var BLOCKS = [["cast", "В кадре"], ["scenes", "Что снимаем"], ["safety", "Безопасность"],
+  var BLOCKS = [["cast", "В кадре"], ["scenes", "Что снимаем"], ["safety", "Безопасность"], ["qr", "QR маршрута"],
     ["transport", "Транспорт", "Кто кого везёт, откуда и во сколько. Номера машин для пропуска."],
     ["food", "Питание", "Обед на площадке в 13:00 на восемь человек, один без мяса. Вода и кофе с утра."],
     ["gear", "Техника и реквизит", "Камера и свет едут с оператором. Реквизит привозит заказчик к 09:00."],
@@ -93,9 +93,23 @@
       sched: [row("sched", { what: "Сбор группы" }), row("sched", { what: "Начало съёмки" }), row("sched", { what: "Конец смены" })],
       locs: [blank("locs")], crew: [row("crew", { role: "Оператор-постановщик" })],
       cast: [blank("cast")], scenes: [blank("scenes")],
-      on: {}, txt: {}, contact: "", noPhones: false, rev: 0, snap: null, sentAt: "" };
+      on: { qr: true }, txt: {}, contact: "", noPhones: false, rev: 0, snap: null, sentAt: "" };
   }
   var S = fresh();
+
+  /* логотип продакшна живёт отдельно от листа: он один на все смены, в ссылку не попадает */
+  var LOGO_KEY = "pobubnim-callsheet-logo", logo = null;
+  try { logo = JSON.parse(localStorage.getItem(LOGO_KEY)); } catch (e) { logo = null; }
+  var qrCache = {};
+  /* картинка кода вчетверо крупнее модуля, на листе — ровно вдвое меньше: модуль ложится
+     в целое число точек и на экране, и на печати, без каши на границах */
+  function qrOf(url) {
+    if (!(url in qrCache)) {
+      var q = window.PobubnimQR ? window.PobubnimQR.matrix(url) : null;
+      qrCache[url] = q ? { src: window.PobubnimQR.png(url, 4), px: (q.size + 8) * 2 } : null;
+    }
+    return qrCache[url];
+  }
 
   /* ---------- мелочи ---------- */
   function esc(s) {
@@ -512,6 +526,10 @@
     var s = sunOfDay(), k = keyTimes(), tl = k.tl, h = [];
     var hasSun = s && s.sunset !== null && s.sunrise !== null;
     h.push('<div class="bmark-row tl" aria-hidden="true"><span class="bmark">Б</span></div>');
+    if (logo) {
+      h.push('<div class="cs-logo docx-fig" data-jc="right"><img src="' + logo.src + '" width="' + logo.w +
+        '" height="' + logo.h + '" alt="Логотип"></div>');
+    }
     h.push("<h2>ВЫЗЫВНОЙ ЛИСТ" + (val("f-day") ? " · СМЕНА " + esc(val("f-day")) : "") +
       (S.rev > 1 ? " · ВЕРСИЯ " + S.rev : "") + "</h2>");
     h.push('<p class="cs-proj" style="text-align:center">' + (val("f-proj") ? esc(val("f-proj")) : "Проект: " + BL) + "</p>");
@@ -536,6 +554,14 @@
             '" target="_blank" rel="noopener">карта</a>' : BL) + (l.how ? "<br>" + esc(l.how) : ""),
             l.time ? esc(l.time) : "—"];
         })));
+      /* код маршрута: бумажный лист открывает карту камерой телефона */
+      var codes = S.on.qr ? locs.map(function (l, i) {
+        var q = l.addr ? qrOf(mapUrl(l.addr)) : null;
+        var cap = (locs.length > 1 ? i + 1 + ". " : "") + (l.name || l.addr);
+        return q ? '<span><img src="' + q.src + '" width="' + q.px + '" height="' + q.px +
+          '" alt="QR-код: маршрут до локации" data-cap="' + esc(cap) + '"><i>' + esc(cap) + "</i></span>" : "";
+      }).slice(0, 3).join("") : "";
+      if (codes) h.push('<div class="cs-qr docx-fig">' + codes + "<p>Маршрут: наведите камеру телефона на код — откроется карта.</p></div>");
     }
 
     h.push("<h3>Расписание</h3>");
@@ -829,6 +855,7 @@
       if (!S[k] || !S[k].length) S[k] = f[k];
       S[k] = S[k].map(function (r) { return row(k, r); });
     });
+    if (S.on.qr === undefined) S.on.qr = true;      /* листы до 05.10.2026 про код не знали — включаем */
     if (!val("f-lat")) applyCity();
     drawAll();
     drawBlocks();
@@ -903,6 +930,124 @@
       changed();
     }, function () { toast("Браузер не дал геолокацию — впишите координаты вручную"); });
   });
+  /* ---------- прогноз погоды: MET Norway, только по кнопке ----------
+     В сервис уходят координаты точки (до четырёх знаков — его правило) и больше ничего.
+     Ответ держим до срока из заголовка Expires: повторять запрос раньше сервис просит не надо.
+     Условия и формат — docs/research/callsheet_tehnika.md и api.met.no/doc/TermsOfService. */
+  var SKY = [[/thunder/, "гроза", 9], [/heavysnow/, "сильный снег", 8], [/heavyrain/, "сильный дождь", 8],
+    [/sleet/, "мокрый снег", 7], [/snow/, "снег", 7], [/lightrain/, "небольшой дождь", 5], [/rain/, "дождь", 6],
+    [/fog/, "туман", 4], [/partlycloudy/, "переменная облачность", 2], [/cloudy/, "пасмурно", 3],
+    [/fair/, "малооблачно", 1], [/clearsky/, "ясно", 0]];
+  function skyOf(code) {
+    for (var i = 0; i < SKY.length; i++) if (SKY[i][0].test(code || "")) return SKY[i];
+    return null;
+  }
+  function deg(t) { t = Math.round(t); return (t > 0 ? "+" : t < 0 ? "−" : "") + Math.abs(t); }
+  /* ts — строки [время UTC в мс, температура, ветер, осадки за шаг, код неба]; окно — в мс */
+  function wxSummary(ts, from, to) {
+    var rows = ts.filter(function (r) { return r[0] >= from && r[0] < to; });
+    if (!rows.length) return "";
+    var lo = Infinity, hi = -Infinity, wind = 0, rain = 0, wet = null, count = {}, top = null;
+    rows.forEach(function (r) {
+      lo = Math.min(lo, r[1]); hi = Math.max(hi, r[1]); wind = Math.max(wind, r[2]); rain += r[3] || 0;
+      var s = skyOf(r[4]);
+      if (!s) return;
+      if (s[2] >= 5 && (!wet || s[2] > wet[2])) wet = s;
+      var calm = s[2] >= 5 ? "пасмурно" : s[1];                  /* небо под осадками — пасмурное */
+      count[calm] = (count[calm] || 0) + 1;
+      if (!top || count[calm] > count[top]) top = calm;
+    });
+    var out = [deg(lo) === deg(hi) ? deg(lo) : deg(lo) + "…" + deg(hi)];
+    if (top) out.push(top);
+    out.push(rain >= 0.3 && wet ? wet[1] + ", около " + (rain < 1 ? "1" : Math.round(rain)) + " мм" : "без осадков");
+    out.push("ветер до " + Math.max(1, Math.round(wind)) + " м/с");
+    return out.join(", ");
+  }
+  function fetchWx(lat, lng) {
+    var key = "pobubnim-wx:" + lat + "," + lng, c = null;
+    try { c = JSON.parse(sessionStorage.getItem(key)); } catch (e) { c = null; }
+    if (c && c.exp > Date.now()) return Promise.resolve(c.ts);
+    return fetch("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=" + lat + "&lon=" + lng).then(function (r) {
+      if (!r.ok) throw new Error("MET " + r.status);
+      var exp = Date.parse(r.headers.get("Expires")) || Date.now() + 30 * 60e3;
+      return r.json().then(function (d) {
+        var ts = d.properties.timeseries.map(function (t) {
+          var i = t.data.instant.details, n = t.data.next_1_hours || t.data.next_6_hours || {};
+          return [Date.parse(t.time), i.air_temperature, i.wind_speed,
+            n.details ? n.details.precipitation_amount || 0 : 0, n.summary ? n.summary.symbol_code : ""];
+        });
+        try { sessionStorage.setItem(key, JSON.stringify({ exp: exp, ts: ts })); } catch (e) { /* приватный режим */ }
+        return ts;
+      });
+    });
+  }
+  $("btn-wx").addEventListener("click", function () {
+    var btn = this, p = dateParts(val("f-date")), lat = num("f-lat"), lng = num("f-lng"), tz = num("f-tz");
+    if (!p || isNaN(lat) || isNaN(lng)) { toast("Для прогноза нужны дата съёмки и город"); return; }
+    if (isNaN(tz)) tz = 3;
+    var k = keyTimes(), a = k.call ? k.call.m : 360, b = k.end ? k.end.m : 1320;      /* без расписания — с 06 до 22 */
+    var from = Date.UTC(p.y, p.m - 1, p.d, 0, a) - tz * 36e5, to = Date.UTC(p.y, p.m - 1, p.d, 0, b + 60) - tz * 36e5;
+    var old = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Запрашиваю…";
+    fetchWx(+lat.toFixed(4), +lng.toFixed(4)).then(function (ts) {
+      var text = wxSummary(ts, from, to);
+      if (!text) {
+        toast(to < ts[0][0] ? "Эта дата уже прошла — прогноза на неё нет"
+          : "Прогноз есть на девять дней вперёд — на эту дату его пока нет");
+        return;
+      }
+      $("f-wx").value = text + " — прогноз MET Norway";
+      changed();
+      toast("Прогноз подставлен. Его можно поправить руками");
+      if (window.pbGoal) window.pbGoal("tool_weather", { tool: location.pathname });
+    }).catch(function () {
+      toast("Сервис прогноза не ответил. Откройте прогноз по ссылке ниже и впишите вручную");
+    }).then(function () { btn.disabled = false; btn.textContent = old; });
+  });
+
+  /* ---------- логотип: любой файл картинки приводим к PNG не шире 320 и не выше 128 точек ---------- */
+  function drawLogo() {
+    $("btn-logo").textContent = logo ? "Заменить логотип" : "Логотип на лист";
+    $("btn-logo-del").hidden = !logo;
+  }
+  $("btn-logo").addEventListener("click", function () { $("f-logo").click(); });
+  $("f-logo").addEventListener("change", function () {
+    var file = this.files && this.files[0];
+    this.value = "";
+    if (!file) return;
+    if (!/^image\//.test(file.type) || file.size > 8e6) { toast("Нужна картинка до 8 МБ: PNG, JPG, SVG или WebP"); return; }
+    var url = URL.createObjectURL(file), img = new Image();
+    img.onload = function () {
+      var w = img.naturalWidth || 320, h = img.naturalHeight || 128, f = Math.min(1, 320 / w, 128 / h);
+      var c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(w * f));
+      c.height = Math.max(1, Math.round(h * f));
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      /* на листе логотип вдвое меньше точек — на печати и ретине он остаётся чётким */
+      logo = { src: c.toDataURL("image/png"), w: Math.round(c.width / 2), h: Math.round(c.height / 2) };
+      try { localStorage.setItem(LOGO_KEY, JSON.stringify(logo)); } catch (e) { toast("Логотип не поместился в память браузера — на листе он есть до закрытия вкладки"); }
+      drawLogo();
+      render();
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); toast("Не получилось прочитать картинку — попробуйте PNG или JPG"); };
+    img.src = url;
+  });
+  $("btn-logo-del").addEventListener("click", function () {
+    var was = logo;
+    logo = null;
+    try { localStorage.removeItem(LOGO_KEY); } catch (e) { /* нечего чистить */ }
+    drawLogo();
+    render();
+    toast("Логотип убран", function () {
+      logo = was;
+      try { localStorage.setItem(LOGO_KEY, JSON.stringify(logo)); } catch (e) { /* приватный режим */ }
+      drawLogo();
+      render();
+    });
+  });
+
   $("btn-forget").addEventListener("click", function () {
     try { localStorage.removeItem(PEOPLE); } catch (e) { /* нечего чистить */ }
     loadBook();
@@ -914,6 +1059,7 @@
   /* ---------- старт ---------- */
   LISTS.forEach(bindRows);
   loadBook();
+  drawLogo();
   var raw = null, saved = null;
   try { raw = localStorage.getItem(KEY); } catch (e) { /* приватный режим */ }
   try { saved = raw ? JSON.parse(raw) : null; } catch (e) { saved = null; }
@@ -928,7 +1074,7 @@
   window.PobubnimCallsheet = {
     sun: sunOfDay, key: keyTimes, state: function () { return S; }, snapshot: snapshot, restore: restore,
     people: people, contact: contact, parsePeople: parsePeople, checks: function () { return checks(sunOfDay(), keyTimes()); },
-    lightNotes: function () { return lightNotes(sunOfDay(), keyTimes()); },
+    lightNotes: function () { return lightNotes(sunOfDay(), keyTimes()); }, wxSummary: wxSummary,
     val: val, hm: hm, pl: pl, p2: p2, esc: esc, digits: digits, mapUrl: mapUrl, dateRu: dateRu, dateParts: dateParts,
     blocks: BLOCKS, changed: changed, toast: toast, onChange: function (fn) { listeners.push(fn); }
   };

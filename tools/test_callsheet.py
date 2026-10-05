@@ -28,6 +28,12 @@ from xml.dom import minidom
 import websocket
 
 try:
+    import cv2
+    import numpy as np
+except ImportError:
+    cv2 = None
+
+try:
     from astral import LocationInfo
     from astral.sun import sun as astral_sun
 except ImportError:
@@ -404,6 +410,72 @@ def main():
         check("окно закрывается", not t.js("document.getElementById('send').open"), "")
         t.row("sched", 0, "t", "07:00")
 
+        # ---------- 9б. код маршрута, логотип, прогноз ----------
+        src = t.js("(document.querySelector('#paper .cs-qr img')||{}).src") or ""
+        want_url = t.js("PobubnimCallsheet.mapUrl(PobubnimCallsheet.state().locs[0].addr)")
+        check("у локации с адресом на листе стоит QR-код", src.startswith("data:image/png;base64,"), src[:40])
+        if cv2 is not None and src:
+            img = cv2.imdecode(np.frombuffer(base64.b64decode(src.split(",", 1)[1]), np.uint8), cv2.IMREAD_GRAYSCALE)
+            got_url = cv2.QRCodeDetector().detectAndDecode(cv2.resize(img, None, fx=2, fy=2, interpolation=cv2.INTER_NEAREST))[0]
+            check("QR читается независимым декодером и ведёт на карту", got_url == want_url, f"{got_url!r} против {want_url!r}")
+        long_ok = t.js("(()=>{const q=PobubnimQR.matrix('x'.repeat(858));return q&&q.version===20&&PobubnimQR.matrix('x'.repeat(859))===null})()")
+        check("кодировщик берёт ровно 858 байт и честно отказывает на 859", long_ok, "")
+        t.click('#block-chips [data-b="qr"]')
+        check("чип «QR маршрута» убирает код с листа", t.js("!document.querySelector('#paper .cs-qr')"), "")
+        t.click('#block-chips [data-b="qr"]')
+
+        logo_file = tempfile.mktemp(suffix=".png")
+        if cv2 is not None:
+            pic = np.full((300, 900, 3), 255, np.uint8)
+            cv2.rectangle(pic, (40, 40), (860, 260), (30, 30, 30), -1)
+            cv2.imwrite(logo_file, pic)
+            node = t.cmd("DOM.getDocument")["result"]["root"]["nodeId"]
+            inp = t.cmd("DOM.querySelector", nodeId=node, selector="#f-logo")["result"]["nodeId"]
+            t.cmd("DOM.setFileInputFiles", nodeId=inp, files=[logo_file])
+            time.sleep(0.8)
+            lg = json.loads(t.js("JSON.stringify((function(){var i=document.querySelector('#paper .cs-logo img');"
+                                 "return i?[i.getAttribute('width'),i.getAttribute('height'),i.src.slice(0,22)]:null})())"))
+            check("логотип встал на лист, приведён к 320 точкам по ширине", lg == ["160", "54", "data:image/png;base64,"], lg)
+            check("кнопка логотипа сменила подпись, появилось «Убрать»",
+                  t.js("document.getElementById('btn-logo').textContent") == "Заменить логотип" and
+                  t.js("!document.getElementById('btn-logo-del').hidden"), "")
+
+        t.js("""(()=>{const rows=[];for(let h=0;h<24;h++){const wet=h===14||h===15;
+          rows.push({time:'2026-09-14T'+String(h).padStart(2,'0')+':00:00Z',data:{instant:{details:{
+            air_temperature:h<4||h>19?-5:10+(h-4)*0.5,wind_speed:h<4||h>19?20:(h===12?5.6:3.4)}},
+            next_1_hours:{summary:{symbol_code:wet?'lightrain':'partlycloudy_day'},details:{precipitation_amount:wet?0.6:0}}}});}
+          window.__wx={n:0,url:''};
+          const real=window.fetch;
+          window.fetch=(u,o)=>{if(String(u).indexOf('api.met.no')<0)return real(u,o);   /* счётчик Метрики тоже зовёт fetch */
+            window.__wx.n++;window.__wx.url=u;return Promise.resolve({ok:true,
+            headers:{get:()=>new Date(Date.now()+3600e3).toUTCString()},json:()=>Promise.resolve({properties:{timeseries:rows}})});};
+          sessionStorage.clear();})()""")
+        t.click("#btn-wx")
+        time.sleep(0.5)
+        wx = t.js("document.getElementById('f-wx').value")
+        check("прогноз посчитан за часы смены, а не за сутки",
+              wx == "+10…+18, переменная облачность, небольшой дождь, около 1 мм, ветер до 6 м/с — прогноз MET Norway", wx)
+        check("в сервис ушли только координаты, не больше четырёх знаков",
+              t.js("window.__wx.url") == "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=55.3853&lon=36.7325",
+              t.js("window.__wx.url"))
+        check("прогноз попал на лист", "Погода" in t.paper() and "прогноз MET Norway" in t.paper(), "")
+        t.click("#btn-wx")
+        time.sleep(0.4)
+        check("повторный запрос до срока Expires не уходит в сеть", t.js("window.__wx.n") == 1, t.js("window.__wx.n"))
+        t.set("f-date", "2026-11-30")
+        t.click("#btn-wx")
+        time.sleep(0.4)
+        check("дата за горизонтом прогноза названа прямо",
+              "на эту дату его пока нет" in (t.js("document.querySelector('.pb-toast').textContent") or ""),
+              t.js("document.querySelector('.pb-toast').textContent"))
+        t.js("sessionStorage.clear();window.fetch=(u)=>String(u).indexOf('api.met.no')<0?Promise.resolve({ok:true}):Promise.reject(new Error('сеть'))")
+        t.click("#btn-wx")
+        time.sleep(0.4)
+        check("сбой сервиса не ломает лист: поле осталось, человеку сказано, что делать",
+              "не ответил" in (t.js("document.querySelector('.pb-toast').textContent") or "") and
+              t.js("document.getElementById('f-wx').value") == wx and not t.js("document.getElementById('btn-wx').disabled"), "")
+        t.set("f-date", "2026-09-14")
+
         # ---------- 10. календарь и таблица ----------
         ics = t.js("PobubnimCallsheet.ics()")
         lines = ics.split("\r\n")
@@ -436,6 +508,21 @@ def main():
         check(".docx: ссылка на карту кликается", 'HYPERLINK &quot;https://yandex.ru/maps/?text=' in xml, "")
         check(".docx: подзаголовки цехов объединяют ячейки", '<w:gridSpan w:val="4"/>' in xml, "")
         check(".docx: расписание и группа на месте", "Сбор группы" in xml and "Иван Петров" in xml and "ВЫЗЫВНОЙ ЛИСТ" in xml, "")
+        names = z.namelist()
+        rels = z.read("word/_rels/document.xml.rels").decode("utf-8")
+        n_img = xml.count("<w:drawing>")
+        check(".docx: логотип и код маршрута вложены картинками со своими связями",
+              n_img >= 1 and all(f"word/media/image{i}.png" in names and f'Target="media/image{i}.png"' in rels
+                                 for i in range(1, n_img + 1)) and
+              z.read("word/media/image1.png")[:8] == b"\x89PNG\r\n\x1a\n" and
+              'Extension="png"' in z.read("[Content_Types].xml").decode("utf-8"), (n_img, names))
+        try:
+            import docx as pydocx
+            doc = pydocx.Document(io.BytesIO(base64.b64decode(b64)))
+            check(".docx открывается библиотекой python-docx, картинки на месте",
+                  len(doc.inline_shapes) == n_img and len(doc.tables) >= 3, (len(doc.inline_shapes), len(doc.tables)))
+        except ImportError:
+            print("     (python-docx не установлен — проверка открытия пропущена)")
 
         # ---------- 12. печать ----------
         pdf = base64.b64decode(t.cmd("Page.printToPDF", printBackground=True, preferCSSPageSize=True)["result"]["data"])
@@ -447,6 +534,8 @@ def main():
         t.goto(URL)
         check("черновик восстановил дату и расписание",
               t.js("document.getElementById('f-date').value") == "2026-09-14" and sched(t)[0] == ["07:00", "Сбор группы"], "")
+        if cv2 is not None:
+            check("логотип пережил перезагрузку", t.js("!!document.querySelector('#paper .cs-logo img')"), "")
         check("черновик восстановил группу, блоки и статусы",
               "Иван Петров" in t.paper() and "бариста" in t.paper() and t.js("PobubnimCallsheet.state().crew[0].st") == "ok", "")
         t.click("#btn-next")
@@ -466,6 +555,15 @@ def main():
         check("очистка отменяется кнопкой «Вернуть»", "Иван Петров" in t.paper(), "")
         t.click("#btn-clear")
         time.sleep(0.6)
+
+        if cv2 is not None:
+            check("очистка листа логотип не трогает", t.js("!!document.querySelector('#paper .cs-logo img')"), "")
+            t.click("#btn-logo-del")
+            check("логотип убирается своей кнопкой", t.js("!document.querySelector('#paper .cs-logo')") and
+                  t.js("localStorage.getItem('pobubnim-callsheet-logo')") in (None, ""), "")
+            t.click(".pb-toast.on button")
+            check("и возвращается кнопкой «Вернуть»", t.js("!!document.querySelector('#paper .cs-logo img')"), "")
+            t.click("#btn-logo-del")
 
         # пример одним кликом
         t.click("#btn-example")
