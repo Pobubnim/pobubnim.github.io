@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/lesson.css">
 <link rel="stylesheet" href="../assets/css/paper.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Шот-лист онлайн", "url": "https://pobubnim.ru/instrumenty/shot-list.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/"}, "description": "Бесплатный конструктор шот-листа: сцены и кадры с крупностью, ракурсом, движением камеры и оптикой, расчёт загрузки смены, выгрузка в Word и печать."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Шот-лист онлайн", "url": "https://pobubnim.ru/instrumenty/shot-list.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/"}, "description": "Бесплатный конструктор шот-листа: сцены и кадры с крупностью, ракурсом, движением камеры и оптикой, расчёт загрузки смены, выгрузка в Word и печать.", "screenshot": {"@type": "ImageObject", "url": "https://pobubnim.ru/assets/img/obrazec-shot-list.webp", "width": 1178, "height": 2020, "caption": "Образец шот-листа на съёмку: сцена, кадры с крупностью, ракурсом, движением камеры и минутами"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Что такое шот-лист и зачем он нужен?", "acceptedAnswer": {"@type": "Answer", "text": "Шот-лист — список кадров, которые нужно снять, разложенный по сценам. У каждого кадра написано, что в нём происходит, какая крупность, ракурс, движение камеры и оптика. На площадке он заменяет память: группа видит, что уже снято и что осталось, а заказчик заранее понимает, что получит."}},
 {"@type": "Question", "name": "Чем шот-лист отличается от раскадровки?", "acceptedAnswer": {"@type": "Answer", "text": "Раскадровка — это рисунки кадров, шот-лист — таблица. Рисовать дольше и дороже, поэтому раскадровку делают для сложных постановочных сцен, а шот-лист — почти для любой съёмки. Часто их сочетают: список кадров на всю смену плюс раскадровка на два-три трюковых эпизода."}},
@@ -44,7 +44,13 @@
   .scene .scn { font: 500 10.5px var(--font-ui); letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
   .scene-bar { margin-top: 10px; }
   .shot { border-top: 1px solid var(--line-soft); margin-top: 12px; padding-top: 12px; }
-  .shot-top { display: grid; grid-template-columns: 18px 36px 1fr 62px auto; gap: 8px; align-items: center; }
+  .shot-top { display: grid; grid-template-columns: 18px 36px 26px 1fr 62px auto; gap: 8px; align-items: center; }
+  /* отметка «снято»: область нажатия шире самой галочки, снятый кадр гаснет */
+  .done-l { display: flex; align-items: center; justify-content: center; min-height: 42px; cursor: pointer; }
+  .done-l input { width: 18px; height: 18px; accent-color: var(--lamp); cursor: pointer; }
+  .shot.is-done .what, .shot.is-done .shot-grid { opacity: 0.45; transition: opacity 0.2s var(--ease); }
+  .shot.is-done .what { text-decoration: line-through; }
+  .paper table.shots td:first-child { white-space: nowrap; }
   .shot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(124px, 1fr)); gap: 6px; margin-top: 6px; }
   .scene input, .scene select { background: #0c0c0b; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: 400 14px var(--font-ui); padding: 9px 10px; min-height: 42px; width: 100%; min-width: 0; }
   .scene input:focus, .scene select:focus { border-color: var(--lamp); outline: none; }
@@ -76,7 +82,7 @@
     .paper table.shots th, .paper table.shots td { padding: 4px 4px; }
     .scene-head { grid-template-columns: 1fr auto; }
     .scene .scn, .scene-head .sc-name, .scene-head .sc-loc { grid-column: 1 / -1; }
-    .shot-top { grid-template-columns: 16px 32px 1fr 50px; gap: 6px; }
+    .shot-top { grid-template-columns: 16px 32px 26px 1fr 50px; gap: 6px; }
     .shot-top .rowbtns { grid-column: 1 / -1; justify-content: flex-end; }
     .shot-grid { grid-template-columns: 1fr 1fr; }
     .scene input, .scene select { font-size: 13px; padding: 9px 8px; }
@@ -179,6 +185,7 @@
           <div class="bar"><i></i></div>
           <p class="mtext">Добавьте кадры — посчитаю, влезает ли план в смену</p>
         </div>
+        <div class="hint">На площадке отмечайте снятое галочкой у номера кадра: строка гаснет, а счётчик показывает, сколько кадров и минут осталось.</div>
         <div class="hint">Норматива «сколько ставится кадр» в отрасли нет: репортажный кадр — пара минут, постановочный со светом — час. Поэтому минуты ваши, а сумму считаю я.</div>
       </section>
     </form>
@@ -203,7 +210,10 @@
     <p>Шот-лист собирают в три захода. Сначала <b>сцены</b>: не «свадьба», а сборы, церемония, прогулка, банкет — каждая со своей локацией и временем суток. Потом <b>кадры внутри сцены</b>: что происходит, какая крупность, откуда смотрит камера, движется ли она. Последним ставят <b>минуты</b> — и вот здесь план обычно рушится: кадров набирается на две смены, а оплачена одна.</p>
     <p>Инструмент выше складывает минуты за вас и красит полосу красным, когда план перестал помещаться в смену. Дальше решение простое: резать кадры, двигать часть на второй день или продавать вторую смену. Разговор с заказчиком в такой момент выглядит совсем иначе, чем «мы не успели».</p>
     <p>Готовый лист печатают и раздают группе. Второй оператор видит, что уже снято, звукорежиссёр — где нужна петличка, а вы не вспоминаете в машине по дороге домой, что забыли деталь с кольцами.</p>
-
+    <!-- obrazec:begin -->
+    <h2 class="art-h2">Образец шот-листа: как выглядит план кадров</h2>
+    <figure class="tool-sample"><img src="../assets/img/obrazec-shot-list.webp" width="589" height="1010" loading="lazy" decoding="async" alt="Образец шот-листа на съёмку: сцена, кадры с крупностью, ракурсом, движением камеры и минутами"><figcaption>Так выглядит готовый лист. Заполните поля выше — получите такой же со своими данными.</figcaption></figure>
+    <!-- obrazec:end -->
     <h2 class="art-h2">Крупности и движение: короткий словарь</h2>
     <p><b>Крупности.</b> Дальний (ELS) — человек мелкой фигурой, работает место. Общий (WS) — фигура целиком, видно, где мы. Средний (MS) — по пояс, основной план действия и диалога. Грудной (MCU) — план речи, им снимают интервью. Крупный (CU) — лицо, план эмоции. Деталь (ECU) — руки, глаза, предмет.</p>
     <p><b>Движение.</b> Статика, панорама, наклон, проезд, слайдер, стедикам, с рук, кран, зум, дрон. Правило одно: движение должно за чем-то следовать или что-то открывать. Панорама «чтобы было красиво» на монтаже вырезается первой.</p>

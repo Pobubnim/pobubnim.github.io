@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/lesson.css">
 <link rel="stylesheet" href="../assets/css/paper.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Калькулятор ND-фильтра", "url": "https://pobubnim.ru/instrumenty/kalkulyator-nd-filtra.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/"}, "description": "Бесплатный калькулятор ND-фильтров: расчёт нужных стопов для видео с шаттером 180 градусов и пересчёт выдержки под фильтром для фото."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Калькулятор ND-фильтра", "url": "https://pobubnim.ru/instrumenty/kalkulyator-nd-filtra.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "browserRequirements": "Requires JavaScript", "inLanguage": "ru", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"}, "author": {"@type": "Person", "@id": "https://pobubnim.ru/#savelij", "name": "Савелий Бубнов", "url": "https://pobubnim.ru/"}, "description": "Бесплатный калькулятор ND-фильтров: расчёт нужных стопов для видео с шаттером 180 градусов и пересчёт выдержки под фильтром для фото.", "screenshot": {"@type": "ImageObject", "url": "https://pobubnim.ru/assets/img/obrazec-nd.webp", "width": 1178, "height": 1208, "caption": "Пример расчёта ND-фильтра: сколько стопов нужно под шаттер 180° и какой фильтр ставить"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
 {"@type": "Question", "name": "Зачем ND-фильтр на видео?", "acceptedAnswer": {"@type": "Answer", "text": "Чтобы держать выдержку около 1/50 при 25 кадрах в секунду — это правило 180 градусов, оно даёт привычный глазу смаз движения. На солнце такая выдержка вместе с открытой диафрагмой пересвечивает кадр, и лишний свет убирают именно фильтром, а не более короткой выдержкой: короткая выдержка делает движение рваным."}},
 {"@type": "Question", "name": "ND64 — это сколько стопов?", "acceptedAnswer": {"@type": "Answer", "text": "Шесть. ND64 гасит свет в шестьдесят четыре раза, а каждый стоп — это вдвое: 2⁶ = 64. По плотности это 1,8 D. Для сравнения: ND8 — три стопа, ND16 — четыре, ND32 — пять."}},
@@ -152,7 +152,10 @@
     <h2 class="art-h2" style="margin-top:0">Зачем ND-фильтр и как считать стопы</h2>
     <p>На видео выдержку не выбирают — её держат. Правило 180 градусов говорит: выдержка вдвое короче длительности кадра, то есть 1/50 при 25 к/с. Это тот смаз движения, к которому глаз привык в кино. На солнце удержать 1/50 с открытой диафрагмой невозможно — кадр улетает в пересвет, и лишний свет убирают <b>ND-фильтром</b>, а не более короткой выдержкой.</p>
     <p>Маркировка читается просто: цифра — во сколько раз фильтр гасит свет. ND8 гасит в восемь раз, это три стопа. ND64 — шесть стопов, ND1000 — десять. Плотность в другой системе: один стоп равен 0,3 D, поэтому тот же ND1000 подписывают как 3.0.</p>
-
+    <!-- obrazec:begin -->
+    <h2 class="art-h2">Пример расчёта ND-фильтра</h2>
+    <figure class="tool-sample"><img src="../assets/img/obrazec-nd.webp" width="589" height="604" loading="lazy" decoding="async" alt="Пример расчёта ND-фильтра: сколько стопов нужно под шаттер 180° и какой фильтр ставить"><figcaption>Так выглядит расчёт на листе. Поставьте свои числа выше — лист пересчитается сразу.</figcaption></figure>
+    <!-- obrazec:end -->
     <h2 class="art-h2">Таблица: маркировка, стопы, плотность</h2>
     <table class="nd-table">
       <thead><tr><th>Фильтр</th><th>Стопов</th><th>Плотность</th><th>Гасит в</th></tr></thead>
