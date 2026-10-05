@@ -1,21 +1,29 @@
 # -*- coding: utf-8 -*-
-"""Приёмка вызывного листа (instrumenty/vyzyvnoj-list.html) на живой странице.
+"""Приёмка вызывного листа v2 (instrumenty/vyzyvnoj-list.html) на живой странице.
 
-Проверяет то, чем инструмент отличается от бумажного шаблона: подстановку
-координат по городу, расчёт света (сверяется с astral), предупреждения про
-закат и золотой час, строки локаций и группы с перестановкой, сборку .docx,
-черновик и мобильную раскладку без веб-шрифтов.
+Проверяет всё, чем лист отличается от бумажного шаблона: свет по координатам
+(сверка с astral), свободное расписание с заготовками и сдвигом смены, ссылки
+на карту, память людей и вставку списком, блоки по выбору, сцены из шот-листа,
+готовность листа, рассылку (общий и личный текст, wa.me, статусы, «что
+изменилось»), календарь .ics, таблицу .csv, .docx с распаковкой, печать в PDF,
+черновик с переводом листов первой версии и мобильную раскладку.
 
 Запуск:  python tools/test_callsheet.py [url]
 """
+import base64
 import datetime
+import io
 import json
+import re
 import subprocess
-import tempfile
 import sys
+import tempfile
 import time
+import urllib.parse
 import urllib.request
+import zipfile
 import zoneinfo
+from xml.dom import minidom
 
 import websocket
 
@@ -28,12 +36,13 @@ except ImportError:
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 PORT = 9391
 URL = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:8765/instrumenty/vyzyvnoj-list.html"
+KEY = "pobubnim-callsheet-v1"
 
 fails = []
 
 
 def check(name, cond, got=""):
-    print(("ok  " if cond else "ФЕЙЛ ") + name + ("" if cond else "  -> " + str(got)))
+    print(("ok  " if cond else "ФЕЙЛ ") + name + ("" if cond else "  -> " + str(got)[:300]))
     if not cond:
         fails.append(name)
 
@@ -62,6 +71,7 @@ class Tab:
         self.mid = 0
         self.errors = []
         self.cmd("Runtime.enable")
+        self.cmd("Page.enable")
         # худший случай раскладки: системный шрифт вместо Inter
         self.cmd("Network.enable")
         self.cmd("Network.setBlockedURLs", urls=["*fonts.googleapis.com*", "*fonts.gstatic.com*"])
@@ -74,27 +84,42 @@ class Tab:
             if msg.get("id") == self.mid:
                 return msg
             if msg.get("method") == "Runtime.exceptionThrown":
-                self.errors.append(msg["params"]["exceptionDetails"].get("text", "JS error"))
+                d = msg["params"]["exceptionDetails"]
+                self.errors.append((d.get("exception") or {}).get("description") or d.get("text", "JS error"))
 
-    def js(self, expr):
-        r = self.cmd("Runtime.evaluate", expression=expr, returnByValue=True)
+    def js(self, expr, wait=False):
+        r = self.cmd("Runtime.evaluate", expression=expr, returnByValue=True, awaitPromise=wait)
         res = r.get("result", {})
         if "exceptionDetails" in res:
-            self.errors.append(str(res["exceptionDetails"].get("text")))
+            d = res["exceptionDetails"]
+            self.errors.append((d.get("exception") or {}).get("description") or str(d.get("text")))
             return None
         return res.get("result", {}).get("value")
 
     def set(self, el_id, value):
         self.js("(()=>{const e=document.getElementById('%s');e.value=%s;"
-                "e.dispatchEvent(new Event('input',{bubbles:true}));})()" % (el_id, json.dumps(value)))
+                "e.dispatchEvent(new Event('input',{bubbles:true}));"
+                "e.dispatchEvent(new Event('change',{bubbles:true}));})()" % (el_id, json.dumps(value)))
+
+    def row(self, lst, i, k, value):
+        """Вписать значение в строку списка так, как это делает человек: input, потом change."""
+        self.js("(()=>{const e=document.querySelectorAll('#%s .row-i')[%d].querySelector('[data-k=\"%s\"]');"
+                "e.value=%s;e.dispatchEvent(new Event('input',{bubbles:true}));"
+                "e.dispatchEvent(new Event('change',{bubbles:true}));})()" % (lst, i, k, json.dumps(value)))
+
+    def click(self, sel):
+        self.js("document.querySelector(%s).click()" % json.dumps(sel))
+
+    def paper(self):
+        return self.js("document.getElementById('paper').innerText") or ""
 
     def goto(self, url):
         self.cmd("Page.navigate", url=url)
-        for _ in range(20):
+        for _ in range(30):
             time.sleep(0.4)
-            if self.js("typeof window.PobubnimCallsheet") == "object":
+            if self.js("typeof window.PobubnimCallsheet === 'object' && typeof PobubnimCallsheet.chatText") == "function":
                 return
-        raise RuntimeError("страница не поднялась")
+        raise RuntimeError("страница не поднялась: " + "; ".join(self.errors[:2]))
 
     def close(self):
         try:
@@ -103,127 +128,401 @@ class Tab:
             self.proc.kill()
 
 
+def diff_min(a, b):
+    ah, am = (int(x) for x in a.split(":"))
+    bh, bm = (int(x) for x in b.split(":"))
+    return abs((ah * 60 + am) - (bh * 60 + bm))
+
+
+def sched(t):
+    return json.loads(t.js("JSON.stringify(PobubnimCallsheet.state().sched.map(r=>[r.t,r.what]))"))
+
+
 def main():
     t = Tab()
     try:
         t.goto(URL)
 
-        # 1. город подставляет координаты и пояс
+        # ---------- 1. пустой лист: подсказка первого визита и готовность ----------
+        check("пустой лист показывает подсказку первого визита", t.js("!document.getElementById('starter').hidden"))
+        check("готовность считает с нуля",
+              t.js("document.getElementById('ready-n').textContent").startswith("Готово 0 из"),
+              t.js("document.getElementById('ready-n').textContent"))
+        check("пустой лист не кладётся в хранилище", t.js(f"localStorage.getItem('{KEY}')") in (None, ""))
+
+        # ---------- 2. город, координаты и свет ----------
         t.set("f-city", "Наро-Фоминск")
-        time.sleep(0.4)
         lat = t.js("document.getElementById('f-lat').value")
         tz = t.js("document.getElementById('f-tz').value")
         check("город подставил координаты", lat.startswith("55.38") and tz == "3", f"{lat} / {tz}")
-
-        # 2. свет считается и совпадает с эталоном astral
         t.set("f-date", "2026-09-14")
-        time.sleep(0.5)
-        paper = t.js("document.getElementById('paper').innerText")
+        paper = t.paper()
         got = json.loads(t.js("JSON.stringify((function(){var s=PobubnimCallsheet.sun();"
                               "return [PobubnimSun.hhmm(s.sunrise),PobubnimSun.hhmm(s.sunset)];})())"))
-        check("в листе появился блок света", "Восход и закат" in (paper or ""), (paper or "")[:60])
-        check("золотой час в листе", "Золотой час" in (paper or ""), "")
+        check("в листе появился блок света", "Восход и закат" in paper and "Золотой час" in paper, paper[:80])
         if astral_sun:
             ref = astral_sun(LocationInfo("НФ", "RU", "Europe/Moscow", 55.3853, 36.7325).observer,
-                             date=datetime.date(2026, 9, 14),
-                             tzinfo=zoneinfo.ZoneInfo("Europe/Moscow"))
+                             date=datetime.date(2026, 9, 14), tzinfo=zoneinfo.ZoneInfo("Europe/Moscow"))
             rise, sset = ref["sunrise"].strftime("%H:%M"), ref["sunset"].strftime("%H:%M")
-            def diff(a, b):
-                ah, am = (int(x) for x in a.split(":"))
-                bh, bm = (int(x) for x in b.split(":"))
-                return abs((ah * 60 + am) - (bh * 60 + bm))
-            check("восход совпал с эталоном", diff(got[0], rise) <= 2, f"{got[0]} против {rise}")
-            check("закат совпал с эталоном", diff(got[1], sset) <= 2, f"{got[1]} против {sset}")
-        check("закат попал в лист текстом", (got[1] or "") in (paper or ""), got[1])
+            check("восход совпал с эталоном astral", diff_min(got[0], rise) <= 2, f"{got[0]} против {rise}")
+            check("закат совпал с эталоном astral", diff_min(got[1], sset) <= 2, f"{got[1]} против {sset}")
+        check("закат стоит в плитке листа", got[1] in t.js("document.querySelector('#paper table.cs-facts').innerText"), got[1])
+        check("дата на листе с днём недели", "понедельник, 14 сентября 2026" in paper, paper[:160])
+        t.set("f-lat", "55.7558, 37.6173")
+        check("точка из карт разложилась на широту и долготу",
+              t.js("document.getElementById('f-lat').value") == "55.7558" and
+              t.js("document.getElementById('f-lng').value") == "37.6173",
+              t.js("document.getElementById('f-lat').value + ' / ' + document.getElementById('f-lng').value"))
+        t.set("f-city", "Наро-Фоминск")
 
-        # 3. полоса светового дня рисует сегменты
-        segs = t.js("document.querySelectorAll('#sunbar .track i').length")
-        check("полоса дня нарисована", segs >= 3, segs)
+        # ---------- 3. расписание ----------
+        t.row("sched", 0, "t", "07:00")
+        t.row("sched", 1, "t", "09:00")
+        t.row("sched", 2, "t", "22:00")
+        paper = t.paper()
+        facts = t.js("document.querySelector('#paper table.cs-facts').innerText")
+        check("плитки: сбор, начало, конец", all(x in facts for x in ("07:00", "09:00", "22:00")), facts)
+        check("расписание в листе с длительностью", "Сбор группы" in paper and "2 ч" in paper and "Смена целиком" in paper, "")
+        check("предупреждение про конец после заката", "после заката" in paper, "")
+        check("подсказка про золотой час в смене", "попадает в смену" in paper, "")
+        check("полоса дня: день, золотой и синий час, смена, точки",
+              t.js("['day','gold','blue','shift','tick'].every(c=>document.querySelector('#sunbar .track .'+c))"),
+              t.js("document.querySelector('#sunbar .track').innerHTML")[:200])
+        check("длинная смена даёт подсказку про переработку",
+              "переработке" in t.js("document.getElementById('ready-warn').textContent"),
+              t.js("document.getElementById('ready-warn').textContent"))
 
-        # 4. расписание и предупреждения по свету
-        for fid, v in (("f-call", "07:00"), ("f-go", "07:30"), ("f-start", "09:00"),
-                       ("f-lunch", "13:00"), ("f-end", "22:00")):
-            t.set(fid, v)
-        time.sleep(0.6)
-        paper = t.js("document.getElementById('paper').innerText")
-        check("расписание в листе", "Сбор группы" in (paper or "") and "07:00" in (paper or ""), "")
-        check("предупреждение про закат", "после заката" in (paper or ""), "")
-        check("подсказка про золотой час в смене", "золотой час" in (paper or "").lower(), "")
-        shift = t.js("document.querySelectorAll('#sunbar .track .shift').length")
-        check("смена показана на полосе", shift == 1, shift)
+        # заготовка от времени сбора
+        t.js("[...document.querySelectorAll('#presets .chip')].find(b=>b.textContent==='Интервью').click()")
+        s = sched(t)
+        check("заготовка «Интервью» встала от времени сбора",
+              len(s) == 6 and s[0] == ["07:00", "Сбор группы"] and s[3][0] == "08:30" and s[5] == ["11:00", "Конец смены"], s)
+        t.click(".pb-toast.on button")
+        check("заготовка отменяется кнопкой «Вернуть»", len(sched(t)) == 3 and sched(t)[2][0] == "22:00", sched(t))
 
-        # 5. локации: добавление, перестановка, удаление
-        t.js("(()=>{const r=document.querySelectorAll('#locs .row-i')[0];"
-             "r.querySelector('.l-name').value='Усадьба';"
-             "r.querySelector('.l-name').dispatchEvent(new Event('input',{bubbles:true}));})()")
-        t.js("document.getElementById('add-loc').click()")
-        time.sleep(0.4)
-        t.js("(()=>{const r=document.querySelectorAll('#locs .row-i')[1];"
-             "r.querySelector('.l-name').value='Студия';"
-             "r.querySelector('.l-name').dispatchEvent(new Event('input',{bubbles:true}));})()")
-        time.sleep(0.5)
-        check("две локации в листе",
-              "Усадьба" in t.js("document.getElementById('paper').innerText") and
-              "Студия" in t.js("document.getElementById('paper').innerText"), "")
+        # сдвиг смены: всё время в листе уезжает разом
+        t.row("locs", 0, "name", "Усадьба")
+        t.row("locs", 0, "addr", "ул. Ленина, 14")
+        t.row("locs", 0, "time", "09:00")
+        t.row("crew", 0, "who", "Иван Петров")
+        t.row("crew", 0, "at", "06:30")
+        t.click('#shift [data-d="15"]')
+        st = json.loads(t.js("JSON.stringify((function(){var S=PobubnimCallsheet.state();"
+                             "return [S.sched[0].t,S.sched[2].t,S.locs[0].time,S.crew[0].at];})())"))
+        check("сдвиг +15 двигает расписание, локации и личные вызовы", st == ["07:15", "22:15", "09:15", "06:45"], st)
+        t.js("document.getElementById('shift-from').value='2'")
+        t.click('#shift [data-d="-15"]')
+        st = json.loads(t.js("JSON.stringify((function(){var S=PobubnimCallsheet.state();"
+                             "return [S.sched[0].t,S.sched[2].t,S.crew[0].at];})())"))
+        check("сдвиг с выбранной строки не трогает то, что раньше неё", st == ["07:15", "22:00", "06:45"], st)
+        t.js("document.getElementById('shift-from').value='0'")
+        for i, v in enumerate(("07:00", "09:00", "22:00")):
+            t.row("sched", i, "t", v)
+        t.row("crew", 0, "at", "06:30")
+        t.row("locs", 0, "time", "09:00")
+
+        # порядок времени
+        t.click("#add-sched")
+        t.row("sched", 3, "t", "13:00")
+        t.row("sched", 3, "what", "Обед")
+        check("строки не по порядку замечены", "не по порядку" in t.js("document.getElementById('ready-warn').textContent"), "")
+        t.click("#btn-sort")
+        s = sched(t)
+        check("«Расставить по времени» упорядочила строки", [r[0] for r in s] == ["07:00", "09:00", "13:00", "22:00"], s)
+        t.row("sched", 3, "t", "02:00")
+        k = json.loads(t.js("JSON.stringify((function(){var k=PobubnimCallsheet.key();return [k.tl.messy,k.end&&k.end.m-k.call.m];})())"))
+        check("смена через полночь считается, а не ругается", k == [False, 19 * 60], k)
+        t.row("sched", 3, "t", "22:00")
+        check("Enter на последней строке заводит новую",
+              t.js("(()=>{const e=document.querySelectorAll('#sched .row-i')[3].querySelector('[data-k=\"what\"]');"
+                   "e.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));"
+                   "return document.querySelectorAll('#sched .row-i').length})()") == 5, "")
+        t.js("document.querySelectorAll('#sched .row-i')[4].querySelector('.del-row').click()")
+
+        # ---------- 4. локации ----------
+        href = t.js("document.querySelector('#paper a[href*=\"yandex.ru/maps\"]').href")
+        check("адрес ведёт на карту, город дописан",
+              urllib.parse.unquote(href) == "https://yandex.ru/maps/?text=Наро-Фоминск, ул. Ленина, 14", urllib.parse.unquote(href or ""))
+        t.click("#add-loc")
+        t.row("locs", 1, "name", "Студия")
+        check("две локации в листе", "Усадьба" in t.paper() and "Студия" in t.paper(), "")
         t.js("document.querySelectorAll('#locs .row-i')[0].querySelector('.down').click()")
-        time.sleep(0.5)
-        first = t.js("document.querySelectorAll('#locs .row-i')[0].querySelector('.l-name').value")
-        check("локации переставляются", first == "Студия", first)
-        t.js("document.querySelectorAll('#locs .row-i')[1].querySelector('.del-row').click()")
-        time.sleep(0.5)
-        n_loc = t.js("document.querySelectorAll('#locs .row-i').length")
-        check("локация удаляется", n_loc == 1, n_loc)
+        check("локации переставляются", t.js("PobubnimCallsheet.state().locs[0].name") == "Студия", "")
+        t.js("document.querySelectorAll('#locs .row-i')[0].querySelector('.del-row').click()")
+        check("локация удаляется", t.js("PobubnimCallsheet.state().locs.length") == 1, "")
+        t.click(".pb-toast.on button")
+        check("удалённая строка возвращается на своё место",
+              t.js("PobubnimCallsheet.state().locs.map(l=>l.name).join('|')") == "Студия|Усадьба",
+              t.js("PobubnimCallsheet.state().locs.map(l=>l.name).join('|')"))
+        t.js("document.querySelectorAll('#locs .row-i')[0].querySelector('.del-row').click()")
 
-        # 6. группа: чип роли добавляет человека
-        t.js("document.querySelectorAll('#chips .chip')[4].click()")
-        time.sleep(0.5)
-        roles = t.js("[...document.querySelectorAll('#crew .c-role')].map(e=>e.value).join('|')")
-        check("роль добавлена чипом", "Звукорежиссёр" in (roles or ""), roles)
-        t.js("(()=>{const r=document.querySelectorAll('#crew .row-i')[0];"
-             "r.querySelector('.c-who').value='Савелий';"
-             "r.querySelector('.c-who').dispatchEvent(new Event('input',{bubbles:true}));"
-             "r.querySelector('.c-phone').value='+7 982 905-44-54';"
-             "r.querySelector('.c-phone').dispatchEvent(new Event('input',{bubbles:true}));})()")
-        time.sleep(0.5)
-        paper = t.js("document.getElementById('paper').innerText")
-        check("человек попал в лист", "Савелий" in paper and "905-44-54" in paper, "")
+        # ---------- 5. группа ----------
+        t.js("[...document.querySelectorAll('#chips .chip')].find(b=>b.textContent==='Звукорежиссёр').click()")
+        check("роль добавлена чипом", t.js("PobubnimCallsheet.state().crew.map(p=>p.role).join('|')") ==
+              "Оператор-постановщик|Звукорежиссёр", t.js("PobubnimCallsheet.state().crew.map(p=>p.role).join('|')"))
+        t.row("crew", 0, "phone", "89161234567")
+        check("телефон приведён к виду +7 ···", t.js("PobubnimCallsheet.state().crew[0].phone") == "+7 916 123-45-67",
+              t.js("PobubnimCallsheet.state().crew[0].phone"))
+        check("телефон на листе набирается по клику",
+              t.js("document.querySelector('#paper a[href=\"tel:+79161234567\"]').textContent") == "+7 916 123-45-67", "")
+        t.row("crew", 1, "who", "Олег Жуков")
+        t.row("crew", 1, "phone", "+7 925 000-11-22")
+        paper = t.paper()
+        check("человек без своего времени вызван к общему сбору", re.search(r"Олег Жуков\s+\+7 925 000-11-22\s+07:00", paper), paper[-400:])
+        check("на листе есть «На связи»", "На связи в день съёмки: Иван Петров" in paper, "")
 
-        # 7. заметки и .docx
-        t.set("f-notes", "Парковка во дворе, шлагбаум — звонить администратору.")
-        time.sleep(0.5)
-        paper = t.js("document.getElementById('paper').innerText")
-        check("заметки в листе", "шлагбаум" in paper, "")
-        size = t.js("PobubnimDocx.build(document.getElementById('paper')).size")
-        check(".docx собран (>3 КБ)", size and size > 3000, size)
+        parsed = json.loads(t.js("JSON.stringify(PobubnimCallsheet.parsePeople("
+                                 + json.dumps("1. Гафер — Игорь Лапин — 8 916 000-00-01 — к 07:00\n"
+                                              "Мария Соколова, продюсер, +7 925 111-22-33\n"
+                                              "Аня\n\n- визажист: Даша 9:15") + "))"))
+        want = [["Гафер", "Игорь Лапин", "+7 916 000-00-01", "07:00"], ["Продюсер", "Мария Соколова", "+7 925 111-22-33", ""],
+                ["", "Аня", "", ""], ["Визажист", "Даша", "", "09:15"]]
+        check("вставка списком разбирает четыре формата строки",
+              [[p["role"], p["who"], p["phone"], p["at"]] for p in parsed] == want,
+              [[p["role"], p["who"], p["phone"], p["at"]] for p in parsed])
+        t.js("document.getElementById('paste').open=true")
+        t.set("paste-text", "Гафер — Игорь Лапин — 8 916 000-00-01 — к 07:00\nМария Соколова, продюсер, +7 925 111-22-33")
+        t.click("#paste-go")
+        check("список добавил людей в группу", t.js("PobubnimCallsheet.state().crew.length") == 4, "")
+        check("выбор «кто на связи» появился и меняет лист",
+              t.js("!document.getElementById('contact-box').hidden"), "")
+        t.set("f-contact", "Мария Соколова")
+        check("на связи — выбранный человек", "На связи в день съёмки: Мария Соколова (продюсер)" in t.paper(), "")
 
-        # 8. черновик переживает перезагрузку и чистится кнопкой
+        # память людей: знакомое имя подставляет телефон и роль
+        time.sleep(0.7)
+        t.click("#add-crew")
+        t.row("crew", 4, "who", "Игорь Лапин")
+        mem = json.loads(t.js("JSON.stringify((function(){var p=PobubnimCallsheet.state().crew[4];return [p.phone,p.role];})())"))
+        check("знакомое имя подставило телефон и роль", mem == ["+7 916 000-00-01", "Гафер"], mem)
+        t.js("document.querySelectorAll('#crew .row-i')[4].querySelector('.del-row').click()")
+
+        # большая группа — по цехам
+        for name in ("Анна", "Борис", "Вера"):
+            t.click("#add-crew")
+            n = t.js("PobubnimCallsheet.state().crew.length") - 1
+            t.row("crew", n, "who", name)
+            t.row("crew", n, "role", "Осветитель")
+        check("группа от семи человек собрана по цехам",
+              t.js("[...document.querySelectorAll('#paper tr.grp')].map(r=>r.textContent).join('|')") ==
+              "Продакшн|Камера|Свет|Звук", t.js("[...document.querySelectorAll('#paper tr.grp')].map(r=>r.textContent).join('|')"))
+
+        # ---------- 6. блоки по выбору ----------
+        t.click('#block-chips [data-b="cast"]')
+        t.row("cast", 0, "who", "Тимур Асланов")
+        t.row("cast", 0, "part", "бариста")
+        t.row("cast", 0, "at", "08:30")
+        t.row("cast", 0, "ready", "09:00")
+        t.click('#block-chips [data-b="safety"]')
+        t.set("f-hosp", "Травмпункт")
+        t.set("f-hospaddr", "ул. Больничная, 1")
+        t.click('#block-chips [data-b="food"]')
+        t.set("t-food", "Обед в 13:00 на площадке.")
+        paper = t.paper()
+        check("блок «В кадре» на листе", "В КАДРЕ" in paper.upper() and "бариста" in paper, "")
+        check("безопасность: 112 и ближайшая помощь", "112" in paper and "Травмпункт" in paper, "")
+        check("текстовый блок «Питание» на листе", "Обед в 13:00 на площадке." in paper, "")
+        t.click('#block-chips [data-b="food"]')
+        check("выключенный блок уходит с листа, текст в нём остаётся",
+              "Обед в 13:00 на площадке." not in t.paper() and t.js("PobubnimCallsheet.state().txt.food") == "Обед в 13:00 на площадке.", "")
+
+        # сцены из шот-листа
+        t.js("localStorage.setItem('pobubnim-shotlist-v1', JSON.stringify({defmin:'10',scenes:["
+             "{name:'Утро в цехе',loc:'Цех',time:'день',shots:[{what:'Общий план',min:'15'},{what:'Деталь'}]},"
+             "{name:'',loc:'',time:'день',shots:[{what:''}]}]}))")
+        t.click('#block-chips [data-b="scenes"]')
+        check("кнопка «из шот-листа» появилась", t.js("!document.getElementById('btn-shots').hidden"), "")
+        t.click("#btn-shots")
+        sc = json.loads(t.js("JSON.stringify(PobubnimCallsheet.state().scenes)"))
+        check("сцены подтянулись из шот-листа с объёмом",
+              len(sc) == 1 and sc[0]["what"] == "Утро в цехе" and sc[0]["where"] == "Цех, день" and sc[0]["note"] == "2 кадра · 25 мин", sc)
+
+        # ---------- 7. версия для клиента ----------
+        t.js("(()=>{const c=document.getElementById('f-nophones');c.checked=true;c.dispatchEvent(new Event('change',{bubbles:true}));})()")
+        paper = t.paper()
+        check("версия для клиента: телефонов группы нет, контакт остался",
+              "+7 925 000-11-22" not in paper and "+7 925 111-22-33" in paper and "Телефон" not in paper, "")
+        check("версия для клиента: телефонов нет и в тексте для чата",
+              "+7 925 000-11-22" not in t.js("PobubnimCallsheet.chatText()"), "")
+        t.js("(()=>{const c=document.getElementById('f-nophones');c.checked=false;c.dispatchEvent(new Event('change',{bubbles:true}));})()")
+
+        # ---------- 8. готовность ----------
+        ready = t.js("document.getElementById('ready-n').textContent + ' / ' + document.getElementById('ready-miss').textContent")
+        check("готовность называет, чего не хватает", "Готово 6 из 8" in ready and "название проекта" in ready and "телефон у 3 человек" in ready, ready)
+        t.js("[...document.querySelectorAll('#ready-miss .miss')].find(b=>b.textContent==='название проекта').click()")
+        check("клик по недостающему ставит курсор в поле", t.js("document.activeElement.id") == "f-proj", t.js("document.activeElement.id"))
+        t.set("f-proj", "Рекламный ролик EVERGO")
+        t.set("f-day", "1 из 2")
+
+        # ---------- 9. рассылка ----------
+        chat = t.js("PobubnimCallsheet.chatText()")
+        check("общий текст: шапка, времена, карта, группа",
+              chat.startswith("ВЫЗЫВНОЙ ЛИСТ · «Рекламный ролик EVERGO», смена 1 из 2") and "Общий сбор — 07:00" in chat and
+              "Карта: https://yandex.ru/maps/?text=" in chat and "Гафер — Игорь Лапин, +7 916 000-00-01 — к 07:00" in chat and
+              "На связи: Мария Соколова (продюсер)" in chat, chat[:400])
+        per = t.js("PobubnimCallsheet.personal(PobubnimCallsheet.state().crew[0],'crew')")
+        check("личный вызов: имя, своё время, адрес и карта",
+              per.startswith("Иван, вызывной лист на понедельник, 14 сентября.") and "Вызов: 06:30 · Оператор-постановщик" in per and
+              "Куда: Усадьба, ул. Ленина, 14" in per and "Карта: https://" in per and "Напишите, пожалуйста, что получили." in per, per)
+        t.click("#btn-send")
+        check("окно рассылки открылось", t.js("document.getElementById('send').open"), "")
+        check("в окне по строке на человека", t.js("document.querySelectorAll('#per .per-i').length") == 8,
+              t.js("document.querySelectorAll('#per .per-i').length"))
+        wa = t.js("document.querySelector('#per .per-i a[data-act=\"wa\"]').href")
+        check("ссылка WhatsApp: номер цифрами и личный текст",
+              wa.startswith("https://wa.me/79161234567?text=") and "Иван" in urllib.parse.unquote(wa), wa[:80])
+        tg = urllib.parse.unquote(t.js("document.getElementById('btn-tg').href"))
+        check("ссылка Telegram: url обязателен и ведёт на карту", tg.startswith("https://t.me/share/url?url=https://yandex.ru/maps/?text="), tg[:90])
+        check("длинный лист честно говорит про краткий вариант в ссылке",
+              t.js("document.getElementById('url-note').hidden") == (len(urllib.parse.quote(chat, safe="")) <= 6000), "")
+        t.js("(()=>{const s=document.querySelectorAll('#per .per-st')[0];s.value='ok';s.dispatchEvent(new Event('change',{bubbles:true}));})()")
+        t.js("(()=>{const s=document.querySelectorAll('#per .per-st')[1];s.value='sent';s.dispatchEvent(new Event('change',{bubbles:true}));})()")
+        check("статусы считаются", t.js("document.getElementById('per-sum').textContent") == "Отправлено 2 из 8 · подтвердили 1",
+              t.js("document.getElementById('per-sum').textContent"))
+        check("напоминание доступно, пока не все подтвердили", t.js("!document.getElementById('btn-remind').hidden"), "")
+
+        # версия листа и «что изменилось»
+        t.click("#btn-mark")
+        check("отметка «разослан» запомнила версию 1", t.js("PobubnimCallsheet.state().rev") == 1 and
+              t.js("document.getElementById('btn-mark').disabled") and t.js("document.getElementById('diff-box').hidden"), "")
+        t.row("sched", 0, "t", "07:30")
+        t.row("locs", 0, "addr", "ул. Мира, 5")
+        t.row("crew", 1, "who", "Олег Жуковский")
+        ch = json.loads(t.js("JSON.stringify(PobubnimCallsheet.changes())"))
+        check("изменения после рассылки названы по именам",
+              "Сбор группы: 07:00 → 07:30" in ch and "Локация 1: теперь Усадьба, ул. Мира, 5" in ch and
+              "Не участвует: Олег Жуков" in ch and any(x.startswith("В группе: Олег Жуковский") for x in ch), ch)
+        check("окно показывает изменения списком", t.js("!document.getElementById('diff-box').hidden") and
+              t.js("document.querySelectorAll('#diff li').length") == len(ch), t.js("document.getElementById('diff').innerHTML"))
+        txt = t.js("PobubnimCallsheet.changesText()")
+        check("сообщение об изменениях: шапка, пункты, номер версии",
+              txt.startswith("ИЗМЕНЕНИЯ В ВЫЗЫВНОМ · «Рекламный ролик EVERGO», смена 1 из 2 · 14 сентября") and
+              "— Сбор группы: 07:00 → 07:30" in txt and txt.endswith("Актуальная версия: 2."), txt)
+        t.click("#btn-mark")
+        check("вторая рассылка ставит на лист «ВЕРСИЯ 2»", "ВЕРСИЯ 2" in t.paper(), t.paper()[:60])
+        t.click("#send-x")
+        check("окно закрывается", not t.js("document.getElementById('send').open"), "")
+        t.row("sched", 0, "t", "07:00")
+
+        # ---------- 10. календарь и таблица ----------
+        ics = t.js("PobubnimCallsheet.ics()")
+        lines = ics.split("\r\n")
+        check(".ics: каркас и время в UTC (07:00 по Москве = 04:00Z)",
+              lines[0] == "BEGIN:VCALENDAR" and lines[-2] == "END:VCALENDAR" and "DTSTART:20260914T040000Z" in lines and
+              "DTEND:20260914T190000Z" in lines and "BEGIN:VALARM" in lines, lines[:12])
+        check(".ics: строки не длиннее 75 октетов", max(len(x.encode("utf-8")) for x in lines) <= 75,
+              max(len(x.encode("utf-8")) for x in lines))
+        unfolded = ics.replace("\r\n ", "")
+        check(".ics: описание разворачивается обратно без потерь",
+              "SUMMARY:Съёмка: Рекламный ролик EVERGO (смена 1 из 2)" in unfolded and "\\nОбщий сбор — 07:00" in unfolded, "")
+        csv = t.js("PobubnimCallsheet.csv()")
+        check(".csv: BOM, точка с запятой, строки группы",
+              csv.startswith("\ufeff") and "Роль;Имя;Телефон;Вызов;Статус" in csv and
+              "Оператор-постановщик;Иван Петров;+7 916 123-45-67;06:30;подтвердил" in csv, csv[:200])
+
+        # ---------- 11. Word ----------
+        b64 = t.js("(async()=>{const b=PobubnimDocx.build(document.getElementById('paper'));"
+                   "const u=new Uint8Array(await b.arrayBuffer());let s='';"
+                   "for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));"
+                   "return btoa(s)})()", wait=True)
+        z = zipfile.ZipFile(io.BytesIO(base64.b64decode(b64)))
+        xml = z.read("word/document.xml").decode("utf-8")
+        ok_xml = True
+        try:
+            minidom.parseString(xml.encode("utf-8"))
+        except Exception as e:  # noqa: BLE001
+            ok_xml = str(e)
+        check(".docx распакован, document.xml — правильный XML", ok_xml is True, ok_xml)
+        check(".docx: ссылка на карту кликается", 'HYPERLINK &quot;https://yandex.ru/maps/?text=' in xml, "")
+        check(".docx: подзаголовки цехов объединяют ячейки", '<w:gridSpan w:val="4"/>' in xml, "")
+        check(".docx: расписание и группа на месте", "Сбор группы" in xml and "Иван Петров" in xml and "ВЫЗЫВНОЙ ЛИСТ" in xml, "")
+
+        # ---------- 12. печать ----------
+        pdf = base64.b64decode(t.cmd("Page.printToPDF", printBackground=True, preferCSSPageSize=True)["result"]["data"])
+        pages = len(re.findall(rb"/Type\s*/Page\b", pdf))
+        check("печать: лист уходит в PDF на 1–3 страницы", 1 <= pages <= 3 and len(pdf) > 8000, f"{pages} стр., {len(pdf)} байт")
+
+        # ---------- 13. черновик, следующая смена, очистка ----------
         time.sleep(0.9)
         t.goto(URL)
-        check("черновик восстановил дату", t.js("document.getElementById('f-date').value") == "2026-09-14",
-              t.js("document.getElementById('f-date').value"))
-        check("черновик восстановил группу",
-              "Савелий" in (t.js("document.getElementById('paper').innerText") or ""), "")
-        t.js("document.getElementById('btn-clear').click()")
+        check("черновик восстановил дату и расписание",
+              t.js("document.getElementById('f-date').value") == "2026-09-14" and sched(t)[0] == ["07:00", "Сбор группы"], "")
+        check("черновик восстановил группу, блоки и статусы",
+              "Иван Петров" in t.paper() and "бариста" in t.paper() and t.js("PobubnimCallsheet.state().crew[0].st") == "ok", "")
+        t.click("#btn-next")
+        nxt = json.loads(t.js("JSON.stringify((function(){var S=PobubnimCallsheet.state();"
+                              "return [document.getElementById('f-date').value,document.getElementById('f-day').value,"
+                              "S.crew[0].st,S.rev,S.crew[0].who];})())"))
+        check("следующая смена: дата +1, номер +1, статусы сброшены, люди те же",
+              nxt == ["2026-09-15", "2 из 2", "", 0, "Иван Петров"], nxt)
+        t.click(".pb-toast.on button")
+        check("следующая смена отменяется", t.js("document.getElementById('f-date').value") == "2026-09-14", "")
+        t.click("#btn-clear")
         time.sleep(0.6)
-        check("очистка стёрла черновик", t.js("localStorage.getItem('pobubnim-callsheet-v1')") in (None, ""),
-              t.js("localStorage.getItem('pobubnim-callsheet-v1')"))
+        check("очистка стёрла черновик и вернула подсказку",
+              t.js(f"localStorage.getItem('{KEY}')") in (None, "") and t.js("!document.getElementById('starter').hidden"),
+              t.js(f"localStorage.getItem('{KEY}')"))
+        t.click(".pb-toast.on button")
+        check("очистка отменяется кнопкой «Вернуть»", "Иван Петров" in t.paper(), "")
+        t.click("#btn-clear")
+        time.sleep(0.6)
 
-        # 9. мобила
-        t.cmd("Emulation.setDeviceMetricsOverride", width=375, height=850,
-              deviceScaleFactor=1, mobile=True)
+        # пример одним кликом
+        t.click("#btn-example")
+        check("пример заполняет лист до полной готовности",
+              t.js("document.getElementById('ready-n').textContent").startswith("Лист готов") and "Кофейня «Зерно»" in t.paper(),
+              t.js("document.getElementById('ready-n').textContent + document.getElementById('ready-miss').textContent"))
+        time.sleep(0.7)
+        check("люди из примера в память не попадают",
+              "Анна Белова" not in (t.js("localStorage.getItem('pobubnim-people-v1')") or ""), "")
+
+        # лист первой версии: пять времён становятся расписанием
+        v1 = {"locs": [{"name": "Цех", "addr": "ул. Ленина, 14", "time": "09:00"}],
+              "crew": [{"role": "Гафер", "who": "Пётр", "phone": "+7 900 111-22-33", "at": "07:30"}],
+              "proj": "Старый лист", "date": "2026-09-14", "day": "1", "city": "Москва", "lat": "55.7558", "lng": "37.6173",
+              "tz": "3", "client": "", "call": "07:00", "go": "07:30", "start": "09:00", "lunch": "13:00", "end": "19:00",
+              "notes": "Парковка во дворе."}
+        t.js(f"localStorage.setItem('{KEY}', {json.dumps(json.dumps(v1, ensure_ascii=False))})")
         t.goto(URL)
-        t.set("f-date", "2026-09-14")
-        t.js("document.querySelectorAll('#chips .chip')[1].click()")
-        time.sleep(0.8)
+        s = sched(t)
+        check("лист первой версии открылся: пять времён стали строками",
+              s == [["07:00", "Сбор группы"], ["07:30", "Выезд"], ["09:00", "Начало съёмки"], ["13:00", "Обед"], ["19:00", "Конец смены"]]
+              and "Пётр" in t.paper() and "Парковка во дворе." in t.paper(), s)
+
+        # ссылка на лист: черновик уезжает в адрес и возвращается
+        time.sleep(0.7)
+        packed = t.js("(()=>{const j=localStorage.getItem('%s');return btoa(unescape(encodeURIComponent(j)))"
+                      ".replace(/\\+/g,'-').replace(/\\//g,'_').replace(/=+$/,'')})()" % KEY)
+        t.js("localStorage.clear()")
+        t.goto(URL + "#s=" + packed)
+        check("ссылка на лист открывает его на чистом браузере", "Старый лист" in t.paper() and len(sched(t)) == 5, t.paper()[:80])
+        check("десктоп без горизонтальной прокрутки",
+              t.js("document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1"), "")
+
+        # ---------- 14. мобила ----------
+        t.cmd("Emulation.setDeviceMetricsOverride", width=375, height=850, deviceScaleFactor=1, mobile=True)
+        t.goto(URL)
+        t.click("#btn-clear")
+        t.click("#btn-example")
+        for b in ("cast", "scenes"):
+            if t.js("document.querySelector('#block-chips [data-b=\"%s\"]').getAttribute('aria-pressed')" % b) != "true":
+                t.click('#block-chips [data-b="%s"]' % b)
+        time.sleep(0.5)
         sw = t.js("document.documentElement.scrollWidth")
         cw = t.js("document.documentElement.clientWidth")
         check("мобила 375 без оверфлоу (и без веб-шрифтов)", sw <= cw + 1, f"{sw} > {cw}")
+        check("мобильная панель на месте и знает готовность",
+              t.js("getComputedStyle(document.getElementById('mbar')).display") == "flex" and
+              t.js("document.getElementById('mbar-n').textContent") == "Готов", t.js("document.getElementById('mbar-n').textContent"))
+        t.click("#mbar-send")
+        fits = t.js("(()=>{const d=document.getElementById('send').getBoundingClientRect();return d.left>=0&&d.right<=375&&d.height<=850})()")
+        check("окно рассылки помещается в телефон", t.js("document.getElementById('send').open") and fits, "")
 
-        check("без ошибок в консоли", not t.errors, t.errors[:2])
+        check("без ошибок в консоли", not t.errors, t.errors[:3])
     finally:
         t.close()
 
-    print(("\nПРОВАЛЕНО: " + ", ".join(fails)) if fails else "\nВсё сошлось")
+    print(("\nПРОВАЛЕНО (" + str(len(fails)) + "): " + ", ".join(fails)) if fails else "\nВсё сошлось")
     return 1 if fails else 0
 
 

@@ -10,6 +10,55 @@
   var key = document.body.getAttribute("data-draft-key");
   if (!key) return;
 
+  /* --- тост с кнопкой «Вернуть»: один на все инструменты с черновиком ---
+     Показывается в открытом dialog, если он есть: модальное окно живёт в верхнем
+     слое, и тост из body остался бы под его подложкой. */
+  var toastEl, toastTimer;
+  function hideToast() { if (toastEl) toastEl.classList.remove("on"); }
+  function toast(text, undo) {
+    if (!toastEl) {
+      toastEl = document.createElement("div");
+      toastEl.className = "pb-toast";
+      toastEl.setAttribute("role", "status");
+      toastEl.setAttribute("aria-live", "polite");
+    }
+    (document.querySelector("dialog[open]") || document.body).appendChild(toastEl);
+    toastEl.textContent = "";
+    var s = document.createElement("span");
+    s.textContent = text;
+    toastEl.appendChild(s);
+    if (undo) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = "Вернуть";
+      b.addEventListener("click", function () { hideToast(); undo(); });
+      toastEl.appendChild(b);
+    }
+    toastEl.classList.remove("on");
+    void toastEl.offsetWidth;                 /* без rAF: в скрытой вкладке он не срабатывает */
+    toastEl.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, undo ? 7000 : 3200);
+  }
+  window.PobubnimToast = toast;
+
+  /* «Очистить» больше не безвозвратно: снимок черновика берём до того, как инструмент
+     его сотрёт (перехват на фазе погружения), и возвращаем перезагрузкой страницы.
+     Инструмент со своей отменой помечает body атрибутом data-own-undo. */
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("#btn-clear");
+    if (!b || document.body.hasAttribute("data-own-undo")) return;
+    var snap;
+    try { snap = localStorage.getItem(key); } catch (er) { snap = null; }
+    if (!snap) return;
+    setTimeout(function () {
+      toast("Черновик очищен", function () {
+        try { localStorage.setItem(key, snap); } catch (er) { /* приватный режим */ }
+        location.reload();
+      });
+    }, 0);
+  }, true);
+
   /* ponytail: черновик кладётся в адрес как есть, без сжатия — так разбор
      остаётся синхронным. Потолок 8000 символов (шот-лист на ~40 кадров);
      дальше жать через CompressionStream и переводить приём на async. */
@@ -52,26 +101,31 @@
     btn.className = "pbtn";
     btn.id = "btn-share";
     btn.type = "button";
-    btn.textContent = "Ссылка на расчёт";
+    btn.textContent = document.body.getAttribute("data-share-label") || "Ссылка на расчёт";
     bar.appendChild(btn);
 
     var note = document.createElement("p");
     note.className = "paper-note";
     note.textContent = "Черновик сохраняется в этом браузере сам — вкладку можно закрыть и вернуться позже.";
     bar.insertAdjacentElement("afterend", note);
+    /* страница может спрятать подпись стилями (ей тесно) — тогда ответ кнопки уходит в тост */
+    function say(text) {
+      if (getComputedStyle(note).display === "none") toast(text);
+      else note.textContent = text;
+    }
 
     btn.addEventListener("click", function () {
       var raw;
       try { raw = localStorage.getItem(key); } catch (e) { raw = null; }
-      if (!raw) { note.textContent = "Пока нечего сохранять: заполните хотя бы одно поле."; return; }
+      if (!raw) { say("Пока нечего сохранять: заполните хотя бы одно поле."); return; }
       var packed = toUrl(raw);
       if (packed.length > LIMIT) {
-        note.textContent = "Расчёт слишком большой для ссылки — сохраните его в Word, файл отдаётся целиком.";
+        say("Расчёт слишком большой для ссылки — сохраните его в Word, файл отдаётся целиком.");
         return;
       }
       var url = location.origin + location.pathname + "#s=" + packed;
       var done = function () {
-        note.textContent = "Ссылка скопирована. Откроется с вашим расчётом на любом устройстве.";
+        say("Ссылка скопирована. Откроется с вашими данными на любом устройстве.");
         if (window.pbGoal) window.pbGoal("tool_share");
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -87,7 +141,7 @@
       t.style.position = "fixed"; t.style.opacity = "0";
       document.body.appendChild(t); t.select();
       try { document.execCommand("copy"); done(); } catch (e) {
-        note.textContent = "Скопируйте ссылку вручную: " + url;
+        say("Скопируйте ссылку вручную: " + url);
       }
       t.remove();
     }

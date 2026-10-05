@@ -163,8 +163,8 @@
     ctx.fillRect(x0 - 6, cy - wh / 2, 6, wh);
     ctx.fillStyle = "rgba(198,214,240,0.8)";
     ctx.fillText("ОКНО " + num(state.win) + " м", x0 - 6, cy - wh / 2 - 7);
-    ctx.fillStyle = "rgba(198,214,240,0.55)";
-    ctx.fillText(angular().toFixed(0) + "° с места героя", x0 + 16, cy + wh / 2 + 16);
+    /* угловой размер не подписываем в плане: он уже стоит и в строке под кадром,
+       и в показаниях, а у близкого героя эта подпись налезала на отражатель */
 
     /* стена-фон */
     if (wx < right) {
@@ -394,10 +394,10 @@
     ctx.lineWidth = 1;
 
     /* где стоят герой и фон */
-    mark(px(state.d), py(Math.log(ref / key(state.d)) / Math.LN2), "#f0c46e", "ГЕРОЙ");
+    mark(px(state.d), py(Math.log(ref / key(state.d)) / Math.LN2), "#f0c46e", "ГЕРОЙ", y0);
     if (state.d + state.bg <= DMAX) {
       mark(px(state.d + state.bg),
-        py(Math.log(ref / key(state.d + state.bg)) / Math.LN2), "#f5efe2", "ФОН");
+        py(Math.log(ref / key(state.d + state.bg)) / Math.LN2), "#f5efe2", "ФОН", y0);
     }
 
     ctx.fillStyle = "rgba(245,239,226,0.5)";
@@ -424,13 +424,15 @@
     ctx.fillText("чему учат на курсах", lx + 28, y0 + 52);
   }
 
-  function mark(x, y, color, label) {
+  function mark(x, y, color, label, top) {
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.arc(x, y, 4, 0, Math.PI * 2);
     ctx.fill();
     ctx.font = "500 9px 'JetBrains Mono', monospace";
-    ctx.fillText(label, x - 12, y - 8);
+    /* у самого окна точка стоит вплотную к верхней линии поля, и подпись над ней
+       ложилась на заголовок графика — тогда подписываем снизу */
+    ctx.fillText(label, x - 12, y - top < 14 ? y + 15 : y - 8);
   }
 
   /* ---------- показания ---------- */

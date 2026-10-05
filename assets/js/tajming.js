@@ -1,6 +1,8 @@
 /* ПОБУБНИМ — тайминг свадебного дня (instrumenty/tajming-svadby.html).
    Точка отсчёта — церемония: блоки до неё считаются назад, после — вперёд.
-   Длительности — ориентир свадебного видеографа, всё двигается. */
+   Длительности — ориентир свадебного видеографа, всё двигается.
+   С датой и городом к плану добавляется свет: закат и золотой час считаются тем же
+   движком, что в вызывном листе (sun.js, формулы NOAA; канон — docs/EDU_BASE.md §8з). */
 
 (function () {
   var wrap = document.getElementById("blocks");
@@ -35,6 +37,39 @@
     return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
   }
 
+  /* ---------- свет: закат и золотой час для даты и города ---------- */
+  var SUN = window.PobubnimSun, cityMap = {};
+  if (SUN) {
+    SUN.CITIES.forEach(function (c) { cityMap[c[0].toLowerCase()] = c; });
+    document.getElementById("dl-city").innerHTML = SUN.CITIES.map(function (c) {
+      return "<option>" + c[0] + "</option>";
+    }).join("");
+  }
+  function sun() {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(document.getElementById("f-date").value);
+    var c = cityMap[document.getElementById("f-city").value.trim().toLowerCase()];
+    if (!SUN || !m || !c) return null;
+    var s = SUN.times(+m[1], +m[2], +m[3], c[1], c[2], c[3]);
+    return s.sunset === null || s.goldenEvening[0] === null || s.goldenEvening[1] === null ? null : s;
+  }
+  /* что свет значит для плана: куда выпадает золотой час и не уходит ли прогулка в сумерки */
+  function light(rows) {
+    var s = sun();
+    if (!s) return null;
+    var ge = s.goldenEvening, walk = null, hit = null;
+    var mid = (ge[0] + s.sunset) / 2;                 /* середина тёплого света до заката */
+    rows.forEach(function (r) {
+      if (r.id === "progulka") walk = r;
+      if (r.b !== null && r.a <= mid && mid < r.b) hit = r;
+    });
+    var note = "";
+    if (walk && walk.a >= s.sunset) note = "Прогулка начинается после заката — портреты придётся снимать со своим светом.";
+    else if (walk && walk.b > s.sunset) note = "Прогулка заканчивается после заката: портреты ставьте в её начало, к " + SUN.hhmm(s.sunset) + " стемнеет.";
+    else if (hit && hit.id === "progulka") note = "Золотой час попадает на прогулку — лучший свет дня для портретов.";
+    else if (hit) note = "Золотой час выпадает на блок «" + hit.nm + "». Хотите закатные портреты — заложите на них 15–20 минут.";
+    return { head: SUN.hhmm(s.sunset) + ", золотой час " + SUN.hhmm(ge[0]) + "–" + SUN.hhmm(ge[1]), note: note };
+  }
+
   function read() {
     var cer = document.getElementById("f-cer").value || "13:00";
     var p = cer.split(":");
@@ -43,7 +78,7 @@
       var el = wrap.querySelector('[data-id="' + b.id + '"]');
       el.classList.toggle("off", !el.querySelector('input[type="checkbox"]').checked);
       return {
-        nm: b.nm, pre: !!b.pre,
+        id: b.id, nm: b.nm, pre: !!b.pre,
         on: el.querySelector('input[type="checkbox"]').checked,
         dur: Math.max(15, +el.querySelector('input[type="number"]').value || b.dur)
       };
@@ -58,10 +93,10 @@
     var out = [];
     var t = d.cerMin - pre.reduce(function (a, b) { return a + b.dur; }, 0);
     pre.concat(post).forEach(function (b) {
-      out.push({ time: fmt(t), end: fmt(t + b.dur), nm: b.nm });
+      out.push({ time: fmt(t), end: fmt(t + b.dur), nm: b.nm, id: b.id, a: t, b: t + b.dur });
       t += b.dur;
     });
-    out.push({ time: fmt(t), end: null, nm: "Финал: проводы и разъезд" });
+    out.push({ time: fmt(t), end: null, nm: "Финал: проводы и разъезд", id: "final", a: t, b: null });
     return out;
   }
 
@@ -73,6 +108,11 @@
     rows.forEach(function (r) {
       h.push('<div class="line"><b>' + r.time + (r.end ? "–" + r.end : "") + "</b><span>" + r.nm + "</span></div>");
     });
+    var l = light(rows);
+    if (l) {
+      h.push('<div class="line"><b>Закат</b><span>' + l.head + "</span></div>");
+      if (l.note) h.push("<p>" + l.note + "</p>");
+    }
     h.push('<p class="doc-note">Ориентир, не догма: держите 15–30 минут запаса между блоками — свадьба всегда опаздывает.</p>');
     h.push('<div class="bmark-row br" aria-hidden="true"><span class="bmark">Б</span></div>');
     paper.innerHTML = h.join("");
@@ -85,6 +125,8 @@
     var btn = this;
     var txt = "Тайминг свадебного дня — pobubnim.ru\n" +
       schedule().map(function (r) { return r.time + (r.end ? "–" + r.end : "") + "  " + r.nm; }).join("\n");
+    var l = light(schedule());
+    if (l) txt += "\nЗакат " + l.head + (l.note ? "\n" + l.note : "");
     function done() {
       var old = btn.textContent;
       btn.textContent = "Скопировано ✓";
@@ -106,4 +148,5 @@
   document.getElementById("btn-print").addEventListener("click", function () { window.print(); });
 
   render();
+  window.PobubnimTajming = { schedule: schedule, light: function () { return light(schedule()); } };
 })();
